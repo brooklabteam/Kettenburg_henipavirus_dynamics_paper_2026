@@ -6,6 +6,11 @@ each figure is within its respective analysis folder, and final figures and tabl
 A brief description of each anlysis is outlined under each subheading below. 
 
 ---
+## Genome characterization and annotation
+
+
+
+---
 ## Phylogenetic tree analysis
 
 
