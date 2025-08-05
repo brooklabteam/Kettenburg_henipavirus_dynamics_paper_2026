@@ -1,11 +1,11 @@
 >Feature MIZ546_urine_consensus_pcr [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
-<1	601	CDS
+<1	>573	CDS
 			product	Polymerase
 >Feature Pool_4_ED_UR_2_F_pcr [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
-76	>507	CDS
+<1	>410	CDS
 			product	Polymerase
 >Feature Pool_4_RM_UR_2_F_pcr [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
-<2	>82	CDS
+<1	>82	CDS
 			product	Polymerase
 			codon_start	2
 >Feature Pool_5_ED_UR_2_consensus_pcr [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
