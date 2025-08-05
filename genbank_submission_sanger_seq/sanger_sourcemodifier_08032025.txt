@@ -1,0 +1,8 @@
+Sequence_ID	Collected_by	Collection_date	Country	Isolation_source	Host	Isolate
+MIZ546_urine_consensus_pcr	Ekipa Fanihy	2019-07-11	Madagascar	Urine swab	Rousettus madagascariensis	MIZ546
+Pool_4_ED_UR_2_F_pcr	Ekipa Fanihy	2019-07-11	Madagascar	Pooled urine	Chiroptera	Pool_4_ED_UR_2
+Pool_4_RM_UR_2_F_pcr	Ekipa Fanihy	2019-07-11	Madagascar	Pooled urine	Chiroptera	Pool_4_RM_UR_2
+Pool_5_ED_UR_2_consensus_pcr	Ekipa Fanihy	2019-07-11	Madagascar	Pooled urine	Chiroptera	Pool_5_ED_UR_2
+Pool_6_ED_UR_1_consensus_pcr	Ekipa Fanihy	2019-07-11	Madagascar	Pooled urine	Chiroptera	Pool_6_ED_UR_1
+Pool_6_RM_UR_2_F_pcr	Ekipa Fanihy	2019-07-11	Madagascar	Pooled urine	Chiroptera	Pool_6_RM_UR_2
+Pool_8_urine_M2_F_pcr	Ekipa Fanihy	2019-07-11	Madagascar	Pooled urine	Chiroptera	Pool_8_urine_M2
