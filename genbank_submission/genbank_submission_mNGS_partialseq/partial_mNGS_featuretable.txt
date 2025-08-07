@@ -448,25 +448,6 @@
 			product	Polymerase
 			codon_start	2
 
->Feature KEL277_NODE_812_czid2019 [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
-<1	>654	CDS
-			product	Polymerase
-			codon_start	3
-
->Feature KEL277_NODE_2164_czid2019 [organism=unclassified Henipavirus] unclassified Henipavirus nucleocapsid (N) gene, partial cds
-<1	>402	CDS
-			product	Nucleocapsid
-			codon_start	3
-
->Feature KEL277_NODE_2179_czid2019 [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
-<1	>401	CDS
-			product	Polymerase
-			codon_start	2
-
->Feature KEL277_NODE_2942_czid2019 [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
-<1	>289	CDS
-			product	Polymerase
-			codon_start	3
 
 >Feature KEL277_NODE_6397_czid2019 [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
 <1	>221	CDS
@@ -607,31 +588,6 @@
 <1	>288	CDS
 			product	Nucleocapsid
 			codon_start	2
-
->Feature MIZ193_NODE_31_czid2023 [organism=unclassified Pararubulavirus] unclassified Pararubulavirus nucleocapsid (N) gene, partial cds
-<1	>255	CDS
-			product	Nucleocapsid
-			codon_start	2
-
->Feature MIZ193_NODE_81_czid2023 [organism=unclassified Pararubulavirus] unclassified Pararubulavirus polymerase (L) gene, partial cds
-<1	>267	CDS
-			product	Polymerase
-			codon_start	3
-
->Feature MIZ193_NODE_112_czid2023 [organism=unclassified Pararubulavirus] unclassified Pararubulavirus phosphoprotein (P) gene, partial cds
-<1	>241	CDS
-			product	Phosphoprotein
-			codon_start	2
-
->Feature MIZ193_NODE_116_czid2023 [organism=unclassified Pararubulavirus] unclassified Pararubulavirus polymerase (L) gene, partial cds
-<1	>240	CDS
-			product	Polymerase
-			codon_start	2
-
->Feature MIZ193_NODE_166_czid2023 [organism=unclassified Pararubulavirus] unclassified Pararubulavirus polymerase (L) gene, partial cds
-<1	>215	CDS
-			product	Polymerase
-			codon_start	3
 
 >Feature ROU4spleen_22_A4_NODE_305_czid2023 [organism=unclassified Pararubulavirus] unclassified Pararubulavirus matrix (M) gene, partial cds
 <1	>273	CDS

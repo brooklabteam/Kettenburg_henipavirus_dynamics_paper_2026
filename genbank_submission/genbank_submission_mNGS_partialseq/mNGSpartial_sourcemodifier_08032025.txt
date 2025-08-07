@@ -96,11 +96,6 @@ KEL267_NODE_379_czid2023	Ekipa Fanihy	2019-01-07	Madagascar	Urine swab	Eidolon d
 KEL267_NODE_638_czid2023	Ekipa Fanihy	2019-01-07	Madagascar	Urine swab	Eidolon dupreanum	KEL267
 KEL267_NODE_1310_czid2023	Ekipa Fanihy	2019-01-07	Madagascar	Urine swab	Eidolon dupreanum	KEL267
 KEL267_NODE_1330_czid2023	Ekipa Fanihy	2019-01-07	Madagascar	Urine swab	Eidolon dupreanum	KEL267
-KEL277_NODE_812_czid2019	Ekipa Fanihy	2019-02-05	Madagascar	Urine swab	Eidolon dupreanum	KEL277
-KEL277_NODE_2164_czid2019	Ekipa Fanihy	2019-02-05	Madagascar	Urine swab	Eidolon dupreanum	KEL277
-KEL277_NODE_2179_czid2019	Ekipa Fanihy	2019-02-05	Madagascar	Urine swab	Eidolon dupreanum	KEL277
-KEL277_NODE_2942_czid2019	Ekipa Fanihy	2019-02-05	Madagascar	Urine swab	Eidolon dupreanum	KEL277
-KEL277_NODE_6397_czid2019	Ekipa Fanihy	2019-02-05	Madagascar	Urine swab	Eidolon dupreanum	KEL277
 KEL281_NODE_183_czid2023	Ekipa Fanihy	2019-02-05	Madagascar	Urine swab	Eidolon dupreanum	KEL281
 KEL281_NODE_384_czid2023	Ekipa Fanihy	2019-02-05	Madagascar	Urine swab	Eidolon dupreanum	KEL281
 KEL281_NODE_586_czid2023	Ekipa Fanihy	2019-02-05	Madagascar	Urine swab	Eidolon dupreanum	KEL281
@@ -130,11 +125,6 @@ KEL380_42_B8_NODE_1284_czid2023	Ekipa Fanihy	2019-09-20	Madagascar	Urine swab	Ei
 KEL389_42_B5_NODE_3092_czid2023	Ekipa Fanihy	2019-09-20	Madagascar	Urine swab	Eidolon dupreanum	KEL389
 MIZ35_NODE_2086_czid2023	Ekipa Fanihy	2014-12-12	Madagascar	Urine swab	Rousettus madagascariensis	MIZ35
 MIZ35_NODE_3276_czid2023	Ekipa Fanihy	2014-12-12	Madagascar	Urine swab	Rousettus madagascariensis	MIZ35
-MIZ193_NODE_31_czid2023	Ekipa Fanihy	2018-07-29	Madagascar	Urine swab	Rousettus madagascariensis	MIZ193
-MIZ193_NODE_81_czid2023	Ekipa Fanihy	2018-07-29	Madagascar	Urine swab	Rousettus madagascariensis	MIZ193
-MIZ193_NODE_112_czid2023	Ekipa Fanihy	2018-07-29	Madagascar	Urine swab	Rousettus madagascariensis	MIZ193
-MIZ193_NODE_116_czid2023	Ekipa Fanihy	2018-07-29	Madagascar	Urine swab	Rousettus madagascariensis	MIZ193
-MIZ193_NODE_166_czid2023	Ekipa Fanihy	2018-07-29	Madagascar	Urine swab	Rousettus madagascariensis	MIZ193
 ROU4spleen_22_A4_NODE_305_czid2023	Ekipa Fanihy	2014-08-01	Madagascar	Spleen	Rousettus madagascariensis	ROU4
 ROU5liver_22_B10_NODE_69_czid2023	Ekipa Fanihy	2014-08-01	Madagascar	Liver	Rousettus madagascariensis	ROU5
 ROU5spleen_20_D5_NODE_105_czid2023	Ekipa Fanihy	2014-08-01	Madagascar	Spleen	Rousettus madagascariensis	ROU5
