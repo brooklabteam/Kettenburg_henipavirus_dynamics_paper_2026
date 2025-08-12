@@ -1,3 +1,176 @@
+>Feature GhVlike_amplicon_assembly [organism=unclassified Henipavirus] unclassified Henipavirus, partial cds
+<359	>869	CDS
+			product			Nucleocapsid
+			codon_start		1
+262	358	gap
+			estimated_length	97
+870	3503	gap
+			estimated_length	2634
+<3504	>4204	CDS
+			product			Phosphoprotein
+			codon_start		3
+4205	5385	gap
+			estimated_length	1181
+<5386	>5800	CDS
+			product			Matrix
+			codon_start		2
+5801	7260	gap
+			estimated_length	1460
+<7261	8584	CDS
+			product			Fusion
+			codon_start		2
+8599	8775	gap
+			estimated_length	177
+8848	>10114	CDS
+			product			Glycoprotein
+			codon_start		1
+9464	9693	gap
+			estimated_length	230
+10115	11898	gap
+			estimated_length	1784
+<11899	18146	CDS
+			product			Polymerase
+			codon_start		3
+14076	14577	gap
+			estimated_length	502
+16784	16985	gap
+			estimated_length	162
+
+>Feature ROU125_NODE_1_czid2023 [organism=Andrafiabe henipavirus] Andrafiabe henipavirus, complete cds
+111	1718	CDS
+			product			Nucleocapsid
+			transl_table		1
+			codon_start		1
+2114	3823	CDS
+			product			Phosphoprotein
+			transl_table		1
+			codon_start		1
+2114	3120	CDS
+			product			V protein
+			exception		RNA editing
+			transl_table		1
+			codon_start		1
+2114	3032	CDS
+			product			W protein
+			exception		RNA editing
+			transl_table		1
+			codon_start		1
+2145	2669	CDS
+			product			C protein
+			exception		RNA editing
+			transl_table		1
+			codon_start		1
+2936	2943	misc_feature
+			note			mRNA editing site
+4284	5315	CDS
+			product			Matrix
+			transl_table		1
+			codon_start		1
+5550	7235	CDS
+			product			Fusion
+			transl_table		1
+			codon_start		1
+7737	10316	CDS
+			product			Glycoprotein
+			transl_table		1
+			codon_start		1
+10749	17501	CDS
+			product			Polymerase
+			transl_table		1
+			codon_start		1
+
+>Feature ROU148_amplicon_assembly [organism=Andrafiabe henipavirus] Andrafiabe henipavirus, complete cds
+156	1763	CDS
+			product			Nucleocapsid
+			transl_table		1
+			codon_start		1
+2159	3868	CDS
+			product			Phosphoprotein
+			transl_table		1
+			codon_start		1
+2159	3165	CDS
+			product			V protein
+			exception		RNA editing
+			transl_table		1
+			codon_start		1
+2159	3077	CDS
+			product			W protein
+			exception		RNA editing
+			transl_table		1
+			codon_start		1
+2190	2714	CDS
+			product			C protein
+			exception		RNA editing
+			transl_table		1
+			codon_start		1
+2981	2988	misc_feature
+			note			mRNA editing site
+4329	5360	CDS
+			product			Matrix
+			transl_table		1
+			codon_start		1
+5595	7280	CDS
+			product			Fusion
+			transl_table		1
+			codon_start		1
+7782	10361	CDS
+			product			Glycoprotein
+			transl_table		1
+			codon_start		1
+10794	17546	CDS
+			product			Polymerase
+			transl_table		1
+			codon_start		1
+
+>Feature ROU173_manual_assembly [organism=Andrafiabe henipavirus] Andrafiabe henipavirus, partial cds
+102	1709	CDS
+			product			Nucleocapsid
+			transl_table		1
+			codon_start		1
+733	779	gap
+			estimated_length	47
+2105	3814	CDS
+			product			Phosphoprotein
+			transl_table		1
+			codon_start		1
+2105	3111	CDS
+			product			V protein
+			exception		RNA editing
+			transl_table		1
+			codon_start		1
+2105	3023	CDS
+			product			W protein
+			exception		RNA editing
+			transl_table		1
+			codon_start		1
+2136	2660	CDS
+			product			C protein
+			exception		RNA editing
+			transl_table		1
+			codon_start		1
+2927	2934	misc_feature
+			note			mRNA editing site
+4275	5306	CDS
+			product			Matrix
+			transl_table		1
+			codon_start		1
+5546	7231	CDS
+			product			Fusion
+			transl_table		1
+			codon_start		1
+7733	>9266	CDS
+			product			Glycoprotein
+			transl_table		1
+			codon_start		1
+<11010	17383	CDS
+			product			Polymerase
+			transl_table		1
+			codon_start		3
+9268	11009	gap
+			estimated_length	1742
+12270	12277	gap
+			estimated_length	8
+
 >Feature ANGB137_NODE_297_czid2023 [organism=unclassified Orthorubulavirus] unclassified Orthorubulavirus polymerase (L) gene, partial cds
 <1	>403	CDS
 			product	Polymerase
@@ -445,12 +618,6 @@
 
 >Feature KEL267_NODE_1330_czid2023 [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
 <1	>241	CDS
-			product	Polymerase
-			codon_start	2
-
-
->Feature KEL277_NODE_6397_czid2019 [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
-<1	>221	CDS
 			product	Polymerase
 			codon_start	2
 

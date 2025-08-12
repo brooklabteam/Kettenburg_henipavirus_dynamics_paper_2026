@@ -162,3 +162,7 @@ ROU143_NODE_1988_czid2023	Ekipa Fanihy	2019-11-07	Madagascar	Urine swab	Rousettu
 ROU143_NODE_3050_czid2023	Ekipa Fanihy	2019-11-07	Madagascar	Urine swab	Rousettus madagascariensis	ROU143
 ROU143_NODE_3502_czid2023	Ekipa Fanihy	2019-11-07	Madagascar	Urine swab	Rousettus madagascariensis	ROU143
 ROU160_NODE_4241_czid2023	Ekipa Fanihy	2019-11-07	Madagascar	Urine swab	Rousettus madagascariensis	ROU160
+GhVlike_amplicon_assembly	Ekipa Fanihy	2014-12-18	Madagascar	Urine swab	Eidolon dupreanum	KEL86
+ROU125_NODE_1_czid2023	Ekipa Fanihy	2019-09-29	Madagascar	Urine swab	Rousettus madagascariensis	ROU125
+ROU148_amplicon_assembly	Ekipa Fanihy	2019-11-07	Madagascar	Urine swab	Rousettus madagascariensis	ROU148
+ROU173_manual_assembly	Ekipa Fanihy	2019-11-08	Madagascar	Urine swab	Rousettus madagascariensis	ROU173
