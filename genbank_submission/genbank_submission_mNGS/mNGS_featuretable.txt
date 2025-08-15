@@ -1,63 +1,47 @@
->Feature GhVlike_amplicon_assembly [organism=unclassified Henipavirus] unclassified Henipavirus, partial cds
-<359	>869	CDS
-			product			Nucleocapsid
-			codon_start		1
-262	358	gap
-			estimated_length	97
-870	3503	gap
-			estimated_length	2634
-<3504	>4204	CDS
-			product			Phosphoprotein
-			codon_start		3
-4205	5385	gap
-			estimated_length	1181
-<5386	>5800	CDS
-			product			Matrix
-			codon_start		2
-5801	7260	gap
-			estimated_length	1460
-<7261	8584	CDS
+>Feature GhVlike_amplicon_assembly_F [organism=unclassified Henipavirus] unclassified Henipavirus fusion (F) gene, partial cds
+<1	1324	CDS
 			product			Fusion
 			codon_start		2
-8599	8775	gap
-			estimated_length	177
-8848	>10114	CDS
+
+>Feature GhVlike_amplicon_assembly_G [organism=unclassified Henipavirus] unclassified Henipavirus glycoprotein (G) gene, partial cds
+1	>1267	CDS
 			product			Glycoprotein
 			codon_start		1
-9464	9693	gap
+617	846	gap
 			estimated_length	230
-10115	11898	gap
-			estimated_length	1784
-<11899	18146	CDS
+
+>Feature GhVlike_amplicon_assembly_L [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
+<1	6248	CDS
 			product			Polymerase
 			codon_start		3
-14076	14577	gap
+2178	2679	gap
 			estimated_length	502
-16784	16985	gap
+4886	5047	gap
 			estimated_length	162
 
+>Feature GhVlike_amplicon_assembly_M [organism=unclassified Henipavirus] unclassified Henipavirus matrix (M) gene, partial cds
+<1	>415	CDS
+			product			Matrix
+			codon_start		2
+
+>Feature GhVlike_amplicon_assembly_N [organism=unclassified Henipavirus] unclassified Henipavirus nucleocapsid (N) gene, partial cds
+<1	>511	CDS
+			product			Nucleocapsid
+			codon_start		1
+
+>Feature GhVlike_amplicon_assembly_P [organism=unclassified Henipavirus] unclassified Henipavirus phosphoprotein (P) gene, partial cds
+<1	>701	CDS
+			product			Phosphoprotein
+			codon_start		3
+
 >Feature ROU125_NODE_1_czid2023 [organism=Andrafiabe henipavirus] Andrafiabe henipavirus, complete cds
+
 111	1718	CDS
 			product			Nucleocapsid
 			transl_table		1
 			codon_start		1
 2114	3823	CDS
 			product			Phosphoprotein
-			transl_table		1
-			codon_start		1
-2114	3120	CDS
-			product			V protein
-			exception		RNA editing
-			transl_table		1
-			codon_start		1
-2114	3032	CDS
-			product			W protein
-			exception		RNA editing
-			transl_table		1
-			codon_start		1
-2145	2669	CDS
-			product			C protein
-			exception		RNA editing
 			transl_table		1
 			codon_start		1
 2936	2943	misc_feature
@@ -88,21 +72,6 @@
 			product			Phosphoprotein
 			transl_table		1
 			codon_start		1
-2159	3165	CDS
-			product			V protein
-			exception		RNA editing
-			transl_table		1
-			codon_start		1
-2159	3077	CDS
-			product			W protein
-			exception		RNA editing
-			transl_table		1
-			codon_start		1
-2190	2714	CDS
-			product			C protein
-			exception		RNA editing
-			transl_table		1
-			codon_start		1
 2981	2988	misc_feature
 			note			mRNA editing site
 4329	5360	CDS
@@ -131,21 +100,6 @@
 			estimated_length	47
 2105	3814	CDS
 			product			Phosphoprotein
-			transl_table		1
-			codon_start		1
-2105	3111	CDS
-			product			V protein
-			exception		RNA editing
-			transl_table		1
-			codon_start		1
-2105	3023	CDS
-			product			W protein
-			exception		RNA editing
-			transl_table		1
-			codon_start		1
-2136	2660	CDS
-			product			C protein
-			exception		RNA editing
 			transl_table		1
 			codon_start		1
 2927	2934	misc_feature
@@ -311,11 +265,6 @@
 			product	Fusion
 			codon_start	2
 
->Feature KEL48kidney_25_A9_NODE_316_czid2023  [organism=unclassified Henipavirus] unclassified Henipavirus fusion (F) gene, partial cds
-<1	>173	CDS
-			product	Fusion
-			codon_start	3
-
 >Feature KEL67_Plate45_D3_NODE_251_czid2023  [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
 <1	>305	CDS
 			product	Polymerase
@@ -477,10 +426,6 @@
 <1	>617	CDS
 			product	Polymerase
 
->Feature KEL234_NODE_183_czid2019 [organism=unclassified Henipavirus] unclassified Henipavirus fusion (F) gene, partial cds
-<1	>537	CDS
-			product	Fusion
-
 >Feature KEL234_NODE_203_czid2023 [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
 <1	>437	CDS
 			product	Polymerase
@@ -517,10 +462,6 @@
 <1	>346	CDS
 			product	Matrix
 			codon_start	2
-
->Feature KEL234_NODE_777_czid2023 [organism=unclassified Henipavirus] unclassified Henipavirus fusion (F) gene, partial cds
-<1	>141	CDS
-			product	Fusion
 
 >Feature KEL234_NODE_786_czid2023 [organism=unclassified Henipavirus] unclassified Henipavirus polymerase (L) gene, partial cds
 <1	>321	CDS
