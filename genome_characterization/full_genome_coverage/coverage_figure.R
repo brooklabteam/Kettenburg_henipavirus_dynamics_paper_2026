@@ -59,7 +59,7 @@ coverage_ghvlike
 #ROU125
 dat <- read.csv(file= "ROU125_coverage.csv", header = T, stringsAsFactors = F) #load data
 
-title<-expression(paste(italic("AndV ROU125 genome coverage")))
+title<-expression(paste(italic("PX127342 AndV genome coverage")))
 coverage_rou125<-  ggplot(dat, aes(x=Position, y=rPM))+ 
   annotate("rect", xmin=111, xmax=1718, ymin=0, ymax=1.6, alpha=0.6,  fill="#D29292")+
   annotate("rect", xmin=2114, xmax=3823, ymin=0, ymax=1.6, alpha=0.6,  fill="#525832")+
@@ -87,7 +87,7 @@ coverage_rou125
 #ROU148
 dat <- read.csv(file= "ROU148_coverage.csv", header = T, stringsAsFactors = F) #load data
 
-title<-expression(paste(italic("AndV ROU148 genome coverage")))
+title<-expression(paste(italic("PX127343 AndV genome coverage")))
 coverage_rou148<-  ggplot(dat, aes(x=Position, y=rPM))+ 
   annotate("rect", xmin=156, xmax=1763, ymin=0, ymax=174, alpha=0.6,  fill="#D29292")+
   annotate("rect", xmin=2159, xmax=3868, ymin=0, ymax=174, alpha=0.6,  fill="#525832")+
@@ -115,7 +115,7 @@ coverage_rou148
 #ROU173
 dat <- read.csv(file= "ROU173_coverage.csv", header = T, stringsAsFactors = F) #load data
 
-title<-expression(paste(italic("AndV ROU173 genome coverage")))
+title<-expression(paste(italic("PX127344 AndV genome coverage")))
 coverage_rou173<-  ggplot(dat, aes(x=Position, y=rPM))+ 
   annotate("rect", xmin=102, xmax=1709, ymin=0, ymax=0.85, alpha=0.6,  fill="#D29292")+
   annotate("rect", xmin=2105, xmax=3814, ymin=0, ymax=0.85, alpha=0.6,  fill="#525832")+
@@ -139,7 +139,6 @@ coverage_rou173<-  ggplot(dat, aes(x=Position, y=rPM))+
         axis.title.x = element_blank(),
         axis.line.x = element_blank())
 coverage_rou173
-
 
 ##Now make genome maps to go with the coverage plots
 
