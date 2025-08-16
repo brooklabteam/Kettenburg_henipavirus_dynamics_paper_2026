@@ -17,10 +17,10 @@ head(mRNAmsa)
 #assign new names to each
 mRNAmsa$name <- as.character(mRNAmsa$name)
 unique(mRNAmsa$name)
-mRNAmsa$name[mRNAmsa$name=="ROU125_NODE_1_czid2023"] <- "AndV ROU125"
-mRNAmsa$name[mRNAmsa$name=="ROU148_manual_assembly"] <- "AndV ROU148"
-mRNAmsa$name[mRNAmsa$name=="ROU173_manual_assembly"] <- "AndV ROU173"
-mRNAmsa$name[mRNAmsa$name=="KEL153_NODE_1162_czid2019"] <- "KEL153-virus"
+mRNAmsa$name[mRNAmsa$name=="ROU125_NODE_1_czid2023"] <- "PX127342 AndV"
+mRNAmsa$name[mRNAmsa$name=="ROU148_manual_assembly"] <- "PX127343 AndV"
+mRNAmsa$name[mRNAmsa$name=="ROU173_manual_assembly"] <- "PX127344 AndV"
+mRNAmsa$name[mRNAmsa$name=="KEL153_NODE_1162_czid2019"] <- "PX127365"
 
 unique(mRNAmsa$name)
 names(mRNAmsa)[names(mRNAmsa)=="character"] <- "aa"
@@ -32,7 +32,7 @@ colz = c("A" = "tomato", "G"="goldenrod1", "T"="white")
 #subset without partial sequence
 #mRNAmsa = subset(mRNAmsa, name !="KEL153-virus")
 
-mRNAmsa$name <- factor(mRNAmsa$name, levels = rev(c("AndV ROU125","AndV ROU148","AndV ROU173","KEL153-virus","AngV","NiV","HeV","MojV",        
+mRNAmsa$name <- factor(mRNAmsa$name, levels = rev(c("PX127342 AndV","PX127343 AndV","PX127344 AndV","PX127365","AngV","NiV","HeV","MojV",        
                                                    "GhV","GAKV","DARV","LayV","YuV1","YuV2","CedV")))
 mRNAmsa.plot <- ggplot(data=mRNAmsa) + 
   geom_tile(aes(x=position, y=name, fill=aa, color=aa),width=0.9, height=0.9, show.legend = F) +
@@ -75,9 +75,9 @@ head(Vmsa)
 #assign new names to each
 Vmsa$name <- as.character(Vmsa$name)
 unique(Vmsa$name)
-Vmsa$name[Vmsa$name=="ROU125_NODE_1_czid2023_add1"] <- "AndV ROU125_add1"
-Vmsa$name[Vmsa$name=="ROU148_manual_assembly_add1"] <- "AndV ROU148_add1"
-Vmsa$name[Vmsa$name=="ROU173_manual_assembly_add1"] <- "AndV ROU173_add1"
+Vmsa$name[Vmsa$name=="ROU125_NODE_1_czid2023_add1"] <- "PX127342 AndV add1"
+Vmsa$name[Vmsa$name=="ROU148_manual_assembly_add1"] <- "PX127343 AndV add1"
+Vmsa$name[Vmsa$name=="ROU173_manual_assembly_add1"] <- "PX127344 AndV add1"
 
 unique(Vmsa$name)
 names(Vmsa)[names(Vmsa)=="character"] <- "aa"
@@ -99,7 +99,7 @@ colz2 = c("A" = "white", "C"="yellow1","D"="white","E"="purple1","F"="white",
 
 #and control the order
 
-Vmsa$name <- factor(Vmsa$name, levels = rev(c("AndV ROU125_add1", "AndV ROU148_add1", "AndV ROU173_add1", "AngV_add1",   "NiV_add1",    "HeV_add1",    "MojV_add1",   "GhV_add1",   
+Vmsa$name <- factor(Vmsa$name, levels = rev(c("PX127342 AndV add1", "PX127343 AndV add1", "PX127344 AndV add1", "AngV_add1",   "NiV_add1",    "HeV_add1",    "MojV_add1",   "GhV_add1",   
                                               "GAKV_add1",   "DARV_add1",   "LayV_add1",   "YuV1_add1",   "YuV2_add1",   "CedV_add1" )))
 Vmsa.plot <- ggplot(data=Vmsa) + 
   geom_tile(aes(x=position, y=name, fill=aa, color=aa),width=0.9, height=0.9, show.legend = F) +
@@ -141,9 +141,9 @@ head(Wmsa)
 #assign new names to each
 Wmsa$name <- as.character(Wmsa$name)
 unique(Wmsa$name)
-Wmsa$name[Wmsa$name=="ROU125_NODE_1_czid2023_add2"] <- "AndV ROU125_add2"
-Wmsa$name[Wmsa$name=="ROU148_manual_assembly_add2"] <- "AndV ROU148_add2"
-Wmsa$name[Wmsa$name=="ROU173_manual_assembly_add2"] <- "AndV ROU173_add2"
+Wmsa$name[Wmsa$name=="ROU125_NODE_1_czid2023_add2"] <- "PX127342 AndV add2"
+Wmsa$name[Wmsa$name=="ROU148_manual_assembly_add2"] <- "PX127343 AndV add2"
+Wmsa$name[Wmsa$name=="ROU173_manual_assembly_add2"] <- "PX127344 AndV add2"
 
 unique(Wmsa$name)
 names(Wmsa)[names(Wmsa)=="character"] <- "aa"
@@ -164,7 +164,7 @@ colz2 = c("A" = "white", "C"="yellow1","D"="white","E"="purple1","F"="white",
 
 #and control the order
 
-Wmsa$name <- factor(Wmsa$name,levels = rev(c("AndV ROU125_add2", "AndV ROU148_add2", "AndV ROU173_add2", "AngV_add2" ,  "NiV_add2",    "HeV_add2" ,   "MojV_add2",   "GAKV_add2" , 
+Wmsa$name <- factor(Wmsa$name,levels = rev(c("PX127342 AndV add2", "PX127343 AndV add2", "PX127344 AndV add2", "AngV_add2" ,  "NiV_add2",    "HeV_add2" ,   "MojV_add2",   "GAKV_add2" , 
                                              "DARV_add2" ,  "LayV_add2",   "YuV1_add2" ,  "GhV_add2" )))
 Wmsa.plot <- ggplot(data=Wmsa) + 
   geom_tile(aes(x=position, y=name, fill=aa, color=aa),width=0.9, height=0.9, show.legend = F) +
@@ -205,14 +205,14 @@ head(ephrinmsa)
 #assign new names to each
 ephrinmsa$name <- as.character(ephrinmsa$name)
 unique(ephrinmsa$name)
-ephrinmsa$name[ephrinmsa$name=="CAT017_Plate_42_A10_NODE_34_czid2023"] <- "CAT017-virus"
-ephrinmsa$name[ephrinmsa$name=="KEL86spleen_Plate_22_A11_NODE_439_czid2023"] <- "GhVlike-virus"
-ephrinmsa$name[ephrinmsa$name=="KEL234_NODE_79_czid2019"] <- "KEL234-virus"
-ephrinmsa$name[ephrinmsa$name=="KEL281B_NODE_113_czid2019"] <- "KEL281B-virus"
-ephrinmsa$name[ephrinmsa$name=="KEL380_Plate_42_B8_NODE_44_czid2023"] <- "KEL380-virus"
-ephrinmsa$name[ephrinmsa$name=="ROU125_NODE_1_czid2023"] <- "AndV ROU125"
-ephrinmsa$name[ephrinmsa$name=="ROU148_manual_assembly"] <- "AndV ROU148"
-ephrinmsa$name[ephrinmsa$name=="ROU143_NODE_287_czid2023"] <- "ROU143-virus"
+ephrinmsa$name[ephrinmsa$name=="CAT017_Plate_42_A10_NODE_34_czid2023"] <- "PX127396"
+ephrinmsa$name[ephrinmsa$name=="KEL86spleen_Plate_22_A11_NODE_439_czid2023"] <- "PX127395 GhV-like"
+ephrinmsa$name[ephrinmsa$name=="KEL234_NODE_79_czid2019"] <- "PX127397"
+ephrinmsa$name[ephrinmsa$name=="KEL281B_NODE_113_czid2019"] <- "PX127399"
+ephrinmsa$name[ephrinmsa$name=="KEL380_Plate_42_B8_NODE_44_czid2023"] <- "PX127400"
+ephrinmsa$name[ephrinmsa$name=="ROU125_NODE_1_czid2023"] <- "PX127342 AndV"
+ephrinmsa$name[ephrinmsa$name=="ROU148_manual_assembly"] <- "PX127343 AndV"
+ephrinmsa$name[ephrinmsa$name=="ROU143_NODE_287_czid2023"] <- "PX127401"
 
 unique(ephrinmsa$name)
 names(ephrinmsa)[names(ephrinmsa)=="character"] <- "aa"
@@ -233,8 +233,8 @@ colz2 = c("A" = "goldenrod1", "C"="white","D"="white","E"="goldenrod1","F"="whit
 
 #and control the order
 
-ephrinmsa$name <- factor(ephrinmsa$name, levels = rev(c("AndV ROU125",       "AndV ROU148",   "GhVlike-virus",    "CAT017-virus",   "KEL234-virus",      "KEL281B-virus",     "KEL380-virus",     
-                                                        "ROU143-virus",   "AngV",              "NiV",               "HeV",              
+ephrinmsa$name <- factor(ephrinmsa$name, levels = rev(c("PX127342 AndV",       "PX127343 AndV",   "PX127395 GhV-like",    "PX127396",   "PX127397",      "PX127399",     "PX127400",     
+                                                        "PX127401",   "AngV",              "NiV",               "HeV",              
                                                         "MojV",              "GhV",               "GAKV",              "DARV",              "LayV",             
                                                         "YuV1",              "YuV2", "CedV")))
 ephrinmsa.plot <- ggplot(data=ephrinmsa) + 
