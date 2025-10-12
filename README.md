@@ -8,22 +8,22 @@ A brief description of each anlysis is outlined under each subheading below.
 ---
 ## Genome characterization and annotation
 
-#Read mapping
+-Read mapping
 
 
-#mRNA editing site
+-mRNA editing site
 
 
-#Ephrin binding sites
+-Ephrin binding sites
 
 
 ---
 ## Phylogenetic tree analysis
 
-#Paramyxovirus trees
+-Paramyxovirus trees
 
 
-#Henipavirus-focused trees
+-Henipavirus-focused trees
 
 
 
