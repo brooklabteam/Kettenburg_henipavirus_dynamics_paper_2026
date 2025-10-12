@@ -7,7 +7,8 @@ library(ggtree)
 library(seqinr)
 library(ggmsa)
 
-homewd = "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_circulating_clades/genome_characterization/"
+#homewd = "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_circulating_clades/genome_characterization/"
+homewd = "/Users/gwenddolenkettenburg/Desktop/brook_lab/henipavirus_shedding_cross_correlation_project/genome_characterization/"
 
 #load the msa of mRNA editing sites
 setwd(paste0(homewd, "residue_alignments")) 
@@ -32,7 +33,7 @@ colz = c("A" = "tomato", "G"="goldenrod1", "T"="white")
 #subset without partial sequence
 #mRNAmsa = subset(mRNAmsa, name !="KEL153-virus")
 
-mRNAmsa$name <- factor(mRNAmsa$name, levels = rev(c("PX127342 AndV","PX127343 AndV","PX127344 AndV","PX127365","AngV","NiV","HeV","MojV",        
+mRNAmsa$name <- factor(mRNAmsa$name, levels = rev(c("PX127342 AndV","PX127343 AndV","PX127344 AndV","PX127365","AngV","SGV","NiV","HeV","MojV",        
                                                    "GhV","GAKV","DARV","LayV","YuV1","YuV2","CedV")))
 mRNAmsa.plot <- ggplot(data=mRNAmsa) + 
   geom_tile(aes(x=position, y=name, fill=aa, color=aa),width=0.9, height=0.9, show.legend = F) +
@@ -61,10 +62,10 @@ mRNAmsa.plot
 
 # ggsave(file = paste0("mRNAplot.png"),
 #        plot = mRNAmsa.plot,
-#        units="mm",  
-#        width=60, 
-#        height=70, 
-#        scale=2, 
+#        units="mm",
+#        width=60,
+#        height=70,
+#        scale=2,
 #        dpi=300)
 
 
@@ -99,7 +100,7 @@ colz2 = c("A" = "white", "C"="yellow1","D"="white","E"="purple1","F"="white",
 
 #and control the order
 
-Vmsa$name <- factor(Vmsa$name, levels = rev(c("PX127342 AndV add1", "PX127343 AndV add1", "PX127344 AndV add1", "AngV_add1",   "NiV_add1",    "HeV_add1",    "MojV_add1",   "GhV_add1",   
+Vmsa$name <- factor(Vmsa$name, levels = rev(c("PX127342 AndV add1", "PX127343 AndV add1", "PX127344 AndV add1", "AngV_add1", "SGV_add1",  "NiV_add1",    "HeV_add1",    "MojV_add1",   "GhV_add1",   
                                               "GAKV_add1",   "DARV_add1",   "LayV_add1",   "YuV1_add1",   "YuV2_add1",   "CedV_add1" )))
 Vmsa.plot <- ggplot(data=Vmsa) + 
   geom_tile(aes(x=position, y=name, fill=aa, color=aa),width=0.9, height=0.9, show.legend = F) +
@@ -164,8 +165,8 @@ colz2 = c("A" = "white", "C"="yellow1","D"="white","E"="purple1","F"="white",
 
 #and control the order
 
-Wmsa$name <- factor(Wmsa$name,levels = rev(c("PX127342 AndV add2", "PX127343 AndV add2", "PX127344 AndV add2", "AngV_add2" ,  "NiV_add2",    "HeV_add2" ,   "MojV_add2",   "GAKV_add2" , 
-                                             "DARV_add2" ,  "LayV_add2",   "YuV1_add2" ,  "GhV_add2" )))
+Wmsa$name <- factor(Wmsa$name,levels = rev(c("PX127342 AndV add2", "PX127343 AndV add2", "PX127344 AndV add2", "AngV_add2" , "SGV_add2",  "NiV_add2",    "HeV_add2" ,   "MojV_add2",   "GAKV_add2" , 
+                                             "DARV_add2" ,  "LayV_add2",   "YuV1_add2" , "YuV2_add2" ,  "GhV_add2" )))
 Wmsa.plot <- ggplot(data=Wmsa) + 
   geom_tile(aes(x=position, y=name, fill=aa, color=aa),width=0.9, height=0.9, show.legend = F) +
   geom_text(aes(x=position, y=name, label=aa), show.legend = F)+
@@ -234,7 +235,7 @@ colz2 = c("A" = "goldenrod1", "C"="white","D"="white","E"="goldenrod1","F"="whit
 #and control the order
 
 ephrinmsa$name <- factor(ephrinmsa$name, levels = rev(c("PX127342 AndV",       "PX127343 AndV",   "PX127395 GhV-like",    "PX127396",   "PX127397",      "PX127399",     "PX127400",     
-                                                        "PX127401",   "AngV",              "NiV",               "HeV",              
+                                                        "PX127401",   "AngV",    "SGV",          "NiV",               "HeV",              
                                                         "MojV",              "GhV",               "GAKV",              "DARV",              "LayV",             
                                                         "YuV1",              "YuV2", "CedV")))
 ephrinmsa.plot <- ggplot(data=ephrinmsa) + 
@@ -255,7 +256,7 @@ ephrinmsa.plot <- ggplot(data=ephrinmsa) +
         legend.text = element_text(size=10),
         plot.margin = unit(c(.1, 2,.1, .1), "cm"))+
   #legend.position = "bottom", legend.direction = "horizontal")+
-  ggtitle("Ephrin binding resides")+
+  ggtitle("Ephrin binding residues")+
   scale_x_continuous(breaks = c(1,10,17,23), labels = c(502, 529,556,580), 
                      sec.axis = dup_axis(breaks=c(3,4,11,12,13,14,18,24), labels=c("*","*","*","*","*","*","*","*")))
 
