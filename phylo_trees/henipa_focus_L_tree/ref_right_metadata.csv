@@ -1,9 +1,295 @@
 Accession,Organism_Name,Isolate,Species,Genus,Country,source,Collection_Date,Host,novel
-YP_010774627.1,Avian paramyxovirus 4,APMV-4/KR/YJ/06,Paraavulavirus hongkongense,Paraavulavirus,South Korea,Anas platyrhynchos,2006,0,0
-YP_010799241.1,Rodent paramyxovirus,RtAp-ParaV/NX2015,Jeilongvirus apodemi,Jeilongvirus,China,Apodemus peninsulae,2015,0,0
-YP_009094051.1,Sunshine coast virus,,Sunshine coast virus,Sunshinevirus,Australia,Aspidites melanocephalus,2008,0,0
-XJU75812.1,Camp Hill virus,,Camp Hill virus,Henipavirus,USA,Blarina brevicauda,2021,0,0
+AET43339.1,Ghana virus,BatPV/Eid_hel/GH-M74a/GHA/2009,Henipavirus ghanaense,Henipavirus,Ghana,Eidolon helvum,2009,1,0
+AEY68836.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68837.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68838.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68839.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68840.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68841.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68842.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68843.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68844.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68845.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68846.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68847.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68848.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68849.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68850.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68851.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68852.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68853.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68854.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68855.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68856.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68857.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68858.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68859.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68860.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68861.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68862.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68863.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68864.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68865.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68866.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68867.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68868.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68869.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68870.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AEY68871.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
+AGR33433.1,Eidolon helvum paramyxovirus,TZ13,Eidolon helvum paramyxovirus,Unclassified,Tanzania,Eidolon helvum,2010,1,0
+AGR33434.1,Eidolon helvum paramyxovirus,UG23,Eidolon helvum paramyxovirus,Unclassified,Uganda,Eidolon helvum,2009,1,0
+AGR33435.1,Eidolon helvum paramyxovirus,TZ21,Eidolon helvum paramyxovirus,Unclassified,Tanzania,Eidolon helvum,2010,1,0
+ALS55402.1,Paramyxovirus PREDICT_PMV-15,PREDICT_PMV-15/GVF-CM-ECO05231,Paramyxovirus PREDICT_PMV-15,Unclassified,Cameroon,Mops condylurus,2009,1,0
+ALS55422.1,Paramyxovirus PREDICT_PMV-11,PREDICT_PMV-11/ZB12054,Paramyxovirus PREDICT_PMV-11,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
+ALS55423.1,Paramyxovirus PREDICT_PMV-12,PREDICT_PMV-12/ZB12061,Paramyxovirus PREDICT_PMV-12,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
+ALS55424.1,Paramyxovirus PREDICT_PMV-16,PREDICT_PMV-16/ZB12053,Paramyxovirus PREDICT_PMV-16,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
+ALS55425.1,Paramyxovirus PREDICT_PMV-16,PREDICT_PMV-16/ZB12053,Paramyxovirus PREDICT_PMV-16,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
+ALS55426.1,Paramyxovirus PREDICT_PMV-16,PREDICT_PMV-16/ZB12025,Paramyxovirus PREDICT_PMV-16,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
+ALS55427.1,Paramyxovirus PREDICT_PMV-19,PREDICT_PMV-19/ZB12055,Paramyxovirus PREDICT_PMV-19,Unclassified,Republic of the Congo,Miniopterus inflatus,2012,1,0
+ALS55428.1,Paramyxovirus PREDICT_PMV-24,PREDICT_PMV-24/ZB12006,Paramyxovirus PREDICT_PMV-24,Unclassified,Republic of the Congo,Hipposideros ruber,2012,1,0
+ALS55429.1,Paramyxovirus PREDICT_PMV-24,PREDICT_PMV-24/ZB12027,Paramyxovirus PREDICT_PMV-24,Unclassified,Republic of the Congo,Hipposideros ruber,2012,1,0
+ALS55430.1,Paramyxovirus PREDICT_PMV-26,PREDICT_PMV-26/ZB12050,Paramyxovirus PREDICT_PMV-26,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
+ALS55431.1,Paramyxovirus PREDICT_PMV-26,PREDICT_PMV-26/ZB12025,Paramyxovirus PREDICT_PMV-26,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
+ALS55458.1,Paramyxovirus PREDICT_PMV-15,PREDICT_PMV-15/AAOSG,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops pumilus,2012,1,0
+ALS55459.1,Paramyxovirus PREDICT_PMV-15,PREDICT_PMV-15/AAOSJ,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops pumilus,2012,1,0
+ALS55460.1,Paramyxovirus PREDICT_PMV-15,PREDICT_PMV-15/AAOSE,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops pumilus,2012,1,0
+ALS55461.1,Paramyxovirus PREDICT_PMV-15,PREDICT_PMV-15/AATKF,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Tadarida,2013,0,0
+ALS55462.1,Paramyxovirus PREDICT_PMV-15,PREDICT_PMV-15/AATKE,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Tadarida,2013,0,0
+ALS55463.1,Paramyxovirus PREDICT_PMV-18,PREDICT_PMV-18/AASBQ,Paramyxovirus PREDICT_PMV-18,Unclassified,Tanzania,Mops pumilus,2012,1,0
+ALS55464.1,Paramyxovirus PREDICT_PMV-18,PREDICT_PMV-18/AASBL,Paramyxovirus PREDICT_PMV-18,Unclassified,Tanzania,Mops pumilus,2012,1,0
+ALS55465.1,Paramyxovirus PREDICT_PMV-56,PREDICT_PMV-56/AATFA,Paramyxovirus PREDICT_PMV-56,Unclassified,Tanzania,Eidolon helvum,2013,1,0
+ALS55466.1,Paramyxovirus PREDICT_PMV-56,PREDICT_PMV-56/AATFC,Paramyxovirus PREDICT_PMV-56,Unclassified,Tanzania,Eidolon helvum,2013,1,0
+ALS55467.1,Paramyxovirus PREDICT_PMV-56,PREDICT_PMV-56/AATGB,Paramyxovirus PREDICT_PMV-56,Unclassified,Tanzania,Eidolon helvum,2013,1,0
+ALS55468.1,Paramyxovirus PREDICT_PMV-56,PREDICT_PMV-56/AATFJ,Paramyxovirus PREDICT_PMV-56,Unclassified,Tanzania,Eidolon helvum,2013,1,0
+ALS55469.1,Paramyxovirus PREDICT_PMV-57,PREDICT_PMV-57/AATET,Paramyxovirus PREDICT_PMV-57,Unclassified,Tanzania,Triaenops persicus,2013,1,0
+ALS55470.1,Paramyxovirus PREDICT_PMV-59,PREDICT_PMV-59/AAUJK,Paramyxovirus PREDICT_PMV-59,Unclassified,Tanzania,Taphozous mauritianus,2013,0,0
+ALS55471.1,Paramyxovirus PREDICT_PMV-60,PREDICT_PMV-60/AATKH,Paramyxovirus PREDICT_PMV-60,Unclassified,Tanzania,Chiroptera sp.,2013,1,0
+ALS55473.1,Eidolon helvum paramyxovirus/TZ13/PREDICT-AATGG,PREDICT-AATGG,Eidolon helvum paramyxovirus,Unclassified,Tanzania,Eidolon helvum,2013,1,0
+ALS55474.1,Eidolon helvum paramyxovirus/UG23/U67N/PREDICT-AATPB,PREDICT-AATPB,Eidolon helvum paramyxovirus,Unclassified,Tanzania,Eidolon helvum,2013,1,0
+ALS55475.1,Eidolon helvum paramyxovirus/U6B/PREDICT-AAUFG,PREDICT-AAUFG,Eidolon helvum paramyxovirus,Unclassified,Tanzania,Eidolon helvum,2013,1,0
+ALS55476.1,Eidolon helvum paramyxovirus/U6B/PREDICT-AATLH,PREDICT-AATLH,Eidolon helvum paramyxovirus,Unclassified,Tanzania,Eidolon helvum,2013,1,0
+ALS55506.1,Paramyxovirus PREDICT_PMV-71,PREDICT_PMV-71/OTBA27-20130601,Paramyxovirus PREDICT_PMV-71,Unclassified,Uganda,Rhinolophus,2013,1,0
+BAO51218.1,Bat Paramyxovirus Eid_hel/ZFB08-07/Zambia/2008,Eid_hel/ZFB08-07/Zambia/2008,Bat Paramyxovirus Eid_hel/ZFB08-07/Zambia/2008,Unclassified,Zambia,Eidolon helvum,2008,1,0
+BAO51219.1,Bat Paramyxovirus Eid_hel/ZFB09-05/Zambia/2009,Eid_hel/ZFB09-05/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-05/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
+BAO51220.1,Bat Paramyxovirus Eid_hel/ZFB09-07/Zambia/2009,Eid_hel/ZFB09-07/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-07/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
+BAO51221.1,Bat Paramyxovirus Eid_hel/ZFB09-24/Zambia/2009,Eid_hel/ZFB09-24/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-24/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
+BAO51222.1,Bat Paramyxovirus Eid_hel/ZFB09-32/Zambia/2009,Eid_hel/ZFB09-32/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-32/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
+BAO51223.1,Bat Paramyxovirus Eid_hel/ZFB09-39/Zambia/2009,Eid_hel/ZFB09-39/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-39/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
+BAO51224.1,Bat Paramyxovirus Eid_hel/ZFB09-43/Zambia/2009,Eid_hel/ZFB09-43/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-43/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
+BAO51225.1,Bat Paramyxovirus Eid_hel/ZFB09-51/Zambia/2009,Eid_hel/ZFB09-51/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-51/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
+BAO51226.1,Bat Paramyxovirus Eid_hel/ZFB10-03/Zambia/2010,Eid_hel/ZFB10-03/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-03/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
+BAO51227.1,Bat Paramyxovirus Eid_hel/ZFB10-07/Zambia/2010,Eid_hel/ZFB10-07/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-07/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
+BAO51228.1,Bat Paramyxovirus Eid_hel/ZFB10-14/Zambia/2010,Eid_hel/ZFB10-14/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-14/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
+BAO51229.1,Bat Paramyxovirus Eid_hel/ZFB10-22/Zambia/2010,Eid_hel/ZFB10-22/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-22/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
+BAO51230.1,Bat Paramyxovirus Eid_hel/ZFB10-23/Zambia/2010,Eid_hel/ZFB10-23/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-23/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
+BAO51231.1,Bat Paramyxovirus Eid_hel/ZFB10-24/Zambia/2010,Eid_hel/ZFB10-24/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-24/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
+BAO51232.1,Bat Paramyxovirus Eid_hel/ZFB10-26/Zambia/2010,Eid_hel/ZFB10-26/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-26/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
+BAO51233.1,Bat Paramyxovirus Eid_hel/ZFB10-27/Zambia/2010,Eid_hel/ZFB10-27/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-27/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
+BAO51234.1,Bat Paramyxovirus Eid_hel/ZFB10-39/Zambia/2010,Eid_hel/ZFB10-39/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-39/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
+BAO51235.1,Bat Paramyxovirus Eid_hel/ZFB10-42/Zambia/2010,Eid_hel/ZFB10-42/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-42/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
+BAO51236.1,Bat Paramyxovirus Eid_hel/ZFB11-30/Zambia/2011,Eid_hel/ZFB11-30/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-30/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
+BAO51237.1,Bat Paramyxovirus Eid_hel/ZFB11-35/Zambia/2011,Eid_hel/ZFB11-35/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-35/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
+BAO51238.1,Bat Paramyxovirus Eid_hel/ZFB11-60/Zambia/2011,Eid_hel/ZFB11-60/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-60/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
+BAO51239.1,Bat Paramyxovirus Eid_hel/ZFB11-66/Zambia/2011,Eid_hel/ZFB11-66/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-66/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
+BAO51240.1,Bat Paramyxovirus Eid_hel/ZFB11-76/Zambia/2011,Eid_hel/ZFB11-76/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-76/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
+BAO51241.1,Bat Paramyxovirus Eid_hel/ZFB11-88/Zambia/2011,Eid_hel/ZFB11-88/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-88/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
+BAO51242.1,Bat Paramyxovirus Eid_hel/ZFB11-91/Zambia/2011,Eid_hel/ZFB11-91/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-91/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
+CCF23095.1,Eidolon paramyxovirus RC09,EPMV_RC09_PP236u1,Eidolon paramyxovirus RC09,Unclassified,Republic of the Congo,Eidolon helvum,2009,1,0
+CCF23096.1,Eidolon paramyxovirus RC09,EPMV_RC09_PP236u2,Eidolon paramyxovirus RC09,Unclassified,Republic of the Congo,Eidolon helvum,2009,1,0
+CCF23097.1,Eidolon paramyxovirus RC09,EPMV_RC09_PP239l,Eidolon paramyxovirus RC09,Unclassified,Republic of the Congo,Eidolon helvum,2009,1,0
+CCF23098.1,Eidolon paramyxovirus RC09,EPMV_RC09_PP239s,Eidolon paramyxovirus RC09,Unclassified,Republic of the Congo,Eidolon helvum,2009,1,0
+CCF23099.1,Eidolon paramyxovirus RC09,EPMV_RC09_PP241s,Eidolon paramyxovirus RC09,Unclassified,Republic of the Congo,Eidolon helvum,2009,1,0
+NP_047113.3,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Australia,Equus caballus,1997,0,0
+NP_054697.1,Tupaia paramyxovirus,,Narmovirus tupaiae,Narmovirus,Southeast Asia,Tree shrew,1999,0,0
+NP_056924.1,Measles morbillivirus,,Morbillivirus hominis,Morbillivirus,Japan,Homo sapiens,1998,0,0
+NP_112028.1,Henipavirus nipahense,,Henipavirus nipahense,Henipavirus,Malaysia,Sus scrofa domesticus,1998,0,0
+PX095965,Unclassified henipavirus,MIZ546,Unclassified henipavirus,Henipavirus,Madagascar,Rousettus madagascariensis,2019,1,1
+PX095966,Hendra/Nipah sister species,Pool_4_ED_UR_2,Hendra/Nipah sister species,Henipavirus,Madagascar,Chiroptera,Unknown,1,1
+PX095968,Hendra/Nipah sister species,Pool_5_ED_UR_2,Hendra/Nipah sister species,Henipavirus,Madagascar,Chiroptera,Unknown,1,1
+PX095969,Unclassified henipavirus,Pool_6_ED_UR_1,Unclassified henipavirus,Henipavirus,Madagascar,Chiroptera,Unknown,1,1
+PX127342,Andrafiabe henipavirus,ROU125,Andrafiabe henipavirus,Henipavirus,Madagascar,Rousettus madagascariensis,2019,1,1
+PX127343,Andrafiabe henipavirus,ROU148,Andrafiabe henipavirus,Henipavirus,Madagascar,Rousettus madagascariensis,2019,1,1
+PX127344,Andrafiabe henipavirus,ROU173,Andrafiabe henipavirus,Henipavirus,Madagascar,Rousettus madagascariensis,2019,1,1
+PX127402,Ghana-like virus,KEL86_KEL94,Ghana-like virus,Henipavirus,Madagascar,Eidolon dupreanum,2014,1,1
+PX127409,Unclassified henipavirus,KEL166,Unclassified henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2018,1,1
+PX127420,Unclassified henipavirus,KEL234,Unclassified henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2018,1,1
+PX127443,Unclassified henipavirus,KEL267,Unclassified henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2018,1,1
+PX127449,Unclassified henipavirus,KEL281,Unclassified henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2019,1,1
+PX127451,Unclassified henipavirus,KEL281B,Unclassified henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2019,1,1
+PX127455,Angavokely virus,KEL380,Angavokely henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2019,1,1
+PX127463,Unclassified henipavirus,ROU143,Unclassified henipavirus,Henipavirus,Madagascar,Rousettus madagascariensis,2019,1,1
+PX127491,Unclassified pararubulavirus,ROU13,Unclassified pararubulavirus,Pararubulavirus,Madagascar,Rousettus madagascariensis,2014,1,1
+QID58414.1,Paramyxovirus PREDICT_PMV-79,CMAB71536,Paramyxovirus PREDICT_PMV-79,Unclassified,Cameroon,Hipposideros,2016,1,0
+QID58415.1,Paramyxovirus PREDICT_PMV-80,CMAB71413,Paramyxovirus PREDICT_PMV-80,Unclassified,Cameroon,Macronycteris gigas,2016,1,0
+QID58416.1,Paramyxovirus PREDICT_PMV-82,CMAB71444,Paramyxovirus PREDICT_PMV-82,Unclassified,Cameroon,Macronycteris gigas,2016,1,0
+QID58481.1,Paramyxovirus PREDICT_PMV-97,CMAB71815,Paramyxovirus PREDICT_PMV-97,Unclassified,Cameroon,Hipposideros ruber,2016,1,0
+QID58508.1,Paramyxovirus PREDICT_PMV-115,EGAB0326,Paramyxovirus PREDICT_PMV-115,Unclassified,Egypt,Rousettus aegyptiacus,2017,1,0
+QID58509.1,Paramyxovirus PREDICT_PMV-116,EGAB0362,Paramyxovirus PREDICT_PMV-116,Unclassified,Egypt,Rousettus aegyptiacus,2017,1,0
+QID58510.1,Paramyxovirus PREDICT_PMV-118,EGAB0004,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
+QID58511.1,Paramyxovirus PREDICT_PMV-118,EGAB0284,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
+QID58512.1,Paramyxovirus PREDICT_PMV-118,EGAB0283,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
+QID58513.1,Paramyxovirus PREDICT_PMV-118,EGAB0277,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
+QID58514.1,Paramyxovirus PREDICT_PMV-118,EGAB0271,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
+QID58515.1,Paramyxovirus PREDICT_PMV-118,EGAB0268,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
+QID58516.1,Paramyxovirus PREDICT_PMV-118,EGAB0266,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
+QID58517.1,Paramyxovirus PREDICT_PMV-113,EGAB0220,Paramyxovirus PREDICT_PMV-113,Unclassified,Egypt,Rousettus aegyptiacus,2016,1,0
+QID58518.1,Paramyxovirus PREDICT_PMV-118,EGAB0162,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
+QID58519.1,Paramyxovirus PREDICT_PMV-118,EGAB0156,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
+QID58520.1,Paramyxovirus PREDICT_PMV-118,EGAB0153,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
+QID58521.1,Paramyxovirus PREDICT_PMV-118,EGAB0128,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
+QID58522.1,Paramyxovirus PREDICT_PMV-119,EGAB0009,Paramyxovirus PREDICT_PMV-119,Unclassified,Egypt,Nycteris thebaica,2016,1,0
+QID58523.1,Paramyxovirus PREDICT_PMV-118,EGAB0007,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
+QID58524.1,Paramyxovirus PREDICT_PMV-56,RWAB0282,Paramyxovirus PREDICT_PMV-56,Unclassified,Rwanda,Eidolon helvum,2016,1,0
+QID58530.1,Paramyxovirus PREDICT_PMV-79,CMAB71806,Paramyxovirus PREDICT_PMV-79,Unclassified,Cameroon,Hipposideros ruber,2016,1,0
+QID58532.1,Paramyxovirus PREDICT_PMV-80,CMAB72466,Paramyxovirus PREDICT_PMV-80,Unclassified,Cameroon,Macronycteris gigas,2017,1,0
+QID58568.1,Paramyxovirus PREDICT_PMV-127,CMAB72676,Paramyxovirus PREDICT_PMV-127,Unclassified,Cameroon,Hipposideros ruber,2017,1,0
+QID58569.1,Paramyxovirus PREDICT_PMV-133,CMAB73352,Paramyxovirus PREDICT_PMV-133,Unclassified,Cameroon,Hipposideros ruber,2017,1,0
+QID58617.1,Paramyxovirus PREDICT_PMV-139,CMAB75010,Paramyxovirus PREDICT_PMV-139,Unclassified,Cameroon,Hipposideros curtus,2018,1,0
+QID58618.1,Paramyxovirus PREDICT_PMV-139,CMAB75011,Paramyxovirus PREDICT_PMV-139,Unclassified,Cameroon,Hipposideros curtus,2018,1,0
+QID58619.1,Paramyxovirus PREDICT_PMV-138,CMAB75012,Paramyxovirus PREDICT_PMV-138,Unclassified,Cameroon,Hipposideros ruber,2018,1,0
+QID58627.1,Paramyxovirus PREDICT_PMV-141,TZAB0158,Paramyxovirus PREDICT_PMV-141,Unclassified,Tanzania,Rousettus aegyptiacus,2016,1,0
+QID58634.1,Paramyxovirus PREDICT_PMV-15,CDAB0480,Paramyxovirus PREDICT_PMV-15,Unclassified,Democratic Republic of the Congo,Mops condylurus,2018,1,0
+QID58635.1,Paramyxovirus PREDICT_PMV-15,CDAB0525,Paramyxovirus PREDICT_PMV-15,Unclassified,Democratic Republic of the Congo,Mops condylurus,2018,1,0
+QID58639.1,Paramyxovirus PREDICT_PMV-15,CDAB0492,Paramyxovirus PREDICT_PMV-15,Unclassified,Democratic Republic of the Congo,Mops condylurus,2018,1,0
+QID58658.1,Paramyxovirus PREDICT_PMV-152,CMAB75023,Paramyxovirus PREDICT_PMV-152,Unclassified,Cameroon,Hipposideros ruber,2018,1,0
+QID58659.1,Paramyxovirus PREDICT_PMV-147,CMAB75033,Paramyxovirus PREDICT_PMV-147,Unclassified,Cameroon,Hipposideros ruber,2018,1,0
+QID58660.1,Paramyxovirus PREDICT_PMV-138,CMAB75034,Paramyxovirus PREDICT_PMV-138,Unclassified,Cameroon,Hipposideros ruber,2018,1,0
+QID58698.1,Paramyxovirus PREDICT_PMV-118,EGAB0052,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Rousettus aegyptiacus,2016,1,0
+QID58749.1,Paramyxovirus PREDICT_PMV-118,EGAB0083,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
+QID58802.1,Paramyxovirus PREDICT_PMV-163,CMAB75022,Paramyxovirus PREDICT_PMV-163,Unclassified,Cameroon,Hipposideros ruber,2018,1,0
+QID58803.1,Paramyxovirus PREDICT_PMV-161,CMAB75022,Paramyxovirus PREDICT_PMV-161,Unclassified,Cameroon,Hipposideros ruber,2018,1,0
+QID58820.1,Paramyxovirus PREDICT_PMV-15,TZAB0388,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2017,1,0
+QID58863.1,Paramyxovirus PREDICT_PMV-174,SNAB0200,Paramyxovirus PREDICT_PMV-174,Unclassified,Senegal,Pipistrellus inexspectatus,2018,1,0
+QID58864.1,Paramyxovirus PREDICT_PMV-174,SNAB0175,Paramyxovirus PREDICT_PMV-174,Unclassified,Senegal,Pipistrellus inexspectatus,2018,1,0
+QID58865.1,Paramyxovirus PREDICT_PMV-174,SNAB0122,Paramyxovirus PREDICT_PMV-174,Unclassified,Senegal,Pipistrellus inexspectatus,2018,1,0
+QID58866.1,Paramyxovirus PREDICT_PMV-174,SNAB0174,Paramyxovirus PREDICT_PMV-174,Unclassified,Senegal,Pipistrellus inexspectatus,2018,1,0
+QID58867.1,Paramyxovirus PREDICT_PMV-174,SNAB0174,Paramyxovirus PREDICT_PMV-174,Unclassified,Senegal,Pipistrellus inexspectatus,2018,1,0
+QID58868.1,Paramyxovirus PREDICT_PMV-174,SNAB0189,Paramyxovirus PREDICT_PMV-174,Unclassified,Senegal,Pipistrellus inexspectatus,2018,1,0
+QID58882.1,Paramyxovirus PREDICT_PMV-24,ETAB0212,Paramyxovirus PREDICT_PMV-24,Unclassified,Ethiopia,Mops pumilus,2018,1,0
+QID58883.1,Paramyxovirus PREDICT_PMV-24,ETAB0212,Paramyxovirus PREDICT_PMV-24,Unclassified,Ethiopia,Mops pumilus,2018,1,0
+QID58884.1,Paramyxovirus PREDICT_PMV-24,ETAB0225,Paramyxovirus PREDICT_PMV-24,Unclassified,Ethiopia,Mops pumilus,2018,1,0
+QID58885.1,Paramyxovirus PREDICT_PMV-24,ETAB0225,Paramyxovirus PREDICT_PMV-24,Unclassified,Ethiopia,Mops pumilus,2018,1,0
+QID58886.1,Paramyxovirus PREDICT_PMV-175,ETAB0336,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
+QID58887.1,Paramyxovirus PREDICT_PMV-175,ETAB0443,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
+QID58888.1,Paramyxovirus PREDICT_PMV-175,ETAB0466,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
+QID58889.1,Paramyxovirus PREDICT_PMV-175,ETAB0475,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
+QID58890.1,Paramyxovirus PREDICT_PMV-175,ETAB0477,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
+QID58891.1,Paramyxovirus PREDICT_PMV-175,ETAB0578,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
+QID58892.1,Paramyxovirus PREDICT_PMV-175,ETAB0584,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
+QID58919.1,Bat paramyxovirus R_aeg_UPE766/525/122,PREDICT_EGAB0669,Bat paramyxovirus R_aeg_UPE766/525/122,Unclassified,Egypt,Rousettus aegyptiacus,2017,1,0
+QYC64606.1,Henipavirus hendraense,HeV-var/Australia/Horse/2015/Gympie,Henipavirus hendraense,Henipavirus,Australia,Equus caballus,2015,0,0
+QYO90519.1,Daeryong virus,Cs17-65,Daryong henipavirus,Henipavirus,South Korea,Crocidura shantungensis,2017,0,0
+QYO90533.1,Gamak virus,Cl17-32,Gamak henipavirus,Henipavirus,South Korea,Crocidura lasiura,2017,0,0
+UAA40914.1,Eidolon helvum paramyxovirus,BatPV_GH_2015_U17P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2015,1,0
+UAA40915.1,Eidolon helvum paramyxovirus,BatPV_GH_2015_U27P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2015,1,0
+UAA40916.1,Eidolon helvum paramyxovirus,BatPV_GH_2015_U111P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2015,1,0
+UAA40917.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U317P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
+UAA40918.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U198P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
+UAA40919.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U162P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
+UAA40920.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U117P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
+UAA40921.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U3P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
+UAA40922.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U292P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
+UAA40923.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U44P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
+UAA40924.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U10P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
+URC21326.1,Paramyxovirus PREDICT_PMV-15,TZAB1074,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21327.1,Paramyxovirus PREDICT_PMV-15,TZAB1078,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21328.1,Paramyxovirus PREDICT_PMV-15,TZAB1382,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21329.1,Paramyxovirus PREDICT_PMV-15,TZAB1407,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21330.1,Paramyxovirus PREDICT_PMV-15,TZAB1408,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21331.1,Paramyxovirus PREDICT_PMV-15,TZAB1409,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21332.1,Paramyxovirus PREDICT_PMV-15,TZAB1438,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21333.1,Paramyxovirus PREDICT_PMV-15,TZAB1458,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21334.1,Paramyxovirus PREDICT_PMV-15,TZAB1467,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21335.1,Paramyxovirus PREDICT_PMV-15,TZAB1469,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21336.1,Paramyxovirus PREDICT_PMV-15,TZAB1469,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21337.1,Paramyxovirus PREDICT_PMV-178,TZAB1593,Paramyxovirus PREDICT_PMV-178,Unclassified,Tanzania,Rousettus aegyptiacus,2018,1,0
+URC21338.1,Paramyxovirus PREDICT_PMV-178,TZAB1667,Paramyxovirus PREDICT_PMV-178,Unclassified,Tanzania,Rousettus aegyptiacus,2018,1,0
+URC21339.1,Paramyxovirus PREDICT_PMV-15,TZAB1877,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Tadarida aegyptiaca,2018,0,0
+URC21340.1,Paramyxovirus PREDICT_PMV-15,TZAB1879,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21341.1,Paramyxovirus PREDICT_PMV-15,TZAB1885,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Tadarida aegyptiaca,2018,0,0
+URC21342.1,Paramyxovirus PREDICT_PMV-15,TZAB1886,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21343.1,Paramyxovirus PREDICT_PMV-15,TZAB1895,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Tadarida aegyptiaca,2018,0,0
+URC21344.1,Paramyxovirus PREDICT_PMV-15,TZAB1905,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21345.1,Paramyxovirus PREDICT_PMV-15,TZAB1917,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21346.1,Paramyxovirus PREDICT_PMV-15,TZAB1918,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21347.1,Paramyxovirus PREDICT_PMV-15,TZAB1931,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21348.1,Paramyxovirus PREDICT_PMV-15,TZAB1949,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
+URC21353.1,Paramyxovirus PREDICT_PMV-179,RWAB0414,Paramyxovirus PREDICT_PMV-179,Unclassified,Rwanda,Rousettus aegyptiacus,2017,1,0
+URC21354.1,Paramyxovirus PREDICT_PMV-181,GNAB402,Paramyxovirus PREDICT_PMV-181,Unclassified,Guinea,Hipposideros ruber,2018,1,0
+URC21355.1,Paramyxovirus PREDICT_PMV-182,GNAB334,Paramyxovirus PREDICT_PMV-182,Unclassified,Guinea,Nycteridae,2018,1,0
+URC21356.1,Paramyxovirus PREDICT_PMV-184,GNAB337,Paramyxovirus PREDICT_PMV-184,Unclassified,Guinea,Hipposideridae,2018,1,0
+URC21357.1,Paramyxovirus PREDICT_PMV-185,GNAB415,Paramyxovirus PREDICT_PMV-185,Unclassified,Guinea,Glauconycteris variegata,2018,1,0
+URC21358.1,Paramyxovirus PREDICT_PMV-15,GNAB416,Paramyxovirus PREDICT_PMV-15,Unclassified,Guinea,Epomophorus pusillus,2018,1,0
+URC21359.1,Paramyxovirus PREDICT_PMV-56,GHAB1861,Paramyxovirus PREDICT_PMV-56,Unclassified,Ghana,Eidolon helvum,2018,1,0
+URC21360.1,Paramyxovirus PREDICT_PMV-56,GHAB1882,Paramyxovirus PREDICT_PMV-56,Unclassified,Ghana,Eidolon helvum,2018,1,0
+URC21361.1,Paramyxovirus PREDICT_PMV-15,GHAB1974,Paramyxovirus PREDICT_PMV-15,Unclassified,Ghana,Mops condylurus,2018,1,0
+URC21367.1,Paramyxovirus PREDICT_PMV-180,SLAB000461,Paramyxovirus PREDICT_PMV-180,Unclassified,Sierra Leone,Lissonycteris angolensis,2016,1,0
+URC21368.1,Paramyxovirus PREDICT_PMV-183,SLAB000491,Paramyxovirus PREDICT_PMV-183,Unclassified,Sierra Leone,Hipposideros,2016,1,0
+URC21842.1,Paramyxovirus PREDICT_PMV-188,LRAB0003,Paramyxovirus PREDICT_PMV-188,Unclassified,Liberia,Hipposideros ruber,2016,1,0
+URC21843.1,Paramyxovirus PREDICT_PMV-191,LRAB0008,Paramyxovirus PREDICT_PMV-191,Unclassified,Liberia,Hipposideros ruber,2016,1,0
+URC21844.1,Paramyxovirus PREDICT_PMV-191,LRAB0011,Paramyxovirus PREDICT_PMV-191,Unclassified,Liberia,Hipposideros ruber,2016,1,0
+URC21845.1,Paramyxovirus PREDICT_PMV-191,LRAB0017,Paramyxovirus PREDICT_PMV-191,Unclassified,Liberia,Hipposideros ruber,2016,1,0
+URC21846.1,Paramyxovirus PREDICT_PMV-190,LRAB0027,Paramyxovirus PREDICT_PMV-190,Unclassified,Liberia,Hipposideros ruber,2016,1,0
+URC21847.1,Paramyxovirus PREDICT_PMV-190,LRAB0033,Paramyxovirus PREDICT_PMV-190,Unclassified,Liberia,Hipposideros ruber,2016,1,0
+URC21848.1,Paramyxovirus PREDICT_PMV-189,LRAB0038.OST,Paramyxovirus PREDICT_PMV-189,Unclassified,Liberia,Hipposideros ruber,2016,1,0
+URC21849.1,Paramyxovirus PREDICT_PMV-189,LRAB0038.RST,Paramyxovirus PREDICT_PMV-189,Unclassified,Liberia,Hipposideros ruber,2016,1,0
+URC21850.1,Paramyxovirus PREDICT_PMV-189,LRAB0043,Paramyxovirus PREDICT_PMV-189,Unclassified,Liberia,Hipposideros ruber,2016,1,0
+URC21851.1,Paramyxovirus PREDICT_PMV-191,LRAB0047,Paramyxovirus PREDICT_PMV-191,Unclassified,Liberia,Hipposideros ruber,2016,1,0
+URC21852.1,Paramyxovirus PREDICT_PMV-186,LRAB0049,Paramyxovirus PREDICT_PMV-186,Unclassified,Liberia,Hipposideros ruber,2016,1,0
+URC21853.1,Paramyxovirus PREDICT_PMV-187,LRAB0064,Paramyxovirus PREDICT_PMV-187,Unclassified,Liberia,Hipposideros ruber,2016,1,0
+UUV47207.1,Langya virus,SDQD_H1801,Langya henipavirus,Henipavirus,China,Homo sapiens,2018,0,0
+UVG43990.1,Angavokely henipavirus,,Henipavirus angavokelyense,Henipavirus,Madagascar,Eidolon dupreanum,2019,1,0
+UYS87244.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Australia,Equus caballus,2021,0,0
+UZQ22168.1,Henipavirus nipahense,MCL-21-H-9808,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2021,0,0
+WEU70827.1,Chodsigoa hypsibia henipavirus,PMV/SC/C7-49.4/2022,Chodsigoa hypsibia henipavirus,Henipavirus,China,Chodsigoa hypsibia,2022,0,0
+WIU81494.1,Crocidura tanakae henipavirus,Shiyan201,Crocidura tanakae henipavirus,Henipavirus,China,Crocidura tanakae,2021,0,0
+WKR82409.1,Henipavirus nipahense,MCL-19-H-1134,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2019,0,0
+WVH15778.1,Henipavirus nipahense,MCL-23-H-3874_RNA_11865,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2023,0,0
+WVH15787.1,Henipavirus nipahense,MCL-23-H-3764_RNA_11861,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2023,0,0
+WVH15796.1,Henipavirus nipahense,MCL-23-H-3762_RNA_11863,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2023,0,0
+XAI72404.1,Henipavirus nipahense,MCl-23-BAT-438/5_RNA_11998,Henipavirus nipahense,Henipavirus,India,Pteropus medius,2023,1,0
+XAI72413.1,Henipavirus nipahense,MCL-23-Bat-247/5_RNA_11996,Henipavirus nipahense,Henipavirus,India,Pteropus medius,2023,1,0
+XBH24213.1,Rousettus bat paramyxovirus,10A/Kenya/BAT1838/2015,Rousettus bat paramyxovirus,Unclassified,Kenya,Rousettus aegyptiacus,2015,1,0
+XBH24214.1,Coleura bat paramyxovirus,12A/Kenya/BAT262/2015,Coleura bat paramyxovirus,Unclassified,Kenya,Coleura afra,2015,0,0
+XBH24255.1,Otomops bat paramyxovirus,7A/Kenya/BAT0812/2015,Otomops bat paramyxovirus,Unclassified,Kenya,Otomops martiensseni,2015,1,0
+XCK17071.1,Henipavirus nipahense,NiV/human/BGD/RS0276817/2017,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2017,0,0
+XCK17080.1,Henipavirus nipahense,NiV/human/BGD/FP0136517/2017,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2017,0,0
+XCK17089.1,Henipavirus nipahense,NiV/human/BGD/SQ00118/2018,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2018,0,0
+XCK17098.1,Henipavirus nipahense,NiV/human/BGD/RS0384019/2019,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2019,0,0
+XCK17107.1,Henipavirus nipahense,NiV/human/BGD/CMH/2020,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2020,0,0
+XCK17116.1,Henipavirus nipahense,NiV/human/BGD/FP0218120/2020,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2020,0,0
+XCK17125.1,Henipavirus nipahense,NiV/human/BGD/ID-01/2020,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2020,0,0
+XCK17134.1,Henipavirus nipahense,NiV/human/BGD/ID-02/2020,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2020,0,0
+XCK17143.1,Henipavirus nipahense,NiV/human/BGD/FP0219620/2020,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2020,0,0
+XCK17152.1,Henipavirus nipahense,NiV/human/BGD/RS0559122/2022,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2022,0,0
+XCK17161.1,Henipavirus nipahense,NiV/human/BGD/FP0260922/2022,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2022,0,0
+XCK17170.1,Henipavirus nipahense,NiV/human/BGD/RS0560822/2022,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2022,0,0
+XCK17179.1,Henipavirus nipahense,NiV/human/BGD/RS0644723/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
+XCK17188.1,Henipavirus nipahense,NiV/human/BGD/NINS00123/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
+XCK17197.1,Henipavirus nipahense,NiV/human/BGD/FP0298523/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
+XCK17206.1,Henipavirus nipahense,NiV/human/BGD/FP0298923/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
+XCK17215.1,Henipavirus nipahense,NiV/human/BGD/RS0649923/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
+XCK17224.1,Henipavirus nipahense,NiV/human/BGD/FP0300923/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
+XCK17233.1,Henipavirus nipahense,NiV/human/BGD/RS0652823/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
+XCK17242.1,Henipavirus nipahense,NiV/human/BGD/FP0302023/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
+XCK17251.1,Henipavirus nipahense,NiV/human/BGD/DMCH00523/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
+XJU66141.1,Henipavirus nipahense,NiV/human/BGD/NINS00123U/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
+XJU66147.1,Henipavirus nipahense,NiV/human/BGD/FP0300923BM/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
 XJU66153.1,Henipavirus nipahense,NiV/Bat/BGD/J106/2012,Henipavirus nipahense,Henipavirus,Bangladesh,Chiroptera,2012,1,0
+XJU66855.1,Henipavirus nipahense,NiV_M_IRF523,Henipavirus nipahense,Henipavirus,Malaysia,Homo sapiens,1998,0,0
+XJU75812.1,Camp Hill virus,,Camp Hill virus,Henipavirus,USA,Blarina brevicauda,2021,0,0
+XLS83388.1,Langya virus,,Parahenipavirus langyaense,Parahenipavirus,South Korea,Crocidura lasiura,2023,0,0
+XLZ62602.1,Henipavirus hendraense,HeV/Australia/horse/2023/Cardiff Heights,Henipavirus hendraense,Henipavirus,Australia,Equus caballus,2023,0,0
+XMP25128.1,Henipavirus sp.,T-NP19/PAR,Henipavirus sp.,Henipavirus,Indonesia,Cynopterus brachyotis,2021,0,0
+XOT37560.1,Crocidura olivieri henipavirus 1,Cr. olivieri_para_1,Crocidura olivieri henipavirus 1,Henipavirus,Sierra Leone,Crocidura olivieri,2023,0,0
+XOT37567.1,Crocidura olivieri henipavirus 2,Cr. olivieri_para_2,Crocidura olivieri henipavirus 2,Henipavirus,Sierra Leone,Crocidura olivieri,2023,0,0
+XPO94331.1,Henipavirus nipahense,NiV/human/BGD/DMCH00124/2024,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2024,0,0
+XPO94337.1,Henipavirus nipahense,NiV/human/BGD/PMSKH0000424/2024,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2024,0,0
+XQM46515.1,Salt gully virus,Boonah,Unclassified henipavirus,Henipavirus,Australia,Pteropus sp.,2011,1,0
+XRT74648.1,Yunnan bat henipavirus 1,WDBS1745,Unclassified henipavirus,Henipavirus,China,Rousettus leschenaultii,2017,1,0
+XRT74654.1,Yunnan bat henipavirus 2,WDBS1733,Unclassified henipavirus,Henipavirus,China,Rousettus leschenaultii,2017,1,0
+XTB76844.1,Henipavirus sp.,MCL-24-H-4185,Henipavirus sp.,Henipavirus,India,Homo sapiens,2024,0,0
+XUU11145.1,Henipavirus sp.,GH,Henipavirus sp.,Henipavirus,South Korea,Crocidura shantungensis,2022,0,0
 XWJ59155.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Australia,Chiroptera,2017,1,0
 XWJ59161.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Australia,Chiroptera,2018,1,0
 XWJ59167.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Australia,Chiroptera,2018,1,0
@@ -51,318 +337,20 @@ XWJ59419.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Australia,
 XWJ59425.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Australia,Chiroptera,2020,1,0
 XWJ59431.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Australia,Chiroptera,2020,1,0
 XWJ59491.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Australia,Chiroptera,2017,1,0
-PX095966,Hendra/Nipah sister species,Pool_4_ED_UR_2,Hendra/Nipah sister species,Henipavirus,Madagascar,Chiroptera,Unknown,1,1
-PX095967,Unclassified henipavirus,Pool_4_RM_UR_2,Unclassified henipavirus,Henipavirus,Madagascar,Chiroptera,Unknown,1,1
-PX095968,Hendra/Nipah sister species,Pool_5_ED_UR_2,Hendra/Nipah sister species,Henipavirus,Madagascar,Chiroptera,Unknown,1,1
-PX095969,Unclassified henipavirus,Pool_6_ED_UR_1,Unclassified henipavirus,Henipavirus,Madagascar,Chiroptera,Unknown,1,1
-PX095970,Unclassified henipavirus,Pool_6_RM_UR_2_F_pcr,Unclassified henipavirus,Henipavirus,Madagascar,Chiroptera,Unknown,1,1
-PX095971,Unclassified henipavirus,Pool_8_urine_M2,Unclassified henipavirus,Henipavirus,Madagascar,Chiroptera,Unknown,1,1
-ALS55471.1,Paramyxovirus PREDICT_PMV-60,PREDICT_PMV-60/AATKH,Paramyxovirus PREDICT_PMV-60,Unclassified,Tanzania,Chiroptera sp.,2013,1,0
-WEU70827.1,Chodsigoa hypsibia henipavirus,PMV/SC/C7-49.4/2022,Chodsigoa hypsibia henipavirus,Henipavirus,China,Chodsigoa hypsibia,2022,0,0
-XBH24214.1,Coleura bat paramyxovirus,12A/Kenya/BAT262/2015,Coleura bat paramyxovirus,Unclassified,Kenya,Coleura afra,2015,0,0
-YP_010798268.1,Avian metaavulavirus 21,APMV/dove/Taiwan/AHRI33/2009,Avian metaavulavirus 21,Metaavulavirus,Taiwan,Columbidae,2009,0,0
-QYO90533.1,Gamak virus,Cl17-32,Gamak henipavirus,Henipavirus,South Korea,Crocidura lasiura,2017,0,0
-XLS83388.1,Langya virus,,Parahenipavirus langyaense,Parahenipavirus,South Korea,Crocidura lasiura,2023,0,0
-XOT37560.1,Crocidura olivieri henipavirus 1,Cr. olivieri_para_1,Crocidura olivieri henipavirus 1,Henipavirus,Sierra Leone,Crocidura olivieri,2023,0,0
-XOT37567.1,Crocidura olivieri henipavirus 2,Cr. olivieri_para_2,Crocidura olivieri henipavirus 2,Henipavirus,Sierra Leone,Crocidura olivieri,2023,0,0
-QYO90519.1,Daeryong virus,Cs17-65,Daryong henipavirus,Henipavirus,South Korea,Crocidura shantungensis,2017,0,0
-XUU11145.1,Henipavirus sp.,GH,Henipavirus sp.,Henipavirus,South Korea,Crocidura shantungensis,2022,0,0
-WIU81494.1,Crocidura tanakae henipavirus,Shiyan201,Crocidura tanakae henipavirus,Henipavirus,China,Crocidura tanakae,2021,0,0
-YP_010790495.1,Wenling tonguesole paramyxovirus,,Cynoglossusvirus cynoglossi,Cynoglossusvirus,China,Cynoglossus sp.,2017,0,0
-XMP25128.1,Henipavirus sp.,T-NP19/PAR,Henipavirus sp.,Henipavirus,Indonesia,Cynopterus brachyotis,2021,0,0
-UVG43990.1,Angavokely henipavirus,,Henipavirus angavokelyense,Henipavirus,Madagascar,Eidolon dupreanum,2019,1,0
-PX127402,Ghana-like virus,KEL86_KEL94,Ghana-like virus,Henipavirus,Madagascar,Eidolon dupreanum,2014,1,1
-PX127406,Unclassified henipavirus,CAT017,Unclassified henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2018,1,1
-PX127408,Unclassified pararubulavirus,KEL67,Unclassified pararubulavirus,Pararubulavirus,Madagascar,Eidolon dupreanum,2014,1,1
-PX127409,Unclassified henipavirus,KEL166,Unclassified henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2018,1,1
-PX127435,Unclassified henipavirus,KEL250,Unclassified henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2018,1,1
-PX127443,Unclassified henipavirus,KEL267,Unclassified henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2018,1,1
-PX127449,Unclassified henipavirus,KEL281,Unclassified henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2019,1,1
-PX127451,Unclassified henipavirus,KEL281B,Unclassified henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2019,1,1
-PX127455,Angavokely virus,KEL380,Angavokely henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2019,1,1
-PX127468,Unclassified henipavirus,ANGB137,Unclassified henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2018,1,1
-PX127420,Unclassified henipavirus,KEL234,Unclassified henipavirus,Henipavirus,Madagascar,Eidolon dupreanum,2018,1,1
-AET43339.1,Ghana virus,BatPV/Eid_hel/GH-M74a/GHA/2009,Henipavirus ghanaense,Henipavirus,Ghana,Eidolon helvum,2009,1,0
-AEY68836.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68837.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68838.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68839.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68840.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68841.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68842.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68843.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68844.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68845.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68846.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68847.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68848.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68849.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68850.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68851.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68852.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68853.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68854.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68855.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68856.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68857.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68858.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68859.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68860.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68861.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68862.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68863.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68864.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68865.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68866.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68867.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68868.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68869.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68870.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AEY68871.1,Eidolon helvum paramyxovirus,,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2010,1,0
-AGR33433.1,Eidolon helvum paramyxovirus,TZ13,Eidolon helvum paramyxovirus,Unclassified,Tanzania,Eidolon helvum,2010,1,0
-AGR33434.1,Eidolon helvum paramyxovirus,UG23,Eidolon helvum paramyxovirus,Unclassified,Uganda,Eidolon helvum,2009,1,0
-AGR33435.1,Eidolon helvum paramyxovirus,TZ21,Eidolon helvum paramyxovirus,Unclassified,Tanzania,Eidolon helvum,2010,1,0
-ALS55465.1,Paramyxovirus PREDICT_PMV-56,PREDICT_PMV-56/AATFA,Paramyxovirus PREDICT_PMV-56,Unclassified,Tanzania,Eidolon helvum,2013,1,0
-ALS55466.1,Paramyxovirus PREDICT_PMV-56,PREDICT_PMV-56/AATFC,Paramyxovirus PREDICT_PMV-56,Unclassified,Tanzania,Eidolon helvum,2013,1,0
-ALS55467.1,Paramyxovirus PREDICT_PMV-56,PREDICT_PMV-56/AATGB,Paramyxovirus PREDICT_PMV-56,Unclassified,Tanzania,Eidolon helvum,2013,1,0
-ALS55468.1,Paramyxovirus PREDICT_PMV-56,PREDICT_PMV-56/AATFJ,Paramyxovirus PREDICT_PMV-56,Unclassified,Tanzania,Eidolon helvum,2013,1,0
-ALS55473.1,Eidolon helvum paramyxovirus/TZ13/PREDICT-AATGG,PREDICT-AATGG,Eidolon helvum paramyxovirus,Unclassified,Tanzania,Eidolon helvum,2013,1,0
-ALS55474.1,Eidolon helvum paramyxovirus/UG23/U67N/PREDICT-AATPB,PREDICT-AATPB,Eidolon helvum paramyxovirus,Unclassified,Tanzania,Eidolon helvum,2013,1,0
-ALS55475.1,Eidolon helvum paramyxovirus/U6B/PREDICT-AAUFG,PREDICT-AAUFG,Eidolon helvum paramyxovirus,Unclassified,Tanzania,Eidolon helvum,2013,1,0
-ALS55476.1,Eidolon helvum paramyxovirus/U6B/PREDICT-AATLH,PREDICT-AATLH,Eidolon helvum paramyxovirus,Unclassified,Tanzania,Eidolon helvum,2013,1,0
-BAO51218.1,Bat Paramyxovirus Eid_hel/ZFB08-07/Zambia/2008,Eid_hel/ZFB08-07/Zambia/2008,Bat Paramyxovirus Eid_hel/ZFB08-07/Zambia/2008,Unclassified,Zambia,Eidolon helvum,2008,1,0
-BAO51219.1,Bat Paramyxovirus Eid_hel/ZFB09-05/Zambia/2009,Eid_hel/ZFB09-05/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-05/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
-BAO51220.1,Bat Paramyxovirus Eid_hel/ZFB09-07/Zambia/2009,Eid_hel/ZFB09-07/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-07/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
-BAO51221.1,Bat Paramyxovirus Eid_hel/ZFB09-24/Zambia/2009,Eid_hel/ZFB09-24/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-24/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
-BAO51222.1,Bat Paramyxovirus Eid_hel/ZFB09-32/Zambia/2009,Eid_hel/ZFB09-32/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-32/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
-BAO51223.1,Bat Paramyxovirus Eid_hel/ZFB09-39/Zambia/2009,Eid_hel/ZFB09-39/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-39/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
-BAO51224.1,Bat Paramyxovirus Eid_hel/ZFB09-43/Zambia/2009,Eid_hel/ZFB09-43/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-43/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
-BAO51225.1,Bat Paramyxovirus Eid_hel/ZFB09-51/Zambia/2009,Eid_hel/ZFB09-51/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-51/Zambia/2009,Unclassified,Zambia,Eidolon helvum,2009,1,0
-BAO51226.1,Bat Paramyxovirus Eid_hel/ZFB10-03/Zambia/2010,Eid_hel/ZFB10-03/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-03/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
-BAO51227.1,Bat Paramyxovirus Eid_hel/ZFB10-07/Zambia/2010,Eid_hel/ZFB10-07/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-07/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
-BAO51228.1,Bat Paramyxovirus Eid_hel/ZFB10-14/Zambia/2010,Eid_hel/ZFB10-14/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-14/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
-BAO51229.1,Bat Paramyxovirus Eid_hel/ZFB10-22/Zambia/2010,Eid_hel/ZFB10-22/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-22/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
-BAO51230.1,Bat Paramyxovirus Eid_hel/ZFB10-23/Zambia/2010,Eid_hel/ZFB10-23/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-23/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
-BAO51231.1,Bat Paramyxovirus Eid_hel/ZFB10-24/Zambia/2010,Eid_hel/ZFB10-24/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-24/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
-BAO51232.1,Bat Paramyxovirus Eid_hel/ZFB10-26/Zambia/2010,Eid_hel/ZFB10-26/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-26/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
-BAO51233.1,Bat Paramyxovirus Eid_hel/ZFB10-27/Zambia/2010,Eid_hel/ZFB10-27/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-27/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
-BAO51234.1,Bat Paramyxovirus Eid_hel/ZFB10-39/Zambia/2010,Eid_hel/ZFB10-39/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-39/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
-BAO51235.1,Bat Paramyxovirus Eid_hel/ZFB10-42/Zambia/2010,Eid_hel/ZFB10-42/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-42/Zambia/2010,Unclassified,Zambia,Eidolon helvum,2010,1,0
-BAO51236.1,Bat Paramyxovirus Eid_hel/ZFB11-30/Zambia/2011,Eid_hel/ZFB11-30/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-30/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
-BAO51237.1,Bat Paramyxovirus Eid_hel/ZFB11-35/Zambia/2011,Eid_hel/ZFB11-35/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-35/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
-BAO51238.1,Bat Paramyxovirus Eid_hel/ZFB11-60/Zambia/2011,Eid_hel/ZFB11-60/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-60/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
-BAO51239.1,Bat Paramyxovirus Eid_hel/ZFB11-66/Zambia/2011,Eid_hel/ZFB11-66/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-66/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
-BAO51240.1,Bat Paramyxovirus Eid_hel/ZFB11-76/Zambia/2011,Eid_hel/ZFB11-76/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-76/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
-BAO51241.1,Bat Paramyxovirus Eid_hel/ZFB11-88/Zambia/2011,Eid_hel/ZFB11-88/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-88/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
-BAO51242.1,Bat Paramyxovirus Eid_hel/ZFB11-91/Zambia/2011,Eid_hel/ZFB11-91/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-91/Zambia/2011,Unclassified,Zambia,Eidolon helvum,2011,1,0
-CCF23095.1,Eidolon paramyxovirus RC09,EPMV_RC09_PP236u1,Eidolon paramyxovirus RC09,Unclassified,Republic of the Congo,Eidolon helvum,2009,1,0
-CCF23096.1,Eidolon paramyxovirus RC09,EPMV_RC09_PP236u2,Eidolon paramyxovirus RC09,Unclassified,Republic of the Congo,Eidolon helvum,2009,1,0
-CCF23097.1,Eidolon paramyxovirus RC09,EPMV_RC09_PP239l,Eidolon paramyxovirus RC09,Unclassified,Republic of the Congo,Eidolon helvum,2009,1,0
-CCF23098.1,Eidolon paramyxovirus RC09,EPMV_RC09_PP239s,Eidolon paramyxovirus RC09,Unclassified,Republic of the Congo,Eidolon helvum,2009,1,0
-CCF23099.1,Eidolon paramyxovirus RC09,EPMV_RC09_PP241s,Eidolon paramyxovirus RC09,Unclassified,Republic of the Congo,Eidolon helvum,2009,1,0
-QID58524.1,Paramyxovirus PREDICT_PMV-56,RWAB0282,Paramyxovirus PREDICT_PMV-56,Unclassified,Rwanda,Eidolon helvum,2016,1,0
-UAA40914.1,Eidolon helvum paramyxovirus,BatPV_GH_2015_U17P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2015,1,0
-UAA40915.1,Eidolon helvum paramyxovirus,BatPV_GH_2015_U27P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2015,1,0
-UAA40916.1,Eidolon helvum paramyxovirus,BatPV_GH_2015_U111P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2015,1,0
-UAA40917.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U317P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
-UAA40918.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U198P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
-UAA40919.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U162P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
-UAA40920.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U117P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
-UAA40921.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U3P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
-UAA40922.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U292P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
-UAA40923.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U44P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
-UAA40924.1,Eidolon helvum paramyxovirus,BatPV_GH_2019_U10P,Eidolon helvum paramyxovirus,Unclassified,Ghana,Eidolon helvum,2019,1,0
-URC21359.1,Paramyxovirus PREDICT_PMV-56,GHAB1861,Paramyxovirus PREDICT_PMV-56,Unclassified,Ghana,Eidolon helvum,2018,1,0
-URC21360.1,Paramyxovirus PREDICT_PMV-56,GHAB1882,Paramyxovirus PREDICT_PMV-56,Unclassified,Ghana,Eidolon helvum,2018,1,0
-YP_009091839.1,Ghana virus,BatPV/Eid_hel/GH-M74a/GHA/2009,Henipavirus ghanaense,Henipavirus,Ghana,Eidolon helvum,2009,1,0
-URC21358.1,Paramyxovirus PREDICT_PMV-15,GNAB416,Paramyxovirus PREDICT_PMV-15,Unclassified,Guinea,Epomophorus pusillus,2018,1,0
-NP_047113.3,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Australia,Equus caballus,1997,0,0
-QYC64606.1,Henipavirus hendraense,HeV-var/Australia/Horse/2015/Gympie,Henipavirus hendraense,Henipavirus,Australia,Equus caballus,2015,0,0
-UYS87244.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Australia,Equus caballus,2021,0,0
-XLZ62602.1,Henipavirus hendraense,HeV/Australia/horse/2023/Cardiff Heights,Henipavirus hendraense,Henipavirus,Australia,Equus caballus,2023,0,0
-YP_009094339.1,Salem virus,,Salemvirus salemense,Salemvirus,USA,Equus caballus,1992,0,0
-URC21357.1,Paramyxovirus PREDICT_PMV-185,GNAB415,Paramyxovirus PREDICT_PMV-185,Unclassified,Guinea,Glauconycteris variegata,2018,1,0
-URC21356.1,Paramyxovirus PREDICT_PMV-184,GNAB337,Paramyxovirus PREDICT_PMV-184,Unclassified,Guinea,Hipposideridae,2018,1,0
-QID58414.1,Paramyxovirus PREDICT_PMV-79,CMAB71536,Paramyxovirus PREDICT_PMV-79,Unclassified,Cameroon,Hipposideros,2016,1,0
-URC21368.1,Paramyxovirus PREDICT_PMV-183,SLAB000491,Paramyxovirus PREDICT_PMV-183,Unclassified,Sierra Leone,Hipposideros,2016,1,0
-QID58617.1,Paramyxovirus PREDICT_PMV-139,CMAB75010,Paramyxovirus PREDICT_PMV-139,Unclassified,Cameroon,Hipposideros curtus,2018,1,0
-QID58618.1,Paramyxovirus PREDICT_PMV-139,CMAB75011,Paramyxovirus PREDICT_PMV-139,Unclassified,Cameroon,Hipposideros curtus,2018,1,0
-ALS55428.1,Paramyxovirus PREDICT_PMV-24,PREDICT_PMV-24/ZB12006,Paramyxovirus PREDICT_PMV-24,Unclassified,Republic of the Congo,Hipposideros ruber,2012,1,0
-ALS55429.1,Paramyxovirus PREDICT_PMV-24,PREDICT_PMV-24/ZB12027,Paramyxovirus PREDICT_PMV-24,Unclassified,Republic of the Congo,Hipposideros ruber,2012,1,0
-QID58481.1,Paramyxovirus PREDICT_PMV-97,CMAB71815,Paramyxovirus PREDICT_PMV-97,Unclassified,Cameroon,Hipposideros ruber,2016,1,0
-QID58530.1,Paramyxovirus PREDICT_PMV-79,CMAB71806,Paramyxovirus PREDICT_PMV-79,Unclassified,Cameroon,Hipposideros ruber,2016,1,0
-QID58568.1,Paramyxovirus PREDICT_PMV-127,CMAB72676,Paramyxovirus PREDICT_PMV-127,Unclassified,Cameroon,Hipposideros ruber,2017,1,0
-QID58569.1,Paramyxovirus PREDICT_PMV-133,CMAB73352,Paramyxovirus PREDICT_PMV-133,Unclassified,Cameroon,Hipposideros ruber,2017,1,0
-QID58619.1,Paramyxovirus PREDICT_PMV-138,CMAB75012,Paramyxovirus PREDICT_PMV-138,Unclassified,Cameroon,Hipposideros ruber,2018,1,0
-QID58658.1,Paramyxovirus PREDICT_PMV-152,CMAB75023,Paramyxovirus PREDICT_PMV-152,Unclassified,Cameroon,Hipposideros ruber,2018,1,0
-QID58659.1,Paramyxovirus PREDICT_PMV-147,CMAB75033,Paramyxovirus PREDICT_PMV-147,Unclassified,Cameroon,Hipposideros ruber,2018,1,0
-QID58660.1,Paramyxovirus PREDICT_PMV-138,CMAB75034,Paramyxovirus PREDICT_PMV-138,Unclassified,Cameroon,Hipposideros ruber,2018,1,0
-QID58802.1,Paramyxovirus PREDICT_PMV-163,CMAB75022,Paramyxovirus PREDICT_PMV-163,Unclassified,Cameroon,Hipposideros ruber,2018,1,0
-QID58803.1,Paramyxovirus PREDICT_PMV-161,CMAB75022,Paramyxovirus PREDICT_PMV-161,Unclassified,Cameroon,Hipposideros ruber,2018,1,0
-URC21354.1,Paramyxovirus PREDICT_PMV-181,GNAB402,Paramyxovirus PREDICT_PMV-181,Unclassified,Guinea,Hipposideros ruber,2018,1,0
-URC21842.1,Paramyxovirus PREDICT_PMV-188,LRAB0003,Paramyxovirus PREDICT_PMV-188,Unclassified,Liberia,Hipposideros ruber,2016,1,0
-URC21843.1,Paramyxovirus PREDICT_PMV-191,LRAB0008,Paramyxovirus PREDICT_PMV-191,Unclassified,Liberia,Hipposideros ruber,2016,1,0
-URC21844.1,Paramyxovirus PREDICT_PMV-191,LRAB0011,Paramyxovirus PREDICT_PMV-191,Unclassified,Liberia,Hipposideros ruber,2016,1,0
-URC21845.1,Paramyxovirus PREDICT_PMV-191,LRAB0017,Paramyxovirus PREDICT_PMV-191,Unclassified,Liberia,Hipposideros ruber,2016,1,0
-URC21846.1,Paramyxovirus PREDICT_PMV-190,LRAB0027,Paramyxovirus PREDICT_PMV-190,Unclassified,Liberia,Hipposideros ruber,2016,1,0
-URC21847.1,Paramyxovirus PREDICT_PMV-190,LRAB0033,Paramyxovirus PREDICT_PMV-190,Unclassified,Liberia,Hipposideros ruber,2016,1,0
-URC21848.1,Paramyxovirus PREDICT_PMV-189,LRAB0038.OST,Paramyxovirus PREDICT_PMV-189,Unclassified,Liberia,Hipposideros ruber,2016,1,0
-URC21849.1,Paramyxovirus PREDICT_PMV-189,LRAB0038.RST,Paramyxovirus PREDICT_PMV-189,Unclassified,Liberia,Hipposideros ruber,2016,1,0
-URC21850.1,Paramyxovirus PREDICT_PMV-189,LRAB0043,Paramyxovirus PREDICT_PMV-189,Unclassified,Liberia,Hipposideros ruber,2016,1,0
-URC21851.1,Paramyxovirus PREDICT_PMV-191,LRAB0047,Paramyxovirus PREDICT_PMV-191,Unclassified,Liberia,Hipposideros ruber,2016,1,0
-URC21852.1,Paramyxovirus PREDICT_PMV-186,LRAB0049,Paramyxovirus PREDICT_PMV-186,Unclassified,Liberia,Hipposideros ruber,2016,1,0
-URC21853.1,Paramyxovirus PREDICT_PMV-187,LRAB0064,Paramyxovirus PREDICT_PMV-187,Unclassified,Liberia,Hipposideros ruber,2016,1,0
-NP_056924.1,Measles morbillivirus,,Morbillivirus hominis,Morbillivirus,Japan,Homo sapiens,1998,0,0
-UUV47207.1,Langya virus,SDQD_H1801,Langya henipavirus,Henipavirus,China,Homo sapiens,2018,0,0
-UZQ22168.1,Henipavirus nipahense,MCL-21-H-9808,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2021,0,0
-WKR82409.1,Henipavirus nipahense,MCL-19-H-1134,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2019,0,0
-WVH15778.1,Henipavirus nipahense,MCL-23-H-3874_RNA_11865,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2023,0,0
-WVH15787.1,Henipavirus nipahense,MCL-23-H-3764_RNA_11861,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2023,0,0
-WVH15796.1,Henipavirus nipahense,MCL-23-H-3762_RNA_11863,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2023,0,0
-WWQ02595.1,Henipavirus nipahense,MCL-23-H-3768_RNA_11864,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2023,0,0
-WWQ02596.1,Henipavirus nipahense,MCL-23-H-3768_RNA_11864,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2023,0,0
-XCK17071.1,Henipavirus nipahense,NiV/human/BGD/RS0276817/2017,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2017,0,0
-XCK17080.1,Henipavirus nipahense,NiV/human/BGD/FP0136517/2017,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2017,0,0
-XCK17089.1,Henipavirus nipahense,NiV/human/BGD/SQ00118/2018,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2018,0,0
-XCK17098.1,Henipavirus nipahense,NiV/human/BGD/RS0384019/2019,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2019,0,0
-XCK17107.1,Henipavirus nipahense,NiV/human/BGD/CMH/2020,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2020,0,0
-XCK17116.1,Henipavirus nipahense,NiV/human/BGD/FP0218120/2020,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2020,0,0
-XCK17125.1,Henipavirus nipahense,NiV/human/BGD/ID-01/2020,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2020,0,0
-XCK17134.1,Henipavirus nipahense,NiV/human/BGD/ID-02/2020,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2020,0,0
-XCK17143.1,Henipavirus nipahense,NiV/human/BGD/FP0219620/2020,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2020,0,0
-XCK17152.1,Henipavirus nipahense,NiV/human/BGD/RS0559122/2022,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2022,0,0
-XCK17161.1,Henipavirus nipahense,NiV/human/BGD/FP0260922/2022,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2022,0,0
-XCK17170.1,Henipavirus nipahense,NiV/human/BGD/RS0560822/2022,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2022,0,0
-XCK17179.1,Henipavirus nipahense,NiV/human/BGD/RS0644723/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
-XCK17188.1,Henipavirus nipahense,NiV/human/BGD/NINS00123/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
-XCK17197.1,Henipavirus nipahense,NiV/human/BGD/FP0298523/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
-XCK17206.1,Henipavirus nipahense,NiV/human/BGD/FP0298923/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
-XCK17215.1,Henipavirus nipahense,NiV/human/BGD/RS0649923/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
-XCK17224.1,Henipavirus nipahense,NiV/human/BGD/FP0300923/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
-XCK17233.1,Henipavirus nipahense,NiV/human/BGD/RS0652823/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
-XCK17242.1,Henipavirus nipahense,NiV/human/BGD/FP0302023/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
-XCK17251.1,Henipavirus nipahense,NiV/human/BGD/DMCH00523/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
-XJU66141.1,Henipavirus nipahense,NiV/human/BGD/NINS00123U/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
-XJU66147.1,Henipavirus nipahense,NiV/human/BGD/FP0300923BM/2023,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2023,0,0
-XJU66855.1,Henipavirus nipahense,NiV_M_IRF523,Henipavirus nipahense,Henipavirus,Malaysia,Homo sapiens,1998,0,0
-XPO94331.1,Henipavirus nipahense,NiV/human/BGD/DMCH00124/2024,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2024,0,0
-XPO94337.1,Henipavirus nipahense,NiV/human/BGD/PMSKH0000424/2024,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2024,0,0
-XTB76844.1,Henipavirus sp.,MCL-24-H-4185,Henipavirus sp.,Henipavirus,India,Homo sapiens,2024,0,0
-YP_138518.1,Parainfluenza virus 5,,Orthorubulavirus mammalis,Orthorubulavirus,USA,Homo sapiens,1998,0,0
-YP_010790514.1,Human respirovirus 3,Guangzhou,Respirovirus pneumoniae,Respirovirus,China,Homo sapiens,2007,0,0
-YP_010790504.1,Wenling hoplichthys paramyxovirus,,Hoplichthysvirus hoplichthysis,Hoplichthysvirus,China,Hoplichthys,2017,0,0
-URC21367.1,Paramyxovirus PREDICT_PMV-180,SLAB000461,Paramyxovirus PREDICT_PMV-180,Unclassified,Sierra Leone,Lissonycteris angolensis,2016,1,0
-QID58415.1,Paramyxovirus PREDICT_PMV-80,CMAB71413,Paramyxovirus PREDICT_PMV-80,Unclassified,Cameroon,Macronycteris gigas,2016,1,0
-QID58416.1,Paramyxovirus PREDICT_PMV-82,CMAB71444,Paramyxovirus PREDICT_PMV-82,Unclassified,Cameroon,Macronycteris gigas,2016,1,0
-QID58532.1,Paramyxovirus PREDICT_PMV-80,CMAB72466,Paramyxovirus PREDICT_PMV-80,Unclassified,Cameroon,Macronycteris gigas,2017,1,0
-ALS55427.1,Paramyxovirus PREDICT_PMV-19,PREDICT_PMV-19/ZB12055,Paramyxovirus PREDICT_PMV-19,Unclassified,Republic of the Congo,Miniopterus inflatus,2012,1,0
-ALS55402.1,Paramyxovirus PREDICT_PMV-15,PREDICT_PMV-15/GVF-CM-ECO05231,Paramyxovirus PREDICT_PMV-15,Unclassified,Cameroon,Mops condylurus,2009,1,0
-QID58634.1,Paramyxovirus PREDICT_PMV-15,CDAB0480,Paramyxovirus PREDICT_PMV-15,Unclassified,Democratic Republic of the Congo,Mops condylurus,2018,1,0
-QID58635.1,Paramyxovirus PREDICT_PMV-15,CDAB0525,Paramyxovirus PREDICT_PMV-15,Unclassified,Democratic Republic of the Congo,Mops condylurus,2018,1,0
-QID58639.1,Paramyxovirus PREDICT_PMV-15,CDAB0492,Paramyxovirus PREDICT_PMV-15,Unclassified,Democratic Republic of the Congo,Mops condylurus,2018,1,0
-QID58820.1,Paramyxovirus PREDICT_PMV-15,TZAB0388,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2017,1,0
-URC21326.1,Paramyxovirus PREDICT_PMV-15,TZAB1074,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21327.1,Paramyxovirus PREDICT_PMV-15,TZAB1078,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21328.1,Paramyxovirus PREDICT_PMV-15,TZAB1382,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21329.1,Paramyxovirus PREDICT_PMV-15,TZAB1407,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21330.1,Paramyxovirus PREDICT_PMV-15,TZAB1408,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21331.1,Paramyxovirus PREDICT_PMV-15,TZAB1409,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21332.1,Paramyxovirus PREDICT_PMV-15,TZAB1438,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21333.1,Paramyxovirus PREDICT_PMV-15,TZAB1458,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21334.1,Paramyxovirus PREDICT_PMV-15,TZAB1467,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21335.1,Paramyxovirus PREDICT_PMV-15,TZAB1469,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21336.1,Paramyxovirus PREDICT_PMV-15,TZAB1469,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21340.1,Paramyxovirus PREDICT_PMV-15,TZAB1879,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21342.1,Paramyxovirus PREDICT_PMV-15,TZAB1886,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21344.1,Paramyxovirus PREDICT_PMV-15,TZAB1905,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21345.1,Paramyxovirus PREDICT_PMV-15,TZAB1917,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21346.1,Paramyxovirus PREDICT_PMV-15,TZAB1918,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21347.1,Paramyxovirus PREDICT_PMV-15,TZAB1931,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21348.1,Paramyxovirus PREDICT_PMV-15,TZAB1949,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops condylurus,2018,1,0
-URC21361.1,Paramyxovirus PREDICT_PMV-15,GHAB1974,Paramyxovirus PREDICT_PMV-15,Unclassified,Ghana,Mops condylurus,2018,1,0
-QID58886.1,Paramyxovirus PREDICT_PMV-175,ETAB0336,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
-QID58887.1,Paramyxovirus PREDICT_PMV-175,ETAB0443,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
-QID58888.1,Paramyxovirus PREDICT_PMV-175,ETAB0466,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
-QID58889.1,Paramyxovirus PREDICT_PMV-175,ETAB0475,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
-QID58890.1,Paramyxovirus PREDICT_PMV-175,ETAB0477,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
-QID58891.1,Paramyxovirus PREDICT_PMV-175,ETAB0578,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
-QID58892.1,Paramyxovirus PREDICT_PMV-175,ETAB0584,Paramyxovirus PREDICT_PMV-175,Unclassified,Ethiopia,Mops midas,2018,1,0
-ALS55458.1,Paramyxovirus PREDICT_PMV-15,PREDICT_PMV-15/AAOSG,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops pumilus,2012,1,0
-ALS55459.1,Paramyxovirus PREDICT_PMV-15,PREDICT_PMV-15/AAOSJ,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops pumilus,2012,1,0
-ALS55460.1,Paramyxovirus PREDICT_PMV-15,PREDICT_PMV-15/AAOSE,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Mops pumilus,2012,1,0
-ALS55463.1,Paramyxovirus PREDICT_PMV-18,PREDICT_PMV-18/AASBQ,Paramyxovirus PREDICT_PMV-18,Unclassified,Tanzania,Mops pumilus,2012,1,0
-ALS55464.1,Paramyxovirus PREDICT_PMV-18,PREDICT_PMV-18/AASBL,Paramyxovirus PREDICT_PMV-18,Unclassified,Tanzania,Mops pumilus,2012,1,0
-QID58882.1,Paramyxovirus PREDICT_PMV-24,ETAB0212,Paramyxovirus PREDICT_PMV-24,Unclassified,Ethiopia,Mops pumilus,2018,1,0
-QID58883.1,Paramyxovirus PREDICT_PMV-24,ETAB0212,Paramyxovirus PREDICT_PMV-24,Unclassified,Ethiopia,Mops pumilus,2018,1,0
-QID58884.1,Paramyxovirus PREDICT_PMV-24,ETAB0225,Paramyxovirus PREDICT_PMV-24,Unclassified,Ethiopia,Mops pumilus,2018,1,0
-QID58885.1,Paramyxovirus PREDICT_PMV-24,ETAB0225,Paramyxovirus PREDICT_PMV-24,Unclassified,Ethiopia,Mops pumilus,2018,1,0
-URC21355.1,Paramyxovirus PREDICT_PMV-182,GNAB334,Paramyxovirus PREDICT_PMV-182,Unclassified,Guinea,Nycteridae,2018,1,0
-QID58522.1,Paramyxovirus PREDICT_PMV-119,EGAB0009,Paramyxovirus PREDICT_PMV-119,Unclassified,Egypt,Nycteris thebaica,2016,1,0
-YP_010797981.1,Salmon aquaparamyxovirus,,Aquaparamyxovirus salmonis,Aquaparamyxovirus,USA,Oncorhynchus tshawytscha,1983,0,0
-XBH24255.1,Otomops bat paramyxovirus,7A/Kenya/BAT0812/2015,Otomops bat paramyxovirus,Unclassified,Kenya,Otomops martiensseni,2015,1,0
-QID58863.1,Paramyxovirus PREDICT_PMV-174,SNAB0200,Paramyxovirus PREDICT_PMV-174,Unclassified,Senegal,Pipistrellus inexspectatus,2018,1,0
-QID58864.1,Paramyxovirus PREDICT_PMV-174,SNAB0175,Paramyxovirus PREDICT_PMV-174,Unclassified,Senegal,Pipistrellus inexspectatus,2018,1,0
-QID58865.1,Paramyxovirus PREDICT_PMV-174,SNAB0122,Paramyxovirus PREDICT_PMV-174,Unclassified,Senegal,Pipistrellus inexspectatus,2018,1,0
-QID58866.1,Paramyxovirus PREDICT_PMV-174,SNAB0174,Paramyxovirus PREDICT_PMV-174,Unclassified,Senegal,Pipistrellus inexspectatus,2018,1,0
-QID58867.1,Paramyxovirus PREDICT_PMV-174,SNAB0174,Paramyxovirus PREDICT_PMV-174,Unclassified,Senegal,Pipistrellus inexspectatus,2018,1,0
-QID58868.1,Paramyxovirus PREDICT_PMV-174,SNAB0189,Paramyxovirus PREDICT_PMV-174,Unclassified,Senegal,Pipistrellus inexspectatus,2018,1,0
-QID58510.1,Paramyxovirus PREDICT_PMV-118,EGAB0004,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
-QID58511.1,Paramyxovirus PREDICT_PMV-118,EGAB0284,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
-QID58512.1,Paramyxovirus PREDICT_PMV-118,EGAB0283,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
-QID58513.1,Paramyxovirus PREDICT_PMV-118,EGAB0277,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
-QID58514.1,Paramyxovirus PREDICT_PMV-118,EGAB0271,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
-QID58515.1,Paramyxovirus PREDICT_PMV-118,EGAB0268,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
-QID58516.1,Paramyxovirus PREDICT_PMV-118,EGAB0266,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
-QID58518.1,Paramyxovirus PREDICT_PMV-118,EGAB0162,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
-QID58519.1,Paramyxovirus PREDICT_PMV-118,EGAB0156,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
-QID58520.1,Paramyxovirus PREDICT_PMV-118,EGAB0153,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
-QID58521.1,Paramyxovirus PREDICT_PMV-118,EGAB0128,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
-QID58523.1,Paramyxovirus PREDICT_PMV-118,EGAB0007,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
-QID58749.1,Paramyxovirus PREDICT_PMV-118,EGAB0083,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Pipistrellus kuhlii,2016,1,0
-XAI72404.1,Henipavirus nipahense,MCl-23-BAT-438/5_RNA_11998,Henipavirus nipahense,Henipavirus,India,Pteropus medius,2023,1,0
-XAI72413.1,Henipavirus nipahense,MCL-23-Bat-247/5_RNA_11996,Henipavirus nipahense,Henipavirus,India,Pteropus medius,2023,1,0
-XQM46515.1,Salt gully virus,Boonah,Unclassified henipavirus,Henipavirus,Australia,Pteropus sp.,2011,1,0
-YP_009094087.1,Cedar virus,CG1a,Henipavirus cedarense,Henipavirus,Australia,Pteropus sp.,2009,1,0
-YP_009512978.1,Teviot virus,Cedar Grove,Pararubulavirus teviotense,Pararubulavirus,Australia,Pteropus sp.,2009,1,0
-YP_009094096.1,Mojiang virus,Tongguan1,Henipavirus mojiangense,Henipavirus,China,Rattus tanezumi sladeni,2012,0,0
-ALS55506.1,Paramyxovirus PREDICT_PMV-71,PREDICT_PMV-71/OTBA27-20130601,Paramyxovirus PREDICT_PMV-71,Unclassified,Uganda,Rhinolophus,2013,1,0
 YAI81086.1,Paramyxovirus sp.,FMNH 238751,Paramyxovirus sp.,Unclassified,Angola,Rhinolophus fumigatus,2019,1,0
-QID58507.1,Paramyxovirus PREDICT_PMV-114,EGAB0375,Paramyxovirus PREDICT_PMV-114,Unclassified,Egypt,Rousettus aegyptiacus,2017,1,0
-QID58508.1,Paramyxovirus PREDICT_PMV-115,EGAB0326,Paramyxovirus PREDICT_PMV-115,Unclassified,Egypt,Rousettus aegyptiacus,2017,1,0
-QID58509.1,Paramyxovirus PREDICT_PMV-116,EGAB0362,Paramyxovirus PREDICT_PMV-116,Unclassified,Egypt,Rousettus aegyptiacus,2017,1,0
-QID58517.1,Paramyxovirus PREDICT_PMV-113,EGAB0220,Paramyxovirus PREDICT_PMV-113,Unclassified,Egypt,Rousettus aegyptiacus,2016,1,0
-QID58627.1,Paramyxovirus PREDICT_PMV-141,TZAB0158,Paramyxovirus PREDICT_PMV-141,Unclassified,Tanzania,Rousettus aegyptiacus,2016,1,0
-QID58698.1,Paramyxovirus PREDICT_PMV-118,EGAB0052,Paramyxovirus PREDICT_PMV-118,Unclassified,Egypt,Rousettus aegyptiacus,2016,1,0
-QID58919.1,Bat paramyxovirus R_aeg_UPE766/525/122,PREDICT_EGAB0669,Bat paramyxovirus R_aeg_UPE766/525/122,Unclassified,Egypt,Rousettus aegyptiacus,2017,1,0
-URC21337.1,Paramyxovirus PREDICT_PMV-178,TZAB1593,Paramyxovirus PREDICT_PMV-178,Unclassified,Tanzania,Rousettus aegyptiacus,2018,1,0
-URC21338.1,Paramyxovirus PREDICT_PMV-178,TZAB1667,Paramyxovirus PREDICT_PMV-178,Unclassified,Tanzania,Rousettus aegyptiacus,2018,1,0
-URC21353.1,Paramyxovirus PREDICT_PMV-179,RWAB0414,Paramyxovirus PREDICT_PMV-179,Unclassified,Rwanda,Rousettus aegyptiacus,2017,1,0
-XBH24213.1,Rousettus bat paramyxovirus,10A/Kenya/BAT1838/2015,Rousettus bat paramyxovirus,Unclassified,Kenya,Rousettus aegyptiacus,2015,1,0
-XRT74648.1,Yunnan bat henipavirus 1,WDBS1745,Unclassified henipavirus,Henipavirus,China,Rousettus leschenaultii,2017,1,0
-XRT74654.1,Yunnan bat henipavirus 2,WDBS1733,Unclassified henipavirus,Henipavirus,China,Rousettus leschenaultii,2017,1,0
-PX095965,Unclassified henipavirus,MIZ546,Unclassified henipavirus,Henipavirus,Madagascar,Rousettus madagascariensis,2019,1,1
-PX127342,Andrafiabe henipavirus,ROU125,Andrafiabe henipavirus,Henipavirus,Madagascar,Rousettus madagascariensis,2019,1,1
-PX127343,Andrafiabe henipavirus,ROU148,Andrafiabe henipavirus,Henipavirus,Madagascar,Rousettus madagascariensis,2019,1,1
-PX127344,Andrafiabe henipavirus,ROU173,Andrafiabe henipavirus,Henipavirus,Madagascar,Rousettus madagascariensis,2019,1,1
-PX127457,Unclassified henipavirus,MIZ35,Unclassified henipavirus,Henipavirus,Madagascar,Rousettus madagascariensis,2014,1,1
-PX127460,Unclassified henipavirus,ROU7,Unclassified henipavirus,Henipavirus,Madagascar,Rousettus madagascariensis,2014,1,1
-PX127463,Unclassified henipavirus,ROU143,Unclassified henipavirus,Henipavirus,Madagascar,Rousettus madagascariensis,2019,1,1
-PX127491,Unclassified pararubulavirus,ROU13,Unclassified pararubulavirus,Pararubulavirus,Madagascar,Rousettus madagascariensis,2014,1,1
+YP_009091839.1,Ghana virus,BatPV/Eid_hel/GH-M74a/GHA/2009,Henipavirus ghanaense,Henipavirus,Ghana,Eidolon helvum,2009,1,0
+YP_009094051.1,Sunshine coast virus,,Sunshine coast virus,Sunshinevirus,Australia,Aspidites melanocephalus,2008,0,0
+YP_009094087.1,Cedar virus,CG1a,Henipavirus cedarense,Henipavirus,Australia,Pteropus sp.,2009,1,0
+YP_009094096.1,Mojiang virus,Tongguan1,Henipavirus mojiangense,Henipavirus,China,Rattus tanezumi sladeni,2012,0,0
+YP_009094339.1,Salem virus,,Salemvirus salemense,Salemvirus,USA,Equus caballus,1992,0,0
+YP_009512978.1,Teviot virus,Cedar Grove,Pararubulavirus teviotense,Pararubulavirus,Australia,Pteropus sp.,2009,1,0
+YP_010774627.1,Avian paramyxovirus 4,APMV-4/KR/YJ/06,Paraavulavirus hongkongense,Paraavulavirus,South Korea,Anas platyrhynchos,2006,0,0
 YP_010790479.1,Wenzhou pacific spadenose shark paramyxovirus,,Scoliodonvirus scoliodontis,Scoliodonvirus,China,Scoliodon macrorhynchos,2017,0,0
-NP_112028.1,Henipavirus nipahense,,Henipavirus nipahense,Henipavirus,Malaysia,Sus scrofa domesticus,1998,0,0
 YP_010790486.1,Wenling triplecross lizardfish paramyxovirus,,Synodonvirus synodi,Synodonvirus,China,Synodus macrops,2017,0,0
-ALS55461.1,Paramyxovirus PREDICT_PMV-15,PREDICT_PMV-15/AATKF,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Tadarida,2013,0,0
-ALS55462.1,Paramyxovirus PREDICT_PMV-15,PREDICT_PMV-15/AATKE,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Tadarida,2013,0,0
-URC21339.1,Paramyxovirus PREDICT_PMV-15,TZAB1877,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Tadarida aegyptiaca,2018,0,0
-URC21341.1,Paramyxovirus PREDICT_PMV-15,TZAB1885,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Tadarida aegyptiaca,2018,0,0
-URC21343.1,Paramyxovirus PREDICT_PMV-15,TZAB1895,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Tadarida aegyptiaca,2018,0,0
-ALS55470.1,Paramyxovirus PREDICT_PMV-59,PREDICT_PMV-59/AAUJK,Paramyxovirus PREDICT_PMV-59,Unclassified,Tanzania,Taphozous mauritianus,2013,0,0
-NP_054697.1,Tupaia paramyxovirus,,Narmovirus tupaiae,Narmovirus,Southeast Asia,Tree shrew,1999,0,0
-ALS55422.1,Paramyxovirus PREDICT_PMV-11,PREDICT_PMV-11/ZB12054,Paramyxovirus PREDICT_PMV-11,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
-ALS55423.1,Paramyxovirus PREDICT_PMV-12,PREDICT_PMV-12/ZB12061,Paramyxovirus PREDICT_PMV-12,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
-ALS55424.1,Paramyxovirus PREDICT_PMV-16,PREDICT_PMV-16/ZB12053,Paramyxovirus PREDICT_PMV-16,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
-ALS55425.1,Paramyxovirus PREDICT_PMV-16,PREDICT_PMV-16/ZB12053,Paramyxovirus PREDICT_PMV-16,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
-ALS55426.1,Paramyxovirus PREDICT_PMV-16,PREDICT_PMV-16/ZB12025,Paramyxovirus PREDICT_PMV-16,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
-ALS55430.1,Paramyxovirus PREDICT_PMV-26,PREDICT_PMV-26/ZB12050,Paramyxovirus PREDICT_PMV-26,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
-ALS55431.1,Paramyxovirus PREDICT_PMV-26,PREDICT_PMV-26/ZB12025,Paramyxovirus PREDICT_PMV-26,Unclassified,Republic of the Congo,Triaenops persicus,2012,1,0
-ALS55469.1,Paramyxovirus PREDICT_PMV-57,PREDICT_PMV-57/AATET,Paramyxovirus PREDICT_PMV-57,Unclassified,Tanzania,Triaenops persicus,2013,1,0
+YP_010790495.1,Wenling tonguesole paramyxovirus,,Cynoglossusvirus cynoglossi,Cynoglossusvirus,China,Cynoglossus sp.,2017,0,0
+YP_010790504.1,Wenling hoplichthys paramyxovirus,,Hoplichthysvirus hoplichthysis,Hoplichthysvirus,China,Hoplichthys,2017,0,0
+YP_010790514.1,Human respirovirus 3,Guangzhou,Respirovirus pneumoniae,Respirovirus,China,Homo sapiens,2007,0,0
+YP_010797981.1,Salmon aquaparamyxovirus,,Aquaparamyxovirus salmonis,Aquaparamyxovirus,USA,Oncorhynchus tshawytscha,1983,0,0
+YP_010798268.1,Avian metaavulavirus 21,APMV/dove/Taiwan/AHRI33/2009,Avian metaavulavirus 21,Metaavulavirus,Taiwan,Columbidae,2009,0,0
+YP_010799241.1,Rodent paramyxovirus,RtAp-ParaV/NX2015,Jeilongvirus apodemi,Jeilongvirus,China,Apodemus peninsulae,2015,0,0
+YP_138518.1,Parainfluenza virus 5,,Orthorubulavirus mammalis,Orthorubulavirus,USA,Homo sapiens,1998,0,0

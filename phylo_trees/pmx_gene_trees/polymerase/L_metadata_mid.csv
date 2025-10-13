@@ -1,39 +1,103 @@
 Accession,Organism_Name,Isolate,Species,Genus,Family,Country,source,Collection_Date,Host,novel
-PX127468,Unclassified henipavirus,ANGB137,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2018,1,1
-PX127406,Unclassified henipavirus,CAT017,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2018,1,1
+NP_037646.1,Respirovirus bovis,,Respirovirus bovis,Respirovirus,Paramyxoviridae,USA,Lab strain,1999,0,0
+NP_047113.3,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,1997,0,0
+NP_054697.1,Tupaia paramyxovirus,,Narmovirus tupaiae,Narmovirus,Paramyxoviridae,Southeast Asia,Tree shrew,1999,0,0
+NP_054714.1,Mumps orthorubulavirus,Miyahara,Orthorubulavirus parotitidis,Orthorubulavirus,Paramyxoviridae,Japan,Homo sapiens,2000,0,0
+NP_056924.1,Measles morbillivirus,,Morbillivirus hominis,Morbillivirus,Paramyxoviridae,Japan,Homo sapiens,1998,0,0
+NP_067153.2,Human respirovirus 3,,Respirovirus pneumoniae,Respirovirus,Paramyxoviridae,Japan,Homo sapiens,1998,0,0
+NP_112028.1,Henipavirus nipahense,,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Malaysia,Sus scrofa domesticus,1998,0,0
+NP_665871.1,Tioman virus,,Pararubulavirus tiomanense,Pararubulavirus,Paramyxoviridae,Malaysia,Pteropus hypomelanus,2002,1,0
+NP_872278.1,Goose paramyxovirus SF02,SF02,Goose paramyxovirus SF02,Unclassified,Paramyxoviridae,China,Goose,2002,0,0
+NP_945030.1,Dolphin morbillivirus,,Morbillivirus ceti,Morbillivirus,Paramyxoviridae,North Ireland,Delphinus,2003,0,0
+NP_958055.1,Mossman virus,,Narmovirus mossmanense,Narmovirus,Paramyxoviridae,Australia,Rattus,2003,0,0
+PX095965,Unclassified henipavirus,MIZ546,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2019,1,1
+PX095966,Hendra/Nipah sister species,Pool_4_ED_UR_2,Hendra/Nipah sister species,Henipavirus,Paramyxoviridae,Madagascar,Chiroptera,Unknown,1,1
+PX095968,Hendra/Nipah sister species,Pool_5_ED_UR_2,Hendra/Nipah sister species,Henipavirus,Paramyxoviridae,Madagascar,Chiroptera,Unknown,1,1
+PX095969,Unclassified henipavirus,Pool_6_ED_UR_1,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Chiroptera,Unknown,1,1
+PX127342,Andrafiabe henipavirus,ROU125,Andrafiabe henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2019,1,1
+PX127343,Andrafiabe henipavirus,ROU148,Andrafiabe henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2019,1,1
+PX127344,Andrafiabe henipavirus,ROU173,Andrafiabe henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2019,1,1
 PX127402,Ghana-like virus,KEL86_KEL94,Ghana-like virus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2014,1,1
+PX127406,Unclassified henipavirus,CAT017,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2018,1,1
 PX127409,Unclassified henipavirus,KEL166,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2018,1,1
 PX127420,Unclassified henipavirus,KEL234,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2018,1,1
-PX127435,Unclassified henipavirus,KEL250,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2018,1,1
 PX127443,Unclassified henipavirus,KEL267,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2018,1,1
-KEL277_NODE_2179,Angavokely virus,KEL277,Angavokely henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2018,1,1
 PX127449,Unclassified henipavirus,KEL281,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2019,1,1
 PX127451,Unclassified henipavirus,KEL281B,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2019,1,1
 PX127455,Angavokely virus,KEL380,Angavokely henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2019,1,1
-PX127457,Unclassified henipavirus,MIZ35,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2014,1,1
-PX095965,Unclassified henipavirus,MIZ546,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2019,1,1
-PX095966,Hendra/Nipah sister species,Pool_4_ED_UR_2,Hendra/Nipah sister species,Henipavirus,Paramyxoviridae,Madagascar,Chiroptera,Unknown,1,1
-PX095967,Unclassified henipavirus,Pool_4_RM_UR_2,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Chiroptera,Unknown,1,1
-PX095968,Hendra/Nipah sister species,Pool_5_ED_UR_2,Hendra/Nipah sister species,Henipavirus,Paramyxoviridae,Madagascar,Chiroptera,Unknown,1,1
-PX095969,Unclassified henipavirus,Pool_6_ED_UR_1,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Chiroptera,Unknown,1,1
-PX095971,Unclassified henipavirus,Pool_8_urine_M2,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Chiroptera,Unknown,1,1
-PX127342,Andrafiabe henipavirus,ROU125,Andrafiabe henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2019,1,1
 PX127463,Unclassified henipavirus,ROU143,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2019,1,1
-PX127343,Andrafiabe henipavirus,ROU148,Andrafiabe henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2019,1,1
-PX127344,Andrafiabe henipavirus,ROU173,Andrafiabe henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2019,1,1
 PX127483,Unclassified pararubulavirus,ANGB141,Unclassified pararubulavirus,Pararubulavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2018,1,1
-MIZ193_NODE_166,Unclassified pararubulavirus,MIZ193,Unclassified pararubulavirus,Pararubulavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2018,1,1
 PX127491,Unclassified pararubulavirus,ROU13,Unclassified pararubulavirus,Pararubulavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2014,1,1
 PX127494,Unclassified pararubulavirus,ROU15,Unclassified pararubulavirus,Pararubulavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2014,1,1
-PX127498,Unclassified pararubulavirus,ROU16,Unclassified pararubulavirus,Pararubulavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2014,1,1
-YP_010797981.1,Salmon aquaparamyxovirus,,Aquaparamyxovirus salmonis,Aquaparamyxovirus,Paramyxoviridae,USA,Oncorhynchus tshawytscha,1983,0,0
-YP_009094152.1,Salmon aquaparamyxovirus,ASPV/Yrkje371/95,Aquaparamyxovirus salmonis,Aquaparamyxovirus,Paramyxoviridae,Norway,Salmonidae,2007,0,0
-YP_010790495.1,Wenling tonguesole paramyxovirus,,Cynoglossusvirus cynoglossi,Cynoglossusvirus,Paramyxoviridae,China,Cynoglossus sp.,2017,0,0
+QYC64606.1,Henipavirus hendraense,HeV-var/Australia/Horse/2015/Gympie,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,2015,0,0
+QYO90519.1,Daeryong virus,Cs17-65,Daryong henipavirus,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura shantungensis,2017,0,0
+QYO90533.1,Gamak virus,Cl17-32,Gamak henipavirus,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura lasiura,2017,0,0
+UUV47207.1,Langya virus,SDQD_H1801,Langya henipavirus,Henipavirus,Paramyxoviridae,China,Homo sapiens,2018,0,0
+UVG43990.1,Angavokely virus,,Angavokely henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2019,1,0
+UYS87244.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,2021,0,0
+UZQ22168.1,Henipavirus nipahense,MCL-21-H-9808,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Homo sapiens,2021,0,0
+WEU70827.1,Chodsigoa hypsibia henipavirus,PMV/SC/C7-49.4/2022,Chodsigoa hypsibia henipavirus,Parahenipavirus,Paramyxoviridae,China,Chodsigoa hypsibia,2022,0,0
+WIU81494.1,Crocidura tanakae henipavirus,Shiyan201,Crocidura tanakae henipavirus,Parahenipavirus,Paramyxoviridae,China,Crocidura tanakae,2021,0,0
+WJL29506.1,Ninorex virus,,Parahenipavirus soricis,Parahenipavirus,Paramyxoviridae,Belgium,Sorex minutus,2020,0,0
+WKR82409.1,Henipavirus nipahense,MCL-19-H-1134,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Homo sapiens,2019,0,0
+WVH15778.1,Henipavirus nipahense,MCL-23-H-3874_RNA_11865,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Homo sapiens,2023,0,0
+WVH15787.1,Henipavirus nipahense,MCL-23-H-3764_RNA_11861,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Homo sapiens,2023,0,0
+WVH15796.1,Henipavirus nipahense,MCL-23-H-3762_RNA_11863,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Homo sapiens,2023,0,0
+XAF84001.1,Sosuga virus,Bat-1021,Pararubulavirus sosugaense,Pararubulavirus,Paramyxoviridae,Sierra Leone,Rousettus aegyptiacus,2018,1,0
+XAI72404.1,Henipavirus nipahense,MCl-23-BAT-438/5_RNA_11998,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Pteropus medius,2023,1,0
+XAI72413.1,Henipavirus nipahense,MCL-23-Bat-247/5_RNA_11996,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Pteropus medius,2023,1,0
+XCK17071.1,Henipavirus nipahense,NiV/human/BGD/RS0276817/2017,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2017,0,0
+XCK17080.1,Henipavirus nipahense,NiV/human/BGD/FP0136517/2017,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2017,0,0
+XCK17089.1,Henipavirus nipahense,NiV/human/BGD/SQ00118/2018,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2018,0,0
+XCK17098.1,Henipavirus nipahense,NiV/human/BGD/RS0384019/2019,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2019,0,0
+XCK17107.1,Henipavirus nipahense,NiV/human/BGD/CMH/2020,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2020,0,0
+XCK17116.1,Henipavirus nipahense,NiV/human/BGD/FP0218120/2020,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2020,0,0
+XCK17125.1,Henipavirus nipahense,NiV/human/BGD/ID-01/2020,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2020,0,0
+XCK17134.1,Henipavirus nipahense,NiV/human/BGD/ID-02/2020,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2020,0,0
+XCK17143.1,Henipavirus nipahense,NiV/human/BGD/FP0219620/2020,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2020,0,0
+XCK17152.1,Henipavirus nipahense,NiV/human/BGD/RS0559122/2022,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2022,0,0
+XCK17161.1,Henipavirus nipahense,NiV/human/BGD/FP0260922/2022,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2022,0,0
+XCK17170.1,Henipavirus nipahense,NiV/human/BGD/RS0560822/2022,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2022,0,0
+XCK17179.1,Henipavirus nipahense,NiV/human/BGD/RS0644723/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
+XCK17188.1,Henipavirus nipahense,NiV/human/BGD/NINS00123/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
+XCK17197.1,Henipavirus nipahense,NiV/human/BGD/FP0298523/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
+XCK17206.1,Henipavirus nipahense,NiV/human/BGD/FP0298923/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
+XCK17215.1,Henipavirus nipahense,NiV/human/BGD/RS0649923/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
+XCK17224.1,Henipavirus nipahense,NiV/human/BGD/FP0300923/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
+XCK17233.1,Henipavirus nipahense,NiV/human/BGD/RS0652823/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
+XCK17242.1,Henipavirus nipahense,NiV/human/BGD/FP0302023/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
+XCK17251.1,Henipavirus nipahense,NiV/human/BGD/DMCH00523/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
+XJU66141.1,Henipavirus nipahense,NiV/human/BGD/NINS00123U/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
+XJU66147.1,Henipavirus nipahense,NiV/human/BGD/FP0300923BM/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
+XJU66153.1,Henipavirus nipahense,NiV/Bat/BGD/J106/2012,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Chiroptera,2012,1,0
+XJU66855.1,Henipavirus nipahense,NiV_M_IRF523,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Malaysia,Homo sapiens,1998,0,0
 XJU75812.1,Camp Hill virus,,Camp Hill virus,Parahenipavirus,Paramyxoviridae,USA,Blarina brevicauda,2021,0,0
 XJU75820.1,Camp Hill virus,,Camp Hill virus,Parahenipavirus,Paramyxoviridae,USA,Blarina brevicauda,2021,0,0
 XJU75828.1,Camp Hill virus,,Camp Hill virus,Parahenipavirus,Paramyxoviridae,USA,Blarina brevicauda,2021,0,0
 XJU75836.1,Camp Hill virus,,Camp Hill virus,Parahenipavirus,Paramyxoviridae,USA,Blarina brevicauda,2021,0,0
-XJU66153.1,Henipavirus nipahense,NiV/Bat/BGD/J106/2012,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Chiroptera,2012,1,0
+XLS83348.1,Langya virus,,Parahenipavirus langyaense,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura lasiura,2017,0,0
+XLS83358.1,Langya virus,,Parahenipavirus langyaense,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura lasiura,2017,0,0
+XLS83368.1,Langya virus,,Parahenipavirus langyaense,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura lasiura,2023,0,0
+XLS83378.1,Langya virus,,Parahenipavirus langyaense,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura lasiura,2023,0,0
+XLS83388.1,Langya virus,,Parahenipavirus langyaense,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura lasiura,2023,0,0
+XLZ62602.1,Henipavirus hendraense,HeV/Australia/horse/2023/Cardiff Heights,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,2023,0,0
+XMP25128.1,Henipavirus sp.,T-NP19/PAR,Henipavirus sp.,Henipavirus,Paramyxoviridae,Indonesia,Cynopterus brachyotis,2021,0,0
+XOT37553.1,melian virus,Cr. grandiceps_para,melian virus,Parahenipavirus,Paramyxoviridae,Sierra Leone,Crocidura grandiceps,2023,0,0
+XOT37560.1,Crocidura olivieri henipavirus 1,Cr. olivieri_para_1,Crocidura olivieri henipavirus 1,Parahenipavirus,Paramyxoviridae,Sierra Leone,Crocidura olivieri,2023,0,0
+XOT37567.1,Crocidura olivieri henipavirus 2,Cr. olivieri_para_2,Crocidura olivieri henipavirus 2,Parahenipavirus,Paramyxoviridae,Sierra Leone,Crocidura olivieri,2023,0,0
+XOT37718.1,melian virus,Ra. rattus_para_3,melian virus,Parahenipavirus,Paramyxoviridae,Sierra Leone,Rattus rattus,2023,0,0
+XPO94331.1,Henipavirus nipahense,NiV/human/BGD/DMCH00124/2024,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2024,0,0
+XPO94337.1,Henipavirus nipahense,NiV/human/BGD/PMSKH0000424/2024,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2024,0,0
+XPR29450.1,Pararubulavirus sp.,T-LB16/Bridge,Pararubulavirus sp.,Pararubulavirus,Paramyxoviridae,Indonesia,Rousettus amplexicaudatus,2021,1,0
+XPR29451.1,Pararubulavirus sp.,T-LB16/PAR,Pararubulavirus sp.,Pararubulavirus,Paramyxoviridae,Indonesia,Rousettus amplexicaudatus,2021,1,0
+XQI07592.1,Parahenipavirus sp.,#79pol1,Parahenipavirus sp.,Parahenipavirus,Paramyxoviridae,France,Sorex antinorii,2018,0,0
+XQI07593.1,Parahenipavirus sp.,#79pol2,Parahenipavirus sp.,Parahenipavirus,Paramyxoviridae,France,Sorex antinorii,2018,0,0
+XQM46515.1,Salt gully virus,Boonah,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Australia,Pteropus sp.,2011,1,0
+XRL22895.1,Sosuga virus,,Pararubulavirus sosugaense,Pararubulavirus,Paramyxoviridae,South Sudan,Rousettus aegyptiacus,2021,1,0
+XRT74648.1,Yunnan bat henipavirus 1,WDBS1745,Unclassified henipavirus,Henipavirus,Paramyxoviridae,China,Rousettus leschenaultii,2017,1,0
+XRT74654.1,Yunnan bat henipavirus 2,WDBS1733,Unclassified henipavirus,Henipavirus,Paramyxoviridae,China,Rousettus leschenaultii,2017,1,0
+XTB76844.1,Henipavirus sp.,MCL-24-H-4185,Henipavirus sp.,Henipavirus,Paramyxoviridae,India,Homo sapiens,2024,0,0
+XUU11145.1,Henipavirus sp.,GH,Henipavirus sp.,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura shantungensis,2022,0,0
 XWJ59155.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Chiroptera,2017,1,0
 XWJ59161.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Chiroptera,2018,1,0
 XWJ59167.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Chiroptera,2018,1,0
@@ -80,21 +144,6 @@ XWJ59413.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxovi
 XWJ59419.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Chiroptera,2018,1,0
 XWJ59425.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Chiroptera,2020,1,0
 XWJ59431.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Chiroptera,2020,1,0
-XWJ59491.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Chiroptera,2017,1,0
-WEU70827.1,Chodsigoa hypsibia henipavirus,PMV/SC/C7-49.4/2022,Chodsigoa hypsibia henipavirus,Parahenipavirus,Paramyxoviridae,China,Chodsigoa hypsibia,2022,0,0
-QYO90533.1,Gamak virus,Cl17-32,Gamak henipavirus,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura lasiura,2017,0,0
-XOT37560.1,Crocidura olivieri henipavirus 1,Cr. olivieri_para_1,Crocidura olivieri henipavirus 1,Parahenipavirus,Paramyxoviridae,Sierra Leone,Crocidura olivieri,2023,0,0
-XOT37567.1,Crocidura olivieri henipavirus 2,Cr. olivieri_para_2,Crocidura olivieri henipavirus 2,Parahenipavirus,Paramyxoviridae,Sierra Leone,Crocidura olivieri,2023,0,0
-QYO90519.1,Daeryong virus,Cs17-65,Daryong henipavirus,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura shantungensis,2017,0,0
-XUU11145.1,Henipavirus sp.,GH,Henipavirus sp.,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura shantungensis,2022,0,0
-WIU81494.1,Crocidura tanakae henipavirus,Shiyan201,Crocidura tanakae henipavirus,Parahenipavirus,Paramyxoviridae,China,Crocidura tanakae,2021,0,0
-XMP25128.1,Henipavirus sp.,T-NP19/PAR,Henipavirus sp.,Henipavirus,Paramyxoviridae,Indonesia,Cynopterus brachyotis,2021,0,0
-UVG43990.1,Angavokely virus,,Angavokely henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2019,1,0
-YP_009091839.1,Ghana virus,BatPV/Eid_hel/GH-M74a/GHA/2009,Henipavirus ghanaense,Henipavirus,Paramyxoviridae,Ghana,Eidolon helvum,2009,1,0
-NP_047113.3,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,1997,0,0
-QYC64606.1,Henipavirus hendraense,HeV-var/Australia/Horse/2015/Gympie,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,2015,0,0
-UYS87244.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,2021,0,0
-XLZ62602.1,Henipavirus hendraense,HeV/Australia/horse/2023/Cardiff Heights,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,2023,0,0
 XWJ59437.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,2015,0,0
 XWJ59443.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,2017,0,0
 XWJ59449.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,2014,0,0
@@ -104,123 +153,66 @@ XWJ59467.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxovi
 XWJ59473.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,2011,0,0
 XWJ59479.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,2011,0,0
 XWJ59485.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Equus caballus,2013,0,0
-UUV47207.1,Langya virus,SDQD_H1801,Langya henipavirus,Henipavirus,Paramyxoviridae,China,Homo sapiens,2018,0,0
-UZQ22168.1,Henipavirus nipahense,MCL-21-H-9808,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Homo sapiens,2021,0,0
-WKR82409.1,Henipavirus nipahense,MCL-19-H-1134,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Homo sapiens,2019,0,0
-WVH15778.1,Henipavirus nipahense,MCL-23-H-3874_RNA_11865,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Homo sapiens,2023,0,0
-WVH15787.1,Henipavirus nipahense,MCL-23-H-3764_RNA_11861,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Homo sapiens,2023,0,0
-WVH15796.1,Henipavirus nipahense,MCL-23-H-3762_RNA_11863,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Homo sapiens,2023,0,0
-XCK17071.1,Henipavirus nipahense,NiV/human/BGD/RS0276817/2017,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2017,0,0
-XCK17080.1,Henipavirus nipahense,NiV/human/BGD/FP0136517/2017,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2017,0,0
-XCK17089.1,Henipavirus nipahense,NiV/human/BGD/SQ00118/2018,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2018,0,0
-XCK17098.1,Henipavirus nipahense,NiV/human/BGD/RS0384019/2019,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2019,0,0
-XCK17107.1,Henipavirus nipahense,NiV/human/BGD/CMH/2020,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2020,0,0
-XCK17116.1,Henipavirus nipahense,NiV/human/BGD/FP0218120/2020,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2020,0,0
-XCK17125.1,Henipavirus nipahense,NiV/human/BGD/ID-01/2020,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2020,0,0
-XCK17134.1,Henipavirus nipahense,NiV/human/BGD/ID-02/2020,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2020,0,0
-XCK17143.1,Henipavirus nipahense,NiV/human/BGD/FP0219620/2020,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2020,0,0
-XCK17152.1,Henipavirus nipahense,NiV/human/BGD/RS0559122/2022,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2022,0,0
-XCK17161.1,Henipavirus nipahense,NiV/human/BGD/FP0260922/2022,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2022,0,0
-XCK17170.1,Henipavirus nipahense,NiV/human/BGD/RS0560822/2022,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2022,0,0
-XCK17179.1,Henipavirus nipahense,NiV/human/BGD/RS0644723/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
-XCK17188.1,Henipavirus nipahense,NiV/human/BGD/NINS00123/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
-XCK17197.1,Henipavirus nipahense,NiV/human/BGD/FP0298523/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
-XCK17206.1,Henipavirus nipahense,NiV/human/BGD/FP0298923/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
-XCK17215.1,Henipavirus nipahense,NiV/human/BGD/RS0649923/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
-XCK17224.1,Henipavirus nipahense,NiV/human/BGD/FP0300923/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
-XCK17233.1,Henipavirus nipahense,NiV/human/BGD/RS0652823/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
-XCK17242.1,Henipavirus nipahense,NiV/human/BGD/FP0302023/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
-XCK17251.1,Henipavirus nipahense,NiV/human/BGD/DMCH00523/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
-XJU66141.1,Henipavirus nipahense,NiV/human/BGD/NINS00123U/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
-XJU66147.1,Henipavirus nipahense,NiV/human/BGD/FP0300923BM/2023,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2023,0,0
-XJU66855.1,Henipavirus nipahense,NiV_M_IRF523,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Malaysia,Homo sapiens,1998,0,0
-XPO94331.1,Henipavirus nipahense,NiV/human/BGD/DMCH00124/2024,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2024,0,0
-XPO94337.1,Henipavirus nipahense,NiV/human/BGD/PMSKH0000424/2024,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2024,0,0
-XTB76844.1,Henipavirus sp.,MCL-24-H-4185,Henipavirus sp.,Henipavirus,Paramyxoviridae,India,Homo sapiens,2024,0,0
-XAI72404.1,Henipavirus nipahense,MCl-23-BAT-438/5_RNA_11998,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Pteropus medius,2023,1,0
-XAI72413.1,Henipavirus nipahense,MCL-23-Bat-247/5_RNA_11996,Henipavirus nipahense,Henipavirus,Paramyxoviridae,India,Pteropus medius,2023,1,0
-YP_009094087.1,Cedar virus,CG1a,Henipavirus cedarense,Henipavirus,Paramyxoviridae,Australia,Pteropus sp.,2009,1,0
-YP_009094096.1,Mojiang virus,Tongguan1,Henipavirus mojiangense,Parahenipavirus,Paramyxoviridae,China,Rattus tanezumi sladeni,2012,0,0
-XRT74648.1,Yunnan bat henipavirus 1,WDBS1745,Unclassified henipavirus,Henipavirus,Paramyxoviridae,China,Rousettus leschenaultii,2017,1,0
-XRT74654.1,Yunnan bat henipavirus 2,WDBS1733,Unclassified henipavirus,Henipavirus,Paramyxoviridae,China,Rousettus leschenaultii,2017,1,0
-NP_112028.1,Henipavirus nipahense,,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Malaysia,Sus scrofa domesticus,1998,0,0
-YP_010790504.1,Wenling hoplichthys paramyxovirus,,Hoplichthysvirus hoplichthysis,Hoplichthysvirus,Paramyxoviridae,China,Hoplichthys,2017,0,0
-YP_010799241.1,Rodent paramyxovirus,RtAp-ParaV/NX2015,Jeilongvirus apodemi,Jeilongvirus,Paramyxoviridae,China,Apodemus peninsulae,2015,0,0
-YP_010801294.1,Belerina virus,HH114,Jeilongvirus erinacei,Jeilongvirus,Paramyxoviridae,Belgium,Erinaceus europaeus,2015,0,0
-YP_009666847.1,Mount Mabu Lophuromys virus 1,MOZ135_1,Jeilongvirus lophuromysis,Jeilongvirus,Paramyxoviridae,Mozambique,Lophuromys machangui,2011,0,0
-YP_009666855.1,Mount Mabu Lophuromys virus 2,MOZ135_2,Jeilongvirus mabuense,Jeilongvirus,Paramyxoviridae,Mozambique,Lophuromys machangui,2011,0,0
-YP_010801062.1,Ruloma virus,TA502,Jeilongvirus rungweense,Jeilongvirus,Paramyxoviridae,Tanzania,Lophuromys machangui,2013,0,0
-YP_010799324.1,Bat paramyxovirus,,Jeilongvirus murinae,Jeilongvirus,Paramyxoviridae,Comoros,Miniopterus griveaudi,2011,1,0
-YP_010799333.1,Bat paramyxovirus,,Jeilongvirus murinae,Jeilongvirus,Paramyxoviridae,Madagascar,Miniopterus griveaudi,2012,1,0
-YP_338085.1,J-virus,,Jeilongvirus queenslandense,Jeilongvirus,Paramyxoviridae,Australia,Mus musculus,2005,0,0
-YP_010085024.1,Pohorje myodes paramyxovirus 1,TT02/05,Jeilongvirus myodesis,Jeilongvirus,Paramyxoviridae,Slovenia,Myodes glareolus,2016,0,0
-YP_009094120.1,Tailam virus,,Jeilongvirus tailamense,Jeilongvirus,Paramyxoviridae,Hong Kong,Rattus andamanensis,2009,0,0
-YP_512254.1,Beilong virus,,Jeilongvirus beilongi,Jeilongvirus,Paramyxoviridae,Australia,Rodentia,2005,0,0
-YP_009508498.1,Avian paramyxovirus 14,APMV14/duck/Japan/11OG0352/2011,Metaavulavirus japanense,Metaavulavirus,Paramyxoviridae,Japan,Anatidae,2011,0,0
-YP_009512950.1,Avian metaavulavirus 6,,Metaavulavirus hongkongense,Metaavulavirus,Paramyxoviridae,Russia,Anser,2003,0,0
-YP_009512956.1,Avian metaavulavirus 8,,Metaavulavirus delawarense,Metaavulavirus,Paramyxoviridae,USA,Branta canadensis,1976,0,0
-YP_009094060.1,Avian metaavulavirus 7,,Metaavulavirus tennessense,Metaavulavirus,Paramyxoviridae,USA,Columbidae,1975,0,0
-YP_010798268.1,Avian metaavulavirus 21,APMV/dove/Taiwan/AHRI33/2009,Avian metaavulavirus 21,Metaavulavirus,Paramyxoviridae,Taiwan,Columbidae,2009,0,0
-YP_009094483.1,Avian metaavulavirus 11,common_snipe/France/100212/2010,Metaavulavirus galliense,Metaavulavirus,Paramyxoviridae,France,Gallinago gallinago,2010,0,0
-YP_009513219.1,Avian metaavulavirus 2,,Metaavulavirus yucaipaense,Metaavulavirus,Paramyxoviridae,USA,Gallus gallus,1956,0,0
-YP_009553495.1,Avian metaavulavirus 20,APMV-20/gull/Kazakhstan/5976/2014,Metaavulavirus kazakhstanense,Metaavulavirus,Paramyxoviridae,Kazakhstan,Laridae,2014,0,0
-YP_009094160.1,Avian metaavulavirus 5,,Metaavulavirus kunitachiense,Metaavulavirus,Paramyxoviridae,Japan,Melopsittacus undulatus,1974,0,0
-YP_087126.2,Rinderpest virus (strain Kabete O),,Morbillivirus pecoris,Morbillivirus,Paramyxoviridae,Kenya,Bos taurus,1996,0,0
-NP_945030.1,Dolphin morbillivirus,,Morbillivirus ceti,Morbillivirus,Paramyxoviridae,North Ireland,Delphinus,2003,0,0
-YP_009512964.1,Feline morbillivirus,,Morbillivirus felis,Morbillivirus,Paramyxoviridae,Hong Kong,Felis catus,2009,0,0
-NP_056924.1,Measles morbillivirus,,Morbillivirus hominis,Morbillivirus,Paramyxoviridae,Japan,Homo sapiens,1998,0,0
-YP_133828.1,Peste des petits ruminants virus,Turkey 2000,Morbillivirus caprinae,Morbillivirus,Paramyxoviridae,Turkey,Ovis aries,2000,0,0
-YP_009177604.1,Phocine morbillivirus,,Morbillivirus phocae,Morbillivirus,Paramyxoviridae,Netherlands,Phoca vitulina,1998,0,0
-YP_010085015.1,bank vole virus 1,,Narmovirus myodesis,Narmovirus,Paramyxoviridae,Russia,Myodes glareolus,1973,0,0
-NP_958055.1,Mossman virus,,Narmovirus mossmanense,Narmovirus,Paramyxoviridae,Australia,Rattus,2003,0,0
-NP_054697.1,Tupaia paramyxovirus,,Narmovirus tupaiae,Narmovirus,Paramyxoviridae,Southeast Asia,Tree shrew,1999,0,0
-YP_006347589.1,Nariva virus,,Narmovirus narivaense,Narmovirus,Paramyxoviridae,Trinidad and Tobago,Zygodontomys brevicauda,1962,0,0
-YP_009508504.1,Avian paramyxovirus UPO216,APMV-15/WB/Kr/UPO216/2014,Orthoavulavirus upoense,Orthoavulavirus,Paramyxoviridae,South Korea,Anas platyrhynchos,2014,0,0
-YP_009513199.1,Avian orthoavulavirus 1,JSD0812,Orthoavulavirus javaense,Orthoavulavirus,Paramyxoviridae,China,Anas platyrhynchos,2008,0,0
-YP_009255226.1,Avian paramyxovirus goose/Shimane/67/2000,,Orthoavulavirus japanense,Orthoavulavirus,Paramyxoviridae,Japan,Anser sp.,2000,0,0
-YP_010790291.1,Avian orthoavulavirus 1,chicken/N. Ireland/Ulster/67,Orthoavulavirus javaense,Orthoavulavirus,Paramyxoviridae,United Kingdom,Chicken,2023,0,0
-YP_009094173.1,Avian orthoavulavirus 12,Wigeon/Italy/3920_1/2005,Orthoavulavirus italiense,Orthoavulavirus,Paramyxoviridae,Italy,Mareca,2005,0,0
-YP_009505447.1,Bat Paramyxovirus Epo_spe/AR1/DRC/2009,BatPV/Epo_spe/AR1/DRC/2009,Bat mumps orthorubulavirus,Orthorubulavirus,Paramyxoviridae,Democratic Republic of the Congo,Epomophorus,2009,1,0
-NP_054714.1,Mumps orthorubulavirus,Miyahara,Orthorubulavirus parotitidis,Orthorubulavirus,Paramyxoviridae,Japan,Homo sapiens,2000,0,0
-YP_008378665.1,Human parainfluenza virus 4a,,Orthorubulavirus hominis,Orthorubulavirus,Paramyxoviridae,Japan,Homo sapiens,2010,0,0
-YP_138518.1,Parainfluenza virus 5,,Orthorubulavirus mammalis,Orthorubulavirus,Paramyxoviridae,USA,Homo sapiens,1998,0,0
-YP_001331035.1,Orthorubulavirus suis,,Orthorubulavirus suis,Orthorubulavirus,Paramyxoviridae,Americas,Orthorubulavirus suis,2006,0,0
-YP_010087175.1,Alston virus,Alstonville,Orthorubulavirus alstonvillense,Orthorubulavirus,Paramyxoviridae,Australia,Pteropus sp.,2011,1,0
+XWJ59491.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Paramyxoviridae,Australia,Chiroptera,2017,1,0
 YP_001249278.1,Orthorubulavirus mapueraense,BeAnn 370284,Orthorubulavirus mapueraense,Orthorubulavirus,Paramyxoviridae,Brazil,Sturnira lilium,2000,0,0
-YP_010774627.1,Avian paramyxovirus 4,APMV-4/KR/YJ/06,Paraavulavirus hongkongense,Paraavulavirus,Paramyxoviridae,South Korea,Anas platyrhynchos,2006,0,0
+YP_001331035.1,Orthorubulavirus suis,,Orthorubulavirus suis,Orthorubulavirus,Paramyxoviridae,Americas,Orthorubulavirus suis,2006,0,0
+YP_006347589.1,Nariva virus,,Narmovirus narivaense,Narmovirus,Paramyxoviridae,Trinidad and Tobago,Zygodontomys brevicauda,1962,0,0
 YP_007008152.1,Avian paramyxovirus 4,Delaware-4,Paraavulavirus hongkongense,Paraavulavirus,Paramyxoviridae,USA,Anas rubripes,2010,0,0
-XOT37553.1,melian virus,Cr. grandiceps_para,melian virus,Parahenipavirus,Paramyxoviridae,Sierra Leone,Crocidura grandiceps,2023,0,0
-XLS83348.1,Langya virus,,Parahenipavirus langyaense,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura lasiura,2017,0,0
-XLS83358.1,Langya virus,,Parahenipavirus langyaense,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura lasiura,2017,0,0
-XLS83368.1,Langya virus,,Parahenipavirus langyaense,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura lasiura,2023,0,0
-XLS83378.1,Langya virus,,Parahenipavirus langyaense,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura lasiura,2023,0,0
-XLS83388.1,Langya virus,,Parahenipavirus langyaense,Parahenipavirus,Paramyxoviridae,South Korea,Crocidura lasiura,2023,0,0
-XOT37718.1,melian virus,Ra. rattus_para_3,melian virus,Parahenipavirus,Paramyxoviridae,Sierra Leone,Rattus rattus,2023,0,0
-XQI07592.1,Parahenipavirus sp.,#79pol1,Parahenipavirus sp.,Parahenipavirus,Paramyxoviridae,France,Sorex antinorii,2018,0,0
-XQI07593.1,Parahenipavirus sp.,#79pol2,Parahenipavirus sp.,Parahenipavirus,Paramyxoviridae,France,Sorex antinorii,2018,0,0
-WJL29506.1,Ninorex virus,,Parahenipavirus soricis,Parahenipavirus,Paramyxoviridae,Belgium,Sorex minutus,2020,0,0
-YP_009094458.1,Achimota virus 1,,Pararubulavirus achimotaense,Pararubulavirus,Paramyxoviridae,Ghana,Eidolon helvum,2010,1,0
-YP_009094466.1,Achimota virus 2,,Pararubulavirus accraense,Pararubulavirus,Paramyxoviridae,Ghana,Eidolon helvum,2010,1,0
+YP_008378665.1,Human parainfluenza virus 4a,,Orthorubulavirus hominis,Orthorubulavirus,Paramyxoviridae,Japan,Homo sapiens,2010,0,0
+YP_009091839.1,Ghana virus,BatPV/Eid_hel/GH-M74a/GHA/2009,Henipavirus ghanaense,Henipavirus,Paramyxoviridae,Ghana,Eidolon helvum,2009,1,0
 YP_009094034.1,Sosuga virus,2012,Pararubulavirus sosugaense,Pararubulavirus,Paramyxoviridae,Uganda,Homo sapiens,2012,0,0
+YP_009094051.1,Sunshine coast virus,,Sunshine coast virus,Sunshinevirus,Sunviridae,Australia,Aspidites melanocephalus,2008,0,0
+YP_009094060.1,Avian metaavulavirus 7,,Metaavulavirus tennessense,Metaavulavirus,Paramyxoviridae,USA,Columbidae,1975,0,0
 YP_009094067.1,Tuhoko virus 2,,Pararubulavirus cantonense,Pararubulavirus,Paramyxoviridae,China,Pteropodidae,2009,1,0
 YP_009094080.1,Tuhoko virus 3,,Pararubulavirus hongkongi,Pararubulavirus,Paramyxoviridae,China,Pteropodidae,2009,1,0
-YP_009094498.1,Tuhoko virus 1,,Pararubulavirus guangdongense,Pararubulavirus,Paramyxoviridae,China,Pteropodidae,2009,1,0
-YP_009512971.1,Menangle virus,Australia/bat/2009/Cedar Grove,Pararubulavirus menangleense,Pararubulavirus,Paramyxoviridae,Australia,Pteropus,2009,1,0
-NP_665871.1,Tioman virus,,Pararubulavirus tiomanense,Pararubulavirus,Paramyxoviridae,Malaysia,Pteropus hypomelanus,2002,1,0
-YP_009512978.1,Teviot virus,Cedar Grove,Pararubulavirus teviotense,Pararubulavirus,Paramyxoviridae,Australia,Pteropus sp.,2009,1,0
-XAF84001.1,Sosuga virus,Bat-1021,Pararubulavirus sosugaense,Pararubulavirus,Paramyxoviridae,Sierra Leone,Rousettus aegyptiacus,2018,1,0
-XRL22895.1,Sosuga virus,,Pararubulavirus sosugaense,Pararubulavirus,Paramyxoviridae,South Sudan,Rousettus aegyptiacus,2021,1,0
-XPR29450.1,Pararubulavirus sp.,T-LB16/Bridge,Pararubulavirus sp.,Pararubulavirus,Paramyxoviridae,Indonesia,Rousettus amplexicaudatus,2021,1,0
-XPR29451.1,Pararubulavirus sp.,T-LB16/PAR,Pararubulavirus sp.,Pararubulavirus,Paramyxoviridae,Indonesia,Rousettus amplexicaudatus,2021,1,0
-YP_009505441.1,Simian Agent 10,,Respirovirus pneumoniae,Respirovirus,Paramyxoviridae,South Africa,Cercopithecus mitis,1963,0,0
-NP_067153.2,Human respirovirus 3,,Respirovirus pneumoniae,Respirovirus,Paramyxoviridae,Japan,Homo sapiens,1998,0,0
-YP_010790514.1,Human respirovirus 3,Guangzhou,Respirovirus pneumoniae,Respirovirus,Paramyxoviridae,China,Homo sapiens,2007,0,0
-NP_037646.1,Respirovirus bovis,,Respirovirus bovis,Respirovirus,Paramyxoviridae,USA,Lab strain,1999,0,0
-YP_010806263.1,giant squirrel virus,GSqRV/LKA/2009,Respirovirus ratufae,Respirovirus,Paramyxoviridae,Sri Lanka,Ratufa macroura,2018,0,0
-YP_009094450.1,Respirovirus suis,,Respirovirus suis,Respirovirus,Paramyxoviridae,Hong Kong,Sus scrofa domesticus,2010,0,0
+YP_009094087.1,Cedar virus,CG1a,Henipavirus cedarense,Henipavirus,Paramyxoviridae,Australia,Pteropus sp.,2009,1,0
+YP_009094096.1,Mojiang virus,Tongguan1,Henipavirus mojiangense,Parahenipavirus,Paramyxoviridae,China,Rattus tanezumi sladeni,2012,0,0
+YP_009094120.1,Tailam virus,,Jeilongvirus tailamense,Jeilongvirus,Paramyxoviridae,Hong Kong,Rattus andamanensis,2009,0,0
+YP_009094152.1,Salmon aquaparamyxovirus,ASPV/Yrkje371/95,Aquaparamyxovirus salmonis,Aquaparamyxovirus,Paramyxoviridae,Norway,Salmonidae,2007,0,0
+YP_009094160.1,Avian metaavulavirus 5,,Metaavulavirus kunitachiense,Metaavulavirus,Paramyxoviridae,Japan,Melopsittacus undulatus,1974,0,0
+YP_009094173.1,Avian orthoavulavirus 12,Wigeon/Italy/3920_1/2005,Orthoavulavirus italiense,Orthoavulavirus,Paramyxoviridae,Italy,Mareca,2005,0,0
 YP_009094339.1,Salem virus,,Salemvirus salemense,Salemvirus,Paramyxoviridae,USA,Equus caballus,1992,0,0
+YP_009094450.1,Respirovirus suis,,Respirovirus suis,Respirovirus,Paramyxoviridae,Hong Kong,Sus scrofa domesticus,2010,0,0
+YP_009094458.1,Achimota virus 1,,Pararubulavirus achimotaense,Pararubulavirus,Paramyxoviridae,Ghana,Eidolon helvum,2010,1,0
+YP_009094466.1,Achimota virus 2,,Pararubulavirus accraense,Pararubulavirus,Paramyxoviridae,Ghana,Eidolon helvum,2010,1,0
+YP_009094483.1,Avian metaavulavirus 11,common_snipe/France/100212/2010,Metaavulavirus galliense,Metaavulavirus,Paramyxoviridae,France,Gallinago gallinago,2010,0,0
+YP_009094498.1,Tuhoko virus 1,,Pararubulavirus guangdongense,Pararubulavirus,Paramyxoviridae,China,Pteropodidae,2009,1,0
+YP_009177604.1,Phocine morbillivirus,,Morbillivirus phocae,Morbillivirus,Paramyxoviridae,Netherlands,Phoca vitulina,1998,0,0
+YP_009255226.1,Avian paramyxovirus goose/Shimane/67/2000,,Orthoavulavirus japanense,Orthoavulavirus,Paramyxoviridae,Japan,Anser sp.,2000,0,0
+YP_009505441.1,Simian Agent 10,,Respirovirus pneumoniae,Respirovirus,Paramyxoviridae,South Africa,Cercopithecus mitis,1963,0,0
+YP_009505447.1,Bat Paramyxovirus Epo_spe/AR1/DRC/2009,BatPV/Epo_spe/AR1/DRC/2009,Bat mumps orthorubulavirus,Orthorubulavirus,Paramyxoviridae,Democratic Republic of the Congo,Epomophorus,2009,1,0
+YP_009508498.1,Avian paramyxovirus 14,APMV14/duck/Japan/11OG0352/2011,Metaavulavirus japanense,Metaavulavirus,Paramyxoviridae,Japan,Anatidae,2011,0,0
+YP_009508504.1,Avian paramyxovirus UPO216,APMV-15/WB/Kr/UPO216/2014,Orthoavulavirus upoense,Orthoavulavirus,Paramyxoviridae,South Korea,Anas platyrhynchos,2014,0,0
+YP_009512950.1,Avian metaavulavirus 6,,Metaavulavirus hongkongense,Metaavulavirus,Paramyxoviridae,Russia,Anser,2003,0,0
+YP_009512956.1,Avian metaavulavirus 8,,Metaavulavirus delawarense,Metaavulavirus,Paramyxoviridae,USA,Branta canadensis,1976,0,0
+YP_009512964.1,Feline morbillivirus,,Morbillivirus felis,Morbillivirus,Paramyxoviridae,Hong Kong,Felis catus,2009,0,0
+YP_009512971.1,Menangle virus,Australia/bat/2009/Cedar Grove,Pararubulavirus menangleense,Pararubulavirus,Paramyxoviridae,Australia,Pteropus,2009,1,0
+YP_009512978.1,Teviot virus,Cedar Grove,Pararubulavirus teviotense,Pararubulavirus,Paramyxoviridae,Australia,Pteropus sp.,2009,1,0
+YP_009513199.1,Avian orthoavulavirus 1,JSD0812,Orthoavulavirus javaense,Orthoavulavirus,Paramyxoviridae,China,Anas platyrhynchos,2008,0,0
+YP_009513219.1,Avian metaavulavirus 2,,Metaavulavirus yucaipaense,Metaavulavirus,Paramyxoviridae,USA,Gallus gallus,1956,0,0
+YP_009553495.1,Avian metaavulavirus 20,APMV-20/gull/Kazakhstan/5976/2014,Metaavulavirus kazakhstanense,Metaavulavirus,Paramyxoviridae,Kazakhstan,Laridae,2014,0,0
+YP_009666847.1,Mount Mabu Lophuromys virus 1,MOZ135_1,Jeilongvirus lophuromysis,Jeilongvirus,Paramyxoviridae,Mozambique,Lophuromys machangui,2011,0,0
+YP_009666855.1,Mount Mabu Lophuromys virus 2,MOZ135_2,Jeilongvirus mabuense,Jeilongvirus,Paramyxoviridae,Mozambique,Lophuromys machangui,2011,0,0
+YP_010085015.1,bank vole virus 1,,Narmovirus myodesis,Narmovirus,Paramyxoviridae,Russia,Myodes glareolus,1973,0,0
+YP_010085024.1,Pohorje myodes paramyxovirus 1,TT02/05,Jeilongvirus myodesis,Jeilongvirus,Paramyxoviridae,Slovenia,Myodes glareolus,2016,0,0
+YP_010087175.1,Alston virus,Alstonville,Orthorubulavirus alstonvillense,Orthorubulavirus,Paramyxoviridae,Australia,Pteropus sp.,2011,1,0
+YP_010774627.1,Avian paramyxovirus 4,APMV-4/KR/YJ/06,Paraavulavirus hongkongense,Paraavulavirus,Paramyxoviridae,South Korea,Anas platyrhynchos,2006,0,0
+YP_010790291.1,Avian orthoavulavirus 1,chicken/N. Ireland/Ulster/67,Orthoavulavirus javaense,Orthoavulavirus,Paramyxoviridae,United Kingdom,Chicken,2023,0,0
 YP_010790479.1,Wenzhou pacific spadenose shark paramyxovirus,,Scoliodonvirus scoliodontis,Scoliodonvirus,Paramyxoviridae,China,Scoliodon macrorhynchos,2017,0,0
-YP_009094051.1,Sunshine coast virus,,Sunshine coast virus,Sunshinevirus,Sunviridae,Australia,Aspidites melanocephalus,2008,0,0
 YP_010790486.1,Wenling triplecross lizardfish paramyxovirus,,Synodonvirus synodi,Synodonvirus,Paramyxoviridae,China,Synodus macrops,2017,0,0
-NP_872278.1,Goose paramyxovirus SF02,SF02,Goose paramyxovirus SF02,Unclassified,Paramyxoviridae,China,Goose,2002,0,0
-XQM46515.1,Salt gully virus,Boonah,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Australia,Pteropus sp.,2011,1,0
+YP_010790495.1,Wenling tonguesole paramyxovirus,,Cynoglossusvirus cynoglossi,Cynoglossusvirus,Paramyxoviridae,China,Cynoglossus sp.,2017,0,0
+YP_010790504.1,Wenling hoplichthys paramyxovirus,,Hoplichthysvirus hoplichthysis,Hoplichthysvirus,Paramyxoviridae,China,Hoplichthys,2017,0,0
+YP_010790514.1,Human respirovirus 3,Guangzhou,Respirovirus pneumoniae,Respirovirus,Paramyxoviridae,China,Homo sapiens,2007,0,0
+YP_010797981.1,Salmon aquaparamyxovirus,,Aquaparamyxovirus salmonis,Aquaparamyxovirus,Paramyxoviridae,USA,Oncorhynchus tshawytscha,1983,0,0
+YP_010798268.1,Avian metaavulavirus 21,APMV/dove/Taiwan/AHRI33/2009,Avian metaavulavirus 21,Metaavulavirus,Paramyxoviridae,Taiwan,Columbidae,2009,0,0
+YP_010799241.1,Rodent paramyxovirus,RtAp-ParaV/NX2015,Jeilongvirus apodemi,Jeilongvirus,Paramyxoviridae,China,Apodemus peninsulae,2015,0,0
+YP_010799324.1,Bat paramyxovirus,,Jeilongvirus murinae,Jeilongvirus,Paramyxoviridae,Comoros,Miniopterus griveaudi,2011,1,0
+YP_010799333.1,Bat paramyxovirus,,Jeilongvirus murinae,Jeilongvirus,Paramyxoviridae,Madagascar,Miniopterus griveaudi,2012,1,0
+YP_010801062.1,Ruloma virus,TA502,Jeilongvirus rungweense,Jeilongvirus,Paramyxoviridae,Tanzania,Lophuromys machangui,2013,0,0
+YP_010801294.1,Belerina virus,HH114,Jeilongvirus erinacei,Jeilongvirus,Paramyxoviridae,Belgium,Erinaceus europaeus,2015,0,0
+YP_010806263.1,giant squirrel virus,GSqRV/LKA/2009,Respirovirus ratufae,Respirovirus,Paramyxoviridae,Sri Lanka,Ratufa macroura,2018,0,0
+YP_087126.2,Rinderpest virus (strain Kabete O),,Morbillivirus pecoris,Morbillivirus,Paramyxoviridae,Kenya,Bos taurus,1996,0,0
+YP_133828.1,Peste des petits ruminants virus,Turkey 2000,Morbillivirus caprinae,Morbillivirus,Paramyxoviridae,Turkey,Ovis aries,2000,0,0
+YP_138518.1,Parainfluenza virus 5,,Orthorubulavirus mammalis,Orthorubulavirus,Paramyxoviridae,USA,Homo sapiens,1998,0,0
+YP_338085.1,J-virus,,Jeilongvirus queenslandense,Jeilongvirus,Paramyxoviridae,Australia,Mus musculus,2005,0,0
+YP_512254.1,Beilong virus,,Jeilongvirus beilongi,Jeilongvirus,Paramyxoviridae,Australia,Rodentia,2005,0,0
