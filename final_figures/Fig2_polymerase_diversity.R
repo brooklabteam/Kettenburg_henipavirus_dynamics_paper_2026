@@ -16,7 +16,7 @@ library(cowplot)
 homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_circulating_clades/phylo_trees/"
 #refseq tree first
 setwd(paste0(homewd,"/pmx_gene_trees/polymerase"))
-tree1 <-  read.tree("polymerase_mid_align_trim.fasta.treefile")
+tree1 <-  read.tree("polymerase_mid_align_fasttree.newick")
 #drop root for aesthetics
 rooted.tree1 <- root(tree1, which(tree1$tip.label == "YP_009094051.1"))
 rooted.tree1<-drop.tip(rooted.tree1, "YP_009094051.1")
@@ -25,7 +25,7 @@ dat1 <- read.csv(("L_metadata_mid.csv"), header = T, stringsAsFactors = F)
 
 #henipa tree next
 setwd(paste0(homewd,"/henipa_focus_L_tree"))
-tree2 <-  read.tree("ref_right_trim.fasta.treefile") 
+tree2 <-  read.tree("ref_right_fasttree.newick") 
 rooted.tree2 <- root(tree2, which(tree2$tip.label == "YP_009094051.1"))
 #drop root and other reference sequences for aesthetics
 rooted.tree2<-drop.tip(rooted.tree2, "YP_009094051.1")
@@ -156,34 +156,34 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
         legend.direction = "vertical",
         legend.text = element_text(size=7), 
         legend.key.size = unit(0.2, "cm")) +
-  geom_cladelabel(node = 241, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 344, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 329, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 336, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 342, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 300, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 301, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 307, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 357, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 319, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 360, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 278, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 337, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
+  #geom_cladelabel(node = 344, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 249, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 244, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 242, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 263, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 264, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 281, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 279, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 235, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 274, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 292, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
   xlim(c(0,14))
 
 p1
 
-p1.2<-collapse(p1, 241)+geom_point2(aes(subset=(node==241)), size=4, shape=22, fill="firebrick1")
-p1.3<-collapse(p1.2, 344)+geom_point2(aes(subset=(node==344)), size=4, shape=22, fill="firebrick4")
-p1.4<-collapse(p1.3, 329)+geom_point2(aes(subset=(node==329)), size=4, shape=22, fill="darkgoldenrod1")
-p1.5<-collapse(p1.4, 336)+geom_point2(aes(subset=(node==336)), size=4, shape=22, fill="darkorange")
-p1.6<-collapse(p1.5, 342)+geom_point2(aes(subset=(node==342)), size=4, shape=22, fill="darkorange3")
-p1.7<-collapse(p1.6, 300)+geom_point2(aes(subset=(node==300)), size=4, shape=22, fill="lightpink2")
-p1.8<-collapse(p1.7, 301)+geom_point2(aes(subset=(node==301)), size=4, shape=22, fill="deeppink1")
-p1.9<-collapse(p1.8, 307)+geom_point2(aes(subset=(node==307)), size=4, shape=22, fill="coral")
-p1.10<-collapse(p1.9, 357)+geom_point2(aes(subset=(node==357)), size=4, shape=22, fill="lightsalmon3")
-p1.11<-collapse(p1.10, 319)+geom_point2(aes(subset=(node==319)), size=4, shape=22, fill="indianred3")
-p1.17<-collapse(p1.11, 360)+geom_point2(aes(subset=(node==360)), size=4, shape=22, fill="coral3")
-p1.1<-collapse(p1.17, 278)+geom_point2(aes(subset=(node==278)), size=4, shape=22, fill="deeppink4")
+p1.2<-collapse(p1, 337)+geom_point2(aes(subset=(node==337)), size=4, shape=22, fill="firebrick1")
+#p1.3<-collapse(p1.2, 344)+geom_point2(aes(subset=(node==344)), size=4, shape=22, fill="firebrick4")
+p1.4<-collapse(p1.2, 249)+geom_point2(aes(subset=(node==249)), size=4, shape=22, fill="darkgoldenrod1")
+p1.5<-collapse(p1.4, 244)+geom_point2(aes(subset=(node==244)), size=4, shape=22, fill="darkorange")
+p1.6<-collapse(p1.5, 242)+geom_point2(aes(subset=(node==242)), size=4, shape=22, fill="darkorange3")
+p1.7<-collapse(p1.6, 263)+geom_point2(aes(subset=(node==263)), size=4, shape=22, fill="lightpink2")
+p1.8<-collapse(p1.7, 264)+geom_point2(aes(subset=(node==264)), size=4, shape=22, fill="deeppink1")
+p1.9<-collapse(p1.8, 281)+geom_point2(aes(subset=(node==281)), size=4, shape=22, fill="coral")
+p1.10<-collapse(p1.9, 279)+geom_point2(aes(subset=(node==279)), size=4, shape=22, fill="lightsalmon3")
+p1.11<-collapse(p1.10, 235)+geom_point2(aes(subset=(node==235)), size=4, shape=22, fill="indianred3")
+p1.17<-collapse(p1.11, 274)+geom_point2(aes(subset=(node==274)), size=4, shape=22, fill="coral3")
+p1.1<-collapse(p1.17, 292)+geom_point2(aes(subset=(node==292)), size=4, shape=22, fill="deeppink4")
 p1.1
 
 #add node shapes to represent bootstrap values
@@ -196,7 +196,7 @@ Bootstrap<-p0.dat1$Bootstrap[(length(tree.dat1$tip_label)+1):length(p0.dat1$labe
 tree1 <- p1.1  %<+% p0.dat1 + 
   ggnewscale::new_scale_fill() + 
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0)+
-  scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
+  scale_fill_continuous(low="yellow", high="red", limits=c(0,1))+
   #guides(fill_continuous = guide_legend(order = 2),col = guide_legend(order = 1))+
   theme(legend.position = "left",
         legend.direction = "vertical",
@@ -220,18 +220,37 @@ p2 <- ggtree(rooted.tree2) %<+% tree.dat2 + geom_tippoint(aes(color=Genus, shape
         legend.direction = "vertical",
         legend.text = element_text(size=7), 
         legend.key.size = unit(0.2, "cm")) +
-  geom_cladelabel(node = 515, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 344, label = "Unclassified bat paramyxovirus clade",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 608, label = "Parahenipavirus clade",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 636, label = "Unclassified bat paramyxovirus clade",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 563, label = "Hendra/Nipah henipavirus clade (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 561, label = "Hendra/Nipa sister clade | Eidolon helvum | Zambia (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 549, label = "GhV-like clade | Eidolon helvum | Zambia (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 518, label = "Unclassified henipavirus clade | Eidolon helvum | Ghana and DRC (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 483, label = "Parahenipavirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 343, label = "Pararubulavirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 393, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 408, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 415, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 472, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 475, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 390, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 404, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 406, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
   xlim(c(0,6))
-
 p2
 
-p2.2<-collapse(p2, 515)+geom_point2(aes(subset=(node==515)), size=4, shape=22, fill="firebrick1")
-p2.3<-collapse(p2.2, 344)+geom_point2(aes(subset=(node==344)), size=4, shape=22, fill="firebrick4")
-p2.4<-collapse(p2.3, 608)+geom_point2(aes(subset=(node==608)), size=4, shape=22, fill="deeppink4")
-p2.1<-collapse(p2.4, 636)+geom_point2(aes(subset=(node==636)), size=4, shape=22, fill="black")
+p2.2<-collapse(p2, 563)+geom_point2(aes(subset=(node==563)), size=4, shape=22, fill="firebrick1")
+p2.3<-collapse(p2.2, 561)+geom_point2(aes(subset=(node==561)), size=4, shape=22, fill="firebrick1")
+p2.4<-collapse(p2.3, 549)+geom_point2(aes(subset=(node==549)), size=4, shape=22, fill="firebrick1")
+p2.5<-collapse(p2.4, 518)+geom_point2(aes(subset=(node==518)), size=4, shape=22, fill="firebrick1")
+p2.6<-collapse(p2.5, 483)+geom_point2(aes(subset=(node==608)), size=4, shape=22, fill="deeppink4")
+p2.7<-collapse(p2.6, 343)+geom_point2(aes(subset=(node==343)), size=4, shape=22, fill="firebrick4")
+p2.8<-collapse(p2.7, 393)+geom_point2(aes(subset=(node==393)), size=4, shape=22, fill="black")
+p2.9<-collapse(p2.8, 408)+geom_point2(aes(subset=(node==408)), size=4, shape=22, fill="black")
+p2.10<-collapse(p2.9, 415)+geom_point2(aes(subset=(node==415)), size=4, shape=22, fill="black")
+p2.11<-collapse(p2.10, 472)+geom_point2(aes(subset=(node==472)), size=4, shape=22, fill="black")
+p2.12<-collapse(p2.11, 475)+geom_point2(aes(subset=(node==475)), size=4, shape=22, fill="black")
+p2.13<-collapse(p2.12, 390)+geom_point2(aes(subset=(node==390)), size=4, shape=22, fill="black")
+p2.14<-collapse(p2.13, 404)+geom_point2(aes(subset=(node==404)), size=4, shape=22, fill="black")
+p2.1<-collapse(p2.14, 406)+geom_point2(aes(subset=(node==406)), size=4, shape=22, fill="black")
 p2.1
 
 #add node shapes to represent bootstrap values
@@ -244,7 +263,7 @@ Bootstrap<-p0.dat1$Bootstrap[(length(tree.dat2$tip_label)+1):length(p0.dat1$labe
 tree2 <- p2.1  %<+% p0.dat1 + 
   ggnewscale::new_scale_fill() + 
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0)+
-  scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
+  scale_fill_continuous(low="yellow", high="red", limits=c(0,1))+
   #guides(fill_continuous = guide_legend(order = 2),col = guide_legend(order = 1))+
   theme(legend.position = "none",
         legend.direction = "vertical",
@@ -265,8 +284,8 @@ homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_cir
 ggsave(file = paste0(homewd, "Fig2_polymerase_diversity.pdf"),
        plot= Phylo,
        units="mm",  
-       width=400, 
-       height=200, 
+       width=380, 
+       height=120, 
        scale=2, 
        dpi=500)
 
