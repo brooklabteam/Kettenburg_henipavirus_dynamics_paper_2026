@@ -217,14 +217,14 @@ head(ephrinmsa)
 #assign new names to each
 ephrinmsa$name <- as.character(ephrinmsa$name)
 unique(ephrinmsa$name)
-ephrinmsa$name[ephrinmsa$name=="CAT017_Plate_42_A10_NODE_34_czid2023"] <- "PX127396"
+ephrinmsa$name[ephrinmsa$name=="CAT017_Plate_42_A10_NODE_34_czid2023"] <- "PX127396 AngV-2"
 ephrinmsa$name[ephrinmsa$name=="KEL86spleen_Plate_22_A11_NODE_439_czid2023"] <- "PX127395 GhV-like"
-ephrinmsa$name[ephrinmsa$name=="KEL234_NODE_79_czid2019"] <- "PX127397"
-ephrinmsa$name[ephrinmsa$name=="KEL281B_NODE_113_czid2019"] <- "PX127399"
-ephrinmsa$name[ephrinmsa$name=="KEL380_Plate_42_B8_NODE_44_czid2023"] <- "PX127400"
+ephrinmsa$name[ephrinmsa$name=="KEL234_NODE_79_czid2019"] <- "PX127397 AngV-2"
+ephrinmsa$name[ephrinmsa$name=="KEL281B_NODE_113_czid2019"] <- "PX127399 AndV-2"
+ephrinmsa$name[ephrinmsa$name=="KEL380_Plate_42_B8_NODE_44_czid2023"] <- "PX127400 AngV"
 ephrinmsa$name[ephrinmsa$name=="ROU125_NODE_1_czid2023"] <- "PX127342 AndV"
 ephrinmsa$name[ephrinmsa$name=="ROU148_manual_assembly"] <- "PX127343 AndV"
-ephrinmsa$name[ephrinmsa$name=="ROU143_NODE_287_czid2023"] <- "PX127401"
+ephrinmsa$name[ephrinmsa$name=="ROU143_NODE_287_czid2023"] <- "PX127401 AndV-3"
 
 unique(ephrinmsa$name)
 names(ephrinmsa)[names(ephrinmsa)=="character"] <- "aa"
@@ -236,7 +236,12 @@ names(ephrinmsa)[names(ephrinmsa)=="character"] <- "aa"
 colz = c("A" = "paleturquoise1", "C"="palevioletred1","D"="plum1","E"="purple1","F"="orange",
          "G"="goldenrod1","H"="orchid1","I"="slateblue1","K"="sienna3","L"="royalblue2",
          "N"="yellow1","Q"="tomato1","R"="turquoise1","S"="thistle1","T"="chocolate", "M"="plum4",
-         "V"="deeppink4","W"="firebrick3","Y"="lightsteelblue1","-"="white")
+         "V"="deeppink4","W"="firebrick3","Y"="lightsteelblue1","-"="white",
+         "PX127395 GhV-like"="darkorange1", "PX127342 AndV"="cyan4","PX127343 AndV"="cyan4", "PX127399 AndV-2"="darkturquoise",
+         "PX127401 AndV-3"="dodgerblue3", "PX127400 AngV"="springgreen3", "PX127396 AngV-2"="chartreuse3","PX127397 AngV-2"="chartreuse3",
+         "HeV"="black", "NiV"="black", "CedV"="black","GhV"="darkorange1", "YuV1"="cyan4",
+         "AngV"="springgreen3","SGV"="black",                           
+         "MojV"="black","GAKV"="black","DARV"="black","LayV"="black")
 
 colz2 = c("A" = "goldenrod1", "C"="white","D"="white","E"="goldenrod1","F"="white",
           "G"="white","H"="white","I"="white","K"="white","L"="white",
@@ -245,10 +250,12 @@ colz2 = c("A" = "goldenrod1", "C"="white","D"="white","E"="goldenrod1","F"="whit
 
 #and control the order
 
-ephrinmsa$name <- factor(ephrinmsa$name, levels = rev(c("PX127342 AndV",       "PX127343 AndV",   "PX127395 GhV-like",    "PX127396",   "PX127397",      "PX127399",     "PX127400",     
-                                                        "PX127401",   "AngV",    "SGV",          "NiV",               "HeV",              
-                                                        "MojV",              "GhV",               "GAKV",              "DARV",              "LayV",             
-                                                        "YuV1",              "YuV2", "CedV")))
+ephrinmsa$name <- factor(ephrinmsa$name, levels = rev(c("HeV", "NiV", "CedV", "PX127395 GhV-like", "GhV", "YuV1",
+                                                        "PX127342 AndV","PX127343 AndV", "YuV2", "PX127399 AndV-2",
+                                                        "PX127401 AndV-3", "PX127400 AngV", "AngV", 
+                                                        "PX127396 AngV-2","PX127397 AngV-2", "SGV",                           
+                                                        "MojV","GAKV","DARV","LayV")))
+
 ephrinmsa.plot <- ggplot(data=ephrinmsa) + 
   geom_tile(aes(x=position, y=name, fill=aa, color=aa),width=0.9, height=0.9, show.legend = F) +
   geom_text(aes(x=position, y=name, label=aa), show.legend = F)+
@@ -262,6 +269,9 @@ ephrinmsa.plot <- ggplot(data=ephrinmsa) +
         axis.text = element_text(size=14),
         title = element_text(size=16),
         axis.title.x = element_blank(),
+        axis.text.y = element_text(colour=c("black","black","black","black","black","chartreuse3","chartreuse3",
+                                            "springgreen3","springgreen3","dodgerblue3","darkturquoise", "cyan4","cyan4","cyan4",
+                                            "black","darkorange","darkorange", "black","black","black")),
         #axis.text.x = element_blank(),
         #axis.ticks.x = element_blank(),
         legend.text = element_text(size=10),
@@ -426,12 +436,18 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   new_scale_color() +
   geom_tiplab(aes(color = novel, show.legend=F), geom = "text", Genus="Helvetica", size=4, nudge_x=0.05) +
   guides(color="none")+#
-  scale_color_manual(values=c("0"="black","1"="red")) +
+  scale_color_manual(values=c("0"="black","1"="red3")) +
   geom_treescale(fontsize=4, x=0,y=-3, linesize = .5) +
   theme(legend.position = "none", 
         legend.direction = "vertical",
         legend.text = element_text(size=7), 
         legend.key.size = unit(0.2, "cm")) +
+  geom_cladelabel(node=372, label='GhV-like clade', offset=8, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=371, label='AndV clade', offset=8, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=166, label='AndV-2 clade', offset=8, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=167, label='AndV-3 clade', offset=8, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=367, label='AngV clade', offset=8, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=366, label='AngV-2 clade', offset=8, fontsize=4, color="black", align=TRUE)+
   geom_cladelabel(node = 241, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
   geom_cladelabel(node = 344, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
   geom_cladelabel(node = 329, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
@@ -446,7 +462,6 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   geom_cladelabel(node = 278, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
   geom_cladelabel(node = 362, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
   xlim(c(0,14))
-
 p1
 
 p1.2<-collapse(p1, 241)+geom_point2(aes(subset=(node==241)), size=4, shape=22, fill="firebrick1")
@@ -463,6 +478,16 @@ p1.17<-collapse(p1.11, 360)+geom_point2(aes(subset=(node==360)), size=4, shape=2
 p1.18<-collapse(p1.17, 278)+geom_point2(aes(subset=(node==278)), size=4, shape=22, fill="deeppink4")
 p1.1<-collapse(p1.18, 362)+geom_point2(aes(subset=(node==362)), size=4, shape=22, fill="lightpink3")
 p1.1
+
+p1.1<- p1.1 +  geom_hilight(node=372, fill="darkorange1", alpha=0.3, extendto=12.8)+ #GhVlike
+  geom_hilight(node=371, fill="darkcyan", alpha=0.3, extendto=12.8)+ #AndV
+  geom_hilight(node=166, fill="darkturquoise", alpha=0.3, extendto=12.8)+ #AndV2
+  geom_hilight(node=167, fill="dodgerblue", alpha=0.3, extendto=12.8)+ #AndV3
+  geom_hilight(node=367, fill="springgreen3", alpha=0.3, extendto=12.8)+ #AngV
+  geom_hilight(node=366, fill="chartreuse", alpha=0.3, extendto=12.8)
+p1.1
+
+
 
 #add node shapes to represent bootstrap values
 p0<-ggtree(rooted.tree1)
@@ -499,7 +524,7 @@ Fig3
 
 #put figure together: 
 Fig4<-plot_grid(tree1, ephrinmsa.plot, labels=c("A","B"),
-                rel_widths=c(1.6,1), rel_heights = c(1,1),
+                rel_widths=c(2,1), rel_heights = c(1,1),
                 ncol=2,align="hv", axis="l", label_size = 23)
 Fig4
 
@@ -517,7 +542,7 @@ ggsave(file = paste0(homewd, "Fig3_phosphoprotein.pdf"),
 ggsave(file = paste0(homewd, "Fig4_glycoprotein.pdf"),
        plot= Fig4,
        units="mm",
-       width=240,
+       width=250,
        height=80,
        scale=2,
        dpi=500)
