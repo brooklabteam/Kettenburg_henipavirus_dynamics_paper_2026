@@ -16,7 +16,7 @@ library(cowplot)
 homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_circulating_clades/phylo_trees/"
 #refseq tree first
 setwd(paste0(homewd,"/pmx_gene_trees/polymerase"))
-tree1 <-  read.tree("polymerase_mid_align.fasta.treefile")
+tree1 <-  read.tree("polymerase_mid_align_trim.fasta.treefile")
 #drop root for aesthetics
 rooted.tree1 <- root(tree1, which(tree1$tip.label == "YP_009094051.1"))
 rooted.tree1<-drop.tip(rooted.tree1, "YP_009094051.1")
@@ -25,7 +25,7 @@ dat1 <- read.csv(("L_metadata_mid.csv"), header = T, stringsAsFactors = F)
 
 #henipa tree next
 setwd(paste0(homewd,"/henipa_focus_L_tree"))
-tree2 <-  read.tree("ref_right.fasta.treefile") 
+tree2 <-  read.tree("ref_right_trim.fasta.treefile") 
 rooted.tree2 <- root(tree2, which(tree2$tip.label == "YP_009094051.1"))
 #drop root and other reference sequences for aesthetics
 rooted.tree2<-drop.tip(rooted.tree2, "YP_009094051.1")
