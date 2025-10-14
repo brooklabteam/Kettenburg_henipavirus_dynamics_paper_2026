@@ -156,12 +156,12 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
         legend.direction = "vertical",
         legend.text = element_text(size=7), 
         legend.key.size = unit(0.2, "cm")) +
-  geom_cladelabel(node = 337, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 228, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
   xlim(c(0,14))
 
 p1
 
-p1.1<-collapse(p1, 337)+geom_point2(aes(subset=(node==337)), size=3, shape=22, fill="firebrick1")
+p1.1<-collapse(p1, 228)+geom_point2(aes(subset=(node==228)), size=3, shape=22, fill="firebrick1")
 p1.1
 
 #add node shapes to represent bootstrap values
@@ -198,18 +198,18 @@ p2 <- ggtree(rooted.tree2) %<+% tree.dat2 + geom_tippoint(aes(color=Genus, shape
         legend.direction = "vertical",
         legend.text = element_text(size=7), 
         legend.key.size = unit(0.2, "cm")) +
-  geom_cladelabel(node = 395, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 659, label = "Pararubulavirus clade",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 544, label = "Parahenipavirus clade",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 554, label = "Unclassified bat paramyxovirus clade",offset=0.1, fontsize = 4, color="black")+
-  xlim(c(0,12))
+  geom_cladelabel(node = 515, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 344, label = "Unclassified bat paramyxovirus clade",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 608, label = "Parahenipavirus clade",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 636, label = "Unclassified bat paramyxovirus clade",offset=0.1, fontsize = 4, color="black")+
+  xlim(c(0,6))
 
 p2
 
-p2.2<-collapse(p2, 395)+geom_point2(aes(subset=(node==395)), size=4, shape=22, fill="firebrick1")
-p2.3<-collapse(p2.2, 659)+geom_point2(aes(subset=(node==659)), size=4, shape=22, fill="firebrick4")
-p2.4<-collapse(p2.3, 544)+geom_point2(aes(subset=(node==544)), size=4, shape=22, fill="deeppink4")
-p2.1<-collapse(p2.4, 554)+geom_point2(aes(subset=(node==554)), size=4, shape=22, fill="black")
+p2.2<-collapse(p2, 515)+geom_point2(aes(subset=(node==515)), size=4, shape=22, fill="firebrick1")
+p2.3<-collapse(p2.2, 344)+geom_point2(aes(subset=(node==344)), size=4, shape=22, fill="firebrick4")
+p2.4<-collapse(p2.3, 608)+geom_point2(aes(subset=(node==608)), size=4, shape=22, fill="deeppink4")
+p2.1<-collapse(p2.4, 636)+geom_point2(aes(subset=(node==636)), size=4, shape=22, fill="black")
 p2.1
 
 #add node shapes to represent bootstrap values
