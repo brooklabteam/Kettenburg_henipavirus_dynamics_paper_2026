@@ -112,7 +112,7 @@ colz2 = c("A" = "white", "C"="yellow1","D"="white","E"="purple1","F"="white",
 #and control the order
 
 Vmsa$name <- factor(Vmsa$name, levels = rev(c("PX127342 AndV_add1", "PX127343 AndV_add1", "PX127344 AndV_add1", "AngV_add1", "SGV_add1",  "NiV_add1",    "HeV_add1",    "MojV_add1",   "GhV_add1",   
-                                              "GAKV_add1",   "DARV_add1",   "LayV_add1",   "YuV1_add1",   "YuV2_add1",   "CedV_add1" )))
+                                              "GAKV_add1",   "DARV_add1",   "LayV_add1",   "YuV1_add1",   "YuV2_add1" )))
 Vmsa.plot <- ggplot(data=Vmsa) + 
   geom_tile(aes(x=position, y=name, fill=aa, color=aa),width=0.9, height=0.9, show.legend = F) +
   geom_text(aes(x=position, y=name, label=aa), show.legend = F)+
@@ -444,6 +444,7 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   geom_cladelabel(node = 319, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
   geom_cladelabel(node = 360, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
   geom_cladelabel(node = 278, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 362, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
   xlim(c(0,14))
 
 p1
@@ -459,7 +460,8 @@ p1.9<-collapse(p1.8, 307)+geom_point2(aes(subset=(node==307)), size=4, shape=22,
 p1.10<-collapse(p1.9, 357)+geom_point2(aes(subset=(node==357)), size=4, shape=22, fill="lightsalmon3")
 p1.11<-collapse(p1.10, 319)+geom_point2(aes(subset=(node==319)), size=4, shape=22, fill="indianred3")
 p1.17<-collapse(p1.11, 360)+geom_point2(aes(subset=(node==360)), size=4, shape=22, fill="coral3")
-p1.1<-collapse(p1.17, 278)+geom_point2(aes(subset=(node==278)), size=4, shape=22, fill="deeppink4")
+p1.18<-collapse(p1.17, 278)+geom_point2(aes(subset=(node==278)), size=4, shape=22, fill="deeppink4")
+p1.1<-collapse(p1.18, 362)+geom_point2(aes(subset=(node==362)), size=4, shape=22, fill="lightpink3")
 p1.1
 
 #add node shapes to represent bootstrap values
@@ -497,7 +499,7 @@ Fig3
 
 #put figure together: 
 Fig4<-plot_grid(tree1, ephrinmsa.plot, labels=c("A","B"),
-                rel_widths=c(1.5,1), rel_heights = c(1,1),
+                rel_widths=c(1.6,1), rel_heights = c(1,1),
                 ncol=2,align="hv", axis="l", label_size = 23)
 Fig4
 
@@ -515,8 +517,8 @@ ggsave(file = paste0(homewd, "Fig3_phosphoprotein.pdf"),
 ggsave(file = paste0(homewd, "Fig4_glycoprotein.pdf"),
        plot= Fig4,
        units="mm",
-       width=270,
-       height=100,
+       width=240,
+       height=80,
        scale=2,
        dpi=500)
 
