@@ -32,20 +32,22 @@ unique(mRNAmsa$name)
 mRNAmsa$name[mRNAmsa$name=="ROU125_NODE_1_czid2023"] <- "PX127342 AndV"
 mRNAmsa$name[mRNAmsa$name=="ROU148_manual_assembly"] <- "PX127343 AndV"
 mRNAmsa$name[mRNAmsa$name=="ROU173_manual_assembly"] <- "PX127344 AndV"
-mRNAmsa$name[mRNAmsa$name=="KEL153_NODE_1162_czid2019"] <- "PX127365"
+mRNAmsa$name[mRNAmsa$name=="KEL153_NODE_1162_czid2019"] <- "PX127365 AngV"
+mRNAmsa$name[mRNAmsa$name=="CedV"] <- "*CedV"
 
 unique(mRNAmsa$name)
 names(mRNAmsa)[names(mRNAmsa)=="character"] <- "aa"
 
-colz = c("A" = "tomato", "G"="goldenrod1", "T"="white")
+colz = c("A" = "darkorange1", "G"="deepskyblue", "T"="white")
 
 #and control the order
 
 #subset without partial sequence
 #mRNAmsa = subset(mRNAmsa, name !="KEL153-virus")
 
-mRNAmsa$name <- factor(mRNAmsa$name, levels = rev(c("PX127342 AndV","PX127343 AndV","PX127344 AndV","PX127365","AngV","SGV","NiV","HeV","MojV",        
-                                                    "GhV","GAKV","DARV","LayV","YuV1","YuV2","CedV")))
+mRNAmsa$name <- factor(mRNAmsa$name, levels = rev(c("HeV","NiV", "GhV","YuV1", "PX127342 AndV","PX127343 AndV","PX127344 AndV",
+                                                    "YuV2","PX127365 AngV" ,"AngV","SGV","MojV",        
+                                                    "GAKV","DARV","LayV","*CedV")))
 mRNAmsa.plot <- ggplot(data=mRNAmsa) + 
   geom_tile(aes(x=position, y=name, fill=aa, color=aa),width=0.9, height=0.9, show.legend = F) +
   geom_text(aes(x=position, y=name, label=aa), show.legend = F)+
@@ -59,6 +61,8 @@ mRNAmsa.plot <- ggplot(data=mRNAmsa) +
         axis.text = element_text(size=14),
         title = element_text(size=16),
         axis.title.x = element_blank(),
+        axis.text.y = element_text(colour=c("red","black","black","black","black","black","chartreuse3", "chartreuse3", "cyan4", "cyan4",
+                                            "cyan4","cyan4","black","black","black","black"), face="bold"),
         #axis.text.x = element_blank(),
         #axis.ticks.x = element_blank(),
         legend.text = element_text(size=10),
@@ -67,8 +71,8 @@ mRNAmsa.plot <- ggplot(data=mRNAmsa) +
   #legend.position = "bottom", legend.direction = "horizontal")+
   #ggtitle("mRNA editing site")+
   #xlab("amino acid position\n(relative to AndV)")+ 
-  scale_x_continuous(breaks = c(2,8), labels = c(1214, 1218))
-
+  scale_x_continuous(breaks = c(2,8), labels = c(1214, 1218),
+                                        sec.axis = dup_axis(breaks=c(8), labels=c("mRNA editing\n site")))
 mRNAmsa.plot
 
 # ggsave(file = paste0("mRNAplot.png"),
@@ -81,7 +85,7 @@ mRNAmsa.plot
 
 
 #load the msa of c-terminal region of the v protein
-Vmsa = tidy_msa(msa="v_alignment.fasta")
+Vmsa = tidy_msa(msa="v_align_trim.fasta")
 head(Vmsa)
 
 #assign new names to each
@@ -103,16 +107,17 @@ colz = c("A" = "paleturquoise1", "C"="palevioletred1","D"="plum1","E"="purple1",
          "N"="yellow1","P"="khaki1","Q"="tomato1","R"="turquoise1","S"="thistle1","T"="chocolate",
          "V"="deeppink4","W"="firebrick3","Y"="lightsteelblue1","-"="white")
 
-colz2 = c("A" = "white", "C"="yellow1","D"="white","E"="purple1","F"="white",
+colz2 = c("A" = "white", "C"="yellow1","D"="white","E"="white","F"="white",
           "G"="green1","H"="orange1","I"="white","K"="dodgerblue","L"="white","M"="white",
-          "N"="turquoise","P"="yellow","Q"="white","R"="turquoise1","S"="white","T"="white",
-          "V"="white","W"="palevioletred1","Y"="white","-"="white")
+          "N"="white","P"="white","Q"="white","R"="white","S"="white","T"="white",
+          "V"="white","W"="white","Y"="white","-"="white", "*"="red")
 
 
 #and control the order
 
-Vmsa$name <- factor(Vmsa$name, levels = rev(c("PX127342 AndV_add1", "PX127343 AndV_add1", "PX127344 AndV_add1", "AngV_add1", "SGV_add1",  "NiV_add1",    "HeV_add1",    "MojV_add1",   "GhV_add1",   
-                                              "GAKV_add1",   "DARV_add1",   "LayV_add1",   "YuV1_add1",   "YuV2_add1" )))
+Vmsa$name <- factor(Vmsa$name, levels = rev(c( "HeV_add1","NiV_add1", "GhV_add1","YuV1_add1", "PX127342 AndV_add1","PX127343 AndV_add1","PX127344 AndV_add1",
+                                               "YuV2_add1","AngV_add1","SGV_add1","MojV_add1",        
+                                               "GAKV_add1","DARV_add1","LayV_add1")))
 Vmsa.plot <- ggplot(data=Vmsa) + 
   geom_tile(aes(x=position, y=name, fill=aa, color=aa),width=0.9, height=0.9, show.legend = F) +
   geom_text(aes(x=position, y=name, label=aa), show.legend = F)+
@@ -126,6 +131,8 @@ Vmsa.plot <- ggplot(data=Vmsa) +
         axis.text = element_text(size=14),
         title = element_text(size=16),
         axis.title.x = element_blank(),
+        axis.text.y = element_text(colour=c("black","black","black","black","black","black","cyan4", "cyan4",
+                                            "cyan4","cyan4","black","black","black","black","black","black"), face="bold"),
         #axis.text.x = element_blank(),
         #axis.ticks.x = element_blank(),
         legend.text = element_text(size=10),
@@ -133,7 +140,7 @@ Vmsa.plot <- ggplot(data=Vmsa) +
   #legend.position = "bottom", legend.direction = "horizontal")+
   #ggtitle("V protein alignment")+
   scale_x_continuous(breaks = c(1,20,40,60), labels = c(409,429,449,469), 
-                     sec.axis = dup_axis(breaks=c(4,23,27,39,41,44,48,53), labels=c("*","*","*","*","*","*","*","*")))
+                     sec.axis = dup_axis(breaks=c(4,23,27,39,41,44,48,51), labels=c("*","*","*","*","*","*","*","*")))
 
 Vmsa.plot
 
@@ -144,71 +151,6 @@ Vmsa.plot
 #         height=60, 
 #         scale=2, 
 #         dpi=300)
-
-
-#load the msa of c-terminal region of the W protein
-Wmsa = tidy_msa(msa="w_alignment.fasta")
-head(Wmsa)
-
-#assign new names to each
-Wmsa$name <- as.character(Wmsa$name)
-unique(Wmsa$name)
-Wmsa$name[Wmsa$name=="ROU125_NODE_1_czid2023_add2"] <- "PX127342 AndV add2"
-Wmsa$name[Wmsa$name=="ROU148_manual_assembly_add2"] <- "PX127343 AndV add2"
-Wmsa$name[Wmsa$name=="ROU173_manual_assembly_add2"] <- "PX127344 AndV add2"
-
-unique(Wmsa$name)
-names(Wmsa)[names(Wmsa)=="character"] <- "aa"
-
-# colz = scales::hue_pal()(length(unique(Wmsa$aa)))
-# names(colz) <- unique(Wmsa$aa)
-# names(colz)[names(colz)=="-"] <- "white"
-
-colz = c("A" = "paleturquoise1", "C"="palevioletred1","D"="plum1","E"="purple1","F"="orange",
-         "G"="goldenrod1","H"="orchid1","I"="slateblue1","K"="sienna3","L"="royalblue2","M"="grey",
-         "N"="yellow1","P"="khaki1","Q"="tomato1","R"="turquoise1","S"="thistle1","T"="chocolate",
-         "V"="deeppink4","W"="firebrick3","Y"="lightsteelblue1","-"="white")
-
-colz2 = c("A" = "white", "C"="yellow1","D"="white","E"="purple1","F"="white",
-          "G"="green1","H"="orange1","I"="white","K"="dodgerblue","L"="white","M"="white",
-          "N"="turquoise","P"="yellow","Q"="white","R"="turquoise1","S"="white","T"="white",
-          "V"="white","W"="palevioletred1","Y"="white","-"="white")
-
-#and control the order
-
-Wmsa$name <- factor(Wmsa$name,levels = rev(c("PX127342 AndV add2", "PX127343 AndV add2", "PX127344 AndV add2", "AngV_add2" , "SGV_add2",  "NiV_add2",    "HeV_add2" ,   "MojV_add2",   "GAKV_add2" , 
-                                             "DARV_add2" ,  "LayV_add2",   "YuV1_add2" , "YuV2_add2" ,  "GhV_add2" )))
-Wmsa.plot <- ggplot(data=Wmsa) + 
-  geom_tile(aes(x=position, y=name, fill=aa, color=aa),width=0.9, height=0.9, show.legend = F) +
-  geom_text(aes(x=position, y=name, label=aa), show.legend = F)+
-  theme_bw() + 
-  scale_fill_manual(values=colz) +
-  scale_color_manual(values=colz) +
-  theme(axis.title.y = element_blank(), 
-        #panel.background = element_rect(fill="black"),
-        #panel.border = element_line(color="black", size=1),
-        panel.grid = element_blank(),
-        axis.text = element_text(size=14),
-        title = element_text(size=16),
-        axis.title.x = element_blank(),
-        #axis.text.x = element_blank(),
-        #axis.ticks.x = element_blank(),
-        legend.text = element_text(size=10),
-        plot.margin = margin(0, 0, 0,0, unit = "cm"))+
-#legend.position = "bottom", legend.direction = "horizontal")+
-  #ggtitle("W protein alignment")+
-  scale_x_continuous(breaks = c(1,18,40,60), labels = c(332,350,372,392))
-
-Wmsa.plot
-
-# ggsave(file = paste0("Wplot.png"),
-#        plot = Wmsa.plot,
-#        units="mm",  
-#        width=170, 
-#        height=70, 
-#        scale=2, 
-#        dpi=300)
-
 
 #load the msa of ephrin binding conserved sites
 ephrinmsa = tidy_msa(msa="ephrin_region_alignment.fasta")
@@ -271,7 +213,7 @@ ephrinmsa.plot <- ggplot(data=ephrinmsa) +
         axis.title.x = element_blank(),
         axis.text.y = element_text(colour=c("black","black","black","black","black","chartreuse3","chartreuse3",
                                             "springgreen3","springgreen3","dodgerblue3","darkturquoise", "cyan4","cyan4","cyan4",
-                                            "black","darkorange","darkorange", "black","black","black")),
+                                            "black","darkorange","darkorange", "black","black","black"), face="bold"),
         #axis.text.x = element_blank(),
         #axis.ticks.x = element_blank(),
         legend.text = element_text(size=10),
@@ -290,6 +232,84 @@ ephrinmsa.plot
 #        height=70,
 #        scale=2,
 #        dpi=300)
+
+#Now add the V and W pairwise similarity plots
+#load data
+dat <- read.csv(file = "V_W_pairwise_comparisons.csv", header = T, stringsAsFactors = F)
+head(dat)
+names(dat)
+
+dat$var2[dat$var2=="ROU125_NODE_1_czid2023_add2"] <- "PX127342 AndV_add2"
+dat$var2[dat$var2=="ROU148_manual_assembly_add2"] <- "PX127343 AndV_add2"
+dat$var2[dat$var2=="ROU173_manual_assembly_add2"] <- "PX127344 AndV_add2"
+dat$var2[dat$var2=="ROU125_NODE_1_czid2023_add1"] <- "PX127342 AndV_add1"
+dat$var2[dat$var2=="ROU148_manual_assembly_add1"] <- "PX127343 AndV_add1"
+dat$var2[dat$var2=="ROU173_manual_assembly_add1"] <- "PX127344 AndV_add1"
+
+dat$gene<-factor(dat$gene, levels=c("V protein", "W protein"))
+
+#subset the data
+V<-subset(dat, gene=="V protein")
+W<-subset(dat, gene=="W protein")
+
+#plot comparison to known sequences
+compare_V <- ggplot(V, aes(x=var1_alt, y=var2, fill=id)) +
+  geom_tile() +
+  geom_text(aes(label = id), color = "black", size = 3) +
+  # scale_fill_viridis_c(option = "C", direction = -1) +
+  scale_fill_gradient(low="white", high="tomato1")+
+  facet_nested(gene~., scales="free", space="free",
+               switch="y", nest_line = element_line(color="white"), solo_line = TRUE)+
+  labs(#title = expression("Diversity of" ~italic(Picornavirales) ~"sequences"),
+    x = "",
+    y= "",
+    fill="Identity",
+    title="")+
+  theme_linedraw()+
+  scale_y_discrete(position="right", limits=rev)+
+  scale_x_discrete(position="top")+
+  theme(plot.margin = margin(0, 0, 2, 2, "pt"),
+        plot.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_text(colour=c("black","black","black","black","black","black","black","black","black","black","darkcyan"), face="bold"),
+        axis.text.y = element_text(colour=c("darkcyan","darkcyan","darkcyan"), face="bold"),
+        plot.title = element_text(size=12, face="italic"), 
+        legend.position = "none",
+        strip.text = element_text(size=12))
+compare_V
+
+compare_W <- ggplot(W, aes(x=var1_alt, y=var2, fill=id)) +
+  geom_tile() +
+  geom_text(aes(label = id), color = "black", size = 3) +
+  # scale_fill_viridis_c(option = "C", direction = -1) +
+  scale_fill_gradient(low="white", high="tomato1")+
+  facet_nested(gene~., scales="free", space="free",
+               switch="y", nest_line = element_line(color="white"), solo_line = TRUE)+
+  labs(#title = expression("Diversity of" ~italic(Picornavirales) ~"sequences"),
+    x = "",
+    y= "",
+    fill="Identity",
+    title="")+
+  theme_linedraw()+
+  scale_y_discrete(position="right", limits=rev)+
+  scale_x_discrete(position="top")+
+  theme(plot.margin = margin(0, 0, 2, 2, "pt"),
+        plot.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_text(colour=c("black","black","black","black","black","black","black","black","black","black","darkcyan"), face="bold"),
+        axis.text.y = element_text(colour=c("darkcyan","darkcyan","darkcyan"), face="bold"),
+        plot.title = element_text(size=12, face="italic"), 
+        legend.position = "bottom",
+        strip.text = element_text(size=12))
+compare_W
+
+#add together: 
+pair<-plot_grid(compare_V, compare_W, labels=c("",""),
+                rel_widths=c(1,1), rel_heights = c(1,1),
+                ncol=1,align="hv", axis="l", label_size = 23)
+pair
 
 #Now do the phylogenies
 
@@ -498,7 +518,7 @@ Bootstrap<-p0.dat1$Bootstrap[(length(tree.dat1$tip_label)+1):length(p0.dat1$labe
 #add bootstrap values to original plot
 tree1 <- p1.1  %<+% p0.dat1 + 
   ggnewscale::new_scale_fill() + 
-  geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0)+
+  geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
   scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
   #guides(fill_continuous = guide_legend(order = 2),col = guide_legend(order = 1))+
   theme(legend.position = "left",
@@ -517,7 +537,7 @@ library(patchwork)
 Fig3.1<-mRNAmsa.plot+Vmsa.plot + plot_layout(widths = c(1, 6))
 Fig3.1
 
-Fig3<-Fig3.1/Wmsa.plot+ plot_annotation(tag_levels = c('A', 'B','C')) &
+Fig3<-Fig3.1/pair+ plot_annotation(tag_levels = c('A', 'B','C','D')) &
   theme(plot.tag = element_text(size = 23, face="bold"))
 Fig3
 
@@ -535,7 +555,7 @@ ggsave(file = paste0(homewd, "Fig3_phosphoprotein.pdf"),
        plot= Fig3,
        units="mm",
        width=300,
-       height=160,
+       height=180,
        scale=2,
        dpi=500)
 
