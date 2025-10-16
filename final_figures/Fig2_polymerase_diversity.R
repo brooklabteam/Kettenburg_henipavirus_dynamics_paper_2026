@@ -25,7 +25,7 @@ dat1 <- read.csv(("L_metadata_mid.csv"), header = T, stringsAsFactors = F)
 
 #henipa tree next
 setwd(paste0(homewd,"/henipa_focus_L_tree"))
-tree2 <-  read.tree("ref_right_fasttree.newick") 
+tree2 <-  read.tree("ref_right.fasta.treefile") 
 rooted.tree2 <- root(tree2, which(tree2$tip.label == "YP_009094051.1"))
 #drop root and other reference sequences for aesthetics
 rooted.tree2<-drop.tip(rooted.tree2, "YP_009094051.1")
@@ -244,37 +244,50 @@ p2 <- ggtree(rooted.tree2) %<+% tree.dat2 + geom_tippoint(aes(color=Genus, shape
         legend.direction = "vertical",
         legend.text = element_text(size=7), 
         legend.key.size = unit(0.2, "cm")) +
-  geom_cladelabel(node = 563, label = "Hendra/Nipah henipavirus clade (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 561, label = "Hendra/Nipa sister clade | Eidolon helvum | Zambia (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 549, label = "GhV-like clade | Eidolon helvum | Zambia (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 518, label = "Unclassified henipavirus clade | Eidolon helvum | Ghana and DRC (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 483, label = "Parahenipavirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 343, label = "Pararubulavirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 393, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 408, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 415, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 472, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 475, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 390, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 404, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 406, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  xlim(c(0,6))
+  geom_cladelabel(node=467, label='HeV/NiV sister clade', offset=9.15, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=145, label='GhV-like clade', offset=9.15, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=512, label='AndV clade', offset=9.15, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=169, label='AndV-2 clade', offset=9.15, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=502, label='AndV-3.1 clade', offset=9.15, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=495, label='AndV-3.2 clade', offset=9.15, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=354, label='AngV clade', offset=9.15, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=363, label='AngV-2.1 clade', offset=9.15, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=370, label='AngV-2.2 clade', offset=9.15, fontsize=4, color="black", align=TRUE)+
+  
+  geom_cladelabel(node = 381, label = "Hendra/Nipah henipavirus clade (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  #geom_cladelabel(node = 561, label = "Hendra/Nipa sister clade | Eidolon helvum | Zambia (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 476, label = "GhV-like clade | Eidolon helvum | Zambia (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 514, label = "Unclassified henipavirus clade | Eidolon helvum | Ghana and DRC (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 521, label = "Parahenipavirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 636, label = "Rubulavirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 531, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 344, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 372, label = "Unclassified bat paramyxovirus clade (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  xlim(c(0,14))
 p2
 
-p2.2<-collapse(p2, 563)+geom_point2(aes(subset=(node==563)), size=4, shape=22, fill="firebrick1")
-p2.3<-collapse(p2.2, 561)+geom_point2(aes(subset=(node==561)), size=4, shape=22, fill="firebrick1")
-p2.4<-collapse(p2.3, 549)+geom_point2(aes(subset=(node==549)), size=4, shape=22, fill="firebrick1")
-p2.5<-collapse(p2.4, 518)+geom_point2(aes(subset=(node==518)), size=4, shape=22, fill="firebrick1")
-p2.6<-collapse(p2.5, 483)+geom_point2(aes(subset=(node==608)), size=4, shape=22, fill="deeppink4")
-p2.7<-collapse(p2.6, 343)+geom_point2(aes(subset=(node==343)), size=4, shape=22, fill="firebrick4")
-p2.8<-collapse(p2.7, 393)+geom_point2(aes(subset=(node==393)), size=4, shape=22, fill="black")
-p2.9<-collapse(p2.8, 408)+geom_point2(aes(subset=(node==408)), size=4, shape=22, fill="black")
-p2.10<-collapse(p2.9, 415)+geom_point2(aes(subset=(node==415)), size=4, shape=22, fill="black")
-p2.11<-collapse(p2.10, 472)+geom_point2(aes(subset=(node==472)), size=4, shape=22, fill="black")
-p2.12<-collapse(p2.11, 475)+geom_point2(aes(subset=(node==475)), size=4, shape=22, fill="black")
-p2.13<-collapse(p2.12, 390)+geom_point2(aes(subset=(node==390)), size=4, shape=22, fill="black")
-p2.14<-collapse(p2.13, 404)+geom_point2(aes(subset=(node==404)), size=4, shape=22, fill="black")
-p2.1<-collapse(p2.14, 406)+geom_point2(aes(subset=(node==406)), size=4, shape=22, fill="black")
+p2.2<-collapse(p2, 381)+geom_point2(aes(subset=(node==381)), size=4, shape=22, fill="firebrick1")
+#p2.3<-collapse(p2.2, 561)+geom_point2(aes(subset=(node==561)), size=4, shape=22, fill="firebrick1")
+p2.4<-collapse(p2.2, 476)+geom_point2(aes(subset=(node==476)), size=4, shape=22, fill="firebrick1")
+p2.5<-collapse(p2.4, 514)+geom_point2(aes(subset=(node==514)), size=4, shape=22, fill="firebrick1")
+p2.6<-collapse(p2.5, 521)+geom_point2(aes(subset=(node==521)), size=4, shape=22, fill="deeppink4")
+p2.7<-collapse(p2.6, 636)+geom_point2(aes(subset=(node==636)), size=4, shape=22, fill="firebrick4")
+p2.8<-collapse(p2.7, 531)+geom_point2(aes(subset=(node==531)), size=4, shape=22, fill="black")
+p2.9<-collapse(p2.8, 344)+geom_point2(aes(subset=(node==344)), size=4, shape=22, fill="black")
+p2.1<-collapse(p2.9, 372)+geom_point2(aes(subset=(node==372)), size=4, shape=22, fill="black")
+p2.1
+
+p2.1<- p2.1 +  
+  geom_hilight(node=467, fill="deeppink3", alpha=0.3, extendto=12.8)+ #HeV/NiV sister
+  geom_hilight(node=145, fill="darkorange1", alpha=0.3, extendto=12.8)+ #GhVlike
+  geom_hilight(node=512, fill="darkcyan", alpha=0.3, extendto=12.8)+ #AndV
+  geom_hilight(node=169, fill="darkturquoise", alpha=0.3, extendto=12.8)+ #AndV2
+  geom_hilight(node=502, fill="dodgerblue", alpha=0.3, extendto=12.8)+ #AndV3.1
+  geom_hilight(node=495, fill="dodgerblue", alpha=0.3, extendto=12.8)+ #AndV3.2
+  geom_hilight(node=354, fill="springgreen3", alpha=0.3, extendto=12.8)+ #AngV
+  geom_hilight(node=363, fill="chartreuse", alpha=0.3, extendto=12.8) + #AngV2.1
+  geom_hilight(node=370, fill="chartreuse", alpha=0.3, extendto=12.8) #AngV2.2
+
 p2.1
 
 #add node shapes to represent bootstrap values
@@ -286,8 +299,8 @@ Bootstrap<-p0.dat1$Bootstrap[(length(tree.dat2$tip_label)+1):length(p0.dat1$labe
 #add bootstrap values to original plot
 tree2 <- p2.1  %<+% p0.dat1 + 
   ggnewscale::new_scale_fill() + 
-  geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0)+
-  scale_fill_continuous(low="yellow", high="red", limits=c(0,1))+
+  geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
+  scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
   #guides(fill_continuous = guide_legend(order = 2),col = guide_legend(order = 1))+
   theme(legend.position = "none",
         legend.direction = "vertical",
@@ -299,7 +312,7 @@ tree2
 
 ###Put together final figure
 Phylo<-plot_grid(tree1, tree2, labels=c("A","B"),
-                 rel_widths=c(1,1), rel_heights = c(1,1),
+                 rel_widths=c(1,1.22), rel_heights = c(1,1),
                  ncol=2,align="hv", axis="l", label_size = 23)
 Phylo
 
