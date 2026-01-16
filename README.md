@@ -26,6 +26,31 @@ A brief description of each anlysis is outlined under each subheading below.
 -Henipavirus-focused trees
 
 
+---
+## Virus shedding
+
+-qPCR positive cutoffs
+
+
+---
+## Serology
+
+-Mixture modeling to determine cutoffs
+
+
+---
+## Generalized additive models (GAMs)
+
+-
+
+---
+## Mechanistic modeling
+
+-Age-structured analysis
+
+-SIR models
+
+
 
 
 
