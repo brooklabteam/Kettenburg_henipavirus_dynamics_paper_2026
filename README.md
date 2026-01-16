@@ -1,4 +1,4 @@
-# Repo: Kettenburg_henipavirus_circulating_clades for paper linked [here]()
+# Repo: Kettenburg_dynamics_paper_2026 for paper linked [here]()
 
 This is a GitHub repository for the project to describe novel circulating henipavirus clades in Malagasy fruit bats. 
 The github is organized by folder, with each analysis corresponding to the names of each folder. The R script to generate 
