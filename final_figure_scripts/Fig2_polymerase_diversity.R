@@ -13,7 +13,7 @@ library(phylobase)
 library(cowplot)
 
 ##Set working directory
-homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_circulating_clades/phylo_trees/"
+homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/phylo_trees/"
 #refseq tree first
 setwd(paste0(homewd,"/pmx_gene_trees/polymerase"))
 tree1 <-  read.tree("polymerase_mid_align.fasta.treefile")
