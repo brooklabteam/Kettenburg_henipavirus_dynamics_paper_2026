@@ -24,12 +24,14 @@ library(ggdendroplot)
 
 #first record your wd for this repo (home) 
 #cara adds hers here too - just comment out whichever you are not using
-homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
+homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+#homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
+
 
 #now load in the merged luminex data from the "data" folder
 
 #make sure this is latest catching file
-dat <- read.csv(paste0(homewd, "/data/lum_catch_merge.csv"), header = T, stringsAsFactors = F)
+dat <- read.csv(paste0(homewd, "/serology/data/lum_catch_merge.csv"), header = T, stringsAsFactors = F)
 head(dat)
 
 
@@ -40,7 +42,7 @@ test <- ddply(dat, .(bat_species, bat_sex), summarise, Ntot=length(unique(sample
 test
 
 #now for cutoffs, just slim to antigen data only and convert to long format
-lumdat <- dplyr::select(dat, sampleid, bat_species, names(dat)[2:15])
+lumdat <- dplyr::select(dat, sampleid, bat_species, names(dat)[2:7])
 head(lumdat)
 lumdat.long <- melt(lumdat)
 head(lumdat.long)
@@ -70,21 +72,15 @@ lumdat.long <- data.table::rbindlist(lapply(lum.split, correct.negs))
 
 
 #add family
-lumdat.long$virus_family <- "Filovirus"
 lumdat.long$virus_family[lumdat.long$antigen== "NiV"| lumdat.long$antigen=="HeV"| lumdat.long$antigen=="CedV"| lumdat.long$antigen=="GhV"| lumdat.long$antigen=="AngV"| lumdat.long$antigen=="MojV"] <- "Paramyxovirus"
 unique(lumdat.long$virus_family)
 
 #and genus information
 lumdat.long$virus_genus <- "Henipavirus"
-lumdat.long$virus_genus[lumdat.long$antigen=="EboV" |lumdat.long$antigen=="BdbV" | lumdat.long$antigen=="BomV" |lumdat.long$antigen=="SudV" | lumdat.long$antigen=="RestV"] <- "Orthoebolavirus"
-lumdat.long$virus_genus[lumdat.long$antigen=="LloV"] <- "Cuevavirus"
-lumdat.long$virus_genus[lumdat.long$antigen=="RavV"] <- "Orthomarburgvirus"
-lumdat.long$virus_genus[lumdat.long$antigen=="MlaV"] <- "Dianlovirus"
 unique(lumdat.long$virus_genus)
 
 #factor antigens by relatedness
-lumdat.long$antigen <- factor(lumdat.long$antigen, levels=c( "NiV", "HeV","CedV", "GhV", "AngV", "MojV",
-                                                            "EboV", "BdbV", "BomV",  "SudV", "RestV",   "LloV",  "MlaV", "RavV"))
+lumdat.long$antigen <- factor(lumdat.long$antigen, levels=c( "NiV", "HeV","CedV", "GhV", "AngV", "MojV"))
 
 lumdat.long$bat_species <- factor(lumdat.long$bat_species, levels=c("Eidolon dupreanum", "Rousettus madagascariensis", "Pteropus rufus"))
 
@@ -130,7 +126,7 @@ p3 <- ggplot(subset(bat.high.df, bat_species=="Pteropus rufus")) + coord_cartesi
   guides(color=guide_legend(ncol=2)); p3 
 #so few bats, these are probably exposures from other bats
 
-ggsave(file = paste0(homewd,"/figures/extra/pteropus-spillover-plot.png"),
+ggsave(file = paste0(homewd,"/serology/figures/pteropus-spillover-plot.png"),
        plot = p3,
        units="mm",  
        width=80, 
@@ -151,10 +147,6 @@ ggsave(file = paste0(homewd,"/figures/extra/pteropus-spillover-plot.png"),
 # separate by virus genus and bat species
 unique(lumdat.long$virus_genus) #"Henipavirus"  "Ebolavirus"   "Marburgvirus" "Dianlovirus"  "Cuevavirus"  
 unique(lumdat.long$antigen[lumdat.long$virus_genus=="Henipavirus"]) # many!
-unique(lumdat.long$antigen[lumdat.long$virus_genus=="Orthoebolavirus"]) # many!
-unique(lumdat.long$antigen[lumdat.long$virus_genus=="Orthomarburgvirus"]) # RavV only
-unique(lumdat.long$antigen[lumdat.long$virus_genus=="Dianlovirus"]) # MlaV only
-unique(lumdat.long$antigen[lumdat.long$virus_genus=="Cuevavirus"]) # LloV only
 unique(lumdat.long$MFI)
 sum(is.na(lumdat.long$MFI))#0
 
@@ -309,7 +301,7 @@ choose.antigens <- function(dat, species, genus, manual_cluster, do.save.plot){
   
   if(do.save.plot ==TRUE){
 
-    ggsave(file = paste0(homewd,"/figures/PCA-plots-", gsub(" ", "-", species),"-",genus, ".png"),
+    ggsave(file = paste0(homewd,"/serology/figures/PCA-plots-", gsub(" ", "-", species),"-",genus, ".png"),
            plot = out,
            bg = "white",
            units="mm",  
@@ -327,11 +319,8 @@ choose.antigens <- function(dat, species, genus, manual_cluster, do.save.plot){
   
 }
 
-PCA.Eid.eb <- choose.antigens(dat = lumdat.long, species = "Eidolon dupreanum", genus = "Orthoebolavirus", manual_cluster = NA, do.save.plot = TRUE)
 PCA.Eid.hen <- choose.antigens(dat = lumdat.long, species = "Eidolon dupreanum", genus = "Henipavirus",  manual_cluster = 3,  do.save.plot = TRUE)
-PCA.Rou.eb <- choose.antigens(dat = lumdat.long, species = "Rousettus madagascariensis", genus = "Orthoebolavirus",  manual_cluster = NA, do.save.plot = TRUE)
 PCA.Rou.hen <- choose.antigens(dat = lumdat.long, species = "Rousettus madagascariensis", genus = "Henipavirus",  manual_cluster = NA, do.save.plot = TRUE)
-PCA.Pter.eb <- choose.antigens(dat = lumdat.long, species = "Pteropus rufus", genus = "Orthoebolavirus",  manual_cluster = NA, do.save.plot = TRUE)
 PCA.Pter.hen <- choose.antigens(dat = lumdat.long, species = "Pteropus rufus", genus = "Henipavirus",  manual_cluster = NA, do.save.plot = TRUE)
 
 ################################################################################
@@ -340,10 +329,11 @@ PCA.Pter.hen <- choose.antigens(dat = lumdat.long, species = "Pteropus rufus", g
 # Now, within each cluster, demonstrate that all MFIs correlate with the 
 # most dominant antigen in the cluster
 
-## Eidolon ebola: 
-# Support is for two clusters, though borderline with 3
-# PCA shows that PC1 and PC2 have fairly equal loading across most Orthoebola
-# antigens except BomV which dominates PC3 - MFI data look the same
+
+# load aa alignment for henipavirus
+henipa.align <- read.alignment(file = paste0(homewd,"/serology/Henipavirus-Alignment.fasta"), format = "fasta")
+# make distance matrix
+dist.henipa <- dist.alignment(henipa.align)
 
 hclust(dist.henipa)
 
@@ -471,7 +461,7 @@ plot.correlation <- function(dat, ant1, ant2, ant3, ant4, ant5, species, genus, 
    p.out <- cowplot::plot_grid(p1.3,p2,p3,p4,p5,p6, ncol = 3, nrow = 2, labels = c("A", "B", "C", "D", "E", "F"), label_size = 16)#, align = "hv", axis="tblr")
 
   family = unique(dat$virus_family[dat$antigen==ant1]) 
-  ggsave(file = paste0(homewd,"/figures/corr-plots-", gsub(" ", "-", species),"-",family, ".png"),
+  ggsave(file = paste0(homewd,"/serology/figures/corr-plots-", gsub(" ", "-", species),"-",family, ".png"),
          plot = p.out,
          bg = "white",
          units="mm",  
@@ -485,35 +475,14 @@ plot.correlation <- function(dat, ant1, ant2, ant3, ant4, ant5, species, genus, 
 
 }
 
-plot.correlation(dat=lumdat.long, ant1 = "BdbV", ant2 = "EboV", ant3 = "SudV", ant4 = "RestV", ant5 = "BomV", species = "Rousettus madagascariensis", genus = "Orthoebolavirus", dist.mat = dist.ebola)
-plot.correlation(dat=lumdat.long, ant1 = "BdbV", ant2 = "EboV", ant3 = "SudV", ant4 = "RestV", ant5 = "BomV", species = "Eidolon dupreanum", genus = "Orthoebolavirus", dist.mat = dist.ebola)
-
 plot.correlation(dat=lumdat.long, ant1 = "GhV", ant2 = "NiV", ant3 = "HeV", ant4 = "AngV", ant5 = "MojV", species = "Rousettus madagascariensis", genus = "Henipavirus", dist.mat = dist.henipa)
 plot.correlation(dat=lumdat.long, ant1 = "GhV", ant2 = "NiV", ant3 = "HeV", ant4 = "AngV", ant5 = "MojV", species = "Eidolon dupreanum", genus = "Henipavirus", dist.mat = dist.henipa)
-
-plot.correlation(dat=lumdat.long, ant1 = "BdbV", ant2 = "EboV", ant3 = "SudV", ant4 = "RestV", ant5 = "BomV", species = "Pteropus rufus", genus = "Orthoebolavirus", dist.mat = dist.ebola)
 plot.correlation(dat=lumdat.long, ant1 = "GhV", ant2 = "NiV", ant3 = "HeV", ant4 = "AngV", ant5 = "MojV", species = "Pteropus rufus", genus = "Henipavirus", dist.mat = dist.henipa)
 
 
 ################################################################################
 ################################################################################
 # Selection criteria suggests:
-
-# Eidolon dupreanum : Orthoebolavirus.
-# Parallel analysis suggests maintaining 2 components, borderline for 3. 
-# PC1 and PC2 show fairly even loading of all orthoebolaviruses excepting 
-# BomV which dominates PC3. 
-# Spearman rank correlation shows tight correlation between
-# BdbV and EboV and another cluster of BomV. SudV, RestV, though, as expected
-# all orthoebolavirus MFI values are correlated.
-
-# Only 3 antigens have any MFI values > 300: BdbV, EboV, and BomV. That
-# BomV is probably a single seroconversion of a different virus, as BomV and 
-# BdbV MFI values are not linearly correlated (e.g. regression vs. Spearman).
-# EboV and BdbV are linearly correlated though there is likely significant
-# antigenic variation.
-
-# Verdict: just do seasonal analysis of seroprevalence to BdBV
 
 # Eidolon dupreanum : Henipavirus.
 # Parallel analysis suggests maintaining 1 component, and PC1 has high loading 
@@ -538,24 +507,6 @@ plot.correlation(dat=lumdat.long, ant1 = "GhV", ant2 = "NiV", ant3 = "HeV", ant4
 
 ###############################################################
 ###############################################################
-# Rousettus madagascariensis : Orthoebolavirus.
-# Parallel analysis suggests maintaining 1 components, borderline for 2. 
-# PC1 shows fairly even loading of all orthoebolaviruses excepting 
-# BdbV which dominates PC2. 
-# Spearman rank correlation shows tight correlation between all antigens and 
-# EboV. BdbV correlation is a bit less with the other antigens but nonetheless
-# quite strong. MFI values > 1000 (and indeed close to 10000) are observed for 
-# all antigens, though there is significant cross-reactivity among them. 
-# These were previously analyzed in Rekedel et al. 2024 and she picked
-# out only BdbV for analysis from the filovirus data... There is likely
-# significant antigenic variation that may drive the EboV responses too, and 
-# we have ine seropositive to something BomV-like. We also already know RavV
-# is an important player.
-
-# Verdict: just do seasonal analysis of seroprevalence to BdBV and RavV. EboV
-# might also be important, but not confident enough to say it is not noise from
-# BdbV-seropositives
-
 # Rousettus madagascariensis : Henipavirus.
 # Parallel analysis suggests maintaining 1 component, and PC1 has high loading 
 # of HeV and CedV and GhV. Eigenvalues are nonetheless close to 1 for PC2, which is 
@@ -575,13 +526,7 @@ plot.correlation(dat=lumdat.long, ant1 = "GhV", ant2 = "NiV", ant3 = "HeV", ant4
 
 ###############################################################
 ###############################################################
-# Pteropus rufus: Orthoebolaviruses and Henipavirueses
-# are all highly correlated. One PC is supported in both cases
-# by parallel analysis, with even loading of all antigens on PC1
-# except PC2 dominated by BdbV for Orthoebolaviruses and PC2 
-# dominated by AngV for Pteropus. These two viruses appear to be 
-# quite antigenically distinct from the others and are driving most
-# of the signal, likely through spillover here.
+# Pteropus rufus: Henipavirueses
 
 ###############################################################
 ###############################################################

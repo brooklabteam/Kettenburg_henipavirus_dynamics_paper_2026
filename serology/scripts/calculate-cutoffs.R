@@ -14,18 +14,20 @@ library(cluster)
 library(corrr) 
 library(FactoMineR)
 library(ggpmisc)
+library(reshape2)
 
 #use this script to calculate cutoffs for the luminex
 
 
 #first record your wd for this repo (home) 
 #cara adds hers here too - just comment out whichever you are not using
-homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
+#homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
+homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #now load in the merged luminex data from the "data" folder
 
 #make sure this is latest catching file
-dat <- read.csv(paste0(homewd, "/data/lum_catch_merge.csv"), header = T, stringsAsFactors = F)
+dat <- read.csv(paste0(homewd, "/serology/data/lum_catch_merge.csv"), header = T, stringsAsFactors = F)
 head(dat)
 
 
@@ -36,7 +38,7 @@ test <- ddply(dat, .(bat_species, bat_sex), summarise, Ntot=length(unique(sample
 test
 
 #now for cutoffs, just slim to antigen data only and convert to long format
-lumdat <- dplyr::select(dat, sampleid, bat_species, names(dat)[2:15])
+lumdat <- dplyr::select(dat, sampleid, bat_species, names(dat)[2:7])
 head(lumdat)
 lumdat.long <- melt(lumdat)
 head(lumdat.long)
@@ -60,23 +62,16 @@ lumdat.long <- subset(lumdat.long, !is.na(MFI))
 lumdat.long$MFI[lumdat.long$MFI<1] <- 1
 lumdat.long$log10MFI <- log10(lumdat.long$MFI)
 
-
 #add family
-lumdat.long$virus_family <- "Filovirus"
 lumdat.long$virus_family[lumdat.long$antigen== "NiV"| lumdat.long$antigen=="HeV"| lumdat.long$antigen=="CedV"| lumdat.long$antigen=="GhV"| lumdat.long$antigen=="AngV"| lumdat.long$antigen=="MojV"] <- "Paramyxovirus"
 unique(lumdat.long$virus_family)
 
 #and genus information
 lumdat.long$virus_genus <- "Henipavirus"
-lumdat.long$virus_genus[lumdat.long$antigen=="EboV" |lumdat.long$antigen=="BdbV" | lumdat.long$antigen=="BomV" |lumdat.long$antigen=="SudV" | lumdat.long$antigen=="RestV"] <- "Orthoebolavirus"
-lumdat.long$virus_genus[lumdat.long$antigen=="LloV"] <- "Cuevavirus"
-lumdat.long$virus_genus[lumdat.long$antigen=="RavV"] <- "Orthomarburgvirus"
-lumdat.long$virus_genus[lumdat.long$antigen=="MlaV"] <- "Dianlovirus"
 unique(lumdat.long$virus_genus)
 
 #factor antigens by relatedness
-lumdat.long$antigen <- factor(lumdat.long$antigen, levels=c( "NiV", "HeV","CedV", "GhV", "AngV", "MojV",
-                                                            "EboV", "BdbV", "BomV", "SudV", "RestV",  "LloV", "RavV", "MlaV"))
+lumdat.long$antigen <- factor(lumdat.long$antigen, levels=c( "NiV", "HeV","CedV", "GhV", "AngV", "MojV"))
 
 lumdat.long$bat_species <- factor(lumdat.long$bat_species, levels=c("Eidolon dupreanum", "Rousettus madagascariensis", "Pteropus rufus"))
 
@@ -86,9 +81,7 @@ bat.slim = subset(lumdat.long, bat_species=="Eidolon dupreanum" & antigen =="HeV
                                bat_species=="Eidolon dupreanum" & antigen =="NiV" |
                                bat_species=="Eidolon dupreanum" & antigen =="GhV" |
                                bat_species=="Eidolon dupreanum" & antigen =="AngV" |
-                               bat_species=="Rousettus madagascariensis" & antigen =="GhV" |
-                               bat_species=="Rousettus madagascariensis" & antigen =="BdbV" |
-                               bat_species=="Rousettus madagascariensis" & antigen =="RavV" )
+                               bat_species=="Rousettus madagascariensis" & antigen =="GhV" )
 
 # plot the distribution of MFI by each species - antigen pair
 ggplot(data=bat.slim, aes(MFI)) + geom_histogram() + facet_wrap(bat_species~antigen) + scale_x_log10()
@@ -306,11 +299,20 @@ fit.mixtures <- function(df, return.dat,  mclust_thresh, mclust_thresh_lci, mclu
 lum.list <- dlply(bat.slim, .(bat_species, antigen))
 
 out <- lapply(lum.list, fit.mixtures, return.dat=T,  mclust_thresh=.90, mclust_thresh_lci = .85, mclust_thresh_uci=.95) #list of lists
-mixture.par <- data.table::rbindlist(lapply(out, function(x) x[[1]])) #this is the parameter estimates from the distributions. RavV in Rousettus uses alternative distribution
+mixture.par <- data.table::rbindlist(lapply(out, function(x) x[[1]])) #this is the parameter estimates from the distributions.
 lumdat.clust <- data.table::rbindlist(lapply(out, function(x) x[[2]])) #this is the raw data classed as seropositive or seronegative based on the chosen threshold
 
-write.csv(mixture.par, paste0(homewd, "/data/mix_sub_parameters_75_90_96.csv"), row.names = F)
-write.csv(lumdat.clust, paste0(homewd, "/data/mix_sub_data_75_90_96.csv"), row.names = F)
+write.csv(mixture.par, paste0(homewd, "/serology/data/mix_sub_parameters_75_90_96.csv"), row.names = F)
+write.csv(lumdat.clust, paste0(homewd, "/serology/data/mix_sub_data_75_90_96.csv"), row.names = F)
+
+#make a data frame in wide format too to merge with the viral shedding data
+df_wide <- dcast(
+  lumdat.clust,
+  sampleid ~ antigen,
+  value.var = c("MFI", "log10MFI","seropos","seropos_lci","seropos_uci","bat_species","virus_family","virus_genus")
+)
+write.csv(df_wide, paste0(homewd, "/serology/data/mix_sub_data_75_90_96_wide.csv"), row.names = F)
+
 
 #also run for 
 
@@ -462,9 +464,9 @@ plot.dat.model.clust.lci.uci <- function(dat, mod.df, pEidfile, pPterfile, pRouf
 
 #now plot the data and the fitted mixture models, including the 3 different cutoffs
 plot.dat.model.clust.lci.uci(dat =lumdat.clust, mod.df=mixture.par, plot_save = T,
-                         pEidfile= paste0(homewd, "/figures/Eidolon_mixtures_85_90_95.png"),
+                         pEidfile= paste0(homewd, "/serology/figures/Eidolon_mixtures_85_90_95.png"),
                          pPterfile= NA,
-                         pRoufile= paste0(homewd, "/figures/Rousettus_mixtures_85_90_95.png"))
+                         pRoufile= paste0(homewd, "/serology/figures/Rousettus_mixtures_85_90_95.png"))
 
 #and what is the prevalence at the 90 cutoff?
 lumdat.sum <- ddply(lumdat.clust, .(bat_species, antigen), summarise, Ntot=length(seropos), Npos=sum(seropos), Npos_lci=sum(seropos_lci), Npos_uci=sum(seropos_uci))
@@ -474,7 +476,7 @@ lumdat.sum$seroprevalence_uci <- lumdat.sum$Npos_uci/lumdat.sum$Ntot
 
 
 print(lumdat.sum)
-write.csv(lumdat.sum, paste0(homewd, "/data/lumdat.sum.sub.csv"), row.names = F)
+write.csv(lumdat.sum, paste0(homewd, "/serology/data/lumdat.sum.sub.csv"), row.names = F)
 
 ### what proportion of bats are seropositivefor multiple related antigens?
 head(lumdat.clust)
@@ -539,7 +541,7 @@ out.all <- merge(out.all, tot.bats, by =c("bat_species", "cutoff"))
 out.all$proportion <- out.all$Npos/out.all$N*100
 
 #and save this as a potential table
-write.csv(out.all, file = paste0(homewd,"/data/prop-double-seropos.csv"), row.names = F)
+write.csv(out.all, file = paste0(homewd,"/serology/data/prop-double-seropos.csv"), row.names = F)
 # 
 # #what about difference in seroprevalence by site?
 # dat.site <- dplyr::select(dat, sampleid, roost_site)
