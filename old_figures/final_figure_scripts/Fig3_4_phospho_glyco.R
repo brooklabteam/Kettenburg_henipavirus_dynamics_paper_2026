@@ -19,7 +19,7 @@ library(phylobase)
 library(cowplot)
 
 #start with the residue alignments
-homewd = "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_circulating_clades/genome_characterization/"
+homewd = "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/genome_characterization/"
 
 #load the msa of mRNA editing sites
 setwd(paste0(homewd, "residue_alignments")) 
