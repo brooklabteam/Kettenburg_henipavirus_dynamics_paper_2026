@@ -160,7 +160,6 @@ head(ephrinmsa)
 ephrinmsa$name <- as.character(ephrinmsa$name)
 unique(ephrinmsa$name)
 ephrinmsa$name[ephrinmsa$name=="CAT017_Plate_42_A10_NODE_34_czid2023"] <- "PX127396 AngV-2"
-ephrinmsa$name[ephrinmsa$name=="KEL86spleen_Plate_22_A11_NODE_439_czid2023"] <- "PX127395 GhV-like"
 ephrinmsa$name[ephrinmsa$name=="KEL234_NODE_79_czid2019"] <- "PX127397 AngV-2"
 ephrinmsa$name[ephrinmsa$name=="KEL281B_NODE_113_czid2019"] <- "PX127399 AndV-3"
 ephrinmsa$name[ephrinmsa$name=="KEL380_Plate_42_B8_NODE_44_czid2023"] <- "PX127400 AngV"
@@ -187,7 +186,7 @@ colz2 = c("A" = "goldenrod1", "C"="white","D"="white","E"="goldenrod1","F"="whit
 
 #and control the order
 
-ephrinmsa$name <- factor(ephrinmsa$name, levels = rev(c("HeV", "NiV", "CedV", "PX127395 GhV-like", "GhV", "YuV1",
+ephrinmsa$name <- factor(ephrinmsa$name, levels = rev(c("HeV", "NiV", "CedV", "GhV", "YuV1",
                                                         "PX127342 AndV","PX127343 AndV", "YuV2",
                                                        "PX127399 AndV-3", "PX127401 AndV-2", "PX127400 AngV", "AngV", 
                                                         "PX127396 AngV-2","PX127397 AngV-2", "SGV",                           
@@ -208,7 +207,7 @@ ephrinmsa.plot <- ggplot(data=ephrinmsa) +
         axis.title.x = element_blank(),
         axis.text.y = element_text(colour=c("black","black","black","black","black","chartreuse3","chartreuse3",
                                             "springgreen3","springgreen3","darkturquoise","dodgerblue3", "cyan4","cyan4","cyan4",
-                                            "black","darkorange","darkorange", "black","black","black"), face="bold"),
+                                            "black","darkorange","darkorange", "black","black"), face="bold"),
         #axis.text.x = element_blank(),
         #axis.ticks.x = element_blank(),
         legend.text = element_text(size=10),
