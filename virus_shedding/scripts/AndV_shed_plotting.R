@@ -441,17 +441,15 @@ mid <- ggplot(data=subset(prev.sum.plot)) +
 mid
 
 
-
 ####################################################################################################
 ####################################################################################################
 ## SECTION 3: Correlates of positivity by infection status and nutrition
 ## nutrition bit can only be computed for adults 
 
-## what are the "risk factors" for being positive ?
-## look at individuals this time instead of prevalence
-
 # # remove bats from the dataset with no age class listed
 molecular.dat = subset(merge.dat.pos, !is.na(bat_age_class))
+molecular.dat = subset(molecular.dat, !is.na(bat_sex))
+molecular.dat = subset(molecular.dat, !is.na(bat_species))
 
 #factor the categorical data
 molecular.dat$year <- as.factor(molecular.dat$year)
@@ -468,46 +466,21 @@ molecular.dat$combo_class<-as.factor(molecular.dat$combo_class)
 molecular.dat$month<-as.numeric(molecular.dat$month)
 
 ##New seasonality timing
-#day
-lact.dat.day <- cbind.data.frame(bat_species=rep(c("Eidolon dupreanum", "Rousettus madagascariensis"), each=2), 
-                                 start = c(320,1, 346,1), 
-                                 stop=c(365,33,365,50))
-lact.dat.day$type = "lactation"
-lact.dat.day$bat_sex="female"
-gest.dat.day <- cbind.data.frame(bat_species=c("Eidolon dupreanum","Rousettus madagascariensis"), 
-                                 start = c(215, 254),
-                                 stop=c(320, 345))
-gest.dat.day$type = "gestation"
-gest.dat.day$bat_sex = "female"
-#and winter
-cal.dat.day <-  cbind.data.frame(bat_species=c("Eidolon dupreanum", "Rousettus madagascariensis"), 
-                                 start = c(135,135),
-                                 stop=c(283,283))
-cal.dat.day$type <- "winter"
-cal.dat.day$bat_sex="male"
-
-library(reshape2)
-
-repro.dat.day <- rbind(lact.dat.day, gest.dat.day)
-demo.dat.day <- rbind(gest.dat.day, lact.dat.day, cal.dat.day)
-
 #month
-lact.dat.month <- cbind.data.frame(bat_species=rep(c("Eidolon dupreanum", "Rousettus madagascariensis"), each=2), 
-                                   start = c(11.5,1, 11.4,1), 
-                                   stop=c(12,2.05,12,2.7))
+lact.dat.month <- cbind.data.frame(bat_species=rep(c("Eidolon dupreanum", "Rousettus madagascariensis", "Pteropus rufus"), each=2), 
+                                   start = c(11.5,1, 11.4,1, 8.1,1), 
+                                   stop=c(12,2.05,12,2.7,12.9,1))
 lact.dat.month$type = "lactation"
 lact.dat.month$bat_sex="female"
-
-gest.dat.month <- cbind.data.frame(bat_species=c("Eidolon dupreanum","Rousettus madagascariensis"), 
-                                   start = c(8.15, 9.45),
-                                   stop=c(11.5, 11.39))
+gest.dat.month <- cbind.data.frame(bat_species=c("Eidolon dupreanum","Rousettus madagascariensis", "Pteropus rufus"), 
+                                   start = c(8.15, 9.45, 7.2),
+                                   stop=c(11.5, 11.39, 8.1))
 gest.dat.month$type = "gestation"
 gest.dat.month$bat_sex = "female"
-
 #and winter
-cal.dat.month <-  cbind.data.frame(bat_species=c("Eidolon dupreanum", "Rousettus madagascariensis"), 
-                                   start = c(5.5,5.5),
-                                   stop=c(10.3,10.3))
+cal.dat.month <-  cbind.data.frame(bat_species=c("Eidolon dupreanum", "Rousettus madagascariensis", "Pteropus rufus"), 
+                                   start = c(5.5,5.5,5.5),
+                                   stop=c(10.3,10.3,10.3))
 cal.dat.month$type <- "winter"
 cal.dat.month$bat_sex="male"
 
@@ -516,264 +489,30 @@ library(reshape2)
 repro.dat.month <- rbind(lact.dat.month, gest.dat.month)
 demo.dat.month <- rbind(gest.dat.month, lact.dat.month, cal.dat.month)
 
-### first, confirm that seasonality matters
-
-####Eidolon dupreanum 
-ed1_molecular <- gam(pos~ 
-                         s(month,k=4, bs="cc", by=virus)+
-                         s(virus, bs="re") +
-                         s(bat_sex, bs="re")+
-                         s(year, bs ="re"), 
-                       dat = subset(molecular.dat, bat_species=="Eidolon dupreanum"), 
-                       family = "binomial")
-summary(ed1_molecular) #angv, ghv, virus, sex, and year sig
-plot(ed1_molecular, pages=1) 
-
-ed1_molecular.f <- gam(pos~ 
-                       s(month,k=4, bs="cc", by=virus)+
-                       s(virus, bs="re") +
-                       s(year, bs ="re"), 
-                     dat = subset(molecular.dat, bat_species=="Eidolon dupreanum" & bat_sex =="female"), 
-                     family = "binomial")
-summary(ed1_molecular.f) #ghv, virus, year sig
-plot(ed1_molecular.f, pages=1) 
-
-ed1_molecular.m <- gam(pos~ 
-                         s(month,k=4, bs="cc", by=virus)+
-                         s(virus, bs="re") +
-                         s(year, bs ="re"), 
-                       dat = subset(molecular.dat, bat_species=="Eidolon dupreanum" & bat_sex =="male"), 
-                       family = "binomial")
-summary(ed1_molecular.m) #angv, ghv, virus, year sig
-plot(ed1_molecular.m, pages=1) 
-
-
-###Rousettus madagascariensis
-rm1_molecular <- gam(pos~ 
-                       s(month,k=4, bs="cc", by=virus)+
-                       s(virus, bs="re") +
-                       s(bat_sex, bs="re")+
-                       s(year, bs ="re"), 
-                     dat = subset(molecular.dat, bat_species=="Rousettus madagascariensis"), 
-                     family = "binomial")
-summary(rm1_molecular) #angv, ghvlike, year sig, sex almost sig
-plot(rm1_molecular, pages=1) 
-
-rm1_molecular.f <- gam(pos~ 
-                       s(month,k=4, bs="cc", by=virus)+
-                       s(virus, bs="re") +
-                       s(year, bs ="re"), 
-                     dat = subset(molecular.dat, bat_species=="Rousettus madagascariensis" & bat_sex =="female"), 
-                     family = "binomial")
-summary(rm1_molecular.f) #ghvlike abd virus sig
-plot(rm1_molecular.f, pages=1) 
-
-rm1_molecular.m <- gam(pos~ 
-                         s(month,k=4, bs="cc", by=virus)+
-                         s(virus, bs="re") +
-                         s(year, bs ="re"), 
-                       dat = subset(molecular.dat, bat_species=="Rousettus madagascariensis" & bat_sex =="male"), 
-                       family = "binomial")
-summary(rm1_molecular.m) #angv ghv virus and year sig
-plot(rm1_molecular.m, pages=1) 
-
-
-
-####Eidolon dupreanum
-#predict without effect of year for plotting
-pred.df.ED_molecular <- cbind.data.frame(month=rep(seq(1,12, by=.1),8*8), year=rep(c(2013,2014,2015,2016, 2018, 2019, 2020, 2022), each=(length(seq(1,12,by=.1)*8))),
-                                         bat_sex = rep(rep(c("female","male"), each=length(seq(1,12,by=.1))),8),
-                                         virus = rep(rep(c("AndV", "AngV", "GhV", "GhV-like"), each = length(seq(1,12,by=.1))),8))
-#predict without effect of year for plotting
-pred.df.ED_molecular$predicted_pos <- predict.gam(ed1_molecular.f, newdata = pred.df.ED_molecular, type="response", exclude = "s(year)")
-pred.df.ED_molecular$predicted_pos_lci <- pred.df.ED_molecular$predicted_pos - 1.96*predict.gam(ed1_molecular.f, newdata = pred.df.ED_molecular, type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.ED_molecular$predicted_pos_uci <- pred.df.ED_molecular$predicted_pos + 1.96*predict.gam(ed1_molecular.f, newdata = pred.df.ED_molecular, type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.ED_molecular$bat_species="Eidolon dupreanum"
-#correct any predictions < 0:
-pred.df.ED_molecular$predicted_pos_lci[pred.df.ED_molecular$predicted_pos_lci<0] <- 0
-#correct any predictions > 1:
-pred.df.ED_molecular$predicted_pos_uci[pred.df.ED_molecular$predicted_pos_uci>1] <- 1
-
-pred.df.EDF_molecular <- cbind.data.frame(month=rep(seq(1,12, by=.1),7*4), year=rep(c(2013,2014,2015,2016, 2018, 2019, 2020), each=(length(seq(1,12,by=.1)*4))), 
-                                          virus = rep(rep(c("AndV", "AngV", "GhV", "GhV-like"), each = length(seq(1,12,by=.1))),7))
-#predict without effect of year for plotting
-pred.df.EDF_molecular$predicted_pos <- predict.gam(ed1_molecular.f, newdata = pred.df.EDF_molecular, type="response", exclude = "s(year)")
-pred.df.EDF_molecular$predicted_pos_lci <- pred.df.EDF_molecular$predicted_pos - 1.96*predict.gam(ed1_molecular.f, newdata = pred.df.EDF_molecular, type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.EDF_molecular$predicted_pos_uci <- pred.df.EDF_molecular$predicted_pos + 1.96*predict.gam(ed1_molecular.f, newdata = pred.df.EDF_molecular, type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.EDF_molecular$bat_species="Eidolon dupreanum"
-pred.df.EDF_molecular$bat_sex="female"
-#correct any predictions < 0:
-pred.df.EDF_molecular$predicted_pos_lci[pred.df.EDF_molecular$predicted_pos_lci<0] <- 0
-#correct any predictions > 1:
-pred.df.EDF_molecular$predicted_pos_uci[pred.df.EDF_molecular$predicted_pos_uci>1] <- 1
-
-pred.df.EDM_molecular <- cbind.data.frame(month=rep(seq(1,12, by=.1),7*4), year=rep(c(2013,2014,2015,2016, 2018, 2019, 2020), each=(length(seq(1,12,by=.1)*4))), 
-                                         virus = rep(rep(c("AndV", "AngV", "GhV", "GhV-like"), each = length(seq(1,12,by=.1))),7))
-
-#predict without effect of year for plotting
-pred.df.EDM_molecular$predicted_pos <- predict.gam(ed1_molecular.m, newdata = pred.df.EDM_molecular, type="response", exclude = "s(year)")
-pred.df.EDM_molecular$predicted_pos_lci <- pred.df.EDM_molecular$predicted_pos - 1.96*predict.gam(ed1_molecular.m, newdata = pred.df.EDM_molecular, type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.EDM_molecular$predicted_pos_uci <- pred.df.EDM_molecular$predicted_pos + 1.96*predict.gam(ed1_molecular.m, newdata = pred.df.EDM_molecular, type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.EDM_molecular$bat_species="Eidolon dupreanum"
-pred.df.EDM_molecular$bat_sex="male"
-#correct any predictions < 0:
-pred.df.EDM_molecular$predicted_pos_lci[pred.df.EDM_molecular$predicted_pos_lci<0] <- 0
-#correct any predictions > 1:
-pred.df.EDM_molecular$predicted_pos_uci[pred.df.EDM_molecular$predicted_pos_uci>1] <- 1
-
-
-####Rousettus madagascariesis
-pred.df.RM_molecular <- cbind.data.frame(month=rep(seq(1,12, by=.1),7*8), year=rep(c(2014,2015,2018, 2019, 2020, 2022, 2023), each=(length(seq(1,12,by=.1)*8))),
-                                         bat_sex = rep(rep(c("female","male"), each=length(seq(1,12,by=.1))),7),
-                                         virus = rep(rep(c("AndV", "AngV", "GhV", "GhV-like"), each = length(seq(1,12,by=.1))),7))
-#predict without effect of year for plotting
-pred.df.RM_molecular$predicted_pos <- predict.gam(rm1_molecular.f, newdata = pred.df.RM_molecular, type="response", exclude = "s(year)")
-pred.df.RM_molecular$predicted_pos_lci <- pred.df.RM_molecular$predicted_pos - 1.96*predict.gam(rm1_molecular.f, newdata = pred.df.RM_molecular, type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.RM_molecular$predicted_pos_uci <- pred.df.RM_molecular$predicted_pos + 1.96*predict.gam(rm1_molecular.f, newdata = pred.df.RM_molecular, type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.RM_molecular$bat_species="Rousettus madagascariensis"
-#correct any predictions < 0:
-pred.df.RM_molecular$predicted_pos_lci[pred.df.RM_molecular$predicted_pos_lci<0] <- 0
-#correct any predictions > 1:
-pred.df.RM_molecular$predicted_pos_uci[pred.df.RM_molecular$predicted_pos_uci>1] <- 1
-
-pred.df.RMF_molecular <- cbind.data.frame(month=rep(seq(1,12, by=.1),7*4), year=rep(c(2014,2015,2018, 2019, 2020, 2022, 2023), each=(length(seq(1,12,by=.1)*4))), 
-                                          virus = rep(rep(c("AndV", "AngV", "GhV", "GhV-like"), each = length(seq(1,12,by=.1))),7))
-#predict without effect of year for plotting
-pred.df.RMF_molecular$predicted_pos <- predict.gam(rm1_molecular.f, newdata = pred.df.RMF_molecular, type="response", exclude = "s(year)")
-pred.df.RMF_molecular$predicted_pos_lci <- pred.df.RMF_molecular$predicted_pos - 1.96*predict.gam(rm1_molecular.f, newdata = pred.df.RMF_molecular, type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.RMF_molecular$predicted_pos_uci <- pred.df.RMF_molecular$predicted_pos + 1.96*predict.gam(rm1_molecular.f, newdata = pred.df.RMF_molecular, type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.RMF_molecular$bat_species="Rousettus madagascariensis"
-pred.df.RMF_molecular$bat_sex="female"
-#correct any predictions < 0:
-pred.df.RMF_molecular$predicted_pos_lci[pred.df.RMF_molecular$predicted_pos_lci<0] <- 0
-#correct any predictions > 1:
-pred.df.RMF_molecular$predicted_pos_uci[pred.df.RMF_molecular$predicted_pos_uci>1] <- 1
-
-pred.df.RMM_molecular <- cbind.data.frame(month=rep(seq(1,12, by=.1),7*4), year=rep(c(2014,2015,2018, 2019, 2020, 2022, 2023), each=(length(seq(1,12,by=.1)*4))), 
-                                          virus = rep(rep(c("AndV", "AngV", "GhV", "GhV-like"), each = length(seq(1,12,by=.1))),7))
-#predict without effect of year for plotting
-pred.df.RMM_molecular$predicted_pos <- predict.gam(rm1_molecular.m, newdata = pred.df.RMM_molecular, type="response", exclude = "s(year)")
-pred.df.RMM_molecular$predicted_pos_lci <- pred.df.RMM_molecular$predicted_pos - 1.96*predict.gam(rm1_molecular.m, newdata = pred.df.RMM_molecular, type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.RMM_molecular$predicted_pos_uci <- pred.df.RMM_molecular$predicted_pos + 1.96*predict.gam(rm1_molecular.m, newdata = pred.df.RMM_molecular, type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.RMM_molecular$bat_species="Rousettus madagascariensis"
-pred.df.RMM_molecular$bat_sex="male"
-#correct any predictions < 0:
-pred.df.RMM_molecular$predicted_pos_lci[pred.df.RMM_molecular$predicted_pos_lci<0] <- 0
-#correct any predictions > 1:
-pred.df.RMM_molecular$predicted_pos_uci[pred.df.RMM_molecular$predicted_pos_uci>1] <- 1
-
-#mark which ones are sig
-
-#Eidolon
-#Overall: GhV sig, AngV, GhV-like, AndV not sig
-#By sex: GhV-female almost sig, AndV, AngV, GhVlike neither sex sig
-# pred.df.ED_molecular$sig <- 0
-# pred.df.ED_molecular$sig[pred.df.ED_molecular$virus=="GhV"] <- 1
-# pred.df.ED_molecular$sig[pred.df.ED_molecular$virus=="AngV"] <- 1
-# pred.df.ED_molecular$sig[pred.df.ED_molecular$virus=="AndV"] <- 2
-# pred.df.ED_molecular$sig[pred.df.ED_molecular$virus=="GhV-like"] <- 2
-# 
-# pred.df.EDM_molecular$sig <- 0
-# pred.df.EDM_molecular$sig[pred.df.EDM_molecular$virus=="GhV"] <- 1
-# pred.df.EDM_molecular$sig[pred.df.EDM_molecular$virus=="AngV"] <- 1
-# pred.df.EDM_molecular$sig[pred.df.EDM_molecular$virus=="AndV"] <- 2
-# pred.df.EDM_molecular$sig[pred.df.EDM_molecular$virus=="GhV-like"] <- 2
-# 
-# pred.df.EDF_molecular$sig <- 0
-# pred.df.EDF_molecular$sig[pred.df.EDF_molecular$virus=="GhV"] <- 1
-# pred.df.EDF_molecular$sig[pred.df.EDF_molecular$virus=="AngV"] <- 2
-# pred.df.EDF_molecular$sig[pred.df.EDF_molecular$virus=="AndV"] <- 2
-# pred.df.EDF_molecular$sig[pred.df.EDF_molecular$virus=="GhV-like"] <- 2
-
-#Rousettus
-#Overall: GhV sig, AngV, GhV-like, AndV not sig
-#By sex: GhV-female almost sig, AndV, AngV, GhVlike neither sex sig
-# pred.df.RM_molecular$sig <- 0
-# pred.df.RM_molecular$sig[pred.df.RM_molecular$virus=="GhV"] <- 2
-# pred.df.RM_molecular$sig[pred.df.RM_molecular$virus=="AngV"] <- 1
-# pred.df.RM_molecular$sig[pred.df.RM_molecular$virus=="AndV"] <- 2
-# pred.df.RM_molecular$sig[pred.df.RM_molecular$virus=="GhV-like"] <- 1
-# 
-# #males
-# pred.df.RMM_molecular$sig <- 0
-# pred.df.RMM_molecular$sig[pred.df.RMM_molecular$virus=="GhV"] <- 1
-# pred.df.RMM_molecular$sig[pred.df.RMM_molecular$virus=="AngV"] <- 1
-# pred.df.RMM_molecular$sig[pred.df.RMM_molecular$virus=="AndV"] <- 2
-# pred.df.RMM_molecular$sig[pred.df.RMM_molecular$virus=="GhV-like"] <- 2
-# 
-# #females
-# pred.df.RMF_molecular$sig <- 0
-# pred.df.RMF_molecular$sig[pred.df.RMF_molecular$virus=="GhV"] <- 2
-# pred.df.RMF_molecular$sig[pred.df.RMF_molecular$virus=="AngV"] <- 2
-# pred.df.RMF_molecular$sig[pred.df.RMF_molecular$virus=="AndV"] <- 2
-# pred.df.RMF_molecular$sig[pred.df.RMF_molecular$virus=="GhV-like"] <- 1
-
-
-#add together
-pred.df_molecular <- rbind(pred.df.ED_molecular, pred.df.RM_molecular)
-pred.df.sex_molecular <- rbind(pred.df.EDF_molecular, pred.df.RMF_molecular, pred.df.EDM_molecular, pred.df.RMM_molecular)
-
-# let's look at the partial effects
-# because of the interaction term, the day of year function
-# won't run, but you could pull the partial effects from 
-# the plot() output above and visualize it if desired
-
-# source script from Guth/Streicker/Mollentze
-# generalcodewd = "/Users/gwenddolenkettenburg/Desktop/brook_lab/general_code_datasets"
-# source(paste0(generalcodewd, "/partial-gam-functions.R"))
-# 
-# ###Eidolon 
-# ed.molecular.virus.df <- get_partial_effects(ed1_molecular, var = "virus")
-# ed.molecular.year.df <- get_partial_effects(ed1_molecular, var = "year")
-# plot.partial(ed.molecular.virus.df, var="virus", response_var = "prob.positive") # no sig
-# plot.partial(ed.molecular.year.df, var="year", response_var = "prob.positive") #2015 and 2016 pos sig, 2018 2019 neg sig
-# 
-# ed.molecular.virus.df.f <- get_partial_effects(ed1_molecular.f, var = "virus")
-# ed.molecular.year.df.f <- get_partial_effects(ed1_molecular.f, var = "year")
-# plot.partial(ed.molecular.virus.df.f, var="virus", response_var = "prob.positive") # no sig
-# plot.partial(ed.molecular.year.df.f, var="year", response_var = "prob.positive") #2016 pos sig
-# 
-# ed.molecular.virus.df.m <- get_partial_effects(ed1_molecular.m, var = "virus")
-# ed.molecular.year.df.m <- get_partial_effects(ed1_molecular.m, var = "year")
-# plot.partial(ed.molecular.virus.df.m, var="virus", response_var = "prob.positive") # no sig
-# plot.partial(ed.molecular.year.df.m, var="year", response_var = "prob.positive") #2015 pos sig, 2018 neg sig
-# 
-# ###Rousettus 
-# rm.molecular.virus.df <- get_partial_effects(rm1_molecular, var = "virus")
-# rm.molecular.year.df <- get_partial_effects(rm1_molecular, var = "year")
-# plot.partial(rm.molecular.virus.df, var="virus", response_var = "prob.positive") # no sig
-# plot.partial(rm.molecular.year.df, var="year", response_var = "prob.positive") #2022 pos sig
-# 
-# rm.molecular.virus.df.f <- get_partial_effects(rm1_molecular.f, var = "virus")
-# rm.molecular.year.df.f <- get_partial_effects(rm1_molecular.f, var = "year")
-# plot.partial(rm.molecular.virus.df.f, var="virus", response_var = "prob.positive") #no sig
-# plot.partial(rm.molecular.year.df.f, var="year", response_var = "prob.positive") #no sig
-# 
-# rm.molecular.virus.df.m <- get_partial_effects(rm1_molecular.m, var = "virus")
-# rm.molecular.year.df.m <- get_partial_effects(rm1_molecular.m, var = "year")
-# plot.partial(rm.molecular.virus.df.m, var="virus", response_var = "prob.positive") #no sig
-# plot.partial(rm.molecular.year.df.m, var="year", response_var = "prob.positive") #2022 pos sig
-
 #for plotting
 merge.plot <- ddply(molecular.dat,.(bat_species, year, month, virus), summarise, N=length(pos), pos=sum(pos))
 merge.plot$molecular <-   merge.plot$pos/merge.plot$N
 
+merge.plot.noyear <- ddply(molecular.dat,.(bat_species, month, virus), summarise, N=length(pos), pos=sum(pos))
+merge.plot.noyear$molecular <-   merge.plot.noyear$pos/merge.plot.noyear$N
+
 merge.plot.sex <- ddply(molecular.dat,.(bat_species, bat_sex, year, month, virus), summarise, N=length(pos), pos=sum(pos))
 merge.plot.sex$molecular <-   merge.plot.sex$pos/merge.plot.sex$N
+
+merge.plot.sex.noyear <- ddply(molecular.dat,.(bat_species, bat_sex, month, virus), summarise, N=length(pos), pos=sum(pos))
+merge.plot.sex.noyear$molecular <-   merge.plot.sex.noyear$pos/merge.plot.sex.noyear$N
 
 shapez=c("2013"=16,"2014"=17,"2015"=15, "2016"=3, "2018"=7, "2019"=8, "2020"=18, "2022"=9, "2023"=10)
 
 ###plotting by day of year
 #all datasets
-intra <- ggplot(pred.df_molecular) + 
+intra <- 
+  ggplot(merge.plot) + 
+  #ggplot(merge.plot.noyear) + 
   geom_rect(data=demo.dat.month, aes(xmin=start, xmax=stop, ymin=0, ymax=1, fill=type), alpha=.3) +
   geom_point(data=merge.plot, aes(x=month, y=molecular, size=N, color=virus, shape=year)) +
-  #geom_line(aes(x=month, y=predicted_pos, color=virus)) + 
-  #geom_ribbon(data=subset(pred.df_molecular, sig==1), aes(x=month, ymin= predicted_pos_lci, ymax=predicted_pos_uci, fill=virus), alpha=.3) +
-  #geom_line(data=subset(pred.df_molecular, sig==1), aes(x=month, y=predicted_pos, color=virus)) +
-  geom_ribbon(data=subset(pred.df_molecular), aes(x=month, ymin= predicted_pos_lci, ymax=predicted_pos_uci, fill=virus), alpha=.3) +
-  geom_line(data=subset(pred.df_molecular), aes(x=month, y=predicted_pos, color=virus)) +
-  facet_grid(bat_species~virus) + 
+  #geom_point(data=merge.plot.noyear, aes(x=month, y=molecular, size=N, color=virus, shape=year)) +
+  facet_grid(bat_species~.) + 
   theme_bw() +
   scale_color_manual(values=colz1) +
   scale_fill_manual(values=filz) +
@@ -783,29 +522,26 @@ intra <- ggplot(pred.df_molecular) +
         strip.text.x=element_text(face="italic"),
         strip.text = element_text(size=9), panel.grid = element_blank(), legend.title = element_blank()) +
   guides(fill="none")+
-  coord_cartesian(expand = F) + ylab("Predicted prevalence") + xlab("Month")
+  coord_cartesian(expand = F) + ylab("Prevalence") + xlab("Month")
 intra
 
-intra.sex <- ggplot(pred.df.sex_molecular) + 
+intra.sex <- 
+  ggplot(merge.plot.sex) + 
+  #ggplot(merge.plot.sex.noyear) + 
   geom_rect(data=demo.dat.month, aes(xmin=start, xmax=stop, ymin=0, ymax=1, fill=type), alpha=.3) +
   geom_point(data=merge.plot.sex, aes(x=month, y=molecular, size=N, color=virus, shape=year)) +
-  #geom_line(aes(x=month, y=predicted_pos, color=virus)) + 
-  #geom_ribbon(data=subset(pred.df.sex_molecular, sig==1), aes(x=month, ymin= predicted_pos_lci, ymax=predicted_pos_uci, fill=virus), alpha=.3) +
-  #geom_line(data=subset(pred.df.sex_molecular, sig==1), aes(x=month, y=predicted_pos, color=virus)) +
-  geom_ribbon(data=subset(pred.df.sex_molecular), aes(x=month, ymin= predicted_pos_lci, ymax=predicted_pos_uci, fill=virus), alpha=.3) +
-  geom_line(data=subset(pred.df.sex_molecular), aes(x=month, y=predicted_pos, color=virus)) +
-  facet_grid(bat_species~virus+bat_sex) + 
+  #geom_point(data=merge.plot.sex.noyear, aes(x=month, y=molecular, size=N, color=virus, shape=year)) +
+  facet_grid(bat_species~bat_sex) + 
   theme_bw() +
   scale_color_manual(values=colz1) +
   scale_fill_manual(values=filz) +
   scale_shape_manual(values=shapez) +
-  theme(axis.text = element_text(size=9), #axis.title.x = element_blank(),
-        strip.text.x=element_text(face="italic"),
+  theme(axis.text = element_text(size=9), #axis.title.x = element_blank(), 
         axis.title = element_text(size=9), strip.background = element_rect(fill="white"), 
-        strip.text = element_text(size=9), panel.grid = element_blank(), 
-        legend.title = element_blank()) +
+        strip.text.x=element_text(face="italic"),
+        strip.text = element_text(size=9), panel.grid = element_blank(), legend.title = element_blank()) +
   guides(fill="none")+
-  coord_cartesian(expand = F) + ylab("Predicted prevalence") + xlab("Month") 
+  coord_cartesian(expand = F) + ylab("Prevalence") + xlab("Month")
 intra.sex
 
 
