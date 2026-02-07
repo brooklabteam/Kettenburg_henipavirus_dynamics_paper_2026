@@ -20,7 +20,7 @@ datawd = "/Users/gwenddolenkettenburg/Desktop/brook_lab/malagasy_fruit_bats_popu
 # also GAMs of predictors of positivity and/or prevalence
 ################################################################################
 ################################################################################
-## Section 1. Prep the data
+##  Prep the data
 
 # First, load the viral shedding data - there is also a file for all molecular pos and all mNGS but we won't use them here
 shed.dat <- read.csv(file = paste0(homewd, "/henipavirus_shedding_data.csv"))
@@ -82,7 +82,7 @@ unique(merge.dat.pos$bat_species)
 
 ####################################################################################################
 ####################################################################################################
-## SECTION 2: Seasonality of prevalence 
+## INTERANNUAL PLOTTING
 
 # now look at prevalence by sampling session by species and virus
 # plot data first
@@ -443,8 +443,7 @@ mid
 
 ####################################################################################################
 ####################################################################################################
-## SECTION 3: Correlates of positivity by infection status and nutrition
-## nutrition bit can only be computed for adults 
+## INTRAANNUAL PLOTTING
 
 # # remove bats from the dataset with no age class listed
 molecular.dat = subset(merge.dat.pos, !is.na(bat_age_class))
@@ -543,6 +542,139 @@ intra.sex <-
   guides(fill="none")+
   coord_cartesian(expand = F) + ylab("Prevalence") + xlab("Month")
 intra.sex
+
+
+####################################################################################################
+####################################################################################################
+## VIRAL LOAD PLOTTING
+
+#slim to just AndV
+shed.dat.ct<-dplyr::select(shed.dat, sampleid, AndV_shedding_ct_ur)
+
+## merge the shedding data with the catching data
+
+# and make into long format for prevalence
+molecular.long.pos <- melt(shed.dat.pos, id.vars = c("sampleid"), value.name = "pos", variable.name = "virus")
+head(molecular.long.pos)
+molecular.long.pos$virus <- as.character(molecular.long.pos$virus) 
+molecular.long.pos$virus <- gsub(pattern="qPCR_", replacement = "", x=molecular.long.pos$virus, fixed = T)
+names(molecular.long.pos)[1] <- "sampleid"
+#complete cases
+molecular.long.pos <- molecular.long.pos[complete.cases(molecular.long.pos),]
+
+molecular.long.ct <- melt(shed.dat.ct, id.vars = c("sampleid"), value.name = "ct", variable.name = "virus")
+head(molecular.long.ct)
+molecular.long.ct$virus <- as.character(molecular.long.ct$virus) 
+molecular.long.ct$virus <- gsub(pattern="qPCR_", replacement = "", x=molecular.long.ct$virus, fixed = T)
+names(molecular.long.ct)[1] <- "sampleid"
+#complete cases
+molecular.long.ct <- molecular.long.ct[complete.cases(molecular.long.ct),]
+
+# link this to the catching data to plot by sampling session, add the aging data as well
+catch.dat <- read.csv(file = paste0(datawd, "/catching_data_clean_asofApril2025_edited.csv"), header = T, stringsAsFactors = F)
+barcode.dat<- read.csv(file = paste0(datawd, "/barcode_ids.csv"), header = T, stringsAsFactors = F)
+age.dat<-read.csv(file = paste0(datawd, "/aged_bats.csv"), header = T, stringsAsFactors = F)
+
+# drop most columns and name those you want
+catch.dat <-dplyr::select(catch.dat, sampling_session, region, roost_site, bat_species, processing_date, sampleid, bat_sex, bat_age_class, young_of_year, pupmom_pair, sampleid_pupmom_pair, bat_weight_g, bat_forearm_mm, mass_forearm_residual, recap_new,
+                          year, quarter, month, doy, dataset, combo_class)
+age.dat <-dplyr::select(age.dat, sampleid, age)
+
+#and merge the catching data with the barcode and age data first
+merge.dat <- merge(catch.dat, barcode.dat, by="sampleid", all.x = T)
+head(merge.dat)
+
+merge.dat <- merge(merge.dat, age.dat, by="sampleid", all.x = T)
+head(merge.dat)
+
+#now add the viral shedding data to the merged catching data
+merge.dat.ct <- merge(molecular.long.ct, merge.dat, by="sampleid", all.x = T)
+head(merge.dat.ct)
+
+#get the midpoint processing date per sampling session
+merge.dat.pos$processing_date <- as.Date(merge.dat.pos$processing_date)
+sampling.date <- ddply(merge.dat.pos, .(bat_species, sampling_session), summarise, min_date = min(processing_date), max_date = max(processing_date))
+sampling.date$mid_date <- (sampling.date$max_date-sampling.date$min_date)/2 + sampling.date$min_date
+
+#and slim to merge
+sampling.merge <- dplyr::select(sampling.date, bat_species, sampling_session, mid_date)
+
+merge.dat.ct <- merge(merge.dat.ct, sampling.merge, by = c("bat_species", "sampling_session"))
+merge.dat.ct$year <- year(merge.dat.ct$processing_date)
+merge.dat.ct$month <- as.character(month(merge.dat.ct$processing_date))
+head(merge.dat.ct)
+
+#what species?
+merge.dat.ct<-subset(merge.dat.ct, bat_species=="Eidolon dupreanum"  | bat_species=="Rousettus madagascariensis" | bat_species=="Pteropus rufus")
+merge.dat.ct<-subset(merge.dat.ct, bat_sex=="female" | bat_sex=="male")
+unique(merge.dat.ct$bat_species)
+unique(merge.dat.ct$bat_sex)
+
+#lastly, subset so we're only looking at adults since we can't get MFR for juveniles
+#merge.dat.pos<-subset(merge.dat.pos, bat_age_class=="A" | bat_age_class=="NL" | bat_age_class=="L" | bat_age_class=="P")
+#merge.dat.ct<-subset(merge.dat.ct, bat_age_class=="A" | bat_age_class=="NL" | bat_age_class=="L" | bat_age_class=="P")
+
+#rename virus for simplicity
+merge.dat.ct$virus[merge.dat.ct$virus=="AndV_shedding_ct_ur"] <- "AndV"
+
+#and only keep ct values for positive bats: 
+merge.dat.ct <- merge.dat.ct[merge.dat.ct$ct > 1, ]
+
+#factor variables
+merge.dat.ct$year <- as.factor(merge.dat.ct$year)
+merge.dat.ct$bat_sex <- as.factor(merge.dat.ct$bat_sex)
+merge.dat.ct$roost_site <- as.factor(merge.dat.ct$roost_site)
+merge.dat.ct$region <- as.factor(merge.dat.ct$region)
+merge.dat.ct$virus <- as.factor(merge.dat.ct$virus)
+merge.dat.ct$bat_species <- as.factor(merge.dat.ct$bat_species)
+merge.dat.ct$bat_age_class <- as.factor(merge.dat.ct$bat_age_class)
+merge.dat.ct$young_of_year <- as.factor(merge.dat.ct$young_of_year)
+merge.dat.ct$pupmom_pair <- as.factor(merge.dat.ct$pupmom_pair)
+merge.dat.ct$region <- as.factor(merge.dat.ct$region)
+merge.dat.ct$combo_class<-as.factor(merge.dat.ct$combo_class)
+merge.dat.ct$month<-as.numeric(merge.dat.ct$month)
+
+#separate into old, mid, new datasets
+merge.dat.ct_old <- merge.dat.ct[merge.dat.ct$mid_date > "2014-10-13" & merge.dat.ct$mid_date < "2016-01-19", ]
+merge.dat.ct_mid <- merge.dat.ct[merge.dat.ct$mid_date > "2018-02-15" & merge.dat.ct$mid_date < "2019-09-21", ]
+merge.dat.ct_new <- merge.dat.ct[merge.dat.ct$mid_date > "2022-07-19" & merge.dat.ct$mid_date < "2023-05-12", ]
+
+#plot to take a look
+ctviolon.month <- ggplot(data = subset(merge.dat.ct)) + 
+  geom_violin(aes(x=month, y=ct, group=month),  color="coral",
+              draw_quantiles = c(0,.25,.5,.75), show.legend=F, fill=NA)+
+  facet_grid(bat_species~., scales = "free") +
+  geom_jitter(aes(x=month, y=ct, color=virus), width=.09, size=2, alpha=.7, show.legend = F) + 
+  scale_color_manual(values=colz1) + scale_fill_manual(values=filz) +
+  theme(panel.grid = element_blank(),
+        axis.text=element_text(size=13), axis.title.y = element_text(size=16),
+        strip.text.y = element_text(size=12, face = "italic"),
+        strip.text.x = element_text(size=12),
+        strip.background = element_rect(fill="white"),
+        title = element_text(size=16),
+        legend.position.inside = c(.87,.9),
+        legend.box.background = element_rect(color="black"),
+        plot.margin = unit(c(.2,.2,.2,.2), "cm"))+
+  scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12))+
+  scale_y_reverse()
+ctviolon.month
+
+
+
+mid <- ggplot(data=subset(prev.sum.plot)) +
+  geom_rect(data=demo.dat.plot, aes(xmin=as.Date(start), xmax=as.Date(stop), ymin=0, ymax=1, fill=type), alpha=.3) +
+  geom_point(aes(x=mid_date, y=prev, size=N, color=virus)) + scale_color_manual(values=colz1) + scale_fill_manual(values=filz) +
+  geom_line(aes(x=mid_date, y=prev, color=virus), linetype=2) +
+  facet_grid(bat_species~dataset, scales="free") + 
+  #scale_x_date(limits = as.Date(c("2018-02-18","2019-09-20")))+
+  theme_bw()+
+  theme(axis.text = element_text(size=9), #axis.title.x = element_blank(), 
+        axis.title = element_text(size=9), strip.background = element_rect(fill="white"), 
+        strip.text.x=element_text(face="italic"),
+        strip.text = element_text(size=9), panel.grid = element_blank(), 
+        legend.title = element_blank())
+mid
+
 
 
 
