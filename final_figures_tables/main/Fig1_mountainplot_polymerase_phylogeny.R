@@ -506,6 +506,12 @@ Fig1<-plot_grid(mountain, NULL, tree1, labels=c("A","","B"),
                 theme(plot.background = element_rect(fill = "white"))
 Fig1
 
+Fig1<-plot_grid(tree1, NULL, mountain, labels=c("A","","B"),
+                rel_widths=c(1,1,1), rel_heights = c(1,0.03,0.7),
+                ncol=1,align="h", axis="l", label_size = 23) +
+  theme(plot.background = element_rect(fill = "white"))
+Fig1
+
 
 #save trees
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/main/"
