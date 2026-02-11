@@ -398,7 +398,6 @@ tree1 <- p1.1  %<+% p0.dat1 +
         plot.title = element_text(hjust = -0.1),
         axis.text = element_text(size=12), #axis.title.x = element_blank(), 
         axis.title = element_text(size=14), strip.background = element_rect(fill="white"), 
-        plot.title = element_text(size=16),
         strip.text = element_text(size=16), panel.grid = element_blank())
 tree1
 
@@ -1011,7 +1010,7 @@ phospho<-phospho.1/pair+ plot_annotation(tag_levels = list(c('E','F','G'))) &
 phospho
 phospho<-as.ggplot(phospho)
 
-seasonal<-plot_grid(inter, intra, labels=c("C","D"),rel_widths=c(1,1),
+seasonal<-plot_grid(inter, intra, labels=c("C","D"),rel_widths=c(1,1), rel_heights = c(3,1),
                            ncol=1,  label_size = 23)
 seasonal
 seasonal<-as.ggplot(seasonal)
@@ -1036,7 +1035,7 @@ part1<-plot_grid(seasonal, phospho, labels=c("",""),rel_widths=c(1,1.2),
 part1
 part1<-as.ggplot(part1)
 
-Fig.AndV<-plot_grid(genome.coverage, part1, labels=c("",""),rel_widths=c(1,1), rel_heights = c(1,1.4),
+Fig.AndV<-plot_grid(genome.coverage, part1, labels=c("",""),rel_widths=c(1,1), rel_heights = c(1,1.7),
                     ncol=1,  label_size = 23)
 Fig.AndV
 
@@ -1046,8 +1045,8 @@ homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dyn
 ggsave(file = paste0(homewd, "FigX_AndV_figure.png"),
        plot= Fig.AndV,
        units="mm",
-       width=300,
-       height=200,
+       width=350,
+       height=250,
        scale=2,
        dpi=500)
 
