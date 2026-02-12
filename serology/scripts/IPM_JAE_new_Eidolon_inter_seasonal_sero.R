@@ -1568,16 +1568,3 @@ pJAE_new <- ggplot(data=subset(JAE.sum.all, bat_species=="Eidolon dupreanum" & a
 # Fig2 <- cowplot::plot_grid(pIPM, pJAE, pInterAnnual, ncol = 3, nrow = 1, rel_widths = c(.5,.51,1.21), labels = c("A", "B", "C"), label_size = 22, label_x = c(0,-.04,-.02));Fig2
 
 Fig2 <- cowplot::plot_grid(pIPM_new, pJAE_new, pInterannual_new, ncol = 3, nrow = 1, rel_widths = c(1,.9,1.1), labels = c("A", "B", "C"), label_size = 22, label_x = c(0,-.04,-.02));Fig2
-
-   ggsave(file = paste0(homewd,"/figures/Fig2-new.png"),
-          plot = Fig2,
-          units="mm",  
-          width=130, 
-          height=45, 
-          scale=3, 
-          dpi=300)
-
-   
-
-   
-   

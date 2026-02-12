@@ -117,11 +117,7 @@ head(seroprev.sum)
 
 colorz = c('AngV' = "#F8766D", 'HeV' ="#A58AFF", 
            'NiV' = "#DB72FB", 'GhV' = "#00C094", 
-           'CedV'= "#53B400", "MojV" = "#619CFF",
-           'EboV' = "#06A4FF", 'BdbV' = "#00BFC4",
-           'BomV' = "#00C094", 'SudV' = "#00BC56", 
-           'RestV' = "#53B400", 'LloV'= "#A58AFF",
-           'RavV' = "#E38900",'MlaV' = "#FF66A8")
+           'CedV'= "#53B400", "MojV" = "#619CFF")
 
 p1 <- ggplot(data=seroprev.sum) + geom_point(aes(x=mid_date, y=seroprev, size=N, color=antigen)) +
   geom_line(aes(x=mid_date, y=seroprev, color=antigen)) + scale_color_manual(values = colorz) +
@@ -146,8 +142,6 @@ lact.dat$season = "lactation"
 #and winter
 cal.dat <-  cbind.data.frame(bat_species=c("Eidolon dupreanum", "Eidolon dupreanum", "Rousettus madagascariensis", "Rousettus madagascariensis"), start = c(as.Date("2018-05-15"), as.Date("2019-05-15"), as.Date("2018-05-15"), as.Date("2019-05-15")), stop=c(as.Date("2018-10-10"), as.Date("2019-10-10"), as.Date("2018-10-10"), as.Date("2019-10-10")))
 cal.dat$season <- "winter"
-
-
 
 cal.dat <- rbind(cal.dat, gest.dat, lact.dat)
 cal.dat.save=cal.dat
@@ -229,8 +223,6 @@ seroprev.sum$year <- year(seroprev.sum$mid_date)
 seroprev.sum$doy <- yday(seroprev.sum$mid_date)
 seroprev.sum$antigen <- as.factor(seroprev.sum$antigen)
 seroprev.sum$roost_site <- as.factor(seroprev.sum$roost_site)
-
-
 seroprev.sum$year_f <- as.factor(seroprev.sum$year)
 
 
@@ -256,9 +248,7 @@ gamEidNoSexGhV <- gam(cbind(seropos, seroneg) ~
 
 summary(gamEidNoSexGhV) 
 #plot(gamEidNoSexGhV)
-# sig seasonality inter- and intra-annual for GhV Moramanga
-# Ankarana interannual edf = 0
-
+# sig seasonality in Moramanga inter and intra 
 
 #now try with sex too
 seroprev.sum.sex$doy <- yday(seroprev.sum.sex$mid_date)
@@ -285,9 +275,7 @@ gamEidSexGhV <- gam(cbind(seropos, seroneg)~
                  gamma =1,
                  select = TRUE) #this term allows non-impactful terms to essentially be removed from model - check edf in summary to see if this happened to any
 summary(gamEidSexGhV)
-# significant interannual trends for female Moramanga and significant intraanual trends for male Moramanga 
-# most Ankarana  data reduced to edf = 0, especial interannual
-
+# significant trends female Moramanga interannual, male moramanga intra borderline
 
 AIC(gamEidNoSexGhV, gamEidSexGhV) # a lot better with no sex
 
@@ -310,7 +298,7 @@ gamEidNoSexAngV <- gam(cbind(seropos, seroneg) ~
                       method = "REML", 
                       gamma = 1,
                       select = TRUE) #
-
+summary(gamEidNoSexAngV) #Moramanga inter boderline
 
 
 gamEidNoSexAngVPlot <- gam(cbind(seropos, seroneg) ~ 
@@ -323,10 +311,8 @@ gamEidNoSexAngVPlot <- gam(cbind(seropos, seroneg) ~
                        gamma = .48,
                        select = TRUE) #
 
-summary(gamEidNoSexAngV) #borderlinr interannual sig for Moramanga
+summary(gamEidNoSexAngV) #Moramanga interannual boderline
 #plot(gamEidNoSexAngV)
-# Ankarana edf = 0
-
 
 #now try with sex too
 
@@ -353,13 +339,9 @@ gamEidSexAngV <- gam(cbind(seropos, seroneg)~
                     method = "REML", 
                     gamma =1,
                     select = TRUE) #this term allows non-impactful terms to essentially be removed from model - check edf in summary to see if this happened to any
-summary(gamEidSexAngV)
-# significant interannual trends for female Moramanga and significant intraanual trends for male Moramanga 
-# most Ankarana  data reduced to edf = 0, especial interannual
-
+summary(gamEidSexAngV) #Ankarana males inter boderline
 
 AIC(gamEidNoSexAngV, gamEidSexAngV) # better with no sex
-
 
 
 #and HeV
@@ -395,7 +377,6 @@ gamEidNoSexHeVPlot <- gam(cbind(seropos, seroneg) ~
 
 summary(gamEidNoSexHeV) #nothing sig
 #plot(gamEidNoSexHeV)
-# Ankarana edf = 0
 
 
 #now try with sex too
@@ -862,8 +843,7 @@ pIPM <- ggplot(data=IPM.sero.nosex) +
 ################################################################################
 ## Section 4. Add the historical JAE time series for comparison
 
-#JAE.dat <-  read.csv(file = paste0(batwd,"/Serological-Data/Luminex_Henipa_Filo_Brook_2019.csv"),header = T, stringsAsFactors = F)
-JAE.dat <-  read.csv(file = paste0(homewd,"/data/mix_2019_lum_dat.csv"),header = T, stringsAsFactors = F)
+JAE.dat <-  read.csv(file = paste0(homewd,"/serology/data/mix_2019_lum_dat.csv"),header = T, stringsAsFactors = F)
 
 # new.dat <-  read.csv(file = paste0(homewd,"/data/mix_2019_lum_dat.csv"),header = T, stringsAsFactors = F)
 head(JAE.dat)
@@ -1060,7 +1040,7 @@ pJAE_new <- ggplot(data=subset(JAE.sum.all, bat_species=="Eidolon dupreanum")) +
   scale_alpha_manual(values=alphaz) +
   ggnewscale::new_scale_fill() +
   scale_fill_manual(values=filz1) +
-  geom_ribbon(data=subset(pred.yr.JAE, bat_species=="Eidolon dupreanum" & antigen=="HeV") , aes(x=doy, ymin= seroprev_lci, ymax=seroprev_uci, fill=antigen), alpha=.1, show.legend = F) +
+  geom_ribbon(data=subset(pred.yr.JAE, bat_species=="Eidolon dupreanum" & antigen=="HeV") , aes(x=doy, ymin= seroprev_lci, ymax=seroprev_uci, fill=antigen), alpha=.3, show.legend = F) +
   geom_line(data=subset(pred.yr.JAE, bat_species=="Eidolon dupreanum"& antigen=="HeV"), aes(x=doy, y= seroprevalence, color=antigen), alpha=.3, show.legend = F) +
   geom_ribbon(data=subset(pred.yr.JAE, bat_species=="Eidolon dupreanum" & antigen=="NiV") , aes(x=doy, ymin= seroprev_lci, ymax=seroprev_uci, fill=antigen), alpha=.3, show.legend = F) +
   geom_line(data=subset(pred.yr.JAE, bat_species=="Eidolon dupreanum"& antigen=="NiV"), aes(x=doy, y= seroprevalence, color=antigen), show.legend = F) +
@@ -1083,14 +1063,3 @@ pJAE_new <- ggplot(data=subset(JAE.sum.all, bat_species=="Eidolon dupreanum")) +
 
 Fig2 <- cowplot::plot_grid(pIPM, pJAE_new, pIntra, ncol = 3, nrow = 1, rel_widths = c(1,.9,1.1), labels = c("A", "B", "C"), label_size = 22, label_x = c(0,-.04,-.02));Fig2
 
-   ggsave(file = paste0(homewd,"/figures/Fig2-intra.png"),
-          plot = Fig2,
-          units="mm",  
-          width=130, 
-          height=45, 
-          scale=3, 
-          dpi=300)
-
-   
-#now try the intraannual
-   
