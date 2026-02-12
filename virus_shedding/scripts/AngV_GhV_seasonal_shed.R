@@ -11,24 +11,24 @@ library(reshape2)
 library(Hmisc)
 
 
-homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
-batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
+#homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
+#batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
 
+homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
 
 # First, load the shedding data 
-shed.dat <- read.csv(file = paste0(homewd, "/Gwen_AngV_GhV_viral_shedding/indiv_urine_qPCR_AngV_GhV_data.csv"))
+shed.dat <- read.csv(file = paste0(homewd, "/virus_shedding/data/henipavirus_shedding_data.csv"))
 head(shed.dat)
 names(shed.dat)
 
-shed.dat <- dplyr::select(shed.dat, sampleid, qPCR_AngV_multi_N, qPCR_AngV_multi_M, qPCR_GhV_multi_M, qPCR_GhV_multi_L)
+shed.dat <- dplyr::select(shed.dat, sampleid, GhV_shedding_ur, AngV_shedding_ur)
 
-shed.dat$AngV_pos <- 0
-shed.dat$GhV_pos <- 0
-shed.dat$AngV_pos[shed.dat$qPCR_AngV_multi_M==1 &shed.dat$qPCR_AngV_multi_N==1] <- 1
-shed.dat$GhV_pos[shed.dat$qPCR_GhV_multi_M==1 &shed.dat$qPCR_GhV_multi_L==1] <- 1
+names(shed.dat)[names(shed.dat) == "GhV_shedding_ur"] <- "GhV_pos"
+names(shed.dat)[names(shed.dat) == "AngV_shedding_ur"] <- "AngV_pos"
 
-sum(shed.dat$AngV_pos)#59
-sum(shed.dat$GhV_pos)#126
+sum(shed.dat$AngV_pos)#45
+sum(shed.dat$GhV_pos)#127
 
 shed.dat <- dplyr::select(shed.dat, sampleid,AngV_pos, GhV_pos)
 
