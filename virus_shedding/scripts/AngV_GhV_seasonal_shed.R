@@ -485,6 +485,7 @@ inter.pred$prev_uci[inter.pred$prev_uci>1] <- 1
 inter.pred$year <- year(inter.pred$mid_date)
 inter.pred$group <- paste0(inter.pred$bat_species, "-", inter.pred$antigen, "-", inter.pred$era, "-", inter.pred$year)
 
+cal.dat.save1<-subset()
 
 pInterannualShed.All <- ggplot(data=prev.dat) +
   geom_rect(data=cal.dat.save, aes(xmin=start, xmax=stop, ymin=0, ymax=1, fill=season), alpha=.3) +
@@ -508,6 +509,52 @@ pInterannualShed.All <- ggplot(data=prev.dat) +
   scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
   guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
 pInterannualShed.All
+
+pInterannualShed.era1 <- ggplot(data=subset(prev.dat, era=="I")) +
+  geom_rect(data=subset(cal.dat.save, era=="I"), aes(xmin=start, xmax=stop, ymin=0, ymax=1, fill=season), alpha=.3) +
+  geom_point(aes(x=as.Date(mid_date), y=prevGhV, size=Ntot, shape=year), color="#00C094") + 
+  geom_point(aes(x=as.Date(mid_date), y=prevAngV, size=Ntot, shape=year), color="#F8766D") + 
+  scale_fill_manual(values=filz) +
+  ggnewscale::new_scale_fill() +
+  geom_linerange(aes(x=as.Date(mid_date), ymin=prevGhV_lci, ymax=prevGhV_uci),color="#00C094", linetype=2, alpha=.3, show.legend = F) +
+  geom_linerange(aes(x=as.Date(mid_date), ymin=prevAngV_lci, ymax=prevAngV_uci),color="#F8766D", linetype=2, alpha=.3, show.legend = F) +
+  geom_ribbon(data=subset(inter.pred, era=="I"), aes(x=as.Date(mid_date), ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
+  geom_line(data=subset(inter.pred, era=="I"), aes(x=as.Date(mid_date), y= prevalence, color=antigen, group=group)) +
+  ggh4x::facet_nested(.~bat_species, scales="free", space="free" ) + theme_bw() +
+  theme(axis.text = element_text(size=14), axis.title.y = element_text(size=16),
+        axis.title.x = element_blank(),
+        strip.background = element_rect(fill="white"), 
+        strip.text.y = element_text(size=16, face="italic"), strip.text.x = element_text(size=16, face="italic"),
+        panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
+        plot.margin = unit(c(.5,.5,.5,1), "lines")) +
+  scale_shape_manual(values=yearz) +
+  coord_cartesian(expand = F) + ylab("Virus prevalence") + xlab("Sampling date")+
+  scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
+  guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
+pInterannualShed.era1
+
+pInterannualShed.era2 <- ggplot(data=subset(prev.dat, era=="II")) +
+  geom_rect(data=subset(cal.dat.save, era=="II"), aes(xmin=start, xmax=stop, ymin=0, ymax=1, fill=season), alpha=.3) +
+  geom_point(aes(x=as.Date(mid_date), y=prevGhV, size=Ntot, shape=year), color="#00C094") + 
+  geom_point(aes(x=as.Date(mid_date), y=prevAngV, size=Ntot, shape=year), color="#F8766D") + 
+  scale_fill_manual(values=filz) +
+  ggnewscale::new_scale_fill() +
+  geom_linerange(aes(x=as.Date(mid_date), ymin=prevGhV_lci, ymax=prevGhV_uci),color="#00C094", linetype=2, alpha=.3, show.legend = F) +
+  geom_linerange(aes(x=as.Date(mid_date), ymin=prevAngV_lci, ymax=prevAngV_uci),color="#F8766D", linetype=2, alpha=.3, show.legend = F) +
+  geom_ribbon(data=subset(inter.pred, era=="II"), aes(x=as.Date(mid_date), ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
+  geom_line(data=subset(inter.pred, era=="II"), aes(x=as.Date(mid_date), y= prevalence, color=antigen, group=group)) +
+  ggh4x::facet_nested(.~bat_species, scales="free", space="free" ) + theme_bw() +
+  theme(axis.text = element_text(size=14), axis.title.y = element_text(size=16),
+        axis.title.x = element_blank(),
+        strip.background = element_rect(fill="white"), 
+        strip.text.y = element_text(size=16, face="italic"), strip.text.x = element_text(size=16, face="italic"),
+        panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
+        plot.margin = unit(c(.5,.5,.5,1), "lines")) +
+  scale_shape_manual(values=yearz) +
+  coord_cartesian(expand = F) + ylab("Virus prevalence") + xlab("Sampling date")+
+  scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
+  guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
+pInterannualShed.era2
 
 
 
