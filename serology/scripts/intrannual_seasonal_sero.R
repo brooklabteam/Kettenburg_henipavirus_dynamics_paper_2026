@@ -15,8 +15,8 @@ library(epitools)
 ################################################################################
 ################################################################################
 
-homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
-batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
+homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
 
 # plot of seasonality of antigens for analysis
 # also GAMs of predictors of seropositivity and/or seroprevalence
@@ -26,13 +26,12 @@ batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
 
 # First, load the luminex data after determining who is seropositive/
 # seronegative in the other scripts
-lum.dat <- read.csv(file = paste0(homewd, "/data/mix_sub_data_75_90_96.csv"))
+lum.dat <- read.csv(file = paste0(homewd, "/serology/data/mix_sub_data_75_90_96_long.csv"))
 head(lum.dat)
 lum.dat = subset(lum.dat, bat_species=="Eidolon dupreanum"| bat_species=="Rousettus madagascariensis" & antigen=="GhV")
   
 lum.dat <- dplyr::select(lum.dat, sampleid, antigen, MFI, log10MFI, seropos, seropos_lci, seropos_uci)
 ## merge the luminex data with the catching data
-
 
 # link this to the catching data to plot by sampling session
 catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/catching_data_clean.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
