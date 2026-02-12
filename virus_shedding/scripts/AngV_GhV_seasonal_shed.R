@@ -9,6 +9,7 @@ library(tidyr)
 library(mgcv)
 library(reshape2)
 library(Hmisc)
+library(exactci)
 
 
 #homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
@@ -198,8 +199,7 @@ gamAngVSex <- gam(cbind(AngVpos, AngVneg) ~ roost_site + bat_sex +
                  gamma = 1,
                  select = TRUE,
                  data= subset(prev.dat.sex, bat_species =="Eidolon dupreanum"))
-summary(gamAngVSex) #moramanga male interannual + ankarana female interannual; only moramanga with sig edf
-
+summary(gamAngVSex) #Moramanga female II interannual...I almost sig, Moramanga female intraannual I
 AIC(gamAngVnoSex, gamAngVSex) #better with no sex
 
 pred.df <- cbind.data.frame(mid_date = seq(from= as.Date("2015-01-01"), to = as.Date("2015-12-31"), by=1), doy=1:365)
@@ -214,21 +214,21 @@ pred.df$era <- "I"
 pred.df$era[pred.df$mid_date < "2017-07-01"] <- "II"
 pred.df$era <- as.factor(pred.df$era)
 
-pred.df$seroprevalence <- NA
-pred.df$seroprev_lci <- NA
-pred.df$seroprev_uci <- NA
+pred.df$prevalence <- NA
+pred.df$prev_lci <- NA
+pred.df$prev_uci <- NA
 
-pred.df$seroprevalence[pred.df$antigen=="GhV"] <- predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"))
-pred.df$seroprev_lci[pred.df$antigen=="GhV"] <- predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)")) - 1.96*predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
-pred.df$seroprev_uci[pred.df$antigen=="GhV"] <- predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)")) + 1.96*predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
+pred.df$prevalence[pred.df$antigen=="GhV"] <- predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"))
+pred.df$prev_lci[pred.df$antigen=="GhV"] <- predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)")) - 1.96*predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
+pred.df$prev_uci[pred.df$antigen=="GhV"] <- predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)")) + 1.96*predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
 
 
-pred.df$seroprevalence[pred.df$antigen=="AngV"] <- predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"))
-pred.df$seroprev_lci[pred.df$antigen=="AngV"] <- predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)")) - 1.96*predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
-pred.df$seroprev_uci[pred.df$antigen=="AngV"] <- predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)")) + 1.96*predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
+pred.df$prevalence[pred.df$antigen=="AngV"] <- predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"))
+pred.df$prev_lci[pred.df$antigen=="AngV"] <- predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)")) - 1.96*predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
+pred.df$prev_uci[pred.df$antigen=="AngV"] <- predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)")) + 1.96*predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
 
-pred.df$seroprev_lci[pred.df$seroprev_lci<0] <- 0
-pred.df$seroprev_lci[pred.df$seroprev_uci>1] <- 1
+pred.df$prev_lci[pred.df$prev_lci<0] <- 0
+pred.df$prev_lci[pred.df$prev_uci>1] <- 1
 
 gest.dat <- cbind.data.frame(bat_species=c("Eidolon dupreanum", "Eidolon dupreanum",  "Eidolon dupreanum",  "Eidolon dupreanum",  "Eidolon dupreanum", "Rousettus madagascariensis", "Rousettus madagascariensis",  "Rousettus madagascariensis"), start = c(as.Date("2013-08-03"), as.Date("2014-08-03"), as.Date("2015-08-03"), as.Date("2018-08-03"), as.Date("2019-08-03"),  as.Date("2014-09-11"),as.Date("2018-09-11"), as.Date("2019-09-11")), stop=c(as.Date("2013-11-15"), as.Date("2014-11-15"), as.Date("2015-11-15"), as.Date("2018-11-15"), as.Date("2019-11-15"),  as.Date("2014-12-11"), as.Date("2018-12-11"), as.Date("2019-12-11")))
 gest.dat$season = "gestation"
@@ -253,7 +253,6 @@ cal.sub <- rbind(cal.sub, cal.sub[nrow(cal.sub),])
 cal.sub$doy_start[4] <- 1
 cal.sub$doy_stop[4] <- yday("2019-02-02")
 
-
 prev.dat$prevGhV_lci <- binom.exact(prev.dat$GhVpos, prev.dat$Ntot)$lower
 prev.dat$prevGhV_uci <- binom.exact(prev.dat$GhVpos, prev.dat$Ntot)$upper
 prev.dat$prevAngV_lci <- binom.exact(prev.dat$AngVpos, prev.dat$Ntot)$lower
@@ -262,11 +261,7 @@ prev.dat$year <- as.factor(prev.dat$year)
 
 colorz = c('AngV' = "#F8766D", 'HeV' ="#A58AFF", 
            'NiV' = "#DB72FB", 'GhV' = "#00C094", 
-           'CedV'= "#53B400", "MojV" = "#619CFF",
-           'EboV' = "#06A4FF", 'BdbV' = "#00BFC4",
-           'BomV' = "#00C094", 'SudV' = "#00BC56", 
-           'RestV' = "#53B400", 'LloV'= "#A58AFF",
-           'RavV' = "#E38900",'MlaV' = "#FF66A8")
+           'CedV'= "#53B400", "MojV" = "#619CFF")
 
 
 filz <- c('gestation' = "yellow", 'lactation' = "greenyellow", 'winter' = "skyblue")
@@ -282,8 +277,8 @@ pIntrannualShed <- ggplot(data=prev.dat) +
                     ggnewscale::new_scale_fill() +
                     geom_linerange(aes(x=doy, ymin=prevGhV_lci, ymax=prevGhV_uci),color="#00C094", linetype=2, alpha=.3, show.legend = F) +
                     geom_linerange(aes(x=doy, ymin=prevAngV_lci, ymax=prevAngV_uci),color="#F8766D", linetype=2, alpha=.3, show.legend = F) +
-                    geom_ribbon(data=pred.df, aes(x=doy, ymin= seroprev_lci, ymax=seroprev_uci, fill=antigen), alpha=.3, show.legend = F) +
-                    geom_line(data=pred.df, aes(x=doy, y= seroprevalence, color=antigen)) +
+                    geom_ribbon(data=pred.df, aes(x=doy, ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
+                    geom_line(data=pred.df, aes(x=doy, y= prevalence, color=antigen)) +
                     facet_grid(~bat_species) + theme_bw() +
                     theme(axis.text = element_text(size=14), axis.title = element_text(size=16),, 
                     strip.background = element_rect(fill="white"), 
@@ -361,17 +356,17 @@ pred.df.Rou$era[pred.df.Rou$mid_date < "2017-07-01"] <- "II"
 pred.df.Rou$era <- as.factor(pred.df.Rou$era)
 
 
-pred.df.Rou$seroprevalence <- NA
-pred.df.Rou$seroprev_lci <- NA
-pred.df.Rou$seroprev_uci <- NA
+pred.df.Rou$prevalence <- NA
+pred.df.Rou$prev_lci <- NA
+pred.df.Rou$prev_uci <- NA
 
-pred.df.Rou$seroprevalence[pred.df.Rou$antigen=="GhV"] <- predict(gamGhVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"))
-pred.df.Rou$seroprev_lci[pred.df.Rou$antigen=="GhV"] <- predict(gamGhVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)")) - 1.96*predict(gamGhVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
-pred.df.Rou$seroprev_uci[pred.df.Rou$antigen=="GhV"] <- predict(gamGhVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)")) + 1.96*predict(gamGhVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
+pred.df.Rou$prevalence[pred.df.Rou$antigen=="GhV"] <- predict(gamGhVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"))
+pred.df.Rou$prev_lci[pred.df.Rou$antigen=="GhV"] <- predict(gamGhVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)")) - 1.96*predict(gamGhVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
+pred.df.Rou$prev_uci[pred.df.Rou$antigen=="GhV"] <- predict(gamGhVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)")) + 1.96*predict(gamGhVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
 
-pred.df.Rou$seroprevalence[pred.df.Rou$antigen=="AngV"] <- predict(gamAngVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"))
-pred.df.Rou$seroprev_lci[pred.df.Rou$antigen=="AngV"] <- predict(gamAngVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)")) - 1.96*predict(gamAngVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
-pred.df.Rou$seroprev_uci[pred.df.Rou$antigen=="AngV"] <- predict(gamAngVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="AngV",],exclude = c("s(roost_site)", "s(mid_date)")) + 1.96*predict(gamAngVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
+pred.df.Rou$prevalence[pred.df.Rou$antigen=="AngV"] <- predict(gamAngVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"))
+pred.df.Rou$prev_lci[pred.df.Rou$antigen=="AngV"] <- predict(gamAngVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)")) - 1.96*predict(gamAngVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
+pred.df.Rou$prev_uci[pred.df.Rou$antigen=="AngV"] <- predict(gamAngVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="AngV",],exclude = c("s(roost_site)", "s(mid_date)")) + 1.96*predict(gamAngVnoSexRou, type = "response", newdata = pred.df.Rou[pred.df.Rou$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
 
 
 cal.sub.Rou = subset(cal.dat, bat_species =="Rousettus madagascariensis" & year==2019)
@@ -418,8 +413,8 @@ pIntrannualShed.All <- ggplot(data=prev.dat) +
   ggnewscale::new_scale_fill() +
   geom_linerange(aes(x=doy, ymin=prevGhV_lci, ymax=prevGhV_uci),color="#00C094", linetype=2, alpha=.3, show.legend = F) +
   geom_linerange(aes(x=doy, ymin=prevAngV_lci, ymax=prevAngV_uci),color="#F8766D", linetype=2, alpha=.3, show.legend = F) +
-  geom_ribbon(data=pred.df, aes(x=doy, ymin= seroprev_lci, ymax=seroprev_uci, fill=antigen), alpha=.3, show.legend = F) +
-  geom_line(data=pred.df, aes(x=doy, y= seroprevalence, color=antigen)) +
+  geom_ribbon(data=pred.df, aes(x=doy, ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
+  geom_line(data=pred.df, aes(x=doy, y= prevalence, color=antigen)) +
   facet_grid(~bat_species) + theme_bw() +
   theme(axis.text = element_text(size=14), axis.title = element_text(size=16),, 
         strip.background = element_rect(fill="white"), 
@@ -466,30 +461,30 @@ inter.pred$era <- "II"
 inter.pred$era[inter.pred$mid_date<"2017-01-01"] <- "I"
 inter.pred$era <- as.factor(inter.pred$era)
 
-inter.pred$seroprevalence <- NA
-inter.pred$seroprev_lci <- NA
-inter.pred$seroprev_uci <- NA
+inter.pred$prevalence <- NA
+inter.pred$prev_lci <- NA
+inter.pred$prev_uci <- NA
 
 
-inter.pred$seroprevalence[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum"] <- predict(gamGhVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)"))
-inter.pred$seroprev_lci[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum"] <- predict(gamGhVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)")) - 1.96*predict(gamGhVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)"), se.fit = T)$se
-inter.pred$seroprev_uci[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum"] <- predict(gamGhVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)")) + 1.96*predict(gamGhVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)"), se.fit = T)$se
+inter.pred$prevalence[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum"] <- predict(gamGhVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)"))
+inter.pred$prev_lci[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum"] <- predict(gamGhVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)")) - 1.96*predict(gamGhVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)"), se.fit = T)$se
+inter.pred$prev_uci[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum"] <- predict(gamGhVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)")) + 1.96*predict(gamGhVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)"), se.fit = T)$se
 
-inter.pred$seroprevalence[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum"] <- predict(gamAngVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)"))
-inter.pred$seroprev_lci[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum"] <- predict(gamAngVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)")) - 1.96*predict(gamAngVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)"), se.fit = T)$se
-inter.pred$seroprev_uci[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum"] <- predict(gamAngVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)")) + 1.96*predict(gamAngVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)"), se.fit = T)$se
+inter.pred$prevalence[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum"] <- predict(gamAngVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)"))
+inter.pred$prev_lci[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum"] <- predict(gamAngVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)")) - 1.96*predict(gamAngVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)"), se.fit = T)$se
+inter.pred$prev_uci[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum"] <- predict(gamAngVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)")) + 1.96*predict(gamAngVnoSex, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Eidolon dupreanum",], exclude = c("s(roost_site)"), se.fit = T)$se
 
 
-inter.pred$seroprevalence[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis"] <- predict(gamGhVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)"))
-inter.pred$seroprev_lci[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis"] <- predict(gamGhVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)")) - 1.96*predict(gamGhVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)"), se.fit = T)$se
-inter.pred$seroprev_uci[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis"] <- predict(gamGhVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)")) + 1.96*predict(gamGhVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)"), se.fit = T)$se
+inter.pred$prevalence[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis"] <- predict(gamGhVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)"))
+inter.pred$prev_lci[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis"] <- predict(gamGhVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)")) - 1.96*predict(gamGhVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)"), se.fit = T)$se
+inter.pred$prev_uci[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis"] <- predict(gamGhVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)")) + 1.96*predict(gamGhVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="GhV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)"), se.fit = T)$se
 
-inter.pred$seroprevalence[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis"] <- predict(gamAngVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)"))
-inter.pred$seroprev_lci[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis"] <- predict(gamAngVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)")) - 1.96*predict(gamAngVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)"), se.fit = T)$se
-inter.pred$seroprev_uci[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis"] <- predict(gamAngVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)")) + 1.96*predict(gamAngVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)"), se.fit = T)$se
+inter.pred$prevalence[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis"] <- predict(gamAngVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)"))
+inter.pred$prev_lci[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis"] <- predict(gamAngVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)")) - 1.96*predict(gamAngVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)"), se.fit = T)$se
+inter.pred$prev_uci[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis"] <- predict(gamAngVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)")) + 1.96*predict(gamAngVnoSexRou, type="response", newdata = inter.pred[inter.pred$antigen=="AngV" & inter.pred$bat_species=="Rousettus madagascariensis",], exclude = c("s(roost_site)"), se.fit = T)$se
 
-inter.pred$seroprev_lci[inter.pred$seroprev_lci<0] <- 0
-inter.pred$seroprev_uci[inter.pred$seroprev_uci>1] <- 1
+inter.pred$prev_lci[inter.pred$prev_lci<0] <- 0
+inter.pred$prev_uci[inter.pred$prev_uci>1] <- 1
 
 inter.pred$year <- year(inter.pred$mid_date)
 inter.pred$group <- paste0(inter.pred$bat_species, "-", inter.pred$antigen, "-", inter.pred$era, "-", inter.pred$year)
@@ -503,8 +498,8 @@ pInterannualShed.All <- ggplot(data=prev.dat) +
   ggnewscale::new_scale_fill() +
   geom_linerange(aes(x=as.Date(mid_date), ymin=prevGhV_lci, ymax=prevGhV_uci),color="#00C094", linetype=2, alpha=.3, show.legend = F) +
   geom_linerange(aes(x=as.Date(mid_date), ymin=prevAngV_lci, ymax=prevAngV_uci),color="#F8766D", linetype=2, alpha=.3, show.legend = F) +
-  geom_ribbon(data=inter.pred, aes(x=as.Date(mid_date), ymin= seroprev_lci, ymax=seroprev_uci, fill=antigen), alpha=.3, show.legend = F) +
-  geom_line(data=inter.pred, aes(x=as.Date(mid_date), y= seroprevalence, color=antigen, group=group)) +
+  geom_ribbon(data=inter.pred, aes(x=as.Date(mid_date), ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
+  geom_line(data=inter.pred, aes(x=as.Date(mid_date), y= prevalence, color=antigen, group=group)) +
   ggh4x::facet_nested(bat_species~era, scales="free", space="free" ) + theme_bw() +
   theme(axis.text = element_text(size=14), axis.title.y = element_text(size=16),
         axis.title.x = element_blank(),
