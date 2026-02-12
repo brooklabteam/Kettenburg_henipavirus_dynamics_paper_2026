@@ -95,15 +95,12 @@ sampling.date# examine
 
 tot.merge = subset(merge.dat, year<2022)
 
-
 head(tot.merge)
 tot.merge$processing_date <- as.Date(tot.merge$processing_date)
 tot.merge$month <- month(tot.merge$processing_date)
 tot.merge$year <- year(tot.merge$processing_date)
 tot.merge = subset(tot.merge, bat_species=="Eidolon dupreanum" | bat_species =="Rousettus madagascariensis" )
 #tot.merge = subset(tot.merge, bat_species=="Eidolon dupreanum" | bat_species =="Rousettus madagascariensis" | bat_species =="Pteropus rufus")
-
-
 
 # look at staggered prevalence
 prev.dat <- ddply(subset(tot.merge, !is.na(GhV_pos)),.(bat_species, roost_site, mid_date), summarise, GhVpos = sum(GhV_pos, na.rm = T), AngVpos=sum(AngV_pos, na.rm=T), Ntot = length(sampleid))
@@ -114,6 +111,10 @@ prev.dat$prevAngV <- prev.dat$AngVpos/prev.dat$Ntot
 prev.dat.sex$prevGhV <- prev.dat.sex$GhVpos/prev.dat.sex$Ntot
 prev.dat.sex$prevAngV <- prev.dat.sex$AngVpos/prev.dat.sex$Ntot
 
+# prev.dat$prevGhV_lci <- binom.exact(x=prev.dat$GhVpos, n=prev.dat$Ntot)$lower
+# prev.dat$prevGhV_uci <- binom.exact(prev.dat$GhVpos, prev.dat$Ntot)$upper
+# prev.dat$prevAngV_lci <- binom.exact(prev.dat$AngVpos, prev.dat$Ntot)$lower
+# prev.dat$prevAngV_uci <- binom.exact(prev.dat$AngVpos, prev.dat$Ntot)$upper
 
 #and plot prev with CT
 p1 <- ggplot(prev.dat) + 
@@ -130,13 +131,14 @@ prev.dat$month <- month(prev.dat$mid_date)
 prev.dat$year <- year(prev.dat$mid_date)
 prev.dat <- prev.dat[complete.cases(prev.dat),]
 prev.dat$doy <- yday(prev.dat$mid_date)
-
+prev.dat$year <- as.factor(prev.dat$year)
 
 #and by month
 prev.dat.sex$month <- month(prev.dat.sex$mid_date)
 prev.dat.sex$year <- year(prev.dat.sex$mid_date)
 prev.dat.sex <- prev.dat.sex[complete.cases(prev.dat.sex),]
 prev.dat.sex$doy <- yday(prev.dat.sex$mid_date)
+prev.dat.sex$year <- as.factor(prev.dat.sex$year)
 
 prev.dat.sex$era <- "II"
 prev.dat.sex$era[prev.dat.sex$mid_date<"2017-01-01"] <- "I"
@@ -222,13 +224,12 @@ pred.df$prevalence[pred.df$antigen=="GhV"] <- predict(gamGhVnoSex, type = "respo
 pred.df$prev_lci[pred.df$antigen=="GhV"] <- predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)")) - 1.96*predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
 pred.df$prev_uci[pred.df$antigen=="GhV"] <- predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)")) + 1.96*predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
 
-
 pred.df$prevalence[pred.df$antigen=="AngV"] <- predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"))
 pred.df$prev_lci[pred.df$antigen=="AngV"] <- predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)")) - 1.96*predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
 pred.df$prev_uci[pred.df$antigen=="AngV"] <- predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)")) + 1.96*predict(gamAngVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
 
 pred.df$prev_lci[pred.df$prev_lci<0] <- 0
-pred.df$prev_lci[pred.df$prev_uci>1] <- 1
+pred.df$prev_uci[pred.df$prev_uci>1] <- 1
 
 gest.dat <- cbind.data.frame(bat_species=c("Eidolon dupreanum", "Eidolon dupreanum",  "Eidolon dupreanum",  "Eidolon dupreanum",  "Eidolon dupreanum", "Rousettus madagascariensis", "Rousettus madagascariensis",  "Rousettus madagascariensis"), start = c(as.Date("2013-08-03"), as.Date("2014-08-03"), as.Date("2015-08-03"), as.Date("2018-08-03"), as.Date("2019-08-03"),  as.Date("2014-09-11"),as.Date("2018-09-11"), as.Date("2019-09-11")), stop=c(as.Date("2013-11-15"), as.Date("2014-11-15"), as.Date("2015-11-15"), as.Date("2018-11-15"), as.Date("2019-11-15"),  as.Date("2014-12-11"), as.Date("2018-12-11"), as.Date("2019-12-11")))
 gest.dat$season = "gestation"
@@ -269,7 +270,7 @@ filz <- c('gestation' = "yellow", 'lactation' = "greenyellow", 'winter' = "skybl
 yearz <- c('2013'='3', '2014' = '7', '2015'='8', '2016'='18', '2018' = '16', '2019' = '17', '2020' = '15')
 yearz <- c('2013'=3, '2014' = 7, '2015'=8, '2016'=18, '2018' = 16, '2019' = 17, '2020' = 15)
 
-pIntrannualShed <- ggplot(data=prev.dat) +
+pIntrannualShed <- ggplot(data=subset(prev.dat, bat_species=="Eidolon dupreanum")) +
                     geom_rect(data=cal.sub, aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3) +
                     geom_point(aes(x=doy, y=prevGhV, size=Ntot, shape=year), color="#00C094") + 
                     geom_point(aes(x=doy, y=prevAngV, size=Ntot, shape=year), color="#F8766D") + 
@@ -286,7 +287,7 @@ pIntrannualShed <- ggplot(data=prev.dat) +
                     panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
                     plot.margin = unit(c(.5,.5,.5,1), "lines")) +
                     scale_shape_manual(values=yearz) +
-                    coord_cartesian(expand = F) + ylab("prevalence") + 
+                    coord_cartesian(xlim = c(0, 365), ylim = c(0, 1),expand = FALSE) + ylab("prevalence") + 
                     scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
                     guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
 pIntrannualShed
@@ -389,11 +390,7 @@ prev.dat$year <- as.factor(prev.dat$year)
 
 colorz = c('AngV' = "#F8766D", 'HeV' ="#A58AFF", 
            'NiV' = "#DB72FB", 'GhV' = "#00C094", 
-           'CedV'= "#53B400", "MojV" = "#619CFF",
-           'EboV' = "#06A4FF", 'BdbV' = "#00BFC4",
-           'BomV' = "#00C094", 'SudV' = "#00BC56", 
-           'RestV' = "#53B400", 'LloV'= "#A58AFF",
-           'RavV' = "#E38900",'MlaV' = "#FF66A8")
+           'CedV'= "#53B400", "MojV" = "#619CFF")
 
 
 filz <- c('gestation' = "yellow", 'lactation' = "greenyellow", 'winter' = "skyblue")
@@ -403,17 +400,16 @@ yearz <- c('2013'=3, '2014' = 7, '2015'=8, '2016'=18, '2018' = 16, '2019' = 17, 
 
 pred.df <- rbind(pred.df, pred.df.Rou)
 
-
-
 pIntrannualShed.All <- ggplot(data=prev.dat) +
   geom_rect(data=cal.sub, aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3) +
   geom_point(aes(x=doy, y=prevGhV, size=Ntot, shape=year), color="#00C094") + 
   geom_point(aes(x=doy, y=prevAngV, size=Ntot, shape=year), color="#F8766D") + 
   scale_fill_manual(values=filz) +
+  guides(color = guide_legend(title = "virus"))+  
   ggnewscale::new_scale_fill() +
   geom_linerange(aes(x=doy, ymin=prevGhV_lci, ymax=prevGhV_uci),color="#00C094", linetype=2, alpha=.3, show.legend = F) +
   geom_linerange(aes(x=doy, ymin=prevAngV_lci, ymax=prevAngV_uci),color="#F8766D", linetype=2, alpha=.3, show.legend = F) +
-  geom_ribbon(data=pred.df, aes(x=doy, ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
+  geom_ribbon(data=pred.df, aes(x=doy, ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.4, show.legend = F) +
   geom_line(data=pred.df, aes(x=doy, y= prevalence, color=antigen)) +
   facet_grid(~bat_species) + theme_bw() +
   theme(axis.text = element_text(size=14), axis.title = element_text(size=16),, 
@@ -422,7 +418,7 @@ pIntrannualShed.All <- ggplot(data=prev.dat) +
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
         plot.margin = unit(c(.5,.5,.5,1), "lines")) +
   scale_shape_manual(values=yearz) +
-  coord_cartesian(expand = F) + ylab("prevalence") + 
+  coord_cartesian(xlim = c(0, 365), ylim = c(0, 1), expand = FALSE) + ylab("Virus prevalence") + xlab("Day of year") + 
   scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
   guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
 pIntrannualShed.All
