@@ -427,8 +427,8 @@ pIntrannualShed.All
 #and plot the interannual for both
 
 #just need new predictions
-summary(gamGhVnoSex) # interannual moramanga
-summary(gamAngVnoSex)# interannual moramanga & ankarana
+summary(gamGhVnoSex) # interannual moramanga, mahabo I
+summary(gamAngVnoSex)# interannual moramanga II
 summary(gamGhVnoSexRou) # interannual moramanga
 summary(gamAngVnoSexRou) #nothing
 
@@ -500,11 +500,11 @@ pInterannualShed.All <- ggplot(data=prev.dat) +
   theme(axis.text = element_text(size=14), axis.title.y = element_text(size=16),
         axis.title.x = element_blank(),
         strip.background = element_rect(fill="white"), 
-        strip.text.y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
+        strip.text.y = element_text(size=16, face="italic"), strip.text.x = element_text(size=16, face="italic"),
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
         plot.margin = unit(c(.5,.5,.5,1), "lines")) +
   scale_shape_manual(values=yearz) +
-  coord_cartesian(expand = F) + ylab("prevalence") + 
+  coord_cartesian(expand = F) + ylab("Virus prevalence") + xlab("Sampling date")+
   scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
   guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
 pInterannualShed.All
@@ -513,6 +513,3 @@ pInterannualShed.All
 
 
 
-
-
-#output all by biweek
