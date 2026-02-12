@@ -100,8 +100,8 @@ tot.merge$processing_date <- as.Date(tot.merge$processing_date)
 tot.merge$month <- month(tot.merge$processing_date)
 tot.merge$year <- year(tot.merge$processing_date)
 tot.merge = subset(tot.merge, bat_species=="Eidolon dupreanum" | bat_species =="Rousettus madagascariensis" )
-#tot.merge = subset(tot.merge, bat_species=="Rousettus madagascariensis")
-#tot.merge = subset(tot.merge, bat_species=="Pteropus rufus")
+#tot.merge = subset(tot.merge, bat_species=="Eidolon dupreanum" | bat_species =="Rousettus madagascariensis" | bat_species =="Pteropus rufus")
+
 
 
 # look at staggered prevalence
@@ -159,9 +159,8 @@ gamGhVnoSex <- gam(cbind(GhVpos, GhVneg) ~ roost_site +
               gamma = 1,
               select = TRUE,
               data= subset(prev.dat, bat_species =="Eidolon dupreanum"))
-summary(gamGhVnoSex) #moramanga interannual in both eras
+summary(gamGhVnoSex) #moramanga interannual in both eras, mahabo interannual in era I
 #plot(gamGhVnoSex)
-
 
 gamGhVSex <- gam(cbind(GhVpos, GhVneg) ~ roost_site + bat_sex +
                      s(as.numeric(doy), bs="cc", k=10, by = interaction(roost_site, bat_sex)) +
@@ -171,7 +170,7 @@ gamGhVSex <- gam(cbind(GhVpos, GhVneg) ~ roost_site + bat_sex +
                    gamma = 1,
                    select = TRUE,
                    data= subset(prev.dat.sex, bat_species =="Eidolon dupreanum"))
-summary(gamGhVSex) #moramanga female interannual both eras
+summary(gamGhVSex) #moramanga female interannual both eras, moramanga males almost sig in era I
 
 AIC(gamGhVnoSex, gamGhVSex) #better with no sex
 
@@ -188,7 +187,7 @@ gamAngVnoSex <- gam(cbind(AngVpos, AngVneg) ~ roost_site +
                    gamma = 1,
                    select = TRUE,
                    data= subset(prev.dat, bat_species =="Eidolon dupreanum"))
-summary(gamAngVnoSex) #moramanga, Ankarana interannual; Mahabo intraannual but edf = 0...
+summary(gamAngVnoSex) #moramanga interannual era II, Mahabo I intraannual almost sig
 #plot(gamAngVnoSex)
 
 gamAngVSex <- gam(cbind(AngVpos, AngVneg) ~ roost_site + bat_sex +
