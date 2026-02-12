@@ -30,10 +30,6 @@ names(shed.dat)[names(shed.dat) == "AngV_shedding_ur"] <- "AngV_pos"
 sum(shed.dat$AngV_pos)#45
 sum(shed.dat$GhV_pos)#127
 
-shed.dat <- dplyr::select(shed.dat, sampleid,AngV_pos, GhV_pos)
-
-
-
 # link this to the catching data to plot by sampling session
 catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/catching_data_clean.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
 #catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/Historic-Catching-Data-Through2020/catching_data_historic.csv"))
@@ -58,12 +54,10 @@ shed.dat$sampleid[shed.dat$sampleid=="MLB012"] <- "MLB12"
 shed.dat$sampleid[shed.dat$sampleid=="RAK03"] <- "RAK3"
 shed.dat$sampleid[shed.dat$sampleid=="RAK06"] <- "RAK6"
 
-
 setdiff(shed.dat$sampleid, catch.dat$sampleid)
 
 merge.dat <- merge(shed.dat, catch.dat, by="sampleid")
 head(merge.dat)
-
 
 merge.dat$processing_date <- as.Date(merge.dat$processing_date)
 
