@@ -221,12 +221,12 @@ m1AngVSeX <- gam(seropos ~
                  select = TRUE,
                  family = "binomial") 
 summary(m1AngVSeX)
-#significant seasonality by doy in females and by combo class
+#borderline sig in combo class
 plot(m1AngVSeX, pages = 1)
 
 
 AIC(m1AngVnoSeX, m1AngVSeX)
-#including sex improves model fit very slightly 
+#no sex improves model fit very slightly 
 
 
 #NiV
@@ -241,7 +241,7 @@ m1NiVnoSeX <- gam(seropos ~
                   dat = subset(merge.dat, bat_species=="Eidolon dupreanum"  & antigen=="NiV"),
                   select = TRUE,
                   family = "binomial") 
-summary(m1NiVnoSeX) #nothing sig
+summary(m1NiVnoSeX) #combo class sig, roost site borderline sig
 plot(m1NiVnoSeX, pages = 1)
 
 m1NiVSeX <- gam(seropos ~
@@ -256,12 +256,11 @@ m1NiVSeX <- gam(seropos ~
                 select = TRUE,
                 family = "binomial")  
 summary(m1NiVSeX)
-#nothing significant.
+#combo class sig, roost site borderline sig
 plot(m1NiVSeX, pages = 1)
 
-
 AIC(m1NiVnoSeX, m1NiVSeX)
-# same
+# barely better with sex
 
 #HeV
 m1HeVnoSeX <- gam(seropos ~
@@ -353,24 +352,24 @@ pred.df.Eid$predicted_seropos_lci <- NA
 pred.df.Eid$predicted_seropos_uci <- NA
 
 #GhV
-pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="GhV"] <- predict.gam(m1GhVSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="GhV",], type="response", exclude = "s(year)")
-pred.df.Eid$predicted_seropos_lci[pred.df.Eid$antigen=="GhV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="GhV"] - 1.96*predict.gam(m1GhVSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="GhV",], type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.Eid$predicted_seropos_uci[pred.df.Eid$antigen=="GhV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="GhV"] + 1.96*predict.gam(m1GhVSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="GhV",], type="response", se.fit = T, exclude = "s(year)")$se
+pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="GhV"] <- predict.gam(m1GhVnoSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="GhV",], type="response", exclude = "s(year)")
+pred.df.Eid$predicted_seropos_lci[pred.df.Eid$antigen=="GhV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="GhV"] - 1.96*predict.gam(m1GhVnoSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="GhV",], type="response", se.fit = T, exclude = "s(year)")$se
+pred.df.Eid$predicted_seropos_uci[pred.df.Eid$antigen=="GhV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="GhV"] + 1.96*predict.gam(m1GhVnoSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="GhV",], type="response", se.fit = T, exclude = "s(year)")$se
 
 #AngV
-pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="AngV"] <- predict.gam(m1AngVSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="AngV",], type="response", exclude = "s(year)")
-pred.df.Eid$predicted_seropos_lci[pred.df.Eid$antigen=="AngV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="AngV"] - 1.96*predict.gam(m1AngVSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="AngV",], type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.Eid$predicted_seropos_uci[pred.df.Eid$antigen=="AngV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="AngV"] + 1.96*predict.gam(m1AngVSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="AngV",], type="response", se.fit = T, exclude = "s(year)")$se
+pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="AngV"] <- predict.gam(m1AngVnoSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="AngV",], type="response", exclude = "s(year)")
+pred.df.Eid$predicted_seropos_lci[pred.df.Eid$antigen=="AngV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="AngV"] - 1.96*predict.gam(m1AngVnoSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="AngV",], type="response", se.fit = T, exclude = "s(year)")$se
+pred.df.Eid$predicted_seropos_uci[pred.df.Eid$antigen=="AngV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="AngV"] + 1.96*predict.gam(m1AngVnoSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="AngV",], type="response", se.fit = T, exclude = "s(year)")$se
 
 #HeV
-pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="HeV"] <- predict.gam(m1HeVSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="HeV",], type="response", exclude = "s(year)")
-pred.df.Eid$predicted_seropos_lci[pred.df.Eid$antigen=="HeV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="HeV"] - 1.96*predict.gam(m1HeVSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="HeV",], type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.Eid$predicted_seropos_uci[pred.df.Eid$antigen=="HeV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="HeV"] + 1.96*predict.gam(m1HeVSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="HeV",], type="response", se.fit = T, exclude = "s(year)")$se
+pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="HeV"] <- predict.gam(m1HeVnoSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="HeV",], type="response", exclude = "s(year)")
+pred.df.Eid$predicted_seropos_lci[pred.df.Eid$antigen=="HeV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="HeV"] - 1.96*predict.gam(m1HeVnoSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="HeV",], type="response", se.fit = T, exclude = "s(year)")$se
+pred.df.Eid$predicted_seropos_uci[pred.df.Eid$antigen=="HeV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="HeV"] + 1.96*predict.gam(m1HeVnoSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="HeV",], type="response", se.fit = T, exclude = "s(year)")$se
 
 #NiV
-pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="NiV"] <- predict.gam(m1NiVSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="NiV",], type="response", exclude = "s(year)")
-pred.df.Eid$predicted_seropos_lci[pred.df.Eid$antigen=="NiV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="NiV"] - 1.96*predict.gam(m1NiVSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="NiV",], type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.Eid$predicted_seropos_uci[pred.df.Eid$antigen=="NiV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="NiV"] + 1.96*predict.gam(m1NiVSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="NiV",], type="response", se.fit = T, exclude = "s(year)")$se
+pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="NiV"] <- predict.gam(m1NiVnoSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="NiV",], type="response", exclude = "s(year)")
+pred.df.Eid$predicted_seropos_lci[pred.df.Eid$antigen=="NiV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="NiV"] - 1.96*predict.gam(m1NiVnoSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="NiV",], type="response", se.fit = T, exclude = "s(year)")$se
+pred.df.Eid$predicted_seropos_uci[pred.df.Eid$antigen=="NiV"] <- pred.df.Eid$predicted_seropos[pred.df.Eid$antigen=="NiV"] + 1.96*predict.gam(m1NiVnoSeX, newdata = pred.df.Eid[pred.df.Eid$antigen=="NiV",], type="response", se.fit = T, exclude = "s(year)")$se
 
 
 pred.df.Eid$predicted_seropos_lci[pred.df.Eid$predicted_seropos_lci<0] <- 0
@@ -380,8 +379,6 @@ pred.df.Eid$bat_species="Eidolon dupreanum"
 
 
 #rousettus seasonal plotting
-
-
 pred.df.Rou <- cbind.data.frame(doy=rep(1:365,3*1), year=rep(c(2018,2019,2020), each=(365*1)), antigen = rep(rep(c("GhV"), each = 365), 3))
 
 pred.df.Rou$bat_sex = "female"
@@ -400,9 +397,9 @@ pred.df.Rou$predicted_seropos <- NA
 pred.df.Rou$predicted_seropos_lci <- NA
 pred.df.Rou$predicted_seropos_uci <- NA
 
-pred.df.Rou$predicted_seropos[pred.df.Rou$antigen=="GhV"] <- predict.gam(m2GhVSeX, newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], type="response", exclude = "s(year)")
-pred.df.Rou$predicted_seropos_lci[pred.df.Rou$antigen=="GhV"] <- pred.df.Rou$predicted_seropos[pred.df.Rou$antigen=="GhV"] - 1.96*predict.gam(m2GhVSeX, newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], type="response", se.fit = T, exclude = "s(year)")$se
-pred.df.Rou$predicted_seropos_uci[pred.df.Rou$antigen=="GhV"] <- pred.df.Rou$predicted_seropos[pred.df.Rou$antigen=="GhV"] + 1.96*predict.gam(m2GhVSeX, newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], type="response", se.fit = T, exclude = "s(year)")$se
+pred.df.Rou$predicted_seropos[pred.df.Rou$antigen=="GhV"] <- predict.gam(m2GhVnoSeX, newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], type="response", exclude = "s(year)")
+pred.df.Rou$predicted_seropos_lci[pred.df.Rou$antigen=="GhV"] <- pred.df.Rou$predicted_seropos[pred.df.Rou$antigen=="GhV"] - 1.96*predict.gam(m2GhVnoSeX, newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], type="response", se.fit = T, exclude = "s(year)")$se
+pred.df.Rou$predicted_seropos_uci[pred.df.Rou$antigen=="GhV"] <- pred.df.Rou$predicted_seropos[pred.df.Rou$antigen=="GhV"] + 1.96*predict.gam(m2GhVnoSeX, newdata = pred.df.Rou[pred.df.Rou$antigen=="GhV",], type="response", se.fit = T, exclude = "s(year)")$se
 
 pred.df.Rou$bat_species="Rousettus madagascariensis"
 
@@ -487,7 +484,8 @@ pIntra <- ggplot(subset(pred.df.supp, sig==1 )) +
   geom_ribbon(data = subset(pred.df.supp, sig==2), aes(x=doy, ymin=predicted_seropos_lci, ymax= predicted_seropos_uci, fill = antigen), alpha=.15, show.legend = F) +
   geom_line(data = subset(pred.df.supp, sig==2),aes(x=doy, y=predicted_seropos, color=antigen), alpha=.3) +
   geom_ribbon(aes(x=doy, ymin=predicted_seropos_lci, ymax= predicted_seropos_uci, fill = antigen), alpha=.3, show.legend = F) +
-  geom_line(aes(x=doy, y=predicted_seropos, color=antigen)) + facet_grid(bat_sex~bat_species) + theme_bw() +
+  geom_line(aes(x=doy, y=predicted_seropos, color=antigen)) + 
+  facet_grid(bat_sex~bat_species) + theme_bw() +
   scale_color_manual(values=colorz) + scale_x_continuous(breaks=c(31, 93, 155, 218, 280, 344 ), labels = c("1", "3", "5", "7", "9", "11")) +
   scale_fill_manual(values=filz1) +
   scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
@@ -502,9 +500,9 @@ legendAB <- cowplot::get_legend(pIntra)
 
 
 pB <- ggplot(subset(pred.df.supp, sig==1 & bat_species =="Eidolon dupreanum")) + 
-  geom_point(data=subset(merge.plot, bat_species =="Eidolon dupreanum"), aes(x=day_of_year_session, y=seroprevalence, size=N, color=antigen, shape=year, alpha = sig), show.legend = F) +
+  geom_point(data=subset(merge.plot, bat_species =="Eidolon dupreanum"), aes(x=day_of_year_session, y=seroprevalence, size=N, color=antigen, shape=year, alpha = sig)) +
   geom_linerange(data=subset(merge.plot,bat_species =="Eidolon dupreanum"), aes(x=day_of_year_session, ymin=seroprevalence_lci, ymax=seroprevalence_uci, color=antigen, alpha = sig, group=year), linetype=2, show.legend = F) +
-  geom_rect(data=subset(cal.dat, bat_species =="Eidolon dupreanum"), aes(xmin=start, xmax=stop, ymin=0, ymax=1, fill=season), alpha=.3, show.legend = F) +
+  geom_rect(data=subset(cal.dat, bat_species =="Eidolon dupreanum"), aes(xmin=start, xmax=stop, ymin=0, ymax=1, fill=season), alpha=.3) +
   scale_fill_manual(values=filz2) +
   ggnewscale::new_scale_fill() +
   scale_alpha_manual(values=alphaz.new) +
@@ -522,8 +520,7 @@ pB <- ggplot(subset(pred.df.supp, sig==1 & bat_species =="Eidolon dupreanum")) +
         strip.background.y = element_rect(fill="white"),
         strip.text.x = element_blank(),panel.spacing = unit(.5, "lines"),
         strip.text.y = element_text(size=16), panel.grid = element_blank()) +
-  coord_cartesian(expand = F) + ylab("seroprevalence") + xlab("months post-birth pulse")  + guides(alpha="none");pB
-
+  coord_cartesian(expand = F) + ylab("Seroprevalence") + xlab("Months post-birth pulse")  + guides(alpha="none");pB
 
 
 pD <- ggplot(subset(pred.df.supp, sig==1 & bat_species =="Rousettus madagascariensis")) + 
@@ -548,12 +545,9 @@ pD <- ggplot(subset(pred.df.supp, sig==1 & bat_species =="Rousettus madagascarie
         strip.background.y = element_rect(fill="white"),
         strip.text.x = element_blank(),panel.spacing = unit(.5, "lines"),
         strip.text.y = element_text(size=16), panel.grid = element_blank()) +
-  coord_cartesian(expand = F) + ylab("seroprevalence") + xlab("months post-birth pulse")  + guides(alpha="none");pD
-
-
+  coord_cartesian(expand = F) + ylab("Seroprevalence") + xlab("Months post-birth pulse")  + guides(alpha="none");pD
 
 #now add in the other correlates to this plot
-
 
 # MFR
 
@@ -709,7 +703,7 @@ alphaz.line = c('Neg'=1, 'NotSig'=.1)
 
 
 p8 <- ggplot(data=MFR.dat) + 
-  facet_grid(bat_sex~bat_species, scales = "free_x") +
+  facet_grid(bat_sex~bat_species, scales = "free") +
   geom_ribbon(aes(x=MFR, ymin=ylower, ymax=yupper, fill=antigen, alpha = IsSignificant),  show.legend = F) +
   scale_color_manual(values = colorz) +
   scale_alpha_manual(values = alphaz.ribbon) +
@@ -720,6 +714,7 @@ p8 <- ggplot(data=MFR.dat) +
   theme_bw() +
   ylab("Effect on seropositivity") +
   xlab("Mass : forearm residual") +
+  coord_cartesian(expand = F)+
   theme(strip.background = element_rect(fill="white"), 
         strip.text.x = element_text(size=16, face="italic"),
         strip.text.y = element_text(size=16),
@@ -758,7 +753,8 @@ pEid <- cowplot::plot_grid(titleEid, pEid1, nrow=2,  rel_heights = c(.1,1));pEid
 # the plot() output above and visualize it if desired
 
 # source script from Guth/Streicker/Mollentze
-source(paste0(homewd, "/scripts/partial-gam-functions.R"))
+generalcodewd = "/Users/gwenddolenkettenburg/Desktop/brook_lab/general_code_datasets"
+source(paste0(generalcodewd, "/partial-gam-functions.R"))
 
 # combo class first
 Eid.combo.df.GhV <- get_partial_effects(m1GhVSeX, var = "combo_class")
@@ -772,13 +768,6 @@ plot.partial(Eid.combo.df.HeV, var="combo_class", response_var = "prob. seroposi
 
 Rou.combo.df.GhV <- get_partial_effects(m2GhVSeX, var = "combo_class")
 plot.partial(Rou.combo.df.GhV, var="combo_class", response_var = "prob. seropositive") 
-Rou.combo.df.RavV <- get_partial_effects(m2RavVSeX, var = "combo_class")
-plot.partial(Rou.combo.df.RavV, var="combo_class", response_var = "prob. seropositive") 
-Rou.combo.df.BdbV <- get_partial_effects(m2BdbVSeX, var = "combo_class") 
-plot.partial(Rou.combo.df.BdbV, var="combo_class", response_var = "prob. seropositive") 
-Rou.roost.df.BdbV <- get_partial_effects(m2BdbVSeX, var = "roost_site") # this is the only significant addition in the model
-plot.partial(Rou.roost.df.BdbV, var="roost_site", response_var = "prob. seropositive") # no sig differences though allowing flexibility here improves the whole model
-
 
 # because there were so few significant effects, we chose not to include these in the final model
 
