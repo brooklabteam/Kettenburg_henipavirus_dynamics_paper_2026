@@ -754,6 +754,11 @@ p8 <- ggplot(data=MFR.dat) +
 
 sero.intra <- cowplot::plot_grid(p8, pIntra, ncol = 2,  rel_widths = c(.75,1), align = "h");sero.intra
 
+sero_gam_list<-list("EDAngVnosex"=m1AngVnoSeX, "EDAngVsex"=m1AngVSeX,
+                    "EDGhVnosex"=m1GhVnoSeX, "EDGhVsex"=m1GhVSeX,
+                    "EDHeVnosex"=m1HeVnoSeX, "EDHeVsex"=m1HeVSeX,
+                    "EDNiVnosex"=m1NiVnoSeX, "EDNiVsex"=m1NiVSeX,
+                    "RMGhVnosex"=m2GhVnoSeX, "RMGhVsex"=m2GhVSeX)
 
 
 ###Now add the shedding: 
@@ -1367,6 +1372,14 @@ shed.intra<-shed.intra  + ggtitle("Intraannual viral shedding")+
 
 sero.intra<-sero.intra  + ggtitle("Intraannual serostatus")+
   theme(plot.title = element_text(size=16)); sero.intra
+
+
+shed_gam_list<-list("EDAngVnosex_shed"=m1AngVnoSeX, "EDAngVsex_shed"=m1AngVSeX,
+               "EDGhVnosex_shed"=m1GhVnoSeX, "EDGhVsex_shed"=m1GhVSeX,
+               "RMGhVnosex_shed"=m2GhVnoSeX, "RMGhVsex_shed"=m2GhVSeX)
+
+shed.summary<-lapply(shed_gam_list, summary)
+sero.summary<-lapply(sero_gam_list, summary)
 
 
 ###Put together final figure
