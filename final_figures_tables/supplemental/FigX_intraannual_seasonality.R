@@ -997,6 +997,38 @@ plot(m2GhVSeX, pages = 1)
 AIC(m2GhVnoSeX, m2GhVSeX) #better with no sex
 
 
+#AngV
+# no seasonality by sex
+m2AngVnoSeX <- gam(pos ~ 
+                    s(doy,k=7, bs="cc")+
+                    s(mass_forearm_residual, k=7, fx=FALSE, bs="cr", by=bat_sex)+
+                    s(combo_class, bs="re") +
+                    s(roost_site, bs="re") +
+                    s(year, bs = "re"), 
+                  dat = subset(merge.dat, bat_species=="Rousettus madagascariensis"  & virus=="AngV"),
+                  select = TRUE,
+                  family = "binomial") 
+summary(m2AngVnoSeX)
+#roost site and combo class sig
+plot(m2AngVnoSeX, pages = 1)
+
+#with sex in seasonality
+m2AngVSeX <- gam(pos ~
+                  s(doy,k=7, bs="cc", by=bat_sex)+
+                  s(mass_forearm_residual, k=7, fx=FALSE, bs="cr", by=bat_sex)+
+                  s(combo_class, bs="re") +
+                  #s(age, bs="cr") +
+                  s(roost_site, bs="re") +
+                  s(year, bs = "re"), 
+                dat = subset(merge.dat, bat_species=="Rousettus madagascariensis"  & virus=="AngV"),
+                select = TRUE,
+                family = "binomial") 
+summary(m2AngVSeX)
+#sig in roost site, combo class, and year
+plot(m2AngVSeX, pages = 1)
+
+AIC(m2AngVnoSeX, m2AngVSeX) #better with no sex
+
 # seasonal plotting
 
 pred.df.Eid <- cbind.data.frame(doy=rep(1:365,3*2), year=rep(c(2018,2019,2020), each=(365*2)), virus = rep(rep(c("GhV", "AngV"), each = 365), 3) )
@@ -1030,8 +1062,7 @@ pred.df.Eid$predicted_pos_uci[pred.df.Eid$predicted_pos_uci>1] <- 1
 pred.df.Eid$bat_species="Eidolon dupreanum"
 
 #rousettus seasonal plotting
-pred.df.Rou <- cbind.data.frame(doy=rep(1:365,3*1), year=rep(c(2018,2019,2020), each=(365*1)), virus = rep(rep(c("GhV"), each = 365), 3))
-
+pred.df.Rou <- cbind.data.frame(doy=rep(1:365,3*2), year=rep(c(2018,2019,2020), each=(365*2)), virus = rep(rep(c("GhV", "AngV"), each = 365), 3) )
 pred.df.Rou$bat_sex = "female"
 pred.df.tmp <- pred.df.Rou
 pred.df.tmp$bat_sex <- "male"
@@ -1041,23 +1072,30 @@ pred.df.Rou$mass_forearm_residual = 0
 pred.df.Rou$combo_class <- "male_A"
 pred.df.Rou$combo_class[pred.df.Rou$bat_sex=="female"] <- "female_NL"
 
-
 #predict without effect of year for plotting
 #females
 pred.df.Rou$predicted_pos <- NA
 pred.df.Rou$predicted_pos_lci <- NA
 pred.df.Rou$predicted_pos_uci <- NA
 
+#GhV
 pred.df.Rou$predicted_pos[pred.df.Rou$virus=="GhV"] <- predict.gam(m2GhVSeX, newdata = pred.df.Rou[pred.df.Rou$virus=="GhV",], type="response", exclude = "s(year)")
 pred.df.Rou$predicted_pos_lci[pred.df.Rou$virus=="GhV"] <- pred.df.Rou$predicted_pos[pred.df.Rou$virus=="GhV"] - 1.96*predict.gam(m2GhVSeX, newdata = pred.df.Rou[pred.df.Rou$virus=="GhV",], type="response", se.fit = T, exclude = "s(year)")$se
 pred.df.Rou$predicted_pos_uci[pred.df.Rou$virus=="GhV"] <- pred.df.Rou$predicted_pos[pred.df.Rou$virus=="GhV"] + 1.96*predict.gam(m2GhVSeX, newdata = pred.df.Rou[pred.df.Rou$virus=="GhV",], type="response", se.fit = T, exclude = "s(year)")$se
 
-pred.df.Rou$bat_species="Rousettus madagascariensis"
+#AngV
+pred.df.Rou$predicted_pos[pred.df.Rou$virus=="AngV"] <- predict.gam(m2AngVSeX, newdata = pred.df.Rou[pred.df.Rou$virus=="AngV",], type="response", exclude = "s(year)")
+pred.df.Rou$predicted_pos_lci[pred.df.Rou$virus=="AngV"] <- pred.df.Rou$predicted_pos[pred.df.Rou$virus=="AngV"] - 1.96*predict.gam(m2AngVSeX, newdata = pred.df.Rou[pred.df.Rou$virus=="AngV",], type="response", se.fit = T, exclude = "s(year)")$se
+pred.df.Rou$predicted_pos_uci[pred.df.Rou$virus=="AngV"] <- pred.df.Rou$predicted_pos[pred.df.Rou$virus=="AngV"] + 1.96*predict.gam(m2AngVSeX, newdata = pred.df.Rou[pred.df.Rou$virus=="AngV",], type="response", se.fit = T, exclude = "s(year)")$se
 
+pred.df.Rou$predicted_pos_lci[pred.df.Rou$predicted_pos_lci<0] <- 0
+pred.df.Rou$predicted_pos_uci[pred.df.Rou$predicted_pos_uci>1] <- 1
+pred.df.Rou$bat_species="Rousettus madagascariensis"
 
 pred.df.supp <- rbind(pred.df.Eid, pred.df.Rou)# add in the timing of the reproductive season in Moramanga for both species
 pred.df.supp$sig = 0
 pred.df.supp$sig[pred.df.supp$bat_species=="Rousettus madagascariensis" &  pred.df.supp$virus=="GhV"] <- 1
+pred.df.supp$sig[pred.df.supp$bat_species=="Rousettus madagascariensis" &  pred.df.supp$virus=="AngV"] <- 1
 pred.df.supp$sig[pred.df.supp$bat_species=="Eidolon dupreanum" & pred.df.supp$virus=="GhV"] <- 1
 pred.df.supp$sig[pred.df.supp$bat_species=="Eidolon dupreanum" & pred.df.supp$virus=="AngV"] <- 2
 
@@ -1252,6 +1290,7 @@ Eid.m.dat.AngV$bat_sex = "male"
 Eid.MFR.dat.AngV <- rbind(Eid.f.dat.AngV, Eid.m.dat.AngV)
 Eid.MFR.dat.AngV$IsSignificant <- "NotSig"
 Eid.MFR.dat.AngV$IsSignificant[Eid.MFR.dat.AngV $bat_sex=="male"] <- "Neg"
+Eid.MFR.dat.AngV$IsSignificant[Eid.MFR.dat.AngV $bat_sex=="female"] <- "Neg"
 Eid.MFR.dat.AngV$virus <- "AngV"
 
 
@@ -1285,16 +1324,40 @@ Rou.MFR.dat.GhV$IsSignificant <- "NotSig"
 #Rou.MFR.dat.GhV$IsSignificant[Rou.MFR.dat.GhV $bat_sex=="male"] <- "Neg"
 Rou.MFR.dat.GhV$virus <- "GhV"
 
+#AngV
+Rou.f.MFR.AngV <- plot(m2AngVSeX, pages=1)[[3]]
+Rou.m.MFR.AngV <- plot(m2AngVSeX, pages=1)[[4]]
 
-#consolidate MFR dat for eidolon
-Rou.MFR.dat <- Rou.MFR.dat.GhV
+Rou.f.dat.AngV <- cbind.data.frame(MFR=Rou.f.MFR.AngV$x, effect=Rou.f.MFR.AngV$fit, se = Rou.f.MFR.AngV$se)
+Rou.f.dat.AngV$yupper <- Rou.f.dat.AngV$effect+1.96*Rou.f.dat.AngV$se
+Rou.f.dat.AngV$ylower <- Rou.f.dat.AngV$effect-1.96*Rou.f.dat.AngV$se
+Rou.f.dat.AngV$bat_sex = "female"
+#raw data included in fem.MFR$raw
+
+
+Rou.m.dat.AngV <- cbind.data.frame(MFR=Rou.m.MFR.AngV$x, effect=Rou.m.MFR.AngV$fit, se = Rou.m.MFR.AngV$se)
+Rou.m.dat.AngV$yupper <- Rou.m.dat.AngV$effect+1.96*Rou.m.dat.AngV$se
+Rou.m.dat.AngV$ylower <- Rou.m.dat.AngV$effect-1.96*Rou.m.dat.AngV$se
+Rou.m.dat.AngV$bat_sex = "male"
+
+
+
+Rou.MFR.dat.AngV <- rbind(Rou.f.dat.AngV, Rou.m.dat.AngV)
+Rou.MFR.dat.AngV$IsSignificant <- "NotSig"
+#Rou.MFR.dat.AngV$IsSignificant[Rou.MFR.dat.AngV $bat_sex=="female"] <- "Neg"
+Rou.MFR.dat.AngV$virus <- "AngV"
+
+
+
+#consolidate MFR dat for rousettus
+Rou.MFR.dat <- rbind(Rou.MFR.dat.GhV, Rou.MFR.dat.AngV)
 Rou.MFR.dat$bat_species="Rousettus madagascariensis"
 
 #
 Eid.MFR.dat$plot <- 0
 Eid.MFR.dat$plot[Eid.MFR.dat$virus=="GhV" | Eid.MFR.dat$virus=="AngV" ] <- 1
 Rou.MFR.dat$plot <- 0
-Rou.MFR.dat$plot[Rou.MFR.dat$virus=="GhV"] <- 1
+Rou.MFR.dat$plot[Rou.MFR.dat$virus=="GhV" | Rou.MFR.dat$virus=="AngV"] <- 1
 
 # and have a combined plot for just the viruss of interest:
 # GhV/AngV in Eidolon and GhV in Rousettus
@@ -1374,12 +1437,12 @@ sero.intra<-sero.intra  + ggtitle("Intraannual serostatus")+
   theme(plot.title = element_text(size=16)); sero.intra
 
 
-shed_gam_list<-list("EDAngVnosex_shed"=m1AngVnoSeX, "EDAngVsex_shed"=m1AngVSeX,
-               "EDGhVnosex_shed"=m1GhVnoSeX, "EDGhVsex_shed"=m1GhVSeX,
-               "RMGhVnosex_shed"=m2GhVnoSeX, "RMGhVsex_shed"=m2GhVSeX)
-
-shed.summary<-lapply(shed_gam_list, summary)
-sero.summary<-lapply(sero_gam_list, summary)
+# shed_gam_list<-list("EDAngVnosex_shed"=m1AngVnoSeX, "EDAngVsex_shed"=m1AngVSeX,
+#                "EDGhVnosex_shed"=m1GhVnoSeX, "EDGhVsex_shed"=m1GhVSeX,
+#                "RMGhVnosex_shed"=m2GhVnoSeX, "RMGhVsex_shed"=m2GhVSeX)
+# 
+# shed.summary<-lapply(shed_gam_list, summary)
+# sero.summary<-lapply(sero_gam_list, summary)
 
 
 ###Put together final figure
