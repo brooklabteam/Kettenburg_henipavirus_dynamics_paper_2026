@@ -591,29 +591,6 @@ filz <- c('gestation' = "yellow", 'lactation' = "greenyellow", 'winter' = "skybl
 yearz <- c('2013'='3', '2014' = '7', '2015'='8', '2016'='18', '2018' = '16', '2019' = '17', '2020' = '15')
 yearz <- c('2013'=3, '2014' = 7, '2015'=8, '2016'=18, '2018' = 16, '2019' = 17, '2020' = 15)
 
-pIntrannualShed <- ggplot(data=subset(prev.dat, bat_species=="Eidolon dupreanum")) +
-  geom_rect(data=cal.sub, aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3) +
-  geom_point(aes(x=doy, y=prevGhV, size=Ntot, shape=year), color="#00C094") + 
-  geom_point(aes(x=doy, y=prevAngV, size=Ntot, shape=year), color="#F8766D") + 
-  scale_fill_manual(values=filz) +
-  ggnewscale::new_scale_fill() +
-  geom_linerange(aes(x=doy, ymin=prevGhV_lci, ymax=prevGhV_uci),color="#00C094", linetype=2, alpha=.3, show.legend = F) +
-  geom_linerange(aes(x=doy, ymin=prevAngV_lci, ymax=prevAngV_uci),color="#F8766D", linetype=2, alpha=.3, show.legend = F) +
-  geom_ribbon(data=pred.df, aes(x=doy, ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
-  geom_line(data=pred.df, aes(x=doy, y= prevalence, color=antigen)) +
-  facet_grid(~bat_species) + theme_bw() +
-  theme(axis.text = element_text(size=14), axis.title = element_text(size=16),, 
-        strip.background = element_rect(fill="white"), 
-        strip.text.y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
-        panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
-        plot.margin = unit(c(.5,.5,.5,1), "lines")) +
-  scale_shape_manual(values=yearz) +
-  coord_cartesian(xlim = c(0, 365), ylim = c(0, 1),expand = FALSE) + ylab("prevalence") + 
-  scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
-  guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
-pIntrannualShed
-
-
 
 ###rousettus
 
@@ -720,33 +697,6 @@ yearz <- c('2013'='3', '2014' = '7', '2015'='8', '2016'='18', '2018' = '16', '20
 yearz <- c('2013'=3, '2014' = 7, '2015'=8, '2016'=18, '2018' = 16, '2019' = 17, '2020' = 15)
 
 pred.df <- rbind(pred.df, pred.df.Rou)
-
-pIntrannualShed.All <- ggplot(data=prev.dat) +
-  geom_rect(data=cal.sub, aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3) +
-  geom_point(aes(x=doy, y=prevGhV, size=Ntot, shape=year), color="#00C094") + 
-  geom_point(aes(x=doy, y=prevAngV, size=Ntot, shape=year), color="#F8766D") + 
-  scale_fill_manual(values=filz) +
-  guides(color = guide_legend(title = "virus"))+  
-  ggnewscale::new_scale_fill() +
-  geom_linerange(aes(x=doy, ymin=prevGhV_lci, ymax=prevGhV_uci),color="#00C094", linetype=2, alpha=.3, show.legend = F) +
-  geom_linerange(aes(x=doy, ymin=prevAngV_lci, ymax=prevAngV_uci),color="#F8766D", linetype=2, alpha=.3, show.legend = F) +
-  geom_ribbon(data=pred.df, aes(x=doy, ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.4, show.legend = F) +
-  geom_line(data=pred.df, aes(x=doy, y= prevalence, color=antigen)) +
-  facet_grid(~bat_species) + theme_bw() +
-  theme(axis.text = element_text(size=14), axis.title = element_text(size=16),, 
-        strip.background = element_rect(fill="white"), 
-        strip.text.y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
-        panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
-        legend.box = "horizontal",
-        plot.margin = unit(c(.5,.5,.5,1), "lines")) +
-  scale_shape_manual(values=yearz) +
-  coord_cartesian(xlim = c(0, 365), ylim = c(0, 1), expand = FALSE) + ylab("Virus prevalence") + xlab("Day of year") + 
-  scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
-  guides(size=guide_legend(override.aes = list(color="black"), title="N bats"), 
-         shape=guide_legend(override.aes = list(color="black")),
-         ncol=2)
-pIntrannualShed.All
-
 
 #and plot the interannual for both
 
@@ -897,44 +847,26 @@ pInterannualShed.era2
 library(patchwork)
 
 #v1
-inter<-pInterannualShed.era1/pInterannualShed.era2+ plot_annotation(tag_levels = list(c('C','D'))) &
+inter<-pInterannualShed.era1/pInterannualShed.era2+ plot_annotation(tag_levels = list(c('B','C'))) &
   theme(plot.tag = element_text(size = 23, face="bold"))
 inter
 inter<-as.ggplot(inter)
 
-shed<-plot_grid(pIntrannualShed.All, inter, labels=c("X",""),
-                rel_widths=c(1,1.5), rel_heights = c(1,1),
-                ncol=2,align="hv", axis="l", label_size = 23)
-shed
-
-Fig1<-plot_grid(tree1, shed, labels=c("X",""),
-                rel_widths=c(1,1), rel_heights = c(1,1),
-                ncol=1,align="hV", axis="l", label_size = 23)+
+Fig1<-plot_grid(tree1, inter, labels=c("A",""),
+                rel_widths=c(1.2,1), rel_heights = c(1,1),
+                ncol=2,align="hV", axis="l", label_size = 23)+
   theme(plot.background = element_rect(fill="white"))
 
 Fig1
 
 
-#v2
-part1<-plot_grid(tree1, pIntrannualShed.All, labels=c("A","B"),
-                      rel_widths=c(1,1), rel_heights = c(2,1),
-                      ncol=1,align="hV", axis="l", label_size = 23)
-part1
-
-Fig1.1<-plot_grid(part1, inter, labels=c("",""),
-                rel_widths=c(1.3,1), rel_heights = c(1,1),
-                ncol=2,align="hV", axis="l", label_size = 23)+
-  theme(plot.background = element_rect(fill="white"))
-Fig1.1
-
-
 #save figures
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/main/"
 ggsave(file = paste0(homewd, "Fig1_polymerase_phylogeny_seasonal_shedding.png"),
-       plot= Fig1.1,
+       plot= Fig1,
        units="mm",  
-       width=350, 
-       height=160, 
+       width=360, 
+       height=130, 
        scale=2, 
        dpi=500)
 
