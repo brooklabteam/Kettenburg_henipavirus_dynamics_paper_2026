@@ -1359,64 +1359,37 @@ p8.shed <- ggplot(data=MFR.dat) +
 shed.intra <- cowplot::plot_grid(p8.shed, pIntra.shed, ncol = 2,  rel_widths = c(.75,1), align = "h");shed.intra
 
 
-# let's look at the partial effects
-# because of the interaction term, the doy function
-# won't run, but you could pull the partial effects from 
-# the plot() output above and visualize it if desired
-
-# source script from Guth/Streicker/Mollentze
-generalcodewd = "/Users/gwenddolenkettenburg/Desktop/brook_lab/general_code_datasets"
-source(paste0(generalcodewd, "/partial-gam-functions.R"))
-
-# combo class first
-Eid.combo.df.GhV <- get_partial_effects(m1GhVSeX, var = "combo_class")
-plot.partial(Eid.combo.df.GhV, var="combo_class", response_var = "prob. seropositive") 
-Eid.combo.df.AngV <- get_partial_effects(m1AngVSeX, var = "combo_class") # this is the only significant addition in the model
-plot.partial(Eid.combo.df.AngV, var="combo_class", response_var = "prob. seropositive") # no sig differences though allowing flexibility here improves the whole model
-Eid.combo.df.NiV <- get_partial_effects(m1NiVSeX, var = "combo_class")
-plot.partial(Eid.combo.df.NiV, var="combo_class", response_var = "prob. seropositive") 
-Eid.combo.df.HeV <- get_partial_effects(m1HeVSeX, var = "combo_class")
-plot.partial(Eid.combo.df.HeV, var="combo_class", response_var = "prob. seropositive") 
-
-Rou.combo.df.GhV <- get_partial_effects(m2GhVSeX, var = "combo_class")
-plot.partial(Rou.combo.df.GhV, var="combo_class", response_var = "prob. seropositive") 
-
-# because there were so few significant effects, we chose not to include these in the final model
-
-
-
-
-
-
-
-
-
-
-
-
-
 shed.intra<-as.ggplot(shed.intra)
 sero.intra<-as.ggplot(sero.intra)
 
+shed.intra<-shed.intra  + ggtitle("Intraannual viral shedding")+
+  theme(plot.title = element_text(size=16)); shed.intra
+
+sero.intra<-sero.intra  + ggtitle("Intraannual serostatus")+
+  theme(plot.title = element_text(size=16)); sero.intra
 
 
 ###Put together final figure
 
 library(patchwork)
 
-intra_fig<-plot_grid(shed.intra, sero.intra, labels=c("A","B"),
-                      rel_widths=c(1,1), rel_heights = c(2,1),
-                      ncol=1,align="hv", axis="l", label_size = 23)
-intra_fig
+# intra_fig<-plot_grid(shed.intra, sero.intra, labels=c("A","B"),
+#                       rel_widths=c(1,1), rel_heights = c(1,1),
+#                       ncol=1,align="hv", axis="l", label_size = 23)
+# intra_fig
+
+intra.fig<-shed.intra/sero.intra + plot_annotation(tag_levels = list(c('A','B'))) &
+  theme(plot.tag = element_text(size = 23, face="bold"))
+intra.fig
 
 
 #save figures
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/supplemental/"
 ggsave(file = paste0(homewd, "FigX_intraannual_seasonality.png"),
-       plot= intra_fig,
+       plot= intra.fig,
        units="mm",  
        width=200, 
-       height=120, 
+       height=170, 
        scale=2, 
        dpi=500)
 
