@@ -10,7 +10,9 @@ For both pathogens, models weere fit simultaneously to three different datasets:
 3. That "fit-1" folder then gets uploaded to Savio, and we run an array job to fit each model to the three datasets, using each initial parameter set.
 4. The output from that fitting (.Rdata files with the fitted parameters, likelihood scores, and AIC for each model) are saved in the sub-folder "out-1".
 5. From there, we run the 'process-fits.R' script to consolidate and parse the initial parameter fits and plot them. A series of output plots are saved in the subfolder "out-1-plots".
-6. We then run the script 'parse-parameter-sets-refit.R' to parse those initial parameter fits, decide on the top 20 models (5 best base models + all four iterations of each) and generate new starting values (XXXX per model) to fit again.
+6. We then run the script 'parse-parameter-sets-refit.R' to parse those initial parameter fits, decide on the top 20 models (5 best base models + all four iterations of each) and generate new starting values (62 unique parameter sets per all 20 models - or 248 unique parameter sets for all 5 base models) to fit again.
+7. These then get added as individual csv file to the 'refit-1' subdirectory, along with the fitting script ('fit_models.R'), the three data files, and a new SLURM script.
+
 
 
 

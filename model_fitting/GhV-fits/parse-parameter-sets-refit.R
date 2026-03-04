@@ -4,17 +4,17 @@ library(plyr)
 library(dplyr)
 
 #load data
-homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
+homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 setwd(homewd)
 
 #load all the parameter inits -- these are the top hits from the first round from the models that had a chance
 
-par.dat <- read.csv(file= paste0(homewd,"/scripts/3-dat-fitting/GhV-fits/mean/top-fits-round1.csv"), header = T, stringsAsFactors = F)
+par.dat <- read.csv(file= paste0(homewd,"/model_fitting/GhV-fits/top-fits-round1.csv"), header = T, stringsAsFactors = F)
 
 par.dat <- arrange(par.dat, antigen, cutoff, model, mu_sick, mu_rec)
 
-par.add = subset(par.dat,  model == "MSIRNS" |model == "MSIRNS-mu-sick" |model == "MSIRNS-mu-rec" |model == "MSIRNS-mu-sick-mu-rec" )
-par.dat = subset(par.dat,  model == "MSIRS" |model == "MSIRS-mu-sick" |model == "MSIRS-mu-rec" |model == "MSIRS-mu-sick-mu-rec" |
+par.dat = subset(par.dat,  model == "MSIRNS" |model == "MSIRNS-mu-sick" |model == "MSIRNS-mu-rec" |model == "MSIRNS-mu-sick-mu-rec" |
+                           model == "MSIRS" |model == "MSIRS-mu-sick" |model == "MSIRS-mu-rec" |model == "MSIRS-mu-sick-mu-rec" |
                            model == "MSIRNNI" |model == "MSIRNNI-mu-sick" |model == "MSIRNNI-mu-rec" |model == "MSIRNNI-mu-sick-mu-rec" |
                            model == "MSIRNI" |model == "MSIRNI-mu-sick" |model == "MSIRNI-mu-rec" |model == "MSIRNI-mu-sick-mu-rec" |
                            model == "MSIRNNS" |model == "MSIRNNS-mu-sick" |model == "MSIRNNS-mu-rec" |model == "MSIRNNS-mu-sick-mu-rec" )
@@ -264,46 +264,5 @@ rep.list <- split(rep.par.df, as.numeric(rownames(rep.par.df)))
 
 #now save each line as its own csv for fitting
 #for 1
-mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/scripts/3-dat-fitting/GhV-fits/mean/refit-1")))
+mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/model_fitting/GhV-fits/refit-1")))
 
-
-#and then add in the fits for MSIRNS
-par.dat.list.add <- split(par.add, as.numeric(rownames(par.add)))
-
-rep.par.df.add <- data.table::rbindlist(lapply(par.dat.list.add, rep.starts, n.times=62)) #4 models, each repeated 62 times for 248 sims total
-rep.list.add <- split(rep.par.df.add, as.numeric(rownames(rep.par.df.add)))
-
-
-mapply(df1=rep.list.add,rownum=as.list(1:length(rep.list.add)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/scripts/3-dat-fitting/GhV-fits/mean/refit-add")))
-
-
-# 
-# #and repeat x6 for new pars - 114 replicates of each model
-# #for 2
-# rep.par.df <- data.table::rbindlist(lapply(par.dat.list, rep.starts, n.times=19)) #52 lines, each repeated 19 times
-# rep.list <- split(rep.par.df, as.numeric(rownames(rep.par.df)))
-# mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/scripts/3-dat-fitting/GhV-fits/mean/rep-2")))
-# 
-# #for 3
-# rep.par.df <- data.table::rbindlist(lapply(par.dat.list, rep.starts, n.times=19)) #52 lines, each repeated 19 times
-# rep.list <- split(rep.par.df, as.numeric(rownames(rep.par.df)))
-# mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/scripts/3-dat-fitting/GhV-fits/mean/rep-3")))
-# 
-# #for 4
-# rep.par.df <- data.table::rbindlist(lapply(par.dat.list, rep.starts, n.times=19)) #52 lines, each repeated 19 times
-# rep.list <- split(rep.par.df, as.numeric(rownames(rep.par.df)))
-# mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/scripts/3-dat-fitting/GhV-fits/mean/rep-4")))
-# 
-# #for 5
-# rep.par.df <- data.table::rbindlist(lapply(par.dat.list, rep.starts, n.times=19)) #52 lines, each repeated 19 times
-# rep.list <- split(rep.par.df, as.numeric(rownames(rep.par.df)))
-# mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/scripts/3-dat-fitting/GhV-fits/mean/rep-5")))
-# 
-# #for 6 
-# rep.par.df <- data.table::rbindlist(lapply(par.dat.list, rep.starts, n.times=19)) #52 lines, each repeated 19 times
-# rep.list <- split(rep.par.df, as.numeric(rownames(rep.par.df)))
-# mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/scripts/3-dat-fitting/GhV-fits/mean/rep-6")))
-# 
-# 
-# 
-# 
