@@ -259,7 +259,7 @@ rep.starts <- function(df, n.times){
   
 }
 
-rep.par.df <- data.table::rbindlist(lapply(par.dat.list, rep.starts, n.times=62)) #16 models, each repeated 62 times for 992 sims total
+rep.par.df <- data.table::rbindlist(lapply(par.dat.list, rep.starts, n.times=62)) #20 models, each repeated 62 times for 1240 sims total
 rep.list <- split(rep.par.df, as.numeric(rownames(rep.par.df)))
 
 #now save each line as its own csv for fitting
