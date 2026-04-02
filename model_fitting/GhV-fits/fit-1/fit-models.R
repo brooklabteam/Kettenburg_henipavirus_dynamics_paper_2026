@@ -2627,7 +2627,7 @@ wrap.fit <- function(model, num_states, beta, sigma, recru, epsilon, loss, loss2
   
   #check AICc for small sample size
   par.df$n = length(dat.tmp$age) #should be 109 so should be fine but good to check
-  par.df$AICc = par.df$AIC - ((2*(par.df$k)*(par.df$k+1))/(par.df$n-par.df$k-1)) 
+  par.df$AICc = par.df$AIC + ((2*(par.df$k)*(par.df$k+1))/(par.df$n-par.df$k-1)) 
   
   
   
