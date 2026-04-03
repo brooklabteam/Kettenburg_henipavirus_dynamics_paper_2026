@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --job-name=MSIRNSfit
+#SBATCH --job-name=MSIRNSIRNfit
 #SBATCH --account=fc_brooklab
 #SBATCH --partition=savio3_htc
-#SBATCH --array=533-608%200
+#SBATCH --array=609-684%200
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=1G
 #SBATCH --time=36:00:00
