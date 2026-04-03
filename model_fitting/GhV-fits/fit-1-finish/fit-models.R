@@ -14,7 +14,7 @@ library(tidyr)
 library(scales)
 
 #load data
-#homewd = "/Users/carabrook/Developer/luminex-serology-madabat/scripts/3-dat-fitting/GhV-fits/mean/refit-add/"
+#homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/model_fitting/GhV-fits/fit-1"
 #setwd(homewd)
 #dat <- read.csv(file =  paste0(homewd,"/data/age-seroprevalence-data.csv"), header = T, stringsAsFactors = F)
 dat <- read.csv(file =  "age-seroprevalence-data.csv", header = T, stringsAsFactors = F)
@@ -58,8 +58,8 @@ get.age.struct.M = function(pop, c){ #function that collapses population vector 
   }
   #zage.mat <- Reduce('+', age.mat.list)
   age.mat <- lapply(age.mat.list, sum)
-  age.mat.dat <- c( c(1:length(age.mat)), unlist(age.mat))
-  names(age.mat.dat) <- c("age", "pop")
+  #age.mat.dat <- c( c(1:length(age.mat)), unlist(age.mat))
+  #names(age.mat.dat) <- c("age", "pop")
   return(age.mat)
 }
 prev.by.age <- function(dat){
@@ -431,7 +431,8 @@ buildTMat_all_age <- function(c, model, Npop, age.classes, surv.biwk, age.brk, s
       mat1[4,9] <- loss[j] #loss of immunity. moving from N back to S
       
     } else if (model=="MSIRNNI"){
-    
+      
+      mat1[] <- 0
       mat1[1,1] <- 1- wane.fix[j] 
       mat1[2,1] <- wane.fix[j] #M1 to M2
       mat1[2,2] <- 1- wane.fix[j]  
@@ -816,7 +817,7 @@ buildFMatrix_all <- function(c, model, age.classes, adult_fec, surv.biwk, biwk, 
 
 
 #and sim models
-sim.met.age.all <- function(c, burnin, sim_pop, yrs, ntyr, age.brk, s, beta,beta2, recov, mort, mort_juv, adult_fec, wane,wane.fix,loss, loss2, epsilon, sigma, sigma2, recru, slope.wane,mu.sick, mu.rec, sigma.fix, add.inf.mort,add.rec.mort, model, N_stat){
+sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,beta2, recov, mort, mort_juv, adult_fec, wane,wane.fix,loss, loss2, epsilon, sigma, sigma2, recru, slope.wane,mu.sick, mu.rec, sigma.fix, add.inf.mort,add.rec.mort, model, N_stat){
   mu.sick.juv = mu.sick
   mu.rec.juv = mu.rec
   if(mu.sick.juv>2){
@@ -1188,7 +1189,7 @@ sim.met.age.all <- function(c, burnin, sim_pop, yrs, ntyr, age.brk, s, beta,beta
 #likelihood function
 #this for a biweekly observation process
 #this for a biweekly observation process
-log.lik.age <- function(par, c, data, sero.dat, shed.dat, cutoff, burnin, sim_pop, yrs, ntyr, age.brk, s, par.df1, model, N_stat){
+log.lik.age <- function(par, c, data, sero.dat, shed.dat, cutoff, sim_pop, yrs, ntyr, age.brk, s, par.df1, model, N_stat){
   
   wPCR = exp(par[length(par)])
   par = par[1:(length(par)-1)]
@@ -1388,8 +1389,21 @@ log.lik.age <- function(par, c, data, sero.dat, shed.dat, cutoff, burnin, sim_po
     
   } 
   
+  if(sum((1 - exp(-recru/26)), (1 - exp(-epsilon/26)))>1){
+    
+    ll=-1*10^9#write over with real number that is huge
+    #print(-ll)
+    return(-ll)
+    
+  }else if(sum((1 - exp(-loss/26)), (1 - exp(-epsilon/26)))>1){
+    ll=-1*10^9#write over with real number that is huge
+    #print(-ll)
+    return(-ll)
+    
+  }else{
   
-  out = sim.met.age.all(c=c, burnin=burnin, sim_pop=sim_pop, yrs=yrs, ntyr=ntyr, age.brk=age.brk, s=s, 
+  
+  out = sim.met.age.all(c=c,  sim_pop=sim_pop, yrs=yrs, ntyr=ntyr, age.brk=age.brk, s=s, 
                         beta=beta, loss=loss, loss2 = loss2,epsilon=epsilon,
                         beta2=beta2, recru=recru,sigma=sigma, sigma2=sigma2, 
                         recov=par.df1$recov, mort=par.df1$mort, mort_juv=par.df1$mort_juv, 
@@ -1517,13 +1531,13 @@ log.lik.age <- function(par, c, data, sero.dat, shed.dat, cutoff, burnin, sim_po
     #force mu.sick to be 1 or more
     
     return(-ll)
-  }}
+  }}}
 
 
 #need to have it specify where the age-breaks are and where the beta changes
 #need to have it specify where the age-breaks are and where the beta changes
 wrap.fit <- function(model, num_states, beta, sigma, recru, epsilon, loss, loss2, sigma2, beta2, mu.sick, mu.rec, dat1, sero.dat1, shed.dat1, par.df, cutoff1, species1, antigen1, s, sim_pop, yrs, ntyr,  N_stat, weight.PCR,
-                     age.brk, slope.wane, burnin, do.plot, do.save, filename){
+                     age.brk, slope.wane, do.plot, do.save, filename){
   
   #first pull out your data...
   dat.tmp <- subset(dat1, species==species1 & antigen==antigen1)
@@ -1579,7 +1593,7 @@ wrap.fit <- function(model, num_states, beta, sigma, recru, epsilon, loss, loss2
   #estimate parameters
   
   out.lik <- optim(par=log(par),fn=log.lik.age, method="Nelder-Mead", c = num_states, data=dat.tmp,
-                   model=model, par.df1 =par.df, burnin=burnin, sero.dat = sero.dat2, shed.dat=shed.dat2,
+                   model=model, par.df1 =par.df, sero.dat = sero.dat2, shed.dat=shed.dat2,
                    cutoff=cutoff1, s=s, sim_pop=sim_pop, ntyr=ntyr, yrs=yrs, age.brk=age.brk, 
                    N_stat=N_stat, control=list(maxit=1000), hessian = TRUE)
   
@@ -2652,7 +2666,7 @@ wrap.fit <- function(model, num_states, beta, sigma, recru, epsilon, loss, loss2
   
 }
 
-plot.sim <- function(par.df, s, sim_pop, yrs, ntyr,  N_stat, age.brk, slope.wane, burnin, do.plot, do.save, homewd){
+plot.sim <- function(par.df, s, sim_pop, yrs, ntyr,  N_stat, age.brk, slope.wane,  do.plot, do.save, homewd){
   
   if (par.df$mu_sick>1 & par.df$mu_rec==1){
     add.inf.mort <- TRUE
@@ -2732,7 +2746,6 @@ out.fit <- wrap.fit(model=par.fit$model,
                               antigen1=par.fit$antigen,
                               cutoff1 = par.fit$cutoff,
                               num_states = par.fit$num_states,
-                              burnin=20,
                               sim_pop=10000,
                               yrs=50,
                               ntyr=26,
