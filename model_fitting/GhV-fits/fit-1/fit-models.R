@@ -1535,7 +1535,6 @@ log.lik.age <- function(par, c, data, sero.dat, shed.dat, cutoff, sim_pop, yrs, 
 
 
 #need to have it specify where the age-breaks are and where the beta changes
-#need to have it specify where the age-breaks are and where the beta changes
 wrap.fit <- function(model, num_states, beta, sigma, recru, epsilon, loss, loss2, sigma2, beta2, mu.sick, mu.rec, dat1, sero.dat1, shed.dat1, par.df, cutoff1, species1, antigen1, s, sim_pop, yrs, ntyr,  N_stat, weight.PCR,
                      age.brk, slope.wane, do.plot, do.save, filename){
   
