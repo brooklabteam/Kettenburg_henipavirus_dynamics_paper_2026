@@ -24,7 +24,7 @@ export OPENBLAS_NUM_THREADS=1
 
 start_time=$(date +%s)
 
-Rscript fit-models-AngV.R "$SLURM_ARRAY_TASK_ID"
+Rscript fit-models.R "$SLURM_ARRAY_TASK_ID"
 
 end_time=$(date +%s)
 runtime=$((end_time - start_time))
