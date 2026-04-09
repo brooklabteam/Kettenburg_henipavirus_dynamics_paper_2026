@@ -116,6 +116,7 @@ make.1000.starts <- function(df, n.times, prefix_folder){
     big.df$beta2 <- sample(x=seq(.01,26, length.out=100000), size=n.times, replace = TRUE)
     big.df$loss2 <- sample(x=seq(.01,26, length.out=100000), size=n.times, replace = TRUE)
   }
+  
   #mu rec and mu sick can't be <1 and can't be >4 because you'd have 0 survivorship
   if(add.inf.mort ==TRUE){
     big.df$mu_sick <- sample(x=seq(1,4, length.out=1000), size=n.times, replace = TRUE)
@@ -146,7 +147,7 @@ make.1000.starts <- function(df, n.times, prefix_folder){
   #and save with an addendum for each sequence in the array
   mapply(save.par.list, df1=big.df.list, rownum = as.list(seq(1, length(big.df.list),1)), MoreArgs = list(folder_prefix=prefix_name), SIMPLIFY = TRUE)
   
-
+  
   #return(big.df)
 }
 rep.starts <- function(df, n.times){

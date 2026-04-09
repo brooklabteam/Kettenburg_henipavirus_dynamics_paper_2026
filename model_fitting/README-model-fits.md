@@ -16,9 +16,9 @@ For both pathogens, models weere fit simultaneously to three different datasets:
 
 6. From there, we run the 'process-fits.R' script to consolidate and parse the initial parameter fits and plot them. A series of output plots are saved in the subfolder "out-1-plots". 
 
-7. We then run the script 'parse-parameter-sets-refit.R' to parse those initial parameter fits, decide on the top 20 models (5 best base models + all four iterations of each) and generate new starting values (62 unique parameter sets per all 20 models - or 248 unique parameter sets for all 5 base models) to fit again. THIS FOLDER IS BLANK RIGHT NOW BECAUSE IT HAS NOT FINISHED RUNNING.
+7. We then run the script 'parse-parameter-sets-refit.R' to parse those initial parameter fits, decide on the top 20 models (5 best base models + all four iterations of each) and generate new starting values (62 unique parameter sets per all 20 models - or 248 unique parameter sets for all 5 base models) to fit again. 
 
-8. These then get added as individual csv file to the 'refit-1' subdirectory, along with the fitting script ('fit-models.R'), the three data files, and a new SLURM script. THIS FOLDER IS BLANK RIGHT NOW BECAUSE IT HAS NOT FINISHED RUNNING.
+8. These then get added as individual .csv files to the 'refit-1' subdirectory, along with the fitting script ('fit-models.R'), the three data files, and a new SLURM script. 
 
 
 ## AngV fits. 
