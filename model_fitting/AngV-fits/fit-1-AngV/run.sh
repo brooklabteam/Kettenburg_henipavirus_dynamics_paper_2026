@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=AngVfits
-#SBATCH --account=fc_brooklab
+#SBATCH --account=ac_brooklab2
 #SBATCH --partition=savio3_htc
 #SBATCH --array=1-988%200
 #SBATCH --cpus-per-task=1

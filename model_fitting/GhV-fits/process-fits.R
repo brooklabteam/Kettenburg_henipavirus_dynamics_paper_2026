@@ -54,7 +54,7 @@ dat.sum <- ddply(dat,.(model), summarise, N=length(model))
 ggplot(dat.sum) + geom_point(aes(model, y=N))
 
 arrange(dat.sum, N) 
-# there are 4 models that had < 5 completions (1 only had 1). 
+# there are 4 models that had < 5 completions (2 only had 1). 
 # all 4 were the most complex model "MSIRNSIRNS".
 # we tried submitting some re-runs on this model with a longer run time on savio, 
 # but it did not improve much, and the model was poor on the whole (on average,
