@@ -344,14 +344,14 @@ buildTMat_all_age_AngV <- function(c, model, Npop, age.classes, surv.biwk, age.b
   
   Npop_epi <- transform.vect(vec=Npop, s=s, c=c)
   
-  #I1 is in the 5th place on all
-  #I2 is in 10 or 11 depending on the model
+  #I1 is in the 3rd place on all
+  #I2 is in 8 or 9 depending on the model
   
-  I_m = mat_split(matrix(Npop_epi, ncol=1), r=s, c=1)[,,5] #always. for all model forms, I1 comes #5
+  I_m = mat_split(matrix(Npop_epi, ncol=1), r=s, c=1)[,,3] #always. for all model forms, I1 comes #3
   if(model=="MSIRSIR"){
-    I_m2 = mat_split(matrix(Npop_epi, ncol=1), r=s, c=1)[,,10] #I2 at #10
+    I_m2 = mat_split(matrix(Npop_epi, ncol=1), r=s, c=1)[,,8] #I2 at #8
   }else if (model == "MSIRNSIRN" | model == "MSIRNSIRN-LT" | model == "MSIRNSIRNS"){
-    I_m2 = mat_split(matrix(Npop_epi, ncol=1), r=s, c=1)[,,11] #I2 at #11
+    I_m2 = mat_split(matrix(Npop_epi, ncol=1), r=s, c=1)[,,9] #I2 at #9
   }else{
     I_m2 = 0
   }
@@ -369,274 +369,236 @@ buildTMat_all_age_AngV <- function(c, model, Npop, age.classes, surv.biwk, age.b
       
       #fill in epi matrix for each age class. this gives probability of transmission per biweek for a MSIR/MSIRS/MSRIR model
       mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1 to R2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R2 to R3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[4,8] <- sigma[j] #R3 to S   
+      mat1[1,1] <- 1 - waning.maternal[j]
+      mat1[2,1] <- waning.maternal[j] #M1 to S
+      mat1[2,2] <- 1-foi[j]
+      mat1[3,2] <- foi[j] #S to I
+      mat1[3,3] <- 1-recov
+      mat1[4,3] <- recov #I to R1
+      mat1[4,4] <- 1-sigma.fix   
+      mat1[5,4] <- sigma.fix #R1 to R2     
+      mat1[5,5] <- 1-sigma.fix   
+      mat1[6,5] <- sigma.fix #R2 to R3
+      mat1[6,6] <- 1-sigma[j]
+      mat1[2,6] <- sigma[j] #R3 to S   
+      
+      
       
       
     }else if(model =="MSIRN" | model=="MSIRNI"){
       
       #fill in epi matrix for each age class. this gives probability of transmission per biweek for a MSIR/MSIRS/MSRIR model
       mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1 to R2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R2 to R3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R3 to N   
-      mat1[9,9] <- 1- recru[j] #once in N, stay there, unless you recrudesce   
-      mat1[5,9] <- recru[j] #recrudescence. moving from N back to I
+      mat1[1,1] <- 1 - waning.maternal[j]
+      mat1[2,1] <- waning.maternal[j] #M1 to S
+      mat1[2,2] <- 1-foi[j]
+      mat1[3,2] <- foi[j] #S to I
+      mat1[3,3] <- 1-recov
+      mat1[4,3] <- recov #I to R1
+      mat1[4,4] <- 1-sigma.fix   
+      mat1[5,4] <- sigma.fix #R1 to R2     
+      mat1[5,5] <- 1-sigma.fix   
+      mat1[6,5] <- sigma.fix #R2 to R3
+      mat1[6,6] <- 1-sigma[j]
+      mat1[7,6] <- sigma[j] #R3 to N   
+      mat1[7,7] <- 1- recru[j] #once in N, stay there, unless you recrudesce  
+      mat1[3,7] <- recru[j] #recrudescence. moving from N back to I
       
     } else if (model=="MSIRNS"){
       
       mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1 to R2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R2 to R3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R3 to N   
-      mat1[9,9] <- 1- loss[j] #once in N, stay there, unless you lose immunity
-      mat1[4,9] <- loss[j] #loss of immunity. moving from N back to S
+      mat1[1,1] <- 1 - waning.maternal[j]
+      mat1[2,1] <- waning.maternal[j] #M1 to S
+      mat1[2,2] <- 1-foi[j]
+      mat1[3,2] <- foi[j] #S to I
+      mat1[3,3] <- 1-recov
+      mat1[4,3] <- recov #I to R1
+      mat1[4,4] <- 1-sigma.fix   
+      mat1[5,4] <- sigma.fix #R1 to R2     
+      mat1[5,5] <- 1-sigma.fix   
+      mat1[6,5] <- sigma.fix #R2 to R3
+      mat1[6,6] <- 1-sigma[j]
+      mat1[7,6] <- sigma[j] #R3 to N   
+      mat1[7,7] <- 1- loss[j] #once in N, stay there, unless you lose immunity
+      mat1[2,7] <- loss[j] #loss of immunity. moving from N back to S
       
     } else if (model=="MSIRNNI"){
       
       mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1 to R2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R2 to R3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R3 to N   
-      mat1[9,9] <- 1- recru[j] - epsilon[j] #once in N, stay there, unless you recrudesce to I or advance to N2  
-      mat1[10,9] <- epsilon[j] #N1 to N2
-      mat1[10,10] <- 1 #once in N2 you stay there
-      mat1[5,9] <- recru[j] #recrudescence. moving from N1 back to I
+      mat1[1,1] <- 1 - waning.maternal[j]
+      mat1[2,1] <- waning.maternal[j] #M1 to S
+      mat1[2,2] <- 1-foi[j]
+      mat1[3,2] <- foi[j] #S to I
+      mat1[3,3] <- 1-recov
+      mat1[4,3] <- recov #I to R1
+      mat1[4,4] <- 1-sigma.fix   
+      mat1[5,4] <- sigma.fix #R1 to R2     
+      mat1[5,5] <- 1-sigma.fix   
+      mat1[6,5] <- sigma.fix #R2 to R3
+      mat1[6,6] <- 1-sigma[j]
+      mat1[7,6] <- sigma[j] #R3 to N   
+      mat1[7,7] <- 1- recru[j] - epsilon[j] #once in N, stay there, unless you recrudesce to I or advance to N2  
+      mat1[8,7] <- epsilon[j] #N1 to N2
+      mat1[3,7] <- recru[j] #recrudescence. moving from N1 back to I
+      mat1[8,8] <- 1 #once in N2 you stay there
       
       
     } else if(model == "MSIRNNS"){
       
       mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1 to R2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R2 to R3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R3 to N   
-      mat1[9,9] <- 1- loss[j] - epsilon[j] #once in N, stay there, unless you lose immunity or advance to N2
-      mat1[10,9] <- epsilon[j] #N1 to N2
-      mat1[10,10] <- 1 #once in N2 you stay
-      mat1[4,9] <- loss[j] #loss of immunity. moving from N1 back to S
+      mat1[1,1] <- 1 - waning.maternal[j]
+      mat1[2,1] <- waning.maternal[j] #M1 to S
+      mat1[2,2] <- 1-foi[j]
+      mat1[3,2] <- foi[j] #S to I
+      mat1[3,3] <- 1-recov
+      mat1[4,3] <- recov #I to R1
+      mat1[4,4] <- 1-sigma.fix   
+      mat1[5,4] <- sigma.fix #R1 to R2     
+      mat1[5,5] <- 1-sigma.fix   
+      mat1[6,5] <- sigma.fix #R2 to R3
+      mat1[6,6] <- 1-sigma[j]
+      mat1[7,6] <- sigma[j] #R3 to N   
+      mat1[7,7] <- 1- loss[j] - epsilon[j] #once in N, stay there, unless you lose immunity to S or advance to N2  
+      mat1[8,7] <- epsilon[j] #N1 to N2
+      mat1[2,7] <- loss[j] #loss of immunity. moving from N1 back to S
+      mat1[8,8] <- 1 #once in N2 you stay there
       
-    } else if(model =="MSIRSIR"){ #11 classes 
+    } else if(model =="MSIRSIR"){ #9 classes 
       
       mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S1
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S1 to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1.1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1.1 to R1.2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R1.2 to R1.3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R1.3 to S2   
-      mat1[9,9] <- 1- foi2[j] #S2
-      mat1[10,9] <- foi2[j] #S2 to I2
-      mat1[10,10] <- 1-recov #I2
-      mat1[11,10] <- recov #I2 to R2.1
-      mat1[11,11] <- 1 #R2.1 stay here, don't lose titers
+      mat1[1,1] <- 1 - waning.maternal[j]
+      mat1[2,1] <- waning.maternal[j] #M1 to S
+      mat1[2,2] <- 1-foi[j]
+      mat1[3,2] <- foi[j] #S1 to I
+      mat1[3,3] <- 1-recov
+      mat1[4,3] <- recov #I to R1.1
+      mat1[4,4] <- 1-sigma.fix   
+      mat1[5,4] <- sigma.fix #R1.1 to R1.2       
+      mat1[5,5] <- 1-sigma.fix   
+      mat1[6,5] <- sigma.fix #R1.2 to R1.3
+      mat1[6,6] <- 1-sigma[j]
+      mat1[7,6] <- sigma[j] #R1.3 to S2   
+      mat1[7,7] <- 1-foi2[j] #stay in S2
+      mat1[8,7] <- foi2[j] #S2 to I2
+      mat1[8,8] <- 1-recov #I2
+      mat1[9,8] <- recov #I2 to R2.1
+      mat1[9,9] <- 1 #R2.1 stay here, don't lose titers
       
       
-    }else if(model=="MSIRNIR"){ #13 classes
+    }else if(model=="MSIRNIR"){ #11 classes
       
       mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1.1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1.1 to R1.2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R1.2 to R1.3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R1.3 to N   
-      mat1[9,9] <- 1- recru[j] #once in N, stay there, unless you recrudesce to I2  
-      mat1[10,9] <- recru[j] #recrudescence. moving from N to I2
-      mat1[10,10] <- 1-recov #stay in I2
-      mat1[11,10] <- recov# I2 to R2.1
-      mat1[11,11] <- 1-sigma.fix # stay in R2.1
-      mat1[12,11] <- sigma.fix # R2.1 to R2.2
-      mat1[12,12] <- 1-sigma.fix # stay in R2.2
-      mat1[13,12] <- sigma.fix # R2.2 to R2.3
-      mat1[13,13] <- 1-sigma2[j] #stay in R2.3
-      mat1[9,13] <- sigma2[j]# R2.3 to N
+      mat1[1,1] <- 1 - waning.maternal[j]
+      mat1[2,1] <- waning.maternal[j] #M1 to S
+      mat1[2,2] <- 1-foi[j]
+      mat1[3,2] <- foi[j] #S to I
+      mat1[3,3] <- 1-recov
+      mat1[4,3] <- recov #I to R1.1
+      mat1[4,4] <- 1-sigma.fix   
+      mat1[5,4] <- sigma.fix #R1.1 to R1.2     
+      mat1[5,5] <- 1-sigma.fix   
+      mat1[6,5] <- sigma.fix #R1.2 to R1.3
+      mat1[6,6] <- 1-sigma[j]
+      mat1[7,6] <- sigma[j] #R1.3 to N   
+      mat1[7,7] <- 1- recru[j] #once in N, stay there, unless you recrudesce to I2  
+      mat1[8,7] <- recru[j] #recrudescence. moving from N to I2
+      mat1[8,8] <- 1-recov #stay in I2
+      mat1[9,8] <- recov# I2 to R2.1
+      mat1[9,9] <- 1-sigma.fix # stay in R2.1
+      mat1[10,9] <- sigma.fix # R2.1 to R2.2
+      mat1[10,10] <- 1-sigma.fix # stay in R2.2
+      mat1[11,10] <- sigma.fix # R2.2 to R2.3
+      mat1[11,11] <- 1-sigma2[j] #stay in R2.3
+      mat1[7,11] <- sigma2[j]# R2.3 to N
       
       
     } else if (model=="MSIRNIRN" | model=="MSIRNIRN-LT"){ 
       
       mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1.1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1.1 to R1.2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R1.2 to R1.3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R1.3 to N1   
-      mat1[9,9] <- 1- recru[j] - epsilon[j] #once in N1, stay there, unless you recrudesce to I2 or advance to N2
-      mat1[10,9] <- recru[j] #recrudescence. moving from N1 to I2
-      mat1[10,10] <- 1-recov #stay in I2
-      mat1[11,10] <- recov# I2 to R2.1
-      mat1[11,11] <- 1-sigma.fix # stay in R2.1
-      mat1[12,11] <- sigma.fix # R2.1 to R2.2
-      mat1[12,12] <- 1-sigma.fix # stay in R2.2
-      mat1[13,12] <- sigma.fix # R2.2 to R2.3
-      mat1[13,13] <- 1-sigma2[j] #stay in R2.3
-      mat1[14,13] <- sigma2[j]# R2.3 to N2 where you stay
-      mat1[14,14] <- 1# N2 where you stay
-      mat1[14,9] <- epsilon[j]# moving from N1 direct to N2
+      mat1[1,1] <- 1 - waning.maternal[j]
+      mat1[2,1] <- waning.maternal[j] #M1 to S
+      mat1[2,2] <- 1-foi[j]
+      mat1[3,2] <- foi[j] #S to I
+      mat1[3,3] <- 1-recov
+      mat1[4,3] <- recov #I to R1.1
+      mat1[4,4] <- 1-sigma.fix   
+      mat1[5,4] <- sigma.fix #R1.1 to R1.2     
+      mat1[5,5] <- 1-sigma.fix   
+      mat1[6,5] <- sigma.fix #R1.2 to R1.3
+      mat1[6,6] <- 1-sigma[j]
+      mat1[7,6] <- sigma[j] #R1.3 to N1
+      mat1[7,7] <- 1- recru[j] - epsilon[j] #once in N1, stay there, unless you recrudesce to I2  or move direct to N2
+      mat1[8,7] <- recru[j] #recrudescence. moving from N1 to I2
+      mat1[8,8] <- 1-recov #stay in I2
+      mat1[9,8] <- recov# I2 to R2.1
+      mat1[9,9] <- 1-sigma.fix # stay in R2.1
+      mat1[10,9] <- sigma.fix # R2.1 to R2.2
+      mat1[10,10] <- 1-sigma.fix # stay in R2.2
+      mat1[11,10] <- sigma.fix # R2.2 to R2.3
+      mat1[11,11] <- 1-sigma2[j] #stay in R2.3
+      mat1[12,11] <- sigma2[j]# R2.3 to N2 where you stay
+      mat1[12,12] <- 1# N2 where you stay
+      mat1[12,7] <- epsilon[j]# moving from N1 direct to N2
       
     } else if (model=="MSIRNSIRN" | model=="MSIRNSIRN-LT" ){ 
       
       mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1.1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1.1 to R1.2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R1.2 to R1.3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R1.3 to N1   
-      mat1[9,9] <- 1- loss[j] - epsilon[j] #once in N1, stay there, unless you lose immunity to S2 or advance to N2
-      mat1[10,9] <- loss[j] #loss of immunity. moving from N1 to S2
-      mat1[10,10] <- 1- foi2[j] #staying in S2
-      mat1[11,10] <- foi2[j] #from S2 to I2
-      mat1[11,11] <- 1-recov #stay in I2
-      mat1[12,11] <- recov# I2 to R2.1
-      mat1[12,12] <- 1-sigma.fix # stay in R2.1
-      mat1[13,12] <- sigma.fix # R2.1 to R2.2
-      mat1[13,13] <- 1-sigma.fix # stay in R2.2
-      mat1[14,13] <- sigma.fix # R2.2 to R2.3
-      mat1[14,14] <- 1-sigma2[j] #stay in R2.3
-      mat1[15,14] <- sigma2[j]# R2.3 to N2 where you stay
-      mat1[15,15] <- 1# N2 where you stay
-      mat1[15,9] <- epsilon[j]# moving from N1 direct to N2 (LT)
+      mat1[1,1] <- 1 - waning.maternal[j]
+      mat1[2,1] <- waning.maternal[j] #M1 to S
+      mat1[2,2] <- 1-foi[j]
+      mat1[3,2] <- foi[j] #S to I
+      mat1[3,3] <- 1-recov
+      mat1[4,3] <- recov #I to R1.1
+      mat1[4,4] <- 1-sigma.fix   
+      mat1[5,4] <- sigma.fix #R1.1 to R1.2     
+      mat1[5,5] <- 1-sigma.fix   
+      mat1[6,5] <- sigma.fix #R1.2 to R1.3
+      mat1[6,6] <- 1-sigma[j]
+      mat1[7,6] <- sigma[j] #R1.3 to N1
+      mat1[7,7] <- 1- loss[j] - epsilon[j] #once in N1, stay there, unless you lose immunity to S2 or advance to N2
+      mat1[8,7] <- loss[j] #loss of immunity. moving from N1 to S2
+      mat1[8,8] <- 1- foi2[j] #staying in S2
+      mat1[9,8] <- foi2[j] #from S2 to I2
+      mat1[9,9] <- 1-recov #stay in I2
+      mat1[10,9] <- recov# I2 to R2.1
+      mat1[10,10] <-  1-sigma.fix # stay in R2.1
+      mat1[11,10] <-  sigma.fix # R2.1 to R2.2
+      mat1[11,11] <- 1-sigma.fix # stay in R2.2
+      mat1[12,11] <- sigma.fix # R2.2 to R2.3
+      mat1[12,12] <- 1-sigma2[j] #stay in R2.3
+      mat1[13,12] <- sigma2[j]# R2.3 to N2 where you stay
+      mat1[13,13] <- 1# N2 where you stay
+      mat1[13,7] <- epsilon[j]# moving from N1 direct to N2 (LT)
       
     }else if (model=="MSIRNSIRNS" ){
       
       mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1.1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1.1 to R1.2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R1.2 to R1.3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R1.3 to N1   
-      mat1[9,9] <- 1- loss[j]  #once in N1, stay there, unless you lose immunity to S2 
-      mat1[10,9] <- loss[j] #loss of immunity. moving from N1 to S2
-      mat1[10,10] <- 1- foi2[j] #staying in S2
-      mat1[11,10] <- foi2[j] #from S2 to I2
-      mat1[11,11] <- 1-recov #stay in I2
-      mat1[12,11] <- recov# I2 to R2.1
-      mat1[12,12] <- 1-sigma.fix # stay in R2.1
-      mat1[13,12] <- sigma.fix # R2.1 to R2.2
-      mat1[13,13] <- 1-sigma.fix # stay in R2.2
-      mat1[14,13] <- sigma.fix # R2.2 to R2.3
-      mat1[14,14] <- 1-sigma2[j] #stay in R2.3
-      mat1[15,14] <- sigma2[j]# R2.3 to N2 where you stay
-      mat1[15,15] <- 1-loss2[j]# N2 where you stay unless you lose immunity back to S2
-      mat1[10,15] <- loss2[j] # loss of immunity. moving from from N2 to S2
+      mat1[1,1] <- 1 - waning.maternal[j]
+      mat1[2,1] <- waning.maternal[j] #M1 to S
+      mat1[2,2] <- 1-foi[j] #staying in S1
+      mat1[3,2] <- foi[j] #S1 to I
+      mat1[3,3] <- 1-recov
+      mat1[4,3] <- recov #I to R1.1
+      mat1[4,4] <- 1-sigma.fix   
+      mat1[5,4] <- sigma.fix #R1.1 to R1.2     
+      mat1[5,5] <- 1-sigma.fix   
+      mat1[6,5] <- sigma.fix #R1.2 to R1.3
+      mat1[6,6] <- 1-sigma[j]
+      mat1[7,6] <- sigma[j] #R1.3 to N1
+      mat1[7,7] <- 1- loss[j] - epsilon[j] #once in N1, stay there, unless you lose immunity to S2 or advance to N2
+      mat1[8,7] <- loss[j] #loss of immunity. moving from N1 to S2
+      mat1[8,8] <- 1- foi2[j] #staying in S2
+      mat1[9,8] <- foi2[j] #from S2 to I2
+      mat1[9,9] <- 1-recov #stay in I2
+      mat1[10,9] <- recov# I2 to R2.1
+      mat1[10,10] <-  1-sigma.fix # stay in R2.1
+      mat1[11,10] <-  sigma.fix # R2.1 to R2.2
+      mat1[11,11] <- 1-sigma.fix # stay in R2.2
+      mat1[12,11] <- sigma.fix # R2.2 to R2.3
+      mat1[12,12] <- 1-sigma2[j] #stay in R2.3
+      mat1[13,12] <- sigma2[j]# R2.3 to N2 where you stay
+      mat1[13,13] <- 1-loss2[j]# N2 where you stay unless you lose immunity back to S2
+      mat1[8,13] <- loss2[j] # loss of immunity. moving from from N2 to S2
       
       
     }
