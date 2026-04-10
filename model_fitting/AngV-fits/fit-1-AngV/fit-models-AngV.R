@@ -280,7 +280,7 @@ make.prop <- function(df){
 }
 
 #build functions
-buildTMat_all_age_AngV <- function(c, model, Npop, age.classes, surv.biwk, age.brk, surv.juv.biwk, surv.biwk.sick, surv.juv.biwk.sick,surv.biwk.rec, surv.juv.biwk.rec,	beta, beta2, recru, recov, sigma, sigma2, loss, loss2, wane,wane.fix,sigma.fix,epsilon, add.inf.mort, add.rec.mort, age.rate, slope.wane){
+buildTMat_all_age_AngV <- function(c, model, Npop, age.classes, surv.biwk, age.brk, surv.juv.biwk, surv.biwk.sick, surv.juv.biwk.sick,surv.biwk.rec, surv.juv.biwk.rec,	beta, beta2, recru, recov, sigma, sigma2, loss, loss2, wane,sigma.fix,epsilon, add.inf.mort, add.rec.mort, age.rate, slope.wane){
   
   s <- nage <- length(age.classes)
   
@@ -319,7 +319,7 @@ buildTMat_all_age_AngV <- function(c, model, Npop, age.classes, surv.biwk, age.b
   if (length(age.rate)==1) age.rate <- rep(age.rate,nage)
   if (length(wane)==1) wane <- rep(wane,nage)
   waning.maternal = wane
-  if (length(wane.fix)==1) wane.fix <- rep(wane.fix,nage)
+  
   if (length(sigma2)==1) sigma2 <- rep(sigma2,nage)
   if (length(loss2)==1) loss2 <- rep(loss2,nage)
   if (length(loss)==1) loss <- rep(loss,nage)
@@ -2649,7 +2649,7 @@ plot.sim <- function(par.df, s, sim_pop, yrs, ntyr,  N_stat, age.brk, slope.wane
                         beta2=par.df$beta2, recru=par.df$recru,sigma=par.df$sigma, sigma2=par.df$sigma2, 
                         recov=par.df$recov, mort=par.df$mort, mort_juv=par.df$mort_juv, 
                         adult_fec=par.df$adult_fec, wane=par.df$wane,
-                        wane.fix = par.df$wane_fix, slope.wane=1, 
+                        slope.wane=1, 
                         mu.sick=par.df$mu_sick, mu.rec=par.df$mu_rec,sigma.fix = par.df$sigma_fix,
                         add.inf.mort=add.inf.mort,add.rec.mort=add.rec.mort, model=par.df$model, N_stat = N_stat)
   
