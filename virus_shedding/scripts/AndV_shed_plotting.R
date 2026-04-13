@@ -13,6 +13,11 @@ library(epitools)
 
 ################################################################################
 ################################################################################
+
+homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/virus_shedding/data"
+batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
+
+
 homewd = "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/virus_shedding/data"
 datawd = "/Users/gwenddolenkettenburg/Desktop/brook_lab/malagasy_fruit_bats_population_level_work/molecular_results"
 
@@ -42,6 +47,7 @@ molecular.long.pos <- molecular.long.pos[complete.cases(molecular.long.pos),]
 
 # link this to the catching data to plot by sampling session, add the aging data as well
 catch.dat <- read.csv(file = paste0(datawd, "/catching_data_clean_asofApril2025_edited.csv"), header = T, stringsAsFactors = F)
+catch.dat <- read.csv(file = paste0(batwd, "/catching_data/catching_data_clean.csv"), header = T, stringsAsFactors = F)
 barcode.dat<- read.csv(file = paste0(datawd, "/barcode_ids.csv"), header = T, stringsAsFactors = F)
 age.dat<-read.csv(file = paste0(datawd, "/aged_bats.csv"), header = T, stringsAsFactors = F)
 

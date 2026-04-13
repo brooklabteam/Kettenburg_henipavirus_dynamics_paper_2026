@@ -39,6 +39,8 @@ library(exactci)
 
 ##Set working directory
 homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/phylo_trees/"
+homewd= "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/phylo_trees/"
+
 #refseq tree first
 setwd(paste0(homewd,"/pmx_gene_trees/polymerase"))
 tree1 <-  read.tree("polymerase_mid_align.fasta.treefile")
@@ -337,7 +339,9 @@ tree2
 ##Now add the seasonal shedding data and GAMs
 
 homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+homewd="/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/"
 batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
+batwd= "/Users/carabrook/Developer/Madagascar-Bat-Data/"
 
 # First, load the shedding data 
 shed.dat <- read.csv(file = paste0(homewd, "/virus_shedding/data/henipavirus_shedding_data.csv"))
@@ -364,19 +368,6 @@ catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, 
 
 #and merge all three datasets
 setdiff(shed.dat$sampleid, catch.dat$sampleid)
-shed.dat$sampleid[shed.dat$sampleid=="MARO83"] <- "MARO083"
-shed.dat$sampleid[shed.dat$sampleid=="MARO84"] <- "MARO084"
-shed.dat$sampleid[shed.dat$sampleid=="MARO86"] <- "MARO086"
-shed.dat$sampleid[shed.dat$sampleid=="MARO87"] <- "MARO087"
-shed.dat$sampleid[shed.dat$sampleid=="MARO91"] <- "MARO091"
-shed.dat$sampleid[shed.dat$sampleid=="MARO90"] <- "MARO090"
-shed.dat$sampleid[shed.dat$sampleid=="MARO97"] <- "MARO097"
-shed.dat$sampleid[shed.dat$sampleid=="MIZ03"] <- "MIZ3"
-shed.dat$sampleid[shed.dat$sampleid=="MLB012"] <- "MLB12"
-shed.dat$sampleid[shed.dat$sampleid=="RAK03"] <- "RAK3"
-shed.dat$sampleid[shed.dat$sampleid=="RAK06"] <- "RAK6"
-
-setdiff(shed.dat$sampleid, catch.dat$sampleid)
 
 merge.dat <- merge(shed.dat, catch.dat, by="sampleid")
 head(merge.dat)
@@ -389,6 +380,12 @@ merge.dat$roost_site[merge.dat$roost_site=="Ambakoana_Pruf" | merge.dat$roost_si
 merge.dat$roost_site[merge.dat$roost_site=="Mahabo_Edup" | merge.dat$roost_site=="Mahabo_Pruf"] <- "Mahabo"
 merge.dat$roost_site[merge.dat$roost_site=="Makira_Rmad" | merge.dat$roost_site=="Makira_Pruf"] <- "Makira"
 merge.dat$roost_site[merge.dat$roost_site!="Moramanga" & merge.dat$roost_site!="Makira" & merge.dat$roost_site!="Mahabo"] <- "Ankarana"
+
+unique(merge.dat$roost_site) #mahabo and makira detract from seasonal analysis, so take them out
+single.season.dat = subset(merge.dat, roost_site=="Mahabo" | roost_site == "Makira")
+
+merge.dat = subset(merge.dat, roost_site!="Mahabo" & roost_site != "Makira" )
+
 
 merge.dat$processing_date <- as.Date(merge.dat$processing_date)
 merge.dat$doy <- yday(merge.dat$processing_date)
@@ -541,7 +538,7 @@ pred.df$prevalence <- NA
 pred.df$prev_lci <- NA
 pred.df$prev_uci <- NA
 
-pred.df$prevalence[pred.df$antigen=="GhV"] <- predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"))
+pred.df$prevalence[pred.df$antigen=="GhV"] <- predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(mid_date)"))
 pred.df$prev_lci[pred.df$antigen=="GhV"] <- predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)")) - 1.96*predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
 pred.df$prev_uci[pred.df$antigen=="GhV"] <- predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)")) + 1.96*predict(gamGhVnoSex, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(roost_site)", "s(mid_date)"), se.fit = TRUE)$se
 
@@ -791,8 +788,8 @@ pInterannualShed.era1 <- ggplot(data=subset(prev.dat, era=="I")) +
   guides(color = guide_legend(title = "virus"))+  
   guides(fill="none")+
   ggnewscale::new_scale_fill() +
-  geom_linerange(aes(x=as.Date(mid_date), ymin=prevGhV_lci, ymax=prevGhV_uci),color="#00C094", linetype=2, alpha=.3, show.legend = F) +
-  geom_linerange(aes(x=as.Date(mid_date), ymin=prevAngV_lci, ymax=prevAngV_uci),color="#F8766D", linetype=2, alpha=.3, show.legend = F) +
+  #geom_linerange(aes(x=as.Date(mid_date), ymin=prevGhV_lci, ymax=prevGhV_uci),color="#00C094", linetype=2, alpha=.3, show.legend = F) +
+  #geom_linerange(aes(x=as.Date(mid_date), ymin=prevAngV_lci, ymax=prevAngV_uci),color="#F8766D", linetype=2, alpha=.3, show.legend = F) +
   geom_ribbon(data=subset(inter.pred, era=="I"), aes(x=as.Date(mid_date), ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
   geom_line(data=subset(inter.pred, era=="I"), aes(x=as.Date(mid_date), y= prevalence, color=antigen, group=group)) +
   ggh4x::facet_nested(.~bat_species, scales="free", space="free" ) + theme_bw() +
@@ -820,8 +817,8 @@ pInterannualShed.era2 <- ggplot(data=subset(prev.dat, era=="II")) +
   guides(color = guide_legend(title = "virus"))+  
   guides(fill="none")+
   ggnewscale::new_scale_fill() +
-  geom_linerange(aes(x=as.Date(mid_date), ymin=prevGhV_lci, ymax=prevGhV_uci),color="#00C094", linetype=2, alpha=.3, show.legend = F) +
-  geom_linerange(aes(x=as.Date(mid_date), ymin=prevAngV_lci, ymax=prevAngV_uci),color="#F8766D", linetype=2, alpha=.3, show.legend = F) +
+  #geom_linerange(aes(x=as.Date(mid_date), ymin=prevGhV_lci, ymax=prevGhV_uci),color="#00C094", linetype=2, alpha=.3, show.legend = F) +
+  #geom_linerange(aes(x=as.Date(mid_date), ymin=prevAngV_lci, ymax=prevAngV_uci),color="#F8766D", linetype=2, alpha=.3, show.legend = F) +
   geom_ribbon(data=subset(inter.pred, era=="II"), aes(x=as.Date(mid_date), ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
   geom_line(data=subset(inter.pred, era=="II"), aes(x=as.Date(mid_date), y= prevalence, color=antigen, group=group)) +
   ggh4x::facet_nested(.~bat_species, scales="free", space="free" ) + theme_bw() +

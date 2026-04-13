@@ -763,7 +763,9 @@ sero_gam_list<-list("EDAngVnosex"=m1AngVnoSeX, "EDAngVsex"=m1AngVSeX,
 
 ###Now add the shedding: 
 homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+homewd="/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
+batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
 
 shed.dat <- read.csv(file = paste0(homewd, "/virus_shedding/data/henipavirus_shedding_data.csv"))
 head(shed.dat)
@@ -811,8 +813,13 @@ merge.dat <- subset(merge.dat, processing_date<"2022-05-30")
 
 #change roost site to just Moramanga region or Ankarana
 unique(merge.dat$roost_site)
-merge.dat$roost_site[merge.dat$roost_site=="Angavobe_Edup" |merge.dat$roost_site=="Angavokely_Edup"| merge.dat$roost_site=="Maromizaha_Rmad"] <- "Moramanga"
-merge.dat$roost_site[merge.dat$roost_site!="Moramanga"] <- "Ankarana"
+merge.dat$roost_site[merge.dat$roost_site=="Ambakoana_Pruf" | merge.dat$roost_site=="Marotsipohy_Pruf" | merge.dat$roost_site=="Analambotaka_Pruf" | merge.dat$roost_site=="Morarano_Pruf" | merge.dat$roost_site=="Marovitsika_Pruf" |  merge.dat$roost_site=="Mahialambo_Pruf"  | merge.dat$roost_site=="Lakato_Edup" | merge.dat$roost_site=="Angavobe_Edup" |merge.dat$roost_site=="Angavokely_Edup"| merge.dat$roost_site=="Maromizaha_Rmad"] <- "Moramanga"
+merge.dat$roost_site[merge.dat$roost_site=="Mahabo_Edup" | merge.dat$roost_site=="Mahabo_Pruf"] <- "Mahabo"
+merge.dat$roost_site[merge.dat$roost_site=="Makira_Rmad" | merge.dat$roost_site=="Makira_Pruf"] <- "Makira"
+merge.dat$roost_site[merge.dat$roost_site!="Moramanga" & merge.dat$roost_site!="Makira" & merge.dat$roost_site!="Mahabo"] <- "Ankarana"
+unique(merge.dat$roost_site)
+#merge.dat$roost_site[merge.dat$roost_site=="Angavobe_Edup" |merge.dat$roost_site=="Angavokely_Edup"| merge.dat$roost_site=="Maromizaha_Rmad"] <- "Moramanga"
+#merge.dat$roost_site[merge.dat$roost_site!="Moramanga"] <- "Ankarana"
 
 
 #also add in quantitative age data where available:

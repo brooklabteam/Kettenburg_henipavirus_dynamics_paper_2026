@@ -12,8 +12,8 @@ library(Hmisc)
 library(exactci)
 
 
-#homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
-#batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
+homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/"
+batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
 
 homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
@@ -43,19 +43,7 @@ catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, 
 
 #and merge all three datasets
 setdiff(shed.dat$sampleid, catch.dat$sampleid)
-shed.dat$sampleid[shed.dat$sampleid=="MARO83"] <- "MARO083"
-shed.dat$sampleid[shed.dat$sampleid=="MARO84"] <- "MARO084"
-shed.dat$sampleid[shed.dat$sampleid=="MARO86"] <- "MARO086"
-shed.dat$sampleid[shed.dat$sampleid=="MARO87"] <- "MARO087"
-shed.dat$sampleid[shed.dat$sampleid=="MARO91"] <- "MARO091"
-shed.dat$sampleid[shed.dat$sampleid=="MARO90"] <- "MARO090"
-shed.dat$sampleid[shed.dat$sampleid=="MARO97"] <- "MARO097"
-shed.dat$sampleid[shed.dat$sampleid=="MIZ03"] <- "MIZ3"
-shed.dat$sampleid[shed.dat$sampleid=="MLB012"] <- "MLB12"
-shed.dat$sampleid[shed.dat$sampleid=="RAK03"] <- "RAK3"
-shed.dat$sampleid[shed.dat$sampleid=="RAK06"] <- "RAK6"
 
-setdiff(shed.dat$sampleid, catch.dat$sampleid)
 
 merge.dat <- merge(shed.dat, catch.dat, by="sampleid")
 head(merge.dat)
@@ -68,7 +56,7 @@ merge.dat$roost_site[merge.dat$roost_site=="Ambakoana_Pruf" | merge.dat$roost_si
 merge.dat$roost_site[merge.dat$roost_site=="Mahabo_Edup" | merge.dat$roost_site=="Mahabo_Pruf"] <- "Mahabo"
 merge.dat$roost_site[merge.dat$roost_site=="Makira_Rmad" | merge.dat$roost_site=="Makira_Pruf"] <- "Makira"
 merge.dat$roost_site[merge.dat$roost_site!="Moramanga" & merge.dat$roost_site!="Makira" & merge.dat$roost_site!="Mahabo"] <- "Ankarana"
-
+unique(merge.dat$roost_site)
 merge.dat$processing_date <- as.Date(merge.dat$processing_date)
 merge.dat$doy <- yday(merge.dat$processing_date)
 
