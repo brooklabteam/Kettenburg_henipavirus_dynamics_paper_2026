@@ -30,7 +30,7 @@ dat.fit.df <- data.table::rbindlist(dat.fit, fill = TRUE)
 
 
 
-write.csv(dat.fit.df, file=paste0(homewd,"/model_fitting/AngV-fits/all_fits_round1.csv"), row.names = F)
+write.csv(dat.fit.df, file=paste0(homewd,"/model_fitting/AngV-fits/all_fits_round1_AngV.csv"), row.names = F)
 
 rm(list=ls())
 
@@ -39,13 +39,13 @@ homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 setwd(homewd)
 
-dat <- read.csv(file = paste0(homewd,"/model_fitting/AngV-fits/all_fits_round1.csv"), stringsAsFactors = F, header = T)
+dat <- read.csv(file = paste0(homewd,"/model_fitting/AngV-fits/all_fits_round1_AngV.csv"), stringsAsFactors = F, header = T)
 
 dat = subset(dat, convergence == 0 & !is.na(model))
 head(dat)
 
 unique(dat$model)
-length(unique(dat$model)) #52 - that is every model represented
+length(unique(dat$model)) #51 - pne missing
 
 #plot the number that completed per model - 19 possible
 dat.sum <- ddply(dat,.(model), summarise, N=length(model))
@@ -54,8 +54,9 @@ dat.sum <- ddply(dat,.(model), summarise, N=length(model))
 ggplot(dat.sum) + geom_point(aes(model, y=N))
 
 arrange(dat.sum, N) 
-# there are 4 models that had < 5 completions (2 only had 1). 
-# all 4 were the most complex model "MSIRNSIRNS".
+# there are 5 models that had < 5 completions (1 only had 1) plus one that is missing. 
+# missing is MSIRNSIRNS-mu-sick-mu-rec, the most complex in the dataset
+# the others under 5 are other variations on "MSIRNSIRNS" and "MSIRNSIRN-mu-sick-mu-rec".
 # we tried submitting some re-runs on this model with a longer run time on savio, 
 # but it did not improve much, and the model was poor on the whole (on average,
 # the worst llik and AIC scores overall)
@@ -112,11 +113,11 @@ head(dat)
 dat.split.mod <- dlply(dat,.(species, antigen, model))
 dat.top <- data.table::rbindlist(lapply(dat.split.mod,get.top.mod))
 dat.top <- subset(dat.top,!is.na(model))
-write.csv(dat.top, paste0(homewd,"/model_fitting/GhV-fits/top_fits_round1.csv"), row.names = F)
+write.csv(dat.top, paste0(homewd,"/model_fitting/AngV-fits/top_fits_round1_AngV.csv"), row.names = F)
 
 #delta llik:
 #first, no mu
-pA <- ggplot(data=subset(dat, mu_rec==1 & mu_sick==1 & antigen=="GhV") ) + theme_bw() +
+pA <- ggplot(data=subset(dat, mu_rec==1 & mu_sick==1 & antigen=="AngV") ) + theme_bw() +
   theme(axis.text.x = element_text(angle=90))+ facet_grid(~antigen) + coord_flip(ylim=c(0,100)) +
   geom_boxplot(aes(x=model, y=delta_llik, group=model),  
                show.legend=F, fill=NA) +
@@ -126,7 +127,7 @@ pA <- ggplot(data=subset(dat, mu_rec==1 & mu_sick==1 & antigen=="GhV") ) + theme
 #best fit: MSIRS, MSIRNS, MSIRNNS, MSIRNNI,MSIRNI
 
 #mu-rec
-pB<- ggplot(data=subset(dat, mu_rec>1 & mu_sick==1& antigen=="GhV") ) + theme_bw() +
+pB<- ggplot(data=subset(dat, mu_rec>1 & mu_sick==1& antigen=="AngV") ) + theme_bw() +
   theme(axis.text.x = element_text(angle=90))+ facet_grid(~antigen) + coord_flip(ylim=c(0,100)) +
   geom_boxplot(aes(x=model, y=delta_llik, group=model),  
                show.legend=F, fill=NA) +
@@ -136,7 +137,7 @@ pB<- ggplot(data=subset(dat, mu_rec>1 & mu_sick==1& antigen=="GhV") ) + theme_bw
 #MSIRS, MSIRNS,  MSIRNNS, MSIRNNI,  MSIRNI
 
 #mu-sick
-pC<- ggplot(data=subset(dat, mu_rec==1 & mu_sick>1& antigen=="GhV") ) + theme_bw() +
+pC<- ggplot(data=subset(dat, mu_rec==1 & mu_sick>1& antigen=="AngV") ) + theme_bw() +
   theme(axis.text.x = element_text(angle=90))+ facet_grid(~antigen) + coord_flip(ylim=c(0,100)) +
   geom_boxplot(aes(x=model, y=delta_llik, group=model),  
                show.legend=F, fill=NA) +
@@ -146,8 +147,8 @@ pC<- ggplot(data=subset(dat, mu_rec==1 & mu_sick>1& antigen=="GhV") ) + theme_bw
 #MSIRS, MSIRNS,  MSIRNNS, MSIRNNI,  MSIRNI
 
 #both mu
-pD<- ggplot(data=subset(dat, mu_rec>1 & mu_sick>1& antigen=="GhV") ) + theme_bw() +
-  theme(axis.text.x = element_text(angle=90))+ facet_grid(~antigen) + coord_flip(ylim=c(0,10)) +
+pD<- ggplot(data=subset(dat, mu_rec>1 & mu_sick>1& antigen=="AngV") ) + theme_bw() +
+  theme(axis.text.x = element_text(angle=90))+ facet_grid(~antigen) + coord_flip(ylim=c(0,100)) +
   geom_boxplot(aes(x=model, y=delta_llik, group=model),  
                show.legend=F, fill=NA) +
   geom_jitter(aes(x=model, y=delta_llik, size=mu_sick, color=mu_rec),width=.09, alpha=.4) +
@@ -155,12 +156,12 @@ pD<- ggplot(data=subset(dat, mu_rec>1 & mu_sick>1& antigen=="GhV") ) + theme_bw(
 #MSIRS, MSIRNS,   MSIRNNI,  MSIRNI
 
 
-pGhV <- cowplot::plot_grid(pA,pB,pC,pD, nrow = 2,ncol = 2, align = "hv")
+pAngV <- cowplot::plot_grid(pA,pB,pC,pD, nrow = 2,ncol = 2, align = "hv")
 
 
 
-ggsave(file = paste0(homewd,"/model_fitting/GhV-fits/out-1-plots/GhV-fits-llik10.png"),
-       plot = pGhV,
+ggsave(file = paste0(homewd,"/model_fitting/AngV-fits/out-1-plots/AngV-fits-llik10.png"),
+       plot = pAngV,
        units="mm",  
        width=100, 
        height=70, 
@@ -170,7 +171,7 @@ ggsave(file = paste0(homewd,"/model_fitting/GhV-fits/out-1-plots/GhV-fits-llik10
 
 #delta AIC
 #no mu
-pA <- ggplot(data=subset(dat, mu_rec==1 & mu_sick==1 & antigen=="GhV") ) + theme_bw() +
+pA <- ggplot(data=subset(dat, mu_rec==1 & mu_sick==1 & antigen=="AngV") ) + theme_bw() +
   theme(axis.text.x = element_text(angle=90))+ facet_grid(~antigen) + coord_flip(ylim=c(0,300)) +
   geom_boxplot(aes(x=model, y=delta_AIC, group=model),  
                show.legend=F, fill=NA) +
@@ -179,7 +180,7 @@ pA <- ggplot(data=subset(dat, mu_rec==1 & mu_sick==1 & antigen=="GhV") ) + theme
   geom_jitter(aes(x=model, y=delta_AIC),width=.09, size=1, alpha=.4, color="gray35");pA
 #MSIRS, MSIRNS,  MSIRNNS, MSIRNNI,  MSIRNI
 
-pB <- ggplot(data=subset(dat, mu_rec>1 & mu_sick==1& antigen=="GhV") ) + theme_bw() +
+pB <- ggplot(data=subset(dat, mu_rec>1 & mu_sick==1& antigen=="AngV") ) + theme_bw() +
   theme(axis.text.x = element_text(angle=90))+ facet_grid(~antigen) + coord_flip(ylim=c(0,300)) +
   geom_boxplot(aes(x=model, y=delta_AIC, group=model),  
                show.legend=F, fill=NA) +
@@ -188,7 +189,7 @@ pB <- ggplot(data=subset(dat, mu_rec>1 & mu_sick==1& antigen=="GhV") ) + theme_b
   geom_jitter(aes(x=model, y=delta_AIC, color=mu_rec),width=.09, size=1, alpha=.4);pB
 #MSIRS, MSIRNS,  MSIRNNS, MSIRNNI,  MSIRNI
 
-pC<- ggplot(data=subset(dat, mu_rec==1 & mu_sick>1& antigen=="GhV") ) + theme_bw() +
+pC<- ggplot(data=subset(dat, mu_rec==1 & mu_sick>1& antigen=="AngV") ) + theme_bw() +
   theme(axis.text.x = element_text(angle=90))+ facet_grid(~antigen) + coord_flip(ylim=c(0,300)) +
   geom_boxplot(aes(x=model, y=delta_AIC, group=model),  
                show.legend=F, fill=NA) +
@@ -197,7 +198,7 @@ pC<- ggplot(data=subset(dat, mu_rec==1 & mu_sick>1& antigen=="GhV") ) + theme_bw
   geom_jitter(aes(x=model, y=delta_AIC, color=mu_sick),width=.09, size=1, alpha=.4);pC
 #MSIRS, MSIRNS,  MSIRNNS, MSIRNNI,  MSIRNI
 
-pD<- ggplot(data=subset(dat, mu_rec>1 & mu_sick>1& antigen=="GhV") ) + theme_bw() +
+pD<- ggplot(data=subset(dat, mu_rec>1 & mu_sick>1& antigen=="AngV") ) + theme_bw() +
   theme(axis.text.x = element_text(angle=90))+ facet_grid(~antigen) + coord_flip(ylim=c(0,300)) +
   geom_boxplot(aes(x=model, y=delta_AIC, group=model),  
                show.legend=F, fill=NA) +
@@ -205,12 +206,12 @@ pD<- ggplot(data=subset(dat, mu_rec>1 & mu_sick>1& antigen=="GhV") ) + theme_bw(
   scale_size_continuous(range = c(.01,1));pD
 #MSIRS, MSIRNS,  MSIRNNS, MSIRNNI,  MSIRNI
 
-pGhV <- cowplot::plot_grid(pA,pB,pC,pD, nrow = 2,ncol = 2, align = "hv")
+pAngV <- cowplot::plot_grid(pA,pB,pC,pD, nrow = 2,ncol = 2, align = "hv")
 
 
 
-ggsave(file = paste0(homewd,"/model_fitting/GhV-fits/out-1-plots/GhV-fits-AIC10.pdf"),
-       plot = pGhV,
+ggsave(file = paste0(homewd,"/model_fitting/AngV-fits/out-1-plots/AngV-fits-AIC10.pdf"),
+       plot = pAngV,
        units="mm",  
        width=100, 
        height=70, 
@@ -241,4 +242,4 @@ get.top.mod<- function(df){
 
 top.fits <- data.table::rbindlist(lapply(dat.split.mod, get.top.mod))
 
-write.csv(top.fits, file =paste0(homewd,"/model_fitting/GhV-fits/top-fits-round1.csv"), row.names = F)
+write.csv(top.fits, file =paste0(homewd,"/model_fitting/AngV-fits/top-fits-round1-AngV.csv"), row.names = F)
