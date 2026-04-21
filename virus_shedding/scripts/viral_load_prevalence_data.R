@@ -249,75 +249,68 @@ shed.prev$AngVCt_lci <- shed.prev$meanAngVCt-1.96*shed.prev$sdAngVCt
 
 head(shed.prev)
 
+pred.df <- cbind.data.frame(meanGhVCt = rep(25:39, 2), roost_site=rep(c("Moramanga", "Ankarana"), each=15))
+pred.df$prevalence <- predict(m1, newdata = pred.df, type = "response")
+pred.df$prevalence_lci <- predict(m1, newdata = pred.df, type = "response") -1.96*predict(m1, newdata = pred.df, type = "response", se.fit = T)$se
+pred.df$prevalence_lci <- predict(m1, newdata = pred.df, type = "response") +1.96*predict(m1, newdata = pred.df, type = "response", se.fit = T)$se
+
+#I think I like it better without the model, so just plotting data here
 p1 <- ggplot(data= subset(shed.prev, !is.na(meanGhVCt))) + 
       geom_point(aes(x=meanGhVCt, y=GhVprev, color=roost_site, size=Ntot)) + theme_bw() +
       geom_linerange(aes(x=meanGhVCt, ymin=GhVprevlci, ymax=GhVprevuci, color=roost_site), linetype=3, alpha=.5) +
       geom_linerange(aes(xmin=GhVCt_lci, xmax=GhVCt_uci, y=GhVprev, color=roost_site), linetype=3, alpha=.5) +
+      #geom_line(data=pred.df, aes(x=meanGhVCt, y=prevalence, color = roost_site)) +
       xlab("Ct (GhV)") + ylab("prevalence (GhV)") +
       scale_size_continuous(name="N bats") +
       scale_color_discrete(name="roost site") +
       theme(panel.grid = element_blank(), axis.text = element_text(size=14),
         axis.title = element_text(size=18), legend.position = "inside",
-        legend.position.inside = c(.15,.75), legend.text = element_text(size=12),
+        legend.position.inside = c(.15,.73), legend.text = element_text(size=12),
         legend.title = element_text(size=14));p1
 
+ggsave(file = paste0(homewd, "final_figures_tables/tmp/FigX_prev_by_Ct.png"),
+       plot= p1,
+       units="mm",  
+       width=55, 
+       height=45, 
+       scale=3, 
+       dpi=300)
 
-
+#save this one as supplementary and pair with below lag plot
 p2 <- ggplot(data= subset(shed.prev, !is.na(meanAngVCt))) + 
   geom_point(aes(x=meanAngVCt, y=AngVprev, color=roost_site, size=Ntot)) + theme_bw() +
   geom_linerange(aes(x=meanAngVCt, ymin=AngVprevlci, ymax=AngVprevuci, color=roost_site), linetype=3, alpha=.5) +
   geom_linerange(aes(xmin=AngVCt_lci, xmax=AngVCt_uci, y=AngVprev, color=roost_site), linetype=3, alpha=.5) +
-  xlab("Ct (AngV)") + ylab("prevalence (AngV)") +
+  xlab("Ct (AngV)") + ylab("\nprevalence (AngV)") +
   scale_size_continuous(name="N bats") +
   scale_color_discrete(name="roost site") +
   theme(panel.grid = element_blank(), axis.text = element_text(size=14),
         axis.title = element_text(size=18), legend.position = "inside",
-        legend.position.inside = c(.15,.75), legend.text = element_text(size=12),
-        legend.title = element_text(size=14));p2
+        legend.position.inside = c(.15,.66), legend.text = element_text(size=12),
+        legend.title = element_text(size=14),
+        plot.margin = unit(c(.5,.5,1,1.1), "lines") );p2
 
-## add the glm predictions??? 
+
+
 
 #and is the correlation improved by a lag?
-#summarize by sampling session and site
- 
-#merge.eid.mora = subset(merge.eid, roost_site=="Moramanga")
-#head(merge.eid.mora)
-
 #summarize by mean/median ct and prevalence per sampling session
 #first get middate of sampling session
-merge.eid$processing_date <- as.Date(merge.eid$processing_date)
+head(shed.prev)
+tail(shed.prev)
+shed.prev <- subset(shed.prev, mid_date <"2021-01-01" & roost_site!="Mahabo") #only one singleton in mahabo dataset so no use in including it
 
-sampling.session <- ddply(merge.eid,.(sampling_session), summarise, min_date =min(processing_date), max_date=max(processing_date))
 
-sampling.session$mid_date <- sampling.session$min_date + (sampling.session$max_date-sampling.session$min_date)/2
-
-sampling.session$duration <- sampling.session$max_date-sampling.session$min_date
-sampling.session <- dplyr::select(sampling.session, -(min_date), -(max_date))
-
-merge.eid <-  merge(merge.eid, sampling.session, by="sampling_session")
-
-head(merge.eid)
-merge.eid$GhV_ct[merge.eid$GhV_ct==0] <- NA
-merge.eid$AngV_ct[merge.eid$AngV_ct==0] <- NA
-mora.sum <- ddply(merge.eid, .(sampling_session, mid_date, roost_site), summarise, GhV_pos = sum(GhV_pos), AngV_pos=sum(AngV_pos), N_tot=length(sampleid), meanGhVCt = mean(GhV_ct, na.rm=T), meanAngVCt=mean(AngV_ct, na.rm=T))
-head(mora.sum)
-tail(mora.sum)
-mora.sum <- arrange(mora.sum, mid_date)
-mora.sum <- subset(mora.sum, mid_date <"2021-01-01" & roost_site!="Mahabo") #only one mahabo dataset so no use in including it
-
-mora.sum$prevGhV <- mora.sum$GhV_pos/mora.sum$N_tot
-mora.sum$prevAngV <- mora.sum$AngV_pos/mora.sum$N_tot
-
-ggplot(mora.sum) + geom_point(aes(x = meanGhVCt, y=prevGhV, color=mid_date)) + facet_grid(~roost_site)
-ggplot(mora.sum) + geom_point(aes(x = meanAngVCt, y=prevGhV, color=mid_date)) + facet_grid(~roost_site)
+ggplot(shed.prev) + geom_point(aes(x = meanGhVCt, y=GhVprev, color=mid_date)) + facet_grid(~roost_site)
+ggplot(shed.prev) + geom_point(aes(x = meanAngVCt, y=AngVprev, color=mid_date)) + facet_grid(~roost_site)
 
 #order by date and site --
-mora.sum <- arrange(mora.sum, roost_site, mid_date)
+shed.prev <- arrange(shed.prev, roost_site, mid_date)
 
 #now explore lags between sampling sessions
 #data gets much thinner, so let's only look at GhV for now
 lagged_pairs <- function(df) {
-  
+  df = df[!is.na(df$meanGhVCt),]
   results <- data.frame()
   
   for (i in 1:(nrow(df)-1)) {
@@ -329,7 +322,7 @@ lagged_pairs <- function(df) {
         lag_days = dt,
         meanGhVCt = df$meanGhVCt[i],
         #meanAngVCt = df$meanAngVCt[i],
-        prevGhV = df$prevGhV[j],
+        prevGhV = df$GhVprev[j],
         #prevAngV = df$prevAngV[j],
         roost_site = df$roost_site[i]
       ))
@@ -339,15 +332,16 @@ lagged_pairs <- function(df) {
   return(results)
 }
 
-mora.split <- dlply(mora.sum,.(roost_site))
-
-lag.sites <- data.table::rbindlist(lapply(mora.split, lagged_pairs))
-sort(unique(lag.sites$lag_days))
-
-lag.sites = subset(lag.sites, !is.na(meanGhVCt))
 
 #and permute - use "lag_limit" to only look at lags within a biologically relevant window
-perm_test_short_lag <- function(pairs, lag_limit, n_perm = 10000) {
+perm_test_short_lag <- function(df, lag_limit, n_perm = 10000) {
+  df = df[!is.na(df$meanGhVCt),]
+  
+  
+  site.split <- dlply(df,.(roost_site))
+  
+  pairs <- data.table::rbindlist(lapply(site.split, lagged_pairs))
+  #sort(unique(lag.sites$lag_days))
   
   # observed
   pairs <- subset(pairs, lag_days > 0 & lag_days <= lag_limit)
@@ -374,18 +368,20 @@ perm_test_short_lag <- function(pairs, lag_limit, n_perm = 10000) {
   mean(abs(perm_stats) >= abs(obs))
 }
 
-perm_test_short_lag(pairs=lag.sites, lag_limit = 40, n_perm = 1000)
-#p-val = 1
+perm_test_short_lag(df=shed.prev, lag_limit = 40, n_perm = 10000)
+#p-val = 0.5236
 #no support for lag of 40 days
 
-perm_test_short_lag(pairs=lag.sites, lag_limit = 30, n_perm = 1000)
-#p-val =0.638
-#no support for lag of 30 days but the p-val is reduced
+perm_test_short_lag(df=shed.prev, lag_limit = 30, n_perm = 10000)
+#p-val = 0.6003
+#no support for lag of 30 days 
 
-perm_test_short_lag(pairs=lag.sites, lag_limit = 15, n_perm = 1000)
-#p-val = 0.1504149
-#no support for lag of 2-3 days because that is all we have in the dataset that is <15
-#again, p-val is reduced so this is closer to being relevant
+perm_test_short_lag(df=shed.prev, lag_limit = 15, n_perm = 10000)
+# p-val = 0.088
+# this is slightly significant. it is actually a lag of 2-3 days because
+# that is all we have in the dataset that is <15 (so reducing to lower lags is
+# not helpful)
+
 
 ## CONCLUSION
 # no support for lagged data as more predictive... but we don't have the fine-scale
@@ -406,7 +402,7 @@ bin_lags <- function(pairs) {
   pairs[!is.na(pairs$lag_bin), ]
 }
 
-bin.df <- bin_lags(lag.sites)
+bin.df <- bin_lags(lagged_pairs(shed.prev))
 
 #get correlation
 summarise_bins <- function(pairs) {
@@ -418,12 +414,13 @@ summarise_bins <- function(pairs) {
   pairs %>%
     group_by(lag_bin) %>%
     summarise(
-      r = cor(meanGhVCt, prevGhV, method = "spearman", use = "complete.obs"),
+      r = cor(meanGhVCt, prevGhV, method = "spearman"),#, use = "complete.obs"),
       n = n()
     )
 }
 
-bin.sum <- summarise_bins(bin.df)
+#just do Moramanga data because not enough pairs in Ankarana
+bin.sum <- summarise_bins(bin.df[bin.df$roost_site=="Moramanga",])
 
 plot_lag_correlation <- function(summary_df) {
   
@@ -431,18 +428,28 @@ plot_lag_correlation <- function(summary_df) {
     geom_point(aes(x=lag_bin, y=r, size=n)) +
     scale_size_continuous(name="N bats") +
     theme_bw() + xlab("Lag window") +
-    ylab("Spearman correlation (Ct vs prevalence)") +
+    ylab("Spearman correlation for GhV\n(Ct vs prevalence)") +
     geom_hline(aes(yintercept=0), linetype=2) +
     theme(panel.grid = element_blank(), axis.text = element_text(size=14),
           axis.title = element_text(size=18), legend.position = "inside",
-          legend.position.inside = c(.85,.2), legend.text = element_text(size=12),
-          legend.title = element_text(size=14))
+          legend.position.inside = c(.1,.75), legend.text = element_text(size=12),
+          legend.title = element_text(size=14),
+          plot.margin = unit(c(1.5,.5,.5,1), "lines")) 
     
 }
 
-p1 <- plot_lag_correlation(bin.sum)
-p1
+p3 <- plot_lag_correlation(bin.sum)
+p3
 # we can see that the negative correlation is strongest at lower lags, indicating
 # that this is a temporally tight relationship - but again, we lack the data to really
 # find the lag specifically
 
+plot.supp <- cowplot::plot_grid(p2,p3, ncol=1, nrow=2, labels=c("A", "B"), label_size = 22, label_x = -.02, label_y = 1.02); plot.supp
+
+ggsave(file = paste0(homewd, "final_figures_tables/tmp/FigSX_prev_by_Ct_AngV_plus_lag.png"),
+       plot= plot.supp,
+       units="mm",  
+       width=55, 
+       height=75, 
+       scale=3, 
+       dpi=300)
