@@ -34,13 +34,13 @@ names(shed.dat)[names(shed.dat) == "AngV_shedding_ct_ur"] <- "AngV_ct"
 catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/catching_data_clean.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
 
 head(catch.dat)
-names(catch.dat)
-catch.dat$net_date[!is.na(catch.dat$net_date)] <- as.Date(catch.dat$net_date[!is.na(catch.dat$net_date)], format = "%m/%d/%Y")
-catch.dat$net_date[is.na(catch.dat$net_date)] <- catch.dat$processing_date[is.na(catch.dat$net_date)]
+#names(catch.dat)
+#catch.dat$net_date[!is.na(catch.dat$net_date)] <- as.Date(catch.dat$net_date[!is.na(catch.dat$net_date)], format = "%m/%d/%Y")
+#catch.dat$net_date[is.na(catch.dat$net_date)] <- catch.dat$processing_date[is.na(catch.dat$net_date)]
 
 # drop most columns and name those you want
-catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, net_date, sampleid, barcode_id, bat_sex, bat_age_class, young_of_year, pupmom_pair, sampleid_pupmom_pair, bat_weight_g, bat_forearm_mm, mass_forearm_residual, recap_new)
-names(catch.dat)[names(catch.dat)=="net_date"] <- "processing_date"
+catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, processing_date, sampleid, barcode_id, bat_sex, bat_age_class, young_of_year, pupmom_pair, sampleid_pupmom_pair, bat_weight_g, bat_forearm_mm, mass_forearm_residual, recap_new)
+#names(catch.dat)[names(catch.dat)=="net_date"] <- "processing_date"
 
 #and merge all three datasets
 setdiff(shed.dat$sampleid, catch.dat$sampleid)
@@ -66,134 +66,216 @@ head(merge.dat)
 #subset to eidolon
 merge.eid <- subset(merge.dat, bat_species=="Eidolon dupreanum")
 
-#now get prevalence for every day of the dataset
-shed.prev <- ddply(merge.eid,.(processing_date), summarise, NGhVpos = sum(GhV_pos), NAngVpos = sum(AngV_pos), Ntot=length(GhV_pos))
+#now get prevalence for every sampling session
+#first get midpoint date for sampling session
+
+sampling.session <- ddply(merge.dat,.(sampling_session), summarise, min_date =min(processing_date), max_date=max(processing_date))
+sampling.session$mid_date <- sampling.session$min_date + ((sampling.session$max_date-sampling.session$min_date)/2)
+
+merge.eid <- merge(merge.eid, sampling.session, by="sampling_session")
+merge.eid$GhV_ct[merge.eid$GhV_ct==0] <- NA
+merge.eid$AngV_ct[merge.eid$AngV_ct==0] <- NA
+
+shed.prev <- ddply(merge.eid,.(sampling_session, roost_site, mid_date), summarise, NGhVpos = sum(GhV_pos), NAngVpos = sum(AngV_pos), Ntot=length(GhV_pos), meanGhVCt=mean(GhV_ct, na.rm=T), meanAngVCt=mean(AngV_ct, na.rm=T), sdGhVCt=sd(GhV_ct, na.rm=T), sdAngVCt=sd(AngV_ct, na.rm=T))
 head(shed.prev)
 shed.prev$GhVprev <- shed.prev$NGhVpos/shed.prev$Ntot
 shed.prev$AngVprev <- shed.prev$NAngVpos/shed.prev$Ntot
-shed.prev <- dplyr::select(shed.prev,-(NGhVpos), -(NAngVpos))
 
-merge.eid <- merge(merge.eid, shed.prev, by="processing_date")
-head(merge.eid)
-length(unique(merge.eid$barcode_id[merge.eid$GhV_ct>0]))#68
-length(merge.eid$barcode_id[merge.eid$GhV_ct>0])#71. there are three repeated
-merge.eid$barcode_id[duplicated(merge.eid$barcode_id) & merge.eid$GhV_ct>0]
-#"921", "1086_969"  ,"956000005671203" - these are three bats sampled at multiple timepoints
-# not so many - can rerun without them as well 
+shed.prev$NGhVneg <- shed.prev$Ntot - shed.prev$NGhVpos
+shed.prev$NAngVneg <- shed.prev$Ntot - shed.prev$NAngVpos
+  
+shed.prev$GhVprevlci <- shed.prev$GhVprevuci <- shed.prev$AngVprevlci <- shed.prev$AngVprevuci <-  NA
 
-m1 <- lm(GhV_ct ~ GhVprev:roost_site, data=subset(merge.eid, GhV_ct>0))
-summary(m1) #moramanga and ankarana
-m1b <- lm(GhV_ct ~ GhVprev, data=subset(merge.eid, GhV_ct>0 & roost_site=="Moramanga"))
-summary(m1b) #improves
+for(i in 1:nrow(shed.prev)){
+  tmp <- binom.test(x=c(shed.prev$NGhVpos[i], shed.prev$NGhVneg[i]))$conf.int  
+  tmp2 <- binom.test(x=c(shed.prev$NAngVpos[i], shed.prev$NAngVneg[i]))$conf.int  
+  shed.prev$GhVprevlci[i] <- tmp[1]
+  shed.prev$GhVprevuci[i] <- tmp[2]
+  shed.prev$AngVprevlci[i] <- tmp2[1]
+  shed.prev$AngVprevuci[i] <- tmp2[2]
+}
 
-#or the pearson correlation
-with(subset(merge.eid, GhV_ct>0 & roost_site=="Moramanga"), cor.test(GhVprev, GhV_ct, method = "pearson"))
-#t = -1.8863, df = 38, p-value = 0.06691
-with(subset(merge.eid, GhV_ct>0 & roost_site=="Ankarana"), cor.test(GhVprev, GhV_ct, method = "pearson"))
-#t = -0.92411, df = 27, p-value = 0.3636
+head(shed.prev)
 
-#spearman
-with(subset(merge.eid, GhV_ct>0 & roost_site=="Moramanga"), cor.test(GhVprev, GhV_ct, method = "spearman"))
-#S = 15069, p-value = 0.007975
+m1 <- glm(cbind(NGhVpos, NGhVneg) ~ meanGhVCt:roost_site,
+           family = binomial,
+           data = shed.prev)
 
-with(subset(merge.eid, GhV_ct>0 & roost_site=="Ankarana"), cor.test(GhVprev, GhV_ct, method = "spearman"))
-#S = 5258.3, p-value = 0.1201
+#and as a sensitivity analysis, try a version that weights those 
+#sessions with more individuals contributing to Ct score
+m1a <- glm(cbind(NGhVpos, NGhVneg) ~ meanGhVCt:roost_site,
+    family = binomial,
+    weights = NGhVpos,
+    data = shed.prev)
 
-ggplot(data= subset(merge.eid, GhV_ct>0)) + geom_point(aes(x=GhV_ct, y=GhVprev, color=roost_site, size=Ntot)) + theme_bw()
+summary(m1) #moramanga is sig
+summary(m1a) #all three sites are significant
 
-library(sjPlot)
-plot_model(m1, type="pred")
-plot_model(m1b, type="pred")
 
-m2 <- lm(AngV_ct ~ AngVprev:roost_site, data=subset(merge.eid, AngV_ct>0))
-summary(m2)#Ankarana is sig
-m2b <- lm(AngV_ct ~ AngVprev, data=subset(merge.eid, AngV_ct>0 & roost_site=="Moramanga"))
-summary(m2b) #not sig. only 12 data points
-plot_model(m2, type="pred")
-plot_model(m2b, type="pred")
+#and AngV
+m2 <- glm(cbind(NAngVpos, NAngVneg) ~ meanAngVCt:roost_site,
+          family = binomial,
+          data = shed.prev)
 
-#or the pearson correlation
-with(subset(merge.eid, AngV_ct>0 & roost_site=="Moramanga"), cor.test(AngVprev, AngV_ct, method = "pearson"))
-#t = 0.50217, df = 10, p-value = 0.6264
-with(subset(merge.eid, AngV_ct>0 & roost_site=="Ankarana"), cor.test(AngVprev, AngV_ct, method = "pearson"))
-# t = -1.0181, df = 8, p-value = 0.3384
+m2a <- glm(cbind(NAngVpos, NAngVneg) ~ meanAngVCt:roost_site,
+           family = binomial,
+           weights = NAngVpos,
+           data = shed.prev)
 
-#spearman
-with(subset(merge.eid, AngV_ct>0& roost_site=="Moramanga"), cor.test(AngVprev, AngV_ct, method = "spearman"))
-#S = 244.34, p-value = 0.6515
-with(subset(merge.eid, AngV_ct>0& roost_site=="Ankarana"), cor.test(AngVprev, AngV_ct, method = "spearman"))
-#S = 232.23, p-value = 0.2425
+summary(m2) #not sig
+summary(m2a) #still not sig
 
-ggplot(data= subset(merge.eid, AngV_ct>0)) + geom_point(aes(x=AngV_ct, y=AngVprev, color=roost_site, size=Ntot)) + theme_bw()
 
-#try a permutation test to shuffle the Ct and prevalence relationships
+#now try a permutation test - shuffle Cts across sampling sessions within a site
+#first drop mahabo because it had only one visit
 
-perm_cor_stratified <- function(x, y, site, n_perm = 10000, method = "spearman", seed = NULL) {
+
+weighted_cor <- function(x, y, w) {
+  rx <- rank(x, ties.method = "average")
+  ry <- rank(y, ties.method = "average")
+  cov.wt(cbind(x, y), wt = w, cor = TRUE)$cor[1, 2]
+} #spearman
+perm_cor_weighted <- function(df, virus, n_perm = 10000, seed = NULL) {
   
   if (!is.null(seed)) set.seed(seed)
   
-  # observed correlation (pooled, but structure respected later)
-  obs_cor <- cor(x, y, method = method, use = "complete.obs")
+  if(virus=="GhV"){
+    
   
-  # permutation distribution
+  df=subset(df, !is.na(meanGhVCt))
+  w <- df$NGhVpos  # or n_bats
+  obs <- weighted_cor(df$meanGhVCt, df$GhVprev, w)
+  
   perm_stats <- replicate(n_perm, {
     
-    y_perm <- y
+    df_perm <- df
     
-    # shuffle within each site
-    for (s in unique(site)) {
-      idx <- which(site == s)
-      y_perm[idx] <- sample(y[idx])
+    for (s in unique(df$roost_site)) {
+      idx <- which(df$roost_site == s)
+      df_perm$meanGhVCt[idx] <- sample(df$meanGhVCt[idx])
     }
     
-    cor(x, y_perm, method = method, use = "complete.obs")
+    weighted_cor(df_perm$meanGhVCt, df_perm$GhVprev, w)
   })
   
-  p_val <- mean(abs(perm_stats) >= abs(obs_cor))
+  }else if (virus=="AngV"){
+    
+    df=subset(df, !is.na(meanAngVCt))
+    w <- df$NAngVpos  # or n_bats
+    obs <- weighted_cor(df$meanAngVCt, df$AngVprev, w)
+    
+    perm_stats <- replicate(n_perm, {
+      
+      df_perm <- df
+      
+      for (s in unique(df$roost_site)) {
+        idx <- which(df$roost_site == s)
+        df_perm$meanAngVCt[idx] <- sample(df$meanAngVCt[idx])
+      }
+      
+      weighted_cor(df_perm$meanAngVCt, df_perm$AngVprev, w)
+    })
+    
+  }
   
-  return(list(
-    observed_correlation = obs_cor,
-    p_value = p_val
-  ))
+  p_val <- mean(abs(perm_stats) >= abs(obs))
+  
+  list(observed = obs, p_value = p_val)
 }
-perm_cor_test <- function(x, y, n_perm = 10000, method = "spearman", seed = NULL) {
+perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
   
   if (!is.null(seed)) set.seed(seed)
   
-  # observed correlation
-  obs_cor <- cor(x, y, method = method, use = "complete.obs")
+  if(virus=="GhV"){
+    
+    
+    df=subset(df, !is.na(meanGhVCt))
+    #w <- df$NGhVpos  # or n_bats
+    obs <- cor(df$meanGhVCt, df$GhVprev, method = "spearman")
+    
+    perm_stats <- replicate(n_perm, {
+      
+      df_perm <- df
+      
+      for (s in unique(df$roost_site)) {
+        idx <- which(df$roost_site == s)
+        df_perm$meanGhVCt[idx] <- sample(df$meanGhVCt[idx])
+      }
+      
+      cor(df_perm$meanGhVCt, df_perm$GhVprev,method = "spearman")
+    })
+    
+  }else if (virus=="AngV"){
+    
+    df=subset(df, !is.na(meanAngVCt))
+    #w <- df$NAngVpos  # or n_bats
+    obs <- cor(df$meanAngVCt, df$AngVprev, method = "spearman")
+    
+    perm_stats <- replicate(n_perm, {
+      
+      df_perm <- df
+      
+      for (s in unique(df$roost_site)) {
+        idx <- which(df$roost_site == s)
+        df_perm$meanAngVCt[idx] <- sample(df$meanAngVCt[idx])
+      }
+      
+      cor(df_perm$meanAngVCt, df_perm$AngVprev, method = "spearman")
+    })
+    
+  }
   
-  # permutation distribution
-  perm_stats <- replicate(n_perm, {
-    y_perm <- sample(y)  # shuffle y
-    cor(x, y_perm, method = method, use = "complete.obs")
-  })
+  p_val <- mean(abs(perm_stats) >= abs(obs))
   
-  # two-sided p-value
-  p_val <- mean(abs(perm_stats) >= abs(obs_cor))
-  
-  return(list(
-    observed_correlation = obs_cor,
-    p_value = p_val,
-    permuted_correlations = perm_stats
-  ))
-}#no site stratification
+  list(observed = obs, p_value = p_val)
+}
+perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo"), virus="GhV",n_perm = 10000)
+#$observed: -0.3563853; $p_value= 0.1066. almost significant
+perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo"), virus="AngV",n_perm = 10000)
+#$observed: -0.3293304; $p_value= 0.6732. not significant
 
-#first with GhV
-out.GhV <- perm_cor_stratified(x= subset(merge.eid, GhV_ct>0)$GhVprev, y = subset(merge.eid, GhV_ct>0)$GhV_ct, site=subset(merge.eid, GhV_ct>0)$roost_site)
-#$observed_correlation: -0.3497536; p_value: 0.003
-#prevalence and Ct are negatively correlated, after accounting for site
+#and unweighted
+perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo"), virus="GhV",n_perm = 10000)
+#$observed: -0.3280877  $p_value= 0.1056. nearly sig
+perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo"), virus="AngV",n_perm = 10000)
+#$observed: -0.3414698; $p_value= 0.6138. not significant
 
-#if we remove Mahabo:
-perm_cor_stratified(x= subset(merge.eid, GhV_ct>0 & roost_site!="Mahabo")$GhVprev, y = subset(merge.eid, GhV_ct>0& roost_site!="Mahabo")$GhV_ct, site=subset(merge.eid, GhV_ct>0& roost_site!="Mahabo")$roost_site)
-#$observed_correlation: -0.3633688; p_value: 9e-04
-#no change to results - just more sig
+# now make a plot for the actual paper (either supp or one component of main):
+shed.prev$GhVCt_uci <- shed.prev$meanGhVCt+1.96*shed.prev$sdGhVCt
+shed.prev$GhVCt_lci <- shed.prev$meanGhVCt-1.96*shed.prev$sdGhVCt
 
-#and with AngV
-out.AngV <- perm_cor_stratified(x= subset(merge.eid, AngV_ct>0)$AngVprev, y = subset(merge.eid, AngV_ct>0)$AngV_ct, site=subset(merge.eid, AngV_ct>0)$roost_site)
-#$observed_correlation -0.4112351; $p_value 0.3451
-#not sig for angv
+shed.prev$AngVCt_uci <- shed.prev$meanAngVCt+1.96*shed.prev$sdAngVCt
+shed.prev$AngVCt_lci <- shed.prev$meanAngVCt-1.96*shed.prev$sdAngVCt
 
+head(shed.prev)
+
+p1 <- ggplot(data= subset(shed.prev, !is.na(meanGhVCt))) + 
+      geom_point(aes(x=meanGhVCt, y=GhVprev, color=roost_site, size=Ntot)) + theme_bw() +
+      geom_linerange(aes(x=meanGhVCt, ymin=GhVprevlci, ymax=GhVprevuci, color=roost_site), linetype=3, alpha=.5) +
+      geom_linerange(aes(xmin=GhVCt_lci, xmax=GhVCt_uci, y=GhVprev, color=roost_site), linetype=3, alpha=.5) +
+      xlab("Ct (GhV)") + ylab("prevalence (GhV)") +
+      scale_size_continuous(name="N bats") +
+      scale_color_discrete(name="roost site") +
+      theme(panel.grid = element_blank(), axis.text = element_text(size=14),
+        axis.title = element_text(size=18), legend.position = "inside",
+        legend.position.inside = c(.15,.75), legend.text = element_text(size=12),
+        legend.title = element_text(size=14));p1
+
+
+
+p2 <- ggplot(data= subset(shed.prev, !is.na(meanAngVCt))) + 
+  geom_point(aes(x=meanAngVCt, y=AngVprev, color=roost_site, size=Ntot)) + theme_bw() +
+  geom_linerange(aes(x=meanAngVCt, ymin=AngVprevlci, ymax=AngVprevuci, color=roost_site), linetype=3, alpha=.5) +
+  geom_linerange(aes(xmin=AngVCt_lci, xmax=AngVCt_uci, y=AngVprev, color=roost_site), linetype=3, alpha=.5) +
+  xlab("Ct (AngV)") + ylab("prevalence (AngV)") +
+  scale_size_continuous(name="N bats") +
+  scale_color_discrete(name="roost site") +
+  theme(panel.grid = element_blank(), axis.text = element_text(size=14),
+        axis.title = element_text(size=18), legend.position = "inside",
+        legend.position.inside = c(.15,.75), legend.text = element_text(size=12),
+        legend.title = element_text(size=14));p2
+
+## add the glm predictions??? 
 
 #and is the correlation improved by a lag?
 #summarize by sampling session and site
@@ -363,3 +445,4 @@ p1
 # we can see that the negative correlation is strongest at lower lags, indicating
 # that this is a temporally tight relationship - but again, we lack the data to really
 # find the lag specifically
+
