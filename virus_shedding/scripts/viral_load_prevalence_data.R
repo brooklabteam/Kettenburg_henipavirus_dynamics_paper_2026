@@ -233,3 +233,133 @@ ggplot(mora.sum) + geom_point(aes(x = meanAngVCt, y=prevGhV, color=mid_date)) + 
 mora.sum <- arrange(mora.sum, roost_site, mid_date)
 
 #now explore lags between sampling sessions
+#data gets much thinner, so let's only look at GhV for now
+lagged_pairs <- function(df) {
+  
+  results <- data.frame()
+  
+  for (i in 1:(nrow(df)-1)) {
+    for (j in (i+1):nrow(df)) {
+      
+      dt <- as.numeric(df$mid_date[j] - df$mid_date[i])  # in days
+      
+      results <- rbind(results, data.frame(
+        lag_days = dt,
+        meanGhVCt = df$meanGhVCt[i],
+        #meanAngVCt = df$meanAngVCt[i],
+        prevGhV = df$prevGhV[j],
+        #prevAngV = df$prevAngV[j],
+        roost_site = df$roost_site[i]
+      ))
+    }
+  }
+  
+  return(results)
+}
+
+mora.split <- dlply(mora.sum,.(roost_site))
+
+lag.sites <- data.table::rbindlist(lapply(mora.split, lagged_pairs))
+sort(unique(lag.sites$lag_days))
+
+lag.sites = subset(lag.sites, !is.na(meanGhVCt))
+
+#and permute - use "lag_limit" to only look at lags within a biologically relevant window
+perm_test_short_lag <- function(pairs, lag_limit, n_perm = 10000) {
+  
+  # observed
+  pairs <- subset(pairs, lag_days > 0 & lag_days <= lag_limit)
+  
+  obs <- cor(pairs$meanGhVCt, pairs$prevGhV, method = "spearman")  
+  
+  perm_stats <- replicate(n_perm, {
+    
+    df_perm <- df
+    
+    # shuffle Ct within site
+    for (s in unique(df$roost_site)) {
+      idx <- which(df$roost_site == s)
+      df_perm$meanGhVCt[idx] <- sample(df$meanGhVCt[idx])
+    }
+    
+    pairs_perm <- lagged_pairs(df_perm)
+    pairs_perm <- subset(pairs_perm, lag_days > 0 & lag_days <= lag_limit & !is.na(meanGhVCt))
+    
+    cor(pairs_perm$meanGhVCt, pairs_perm$prevGhV, method = "spearman")
+  })
+  
+  perm_stats <- perm_stats[!is.na(perm_stats)]
+  mean(abs(perm_stats) >= abs(obs))
+}
+
+perm_test_short_lag(pairs=lag.sites, lag_limit = 40, n_perm = 1000)
+#p-val = 1
+#no support for lag of 40 days
+
+perm_test_short_lag(pairs=lag.sites, lag_limit = 30, n_perm = 1000)
+#p-val =0.638
+#no support for lag of 30 days but the p-val is reduced
+
+perm_test_short_lag(pairs=lag.sites, lag_limit = 15, n_perm = 1000)
+#p-val = 0.1504149
+#no support for lag of 2-3 days because that is all we have in the dataset that is <15
+#again, p-val is reduced so this is closer to being relevant
+
+## CONCLUSION
+# no support for lagged data as more predictive... but we don't have the fine-scale
+# sampling that is needed to parse this. biologically, if there was a lag, it would only be
+# in the ~5-7-10 day window reflecting the lag in peak viral load and population-level transmission
+
+#let's plot the lag duration vs. correlation
+bin_lags <- function(pairs) {
+  
+  pairs <- arrange(pairs, lag_days)
+  pairs$lag_bin <- cut(
+    pairs$lag_days,
+    breaks = c(0, 15, 30, 50, 70, 90),
+    labels = c("0–15d", "15–30d", "30–50d", "50–70d", "70–90d"),
+    right = TRUE
+  )
+  
+  pairs[!is.na(pairs$lag_bin), ]
+}
+
+bin.df <- bin_lags(lag.sites)
+
+#get correlation
+summarise_bins <- function(pairs) {
+  
+  aggregate(cbind(meanGhVCt, prevGhV) ~ lag_bin, data = pairs, function(x) NA)  # placeholder
+  
+  library(dplyr)
+  
+  pairs %>%
+    group_by(lag_bin) %>%
+    summarise(
+      r = cor(meanGhVCt, prevGhV, method = "spearman", use = "complete.obs"),
+      n = n()
+    )
+}
+
+bin.sum <- summarise_bins(bin.df)
+
+plot_lag_correlation <- function(summary_df) {
+  
+  ggplot(data=summary_df)+
+    geom_point(aes(x=lag_bin, y=r, size=n)) +
+    scale_size_continuous(name="N bats") +
+    theme_bw() + xlab("Lag window") +
+    ylab("Spearman correlation (Ct vs prevalence)") +
+    geom_hline(aes(yintercept=0), linetype=2) +
+    theme(panel.grid = element_blank(), axis.text = element_text(size=14),
+          axis.title = element_text(size=18), legend.position = "inside",
+          legend.position.inside = c(.85,.2), legend.text = element_text(size=12),
+          legend.title = element_text(size=14))
+    
+}
+
+p1 <- plot_lag_correlation(bin.sum)
+p1
+# we can see that the negative correlation is strongest at lower lags, indicating
+# that this is a temporally tight relationship - but again, we lack the data to really
+# find the lag specifically
