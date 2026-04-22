@@ -21,13 +21,15 @@ head(shed.dat)
 names(shed.dat)
 
 
-shed.dat <- dplyr::select(shed.dat, sampleid, GhV_shedding_ur, AngV_shedding_ur, GhV_shedding_ct_ur, AngV_shedding_ct_ur)
+shed.dat <- dplyr::select(shed.dat, sampleid, GhV_shedding_ur, AngV_shedding_ur, AndV_shedding_ur, GhV_shedding_ct_ur, AngV_shedding_ct_ur, AndV_shedding_ct_ur)
 
 names(shed.dat)[names(shed.dat) == "GhV_shedding_ur"] <- "GhV_pos"
 names(shed.dat)[names(shed.dat) == "AngV_shedding_ur"] <- "AngV_pos"
+names(shed.dat)[names(shed.dat) == "AndV_shedding_ur"] <- "AndV_pos"
 
 names(shed.dat)[names(shed.dat) == "GhV_shedding_ct_ur"] <- "GhV_ct"
 names(shed.dat)[names(shed.dat) == "AngV_shedding_ct_ur"] <- "AngV_ct"
+names(shed.dat)[names(shed.dat) == "AndV_shedding_ct_ur"] <- "AndV_ct"
 
 
 # link this to the catching data to plot by sampling session
@@ -75,24 +77,30 @@ sampling.session$mid_date <- sampling.session$min_date + ((sampling.session$max_
 merge.eid <- merge(merge.eid, sampling.session, by="sampling_session")
 merge.eid$GhV_ct[merge.eid$GhV_ct==0] <- NA
 merge.eid$AngV_ct[merge.eid$AngV_ct==0] <- NA
+merge.eid$AndV_ct[merge.eid$AndV_ct==0] <- NA
 
-shed.prev <- ddply(merge.eid,.(sampling_session, roost_site, mid_date), summarise, NGhVpos = sum(GhV_pos), NAngVpos = sum(AngV_pos), Ntot=length(GhV_pos), meanGhVCt=mean(GhV_ct, na.rm=T), meanAngVCt=mean(AngV_ct, na.rm=T), sdGhVCt=sd(GhV_ct, na.rm=T), sdAngVCt=sd(AngV_ct, na.rm=T))
+shed.prev <- ddply(merge.eid,.(sampling_session, roost_site, mid_date), summarise, NGhVpos = sum(GhV_pos, na.rm=T), NAngVpos = sum(AngV_pos, na.rm=T), NAndVpos = sum(AndV_pos, na.rm=T), Ntot=length(GhV_pos), meanGhVCt=mean(GhV_ct, na.rm=T), meanAngVCt=mean(AngV_ct, na.rm=T),  meanAndVCt=mean(AndV_ct, na.rm=T), sdGhVCt=sd(GhV_ct, na.rm=T), sdAngVCt=sd(AngV_ct, na.rm=T), sdAndVCt=sd(AndV_ct, na.rm=T))
 head(shed.prev)
 shed.prev$GhVprev <- shed.prev$NGhVpos/shed.prev$Ntot
 shed.prev$AngVprev <- shed.prev$NAngVpos/shed.prev$Ntot
+shed.prev$AndVprev <- shed.prev$NAndVpos/shed.prev$Ntot
 
 shed.prev$NGhVneg <- shed.prev$Ntot - shed.prev$NGhVpos
 shed.prev$NAngVneg <- shed.prev$Ntot - shed.prev$NAngVpos
+shed.prev$NAndVneg <- shed.prev$Ntot - shed.prev$NAndVpos
   
-shed.prev$GhVprevlci <- shed.prev$GhVprevuci <- shed.prev$AngVprevlci <- shed.prev$AngVprevuci <-  NA
+shed.prev$GhVprevlci <- shed.prev$GhVprevuci <- shed.prev$AngVprevlci <- shed.prev$AngVprevuci <- shed.prev$AndVprevlci <- shed.prev$AndVprevuci <-  NA
 
 for(i in 1:nrow(shed.prev)){
   tmp <- binom.test(x=c(shed.prev$NGhVpos[i], shed.prev$NGhVneg[i]))$conf.int  
   tmp2 <- binom.test(x=c(shed.prev$NAngVpos[i], shed.prev$NAngVneg[i]))$conf.int  
+  tmp3 <- binom.test(x=c(shed.prev$NAndVpos[i], shed.prev$NAndVneg[i]))$conf.int  
   shed.prev$GhVprevlci[i] <- tmp[1]
   shed.prev$GhVprevuci[i] <- tmp[2]
   shed.prev$AngVprevlci[i] <- tmp2[1]
   shed.prev$AngVprevuci[i] <- tmp2[2]
+  shed.prev$AndVprevlci[i] <- tmp3[1]
+  shed.prev$AndVprevuci[i] <- tmp3[2]
 }
 
 head(shed.prev)
@@ -125,6 +133,20 @@ m2a <- glm(cbind(NAngVpos, NAngVneg) ~ meanAngVCt:roost_site,
 summary(m2) #not sig
 summary(m2a) #still not sig
 
+
+
+#and AndV - only positives in Moramanga
+#redo without site 
+m3 <- glm(cbind(NAndVpos, NAndVneg) ~ meanAndVCt,
+          family = binomial,
+          data = shed.prev)
+
+m3a <- glm(cbind(NAndVpos, NAndVneg) ~ meanAndVCt,
+           family = binomial,
+           weights = NAndVpos,
+           data = shed.prev)
+summary(m3) #Moramanga not sig
+summary(m3a) #still not sig
 
 #now try a permutation test - shuffle Cts across sampling sessions within a site
 #first drop mahabo because it had only one visit
@@ -176,8 +198,27 @@ perm_cor_weighted <- function(df, virus, n_perm = 10000, seed = NULL) {
       weighted_cor(df_perm$meanAngVCt, df_perm$AngVprev, w)
     })
     
+  }else if (virus=="AndV"){
+    
+    df=subset(df, !is.na(meanAndVCt))
+    w <- df$NAndVpos  # or n_bats
+    obs <- weighted_cor(df$meanAndVCt, df$AndVprev, w)
+    
+    perm_stats <- replicate(n_perm, {
+      
+      df_perm <- df
+      
+      for (s in unique(df$roost_site)) {
+        idx <- which(df$roost_site == s)
+        df_perm$meanAndVCt[idx] <- sample(df$meanAndVCt[idx])
+      }
+      
+      weighted_cor(df_perm$meanAndVCt, df_perm$AndVprev, w)
+    })
+    
   }
   
+  perm_stats <- perm_stats[!is.na(perm_stats)]
   p_val <- mean(abs(perm_stats) >= abs(obs))
   
   list(observed = obs, p_value = p_val)
@@ -223,22 +264,45 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
       cor(df_perm$meanAngVCt, df_perm$AngVprev, method = "spearman")
     })
     
+  }else if (virus=="AndV"){
+    
+    df=subset(df, !is.na(meanAndVCt))
+    #w <- df$NAngVpos  # or n_bats
+    obs <- cor(df$meanAndVCt, df$AndVprev, method = "spearman")
+    
+    perm_stats <- replicate(n_perm, {
+      
+      df_perm <- df
+      
+      for (s in unique(df$roost_site)) {
+        idx <- which(df$roost_site == s)
+        df_perm$meanAndVCt[idx] <- sample(df$meanAndVCt[idx])
+      }
+      
+      cor(df_perm$meanAndVCt, df_perm$AndVprev, method = "spearman")
+    })
+    
   }
   
   p_val <- mean(abs(perm_stats) >= abs(obs))
   
   list(observed = obs, p_value = p_val)
 }
+
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo"), virus="GhV",n_perm = 10000)
 #$observed: -0.3563853; $p_value= 0.1066. almost significant
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo"), virus="AngV",n_perm = 10000)
 #$observed: -0.3293304; $p_value= 0.6732. not significant
+perm_cor_weighted(df = subset(shed.prev, roost_site=="Moramanga"), virus="AndV",n_perm = 10000)
+#$observed: -0.9470351 $p_value = 0.0423, sig!
 
 #and unweighted
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo"), virus="GhV",n_perm = 10000)
-#$observed: -0.3280877  $p_value= 0.1056. nearly sig
+#$observed: -0.3280877  $p_value= 0.0985.  sig
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo"), virus="AngV",n_perm = 10000)
 #$observed: -0.3414698; $p_value= 0.6138. not significant
+perm_cor_unweighted(df = subset(shed.prev, roost_site=="Moramanga"), virus="AndV",n_perm = 10000)
+# observed = -0.7; pval = 0.2333
 
 # now make a plot for the actual paper (either supp or one component of main):
 shed.prev$GhVCt_uci <- shed.prev$meanGhVCt+1.96*shed.prev$sdGhVCt
@@ -246,6 +310,10 @@ shed.prev$GhVCt_lci <- shed.prev$meanGhVCt-1.96*shed.prev$sdGhVCt
 
 shed.prev$AngVCt_uci <- shed.prev$meanAngVCt+1.96*shed.prev$sdAngVCt
 shed.prev$AngVCt_lci <- shed.prev$meanAngVCt-1.96*shed.prev$sdAngVCt
+
+#these don't work because no sd because only 1 positive per capture
+shed.prev$AndVCt_uci <- shed.prev$meanAndVCt+1.96*shed.prev$sdAndVCt
+shed.prev$AndVCt_lci <- shed.prev$meanAndVCt-1.96*shed.prev$sdAndVCt
 
 head(shed.prev)
 
@@ -285,11 +353,26 @@ p2 <- ggplot(data= subset(shed.prev, !is.na(meanAngVCt))) +
   scale_size_continuous(name="N bats") +
   scale_color_manual(name="roost site", values=c("Ankarana" = "#F8766D", "Moramanga"="#619CFF")) +
   theme(panel.grid = element_blank(), axis.text = element_text(size=14),
-        axis.title = element_text(size=18), legend.position = "inside",
-        legend.position.inside = c(.15,.66), legend.text = element_text(size=12),
+        axis.title = element_text(size=18), 
+        #legend.position = "inside",
+        #legend.position.inside = c(.15,.59), 
+        legend.text = element_text(size=12),
         legend.title = element_text(size=14),
         plot.margin = unit(c(.5,.5,1,1.1), "lines") );p2
 
+p3 <- ggplot(data= subset(shed.prev, !is.na(meanAndVCt))) + 
+  geom_point(aes(x=meanAndVCt, y=AndVprev, color=roost_site, size=Ntot)) + theme_bw() +
+  geom_linerange(aes(x=meanAndVCt, ymin=AndVprevlci, ymax=AndVprevuci, color=roost_site), linetype=3, alpha=.5) +
+  geom_linerange(aes(xmin=AndVCt_lci, xmax=AndVCt_uci, y=AndVprev, color=roost_site), linetype=3, alpha=.5) +
+  xlab("Ct (AndV)") + ylab("\nprevalence (AndV)") +
+  scale_size_continuous(name="N bats") +
+  scale_color_manual(name="roost site", values=c("Ankarana" = "#F8766D", "Moramanga"="#619CFF")) +
+  theme(panel.grid = element_blank(), axis.text = element_text(size=14),
+        axis.title = element_text(size=18), #legend.position = "inside",
+        #legend.position.inside = c(.15,.60), 
+        legend.text = element_text(size=12),
+        legend.title = element_text(size=14),
+        plot.margin = unit(c(.5,.5,1,1.3), "lines") );p3
 
  
 
@@ -384,9 +467,10 @@ perm_test_short_lag(df=shed.prev, lag_limit = 15, n_perm = 10000)
 
 
 ## CONCLUSION
-# no support for lagged data as more predictive... but we don't have the fine-scale
-# sampling that is needed to parse this. biologically, if there was a lag, it would only be
-# in the ~5-7-10 day window reflecting the lag in peak viral load and population-level transmission
+# there is support for lagged data as more predictive at short (<15 days) lags...
+# we don't have the fine-scale sampling that is needed to parse this timing precisely.
+# biologically, if there was a lag, it would only bein the ~5-7-10 day window reflecting
+# the lag in peak viral load and population-level transmission
 
 #let's plot the lag duration vs. correlation
 bin_lags <- function(pairs) {
@@ -431,26 +515,27 @@ plot_lag_correlation <- function(summary_df) {
     ylab("Spearman correlation for GhV\n(Ct vs prevalence)") +
     geom_hline(aes(yintercept=0), linetype=2) +
     theme(panel.grid = element_blank(), axis.text = element_text(size=14),
-          axis.title = element_text(size=18), legend.position = "inside",
-          legend.position.inside = c(.1,.75), legend.text = element_text(size=12),
+          axis.title = element_text(size=18), #legend.position = "inside",
+          #legend.position.inside = c(.1,.7), 
+          legend.text = element_text(size=12),
           legend.title = element_text(size=14),
           plot.margin = unit(c(1.5,.5,.5,1), "lines")) 
     
 }
 
-p3 <- plot_lag_correlation(bin.sum)
-p3
+p4 <- plot_lag_correlation(bin.sum)
+p4
 # we can see that the negative correlation is strongest at lower lags, indicating
 # that this is a temporally tight relationship - but again, we lack the data to really
 # find the lag specifically
 
-plot.supp <- cowplot::plot_grid(p2,p3, ncol=1, nrow=2, labels=c("A", "B"), label_size = 22, label_x = -.02, label_y = 1.02); plot.supp
+plot.supp <- cowplot::plot_grid(p2,p3, p4, ncol=1, nrow=3, labels=c("A", "B", "C"), label_size = 22, label_x = -.015, label_y = 1.02, align = "hv"); plot.supp
 
-ggsave(file = paste0(homewd, "final_figures_tables/tmp/FigSX_prev_by_Ct_AngV_plus_lag.png"),
+ggsave(file = paste0(homewd, "final_figures_tables/tmp/FigSX_prev_by_Ct_AngV_AndV_plus_lag.png"),
        plot= plot.supp,
        units="mm",  
-       width=55, 
-       height=75, 
+       width=65, 
+       height=95, 
        scale=3, 
        dpi=300)
 
@@ -468,13 +553,15 @@ head(shed.dat)
 names(shed.dat)
 
 
-shed.dat <- dplyr::select(shed.dat, sampleid, GhV_shedding_ur, AngV_shedding_ur, GhV_shedding_ct_ur, AngV_shedding_ct_ur)
+shed.dat <- dplyr::select(shed.dat, sampleid, GhV_shedding_ur, AngV_shedding_ur, AndV_shedding_ur, GhV_shedding_ct_ur, AngV_shedding_ct_ur, AndV_shedding_ct_ur)
 
 names(shed.dat)[names(shed.dat) == "GhV_shedding_ur"] <- "GhV_pos"
 names(shed.dat)[names(shed.dat) == "AngV_shedding_ur"] <- "AngV_pos"
+names(shed.dat)[names(shed.dat) == "AndV_shedding_ur"] <- "AndV_pos"
 
 names(shed.dat)[names(shed.dat) == "GhV_shedding_ct_ur"] <- "GhV_ct"
 names(shed.dat)[names(shed.dat) == "AngV_shedding_ct_ur"] <- "AngV_ct"
+names(shed.dat)[names(shed.dat) == "AndV_shedding_ct_ur"] <- "AndV_ct"
 
 
 # link this to the catching data to plot by sampling session
@@ -522,24 +609,30 @@ sampling.session$mid_date <- sampling.session$min_date + ((sampling.session$max_
 merge.eid <- merge(merge.eid, sampling.session, by="sampling_session")
 merge.eid$GhV_ct[merge.eid$GhV_ct==0] <- NA
 merge.eid$AngV_ct[merge.eid$AngV_ct==0] <- NA
+merge.eid$AndV_ct[merge.eid$AndV_ct==0] <- NA #only two entries with any value, one in Anakara and one in Makira
 
-shed.prev <- ddply(merge.eid,.(sampling_session, roost_site, mid_date), summarise, NGhVpos = sum(GhV_pos), NAngVpos = sum(AngV_pos), Ntot=length(GhV_pos), meanGhVCt=mean(GhV_ct, na.rm=T), meanAngVCt=mean(AngV_ct, na.rm=T), sdGhVCt=sd(GhV_ct, na.rm=T), sdAngVCt=sd(AngV_ct, na.rm=T))
+shed.prev <- ddply(merge.eid,.(sampling_session, roost_site, mid_date), summarise, NGhVpos = sum(GhV_pos, na.rm = T), NAngVpos = sum(AngV_pos, na.rm = T), NAndVpos = sum(AndV_pos, na.rm = T), Ntot=length(GhV_pos), meanGhVCt=mean(GhV_ct, na.rm=T), meanAngVCt=mean(AngV_ct, na.rm=T), meanAndVCt=mean(AndV_ct, na.rm=T), sdGhVCt=sd(GhV_ct, na.rm=T), sdAngVCt=sd(AngV_ct, na.rm=T), sdAndVCt=sd(AndV_ct, na.rm=T))
 head(shed.prev)
 shed.prev$GhVprev <- shed.prev$NGhVpos/shed.prev$Ntot
 shed.prev$AngVprev <- shed.prev$NAngVpos/shed.prev$Ntot
+shed.prev$AndVprev <- shed.prev$NAndVpos/shed.prev$Ntot
 
 shed.prev$NGhVneg <- shed.prev$Ntot - shed.prev$NGhVpos
 shed.prev$NAngVneg <- shed.prev$Ntot - shed.prev$NAngVpos
+shed.prev$NAndVneg <- shed.prev$Ntot - shed.prev$NAndVpos
 
-shed.prev$GhVprevlci <- shed.prev$GhVprevuci <- shed.prev$AngVprevlci <- shed.prev$AngVprevuci <-  NA
+shed.prev$GhVprevlci <- shed.prev$GhVprevuci <- shed.prev$AngVprevlci <- shed.prev$AngVprevuci <- shed.prev$AndVprevlci <- shed.prev$AndVprevuci <-  NA
 
 for(i in 1:nrow(shed.prev)){
   tmp <- binom.test(x=c(shed.prev$NGhVpos[i], shed.prev$NGhVneg[i]))$conf.int  
   tmp2 <- binom.test(x=c(shed.prev$NAngVpos[i], shed.prev$NAngVneg[i]))$conf.int  
+  tmp3 <- binom.test(x=c(shed.prev$NAndVpos[i], shed.prev$NAndVneg[i]))$conf.int  
   shed.prev$GhVprevlci[i] <- tmp[1]
   shed.prev$GhVprevuci[i] <- tmp[2]
   shed.prev$AngVprevlci[i] <- tmp2[1]
   shed.prev$AngVprevuci[i] <- tmp2[2]
+  shed.prev$AndVprevlci[i] <- tmp3[1]
+  shed.prev$AndVprevuci[i] <- tmp3[2]
 }
 
 head(shed.prev)
@@ -572,9 +665,22 @@ m2a <- glm(cbind(NAngVpos, NAngVneg) ~ meanAngVCt:roost_site,
 summary(m2) #not sig
 summary(m2a) #still not sig
 
+#AndV
+m3 <- glm(cbind(NAndVpos, NAndVneg) ~ meanAndVCt:roost_site,
+          family = binomial,
+          data = shed.prev)
+
+m3a <- glm(cbind(NAndVpos, NAndVneg) ~ meanAndVCt:roost_site,
+           family = binomial,
+           weights = NAndVpos,
+           data = shed.prev)
+
+summary(m3) #not sig
+summary(m3a) #still not sig
+
 
 #now try a permutation test - shuffle Cts across sampling sessions within a site
-#first drop mahabo because it had only one visit
+#first drop makira because it had only one visit
 
 
 weighted_cor <- function(x, y, w) {
@@ -623,8 +729,27 @@ perm_cor_weighted <- function(df, virus, n_perm = 10000, seed = NULL) {
       weighted_cor(df_perm$meanAngVCt, df_perm$AngVprev, w)
     })
     
+  }else if (virus=="AndV"){
+    
+    df=subset(df, !is.na(meanAndVCt))
+    w <- df$NAndVpos  # or n_bats
+    obs <- weighted_cor(df$meanAndVCt, df$AndVprev, w)
+    
+    perm_stats <- replicate(n_perm, {
+      
+      df_perm <- df
+      
+      for (s in unique(df$roost_site)) {
+        idx <- which(df$roost_site == s)
+        df_perm$meanAndVCt[idx] <- sample(df$meanAndVCt[idx])
+      }
+      
+      weighted_cor(df_perm$meanAndVCt, df_perm$AndVprev, w)
+    })
+    
   }
   
+  perm_stats <- perm_stats[!is.na(perm_stats)]
   p_val <- mean(abs(perm_stats) >= abs(obs))
   
   list(observed = obs, p_value = p_val)
@@ -670,22 +795,49 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
       cor(df_perm$meanAngVCt, df_perm$AngVprev, method = "spearman")
     })
     
+  }else if (virus=="AndV"){
+    
+    df=subset(df, !is.na(meanAndVCt))
+    #w <- df$NAngVpos  # or n_bats
+    obs <- cor(df$meanAndVCt, df$AndVprev, method = "spearman")
+    
+    perm_stats <- replicate(n_perm, {
+      
+      df_perm <- df
+      
+      for (s in unique(df$roost_site)) {
+        idx <- which(df$roost_site == s)
+        df_perm$meanAndVCt[idx] <- sample(df$meanAndVCt[idx])
+      }
+      
+      cor(df_perm$meanAndVCt, df_perm$AndVprev, method = "spearman")
+    })
+    
   }
   
   p_val <- mean(abs(perm_stats) >= abs(obs))
   
   list(observed = obs, p_value = p_val)
 }
+
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Makira"), virus="GhV",n_perm = 10000)
 #$observed: 0.5241467; $p_value= 0.0461. significant... but backwards
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Makira"), virus="AngV",n_perm = 10000)
 #$observed: -0.608751; $p_value= 0.1964. not significant but close
 
+#cannot test for AndV because only two entries had Ct values at all and they were
+#in different sites
+
+
+
 #and unweighted
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Makira"), virus="GhV",n_perm = 10000)
 #$observed: 0.5222545  $p_value= 0.0902. sig
-perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo"), virus="AngV",n_perm = 10000)
+perm_cor_unweighted(df = subset(shed.prev, roost_site!="Makira"), virus="AngV",n_perm = 10000)
 #$observed: -0.7807201; $p_value= 0.0564. significant here
+
+#cannot test for AndV because only two entries had Ct values at all and they were
+#in different sites
 
 # now make a plot for the actual paper (either supp or one component of main):
 shed.prev$GhVCt_uci <- shed.prev$meanGhVCt+1.96*shed.prev$sdGhVCt
@@ -693,6 +845,8 @@ shed.prev$GhVCt_lci <- shed.prev$meanGhVCt-1.96*shed.prev$sdGhVCt
 
 shed.prev$AngVCt_uci <- shed.prev$meanAngVCt+1.96*shed.prev$sdAngVCt
 shed.prev$AngVCt_lci <- shed.prev$meanAngVCt-1.96*shed.prev$sdAngVCt
+
+#can't do CIs on AndV because no sd
 
 head(shed.prev)
 
@@ -737,6 +891,21 @@ p2 <- ggplot(data= subset(shed.prev, !is.na(meanAngVCt))) +
         legend.title = element_text(size=14)) + coord_cartesian(xlim=c(25,37.5), ylim = c(0,1));p2
 
 
+#save this one as supplementary and pair with below lag plot
+p3 <- ggplot(data= subset(shed.prev, !is.na(meanAndVCt))) + 
+  geom_point(aes(x=meanAndVCt, y=AndVprev, color=roost_site, size=Ntot), show.legend = F) + theme_bw() +
+  geom_linerange(aes(x=meanAndVCt, ymin=AndVprevlci, ymax=AndVprevuci, color=roost_site), linetype=3, alpha=.5, show.legend = F) +
+  #geom_linerange(aes(xmin=AndVCt_lci, xmax=AndVCt_uci, y=AndVprev, color=roost_site), linetype=3, alpha=.5, show.legend = F) +
+  xlab("Ct (AndV)") + ylab("\nprevalence (AndV)") +
+  scale_size_continuous(name="N bats",breaks = c(5,10,15), labels = c(5,10,15)) +
+  scale_color_manual(name="roost site", values=c("Ankarana" = "#F8766D", "Makira" = "#00BA38", "Moramanga"="#619CFF")) +
+  theme(panel.grid = element_blank(), axis.text = element_text(size=14),
+        axis.title = element_text(size=18), legend.position = "inside",
+        legend.position.inside = c(.15,.66), legend.text = element_text(size=12),
+        legend.title = element_text(size=14)) + coord_cartesian(xlim=c(25,37.5), ylim = c(0,1));p3
+
+
+#save all three together
 
 
 #and is the correlation improved by a lag?
@@ -816,18 +985,18 @@ perm_test_short_lag <- function(df, lag_limit, n_perm = 10000) {
 
 #none of these run because we have no pairs of GhV shedding data for 
 #rousettus with < 40 day lag
-perm_test_short_lag(df=shed.prev, lag_limit = 40, n_perm = 10000)
+#perm_test_short_lag(df=shed.prev, lag_limit = 40, n_perm = 10000)
 #NA
 
 #so let's just make the base plots as supplemental for Rousettus
 
-plot.out <- cowplot::plot_grid(p1,p2, nrow = 1, ncol=2, labels = c("A", "B"), label_size = 22); plot.out
+plot.out <- cowplot::plot_grid(p1,p2, p3, nrow = 3, ncol=1, labels = c("A", "B", "C"), label_size = 22, align = "hv"); plot.out
 # now add the title
 
 ggsave(file = paste0(homewd, "final_figures_tables/tmp/FigX_prev_by_Ct_Rousettus.png"),
         plot= plot.out,
         units="mm",  
-        width=95, 
-        height=45, 
+        width=65, 
+        height=135, 
         scale=3, 
         dpi=300)
