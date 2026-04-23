@@ -14,7 +14,7 @@ library(tidyr)
 library(scales)
 
 #load data
-#homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/model_fitting/GhV-fits/fit-1"
+#homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/model_fitting/GhV-fits/refit-1"
 #setwd(homewd)
 #dat <- read.csv(file =  paste0(homewd,"/data/age-seroprevalence-data.csv"), header = T, stringsAsFactors = F)
 dat <- read.csv(file =  "age-seroprevalence-data.csv", header = T, stringsAsFactors = F)
