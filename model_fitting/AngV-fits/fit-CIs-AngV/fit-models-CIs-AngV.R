@@ -1583,7 +1583,7 @@ wrap.fit.AngV.CI.hessian <- function(model, num_states, beta, sigma, recru, wane
   
   par.df$weightPCR <- ConfidenceInterval$value[length(out.lik$par)] 
   par.df$weightPCR_lci <- ConfidenceInterval$lower[length(out.lik$par)] 
-  par.df$weightPCR_lci <- ConfidenceInterval$upper[length(out.lik$par)] 
+  par.df$weightPCR_uci <- ConfidenceInterval$upper[length(out.lik$par)] 
   
   ConfidenceInterval <- ConfidenceInterval[2:(nrow(ConfidenceInterval)-1),]
   
