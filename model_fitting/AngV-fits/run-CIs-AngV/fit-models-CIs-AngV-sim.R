@@ -1618,174 +1618,7 @@ wrap.fit.AngV.CI.cov <- function(model, num_states, beta, sigma, recru, wane, ep
   biwk_preds_prev <- matrix(NA,nrow=26,ncol=length(par.dist[,1]))
   biwk_preds_seroprev <- biwk_preds_prev 
   
-  for (j in 1:length(par.dist[,1])){
-    
-    wane = par.dist[j,1]
-    
-    if(model=="MSIRS" | model=="MSIRN"){
-      
-      beta=par.dist[j,2]
-      sigma=par.dist[j,3]
-      
-      recru = par.df$recru
-      sigma2 = par.df$sigma2
-      loss2 = par.df$loss2
-      loss = par.df$loss
-      epsilon = par.df$epsilon
-      beta2 = par.df$beta2
-      
-    }else if (model=="MSIRNI"){
-      beta=par.dist[j,2]
-      sigma=par.dist[j,3]
-      recru = par.dist[j,4]
-      
-      sigma2 = par.df$sigma2
-      loss2 = par.df$loss2
-      loss = par.df$loss
-      epsilon = par.df$epsilon
-      beta2 = par.df$beta2
-      
-    }else if (model=="MSIRNS"){
-      
-      beta=par.dist[j,2]
-      sigma=par.dist[j,3]
-      loss = par.dist[j,4]
-      
-      sigma2 = par.df$sigma2
-      loss2 = par.df$loss2
-      recru = par.df$recru
-      epsilon = par.df$epsilon
-      beta2 = par.df$beta2
-      
-    }else if(model == "MSIRNNS"){
-      
-      beta=par.dist[j,2]
-      sigma=par.dist[j,3]
-      loss = par.dist[j,4]
-      epsilon = par.dist[j,5]
-      
-      recru = par.df$recru
-      sigma2 = par.df$sigma2
-      loss2 = par.df$loss2
-      beta2 = par.df$beta2
-      
-      
-    }else if(model == "MSIRNNI"){
-      beta=par.dist[j,2]
-      sigma=par.dist[j,3]
-      recru = par.dist[j,4]
-      epsilon = par.dist[j,5]
-      
-      sigma2 = par.df$sigma2
-      loss2 = par.df$loss2
-      loss = par.df$loss
-      beta2 = par.df$beta2
-      
-    }else if (model == "MSIRNIRN" | model == "MSIRNIR"){
-      
-      beta=par.dist[j,2]
-      sigma=par.dist[j,3]
-      recru = par.dist[j,4]
-      sigma2 = par.dist[j,5]
-      
-      
-      
-      loss2 = par.df$loss2
-      loss = par.df$loss
-      epsilon = par.df$epsilon
-      beta2 = par.df$beta2
-      
-    }else if (model =="MSIRNSIRN"){
-      
-      beta=par.dist[j,2]
-      sigma=par.dist[j,3]
-      loss = par.dist[j,4]
-      sigma2 = par.dist[j,5]
-      beta2 = par.dist[j,6]
-      
-      loss2 = par.df$loss2
-      recru = par.df$recru
-      epsilon = par.df$epsilon
-      
-      
-    }else if (model == "MSIRSIR"){
-      beta=par.dist[j,2]
-      sigma=par.dist[j,3]
-      beta2 = par.dist[j,4]
-      
-      sigma2 = par.df$sigma2
-      loss2 = par.df$loss2
-      loss = par.df$loss
-      epsilon = par.df$epsilon
-      recru = par.df$recru
-      
-    }else if(model=="MSIRNIRN-LT"){
-      beta=par.dist[j,2]
-      sigma=par.dist[j,3]
-      recru=par.dist[j,4]
-      sigma2=par.dist[j,5]
-      epsilon=par.dist[j,6]
-      
-      
-      loss2 = par.df$loss2
-      loss = par.df$loss
-      beta2 = par.df$beta2
-      
-      
-    }else if(model=="MSIRNSIRN-LT"){
-      
-      beta=par.dist[j,2]
-      sigma=par.dist[j,3]
-      loss=par.dist[j,4]
-      sigma2=par.dist[j,5]
-      beta2=par.dist[j,6]
-      epsilon=par.dist[j,7]
-      
-      
-      loss2 = par.df$loss2
-      recru = par.df$recru
-      
-    }else if (model =="MSIRNSIRNS"){
-      
-      beta=par.dist[j,2]
-      sigma=par.dist[j,3]
-      loss=par.dist[j,4]
-      sigma2=par.dist[j,5]
-      beta2=par.dist[j,6]
-      loss2=par.dist[j,7]
-      
-      recru = par.df$recru
-      epsilon = par.df$epsilon
-      
-    } 
-    
-    weight.PCR = par.dist[j, ncol(par.dist)]
-    
-    if(mu.sick >1 & mu.rec==1){
-      
-      mu.sick = par.dist[j, (ncol(par.dist)-1)]
-      mu.rec = par.df$mu_rec
-      
-    }else if (mu.sick ==1 & mu.rec >1){
-      
-      mu.sick = par.df$mu_sick
-      mu.rec = par.dist[j, (ncol(par.dist)-1)]
-      
-    }else if(mu.sick >1 & mu.rec >1){
-      
-      mu.sick =par.dist[j, (ncol(par.dist)-2)]
-      mu.rec = par.dist[j, (ncol(par.dist)-1)]
-      
-    }else{
-      mu.sick = par.df$mu_sick
-      mu.rec = par.df$mu_rec
-      
-    }
-    
-    
-  }
-  
-  
+ 
   
   if (par.df$mu_sick>1 & par.df$mu_rec==1){
     add.inf.mort <- TRUE
@@ -1806,7 +1639,7 @@ wrap.fit.AngV.CI.cov <- function(model, num_states, beta, sigma, recru, wane, ep
     add.rec.mort <- FALSE
   }
   
-  
+  #add best fit parameter estimates to par.df
   
   par.df$wane <- ConfidenceInterval$value[1] 
   par.df$wane_lci <- ConfidenceInterval$lower[1]
@@ -2840,7 +2673,7 @@ wrap.fit.AngV.CI.cov <- function(model, num_states, beta, sigma, recru, wane, ep
   # and prevalence outputs
   
   
-  #first, the point estimate sim, using fitted parameters
+  #first, the point estimate sim, using fitted parameters, now stored in par.df
   out1 = sim.met.age.all.AngV(c=par.df$num_states,  sim_pop=sim_pop, yrs=yrs, ntyr=ntyr, age.brk=age.brk, s=s, 
                          beta=par.df$beta, loss=par.df$loss, loss2 = par.df$loss2,
                          epsilon=par.df$epsilon, beta2=par.df$beta2, recru=par.df$recru,
@@ -2851,7 +2684,174 @@ wrap.fit.AngV.CI.cov <- function(model, num_states, beta, sigma, recru, wane, ep
                          add.inf.mort=add.inf.mort,add.rec.mort=add.rec.mort, model=par.df$model, N_stat = N_stat)
   
   #and the series across the covariance matrix
+  
   for (j in 1:length(par.dist[,1])){
+    
+    
+      wane = par.dist[j,1]
+      
+      if(model=="MSIRS" | model=="MSIRN"){
+        
+        beta=par.dist[j,2]
+        sigma=par.dist[j,3]
+        
+        recru = par.df$recru
+        sigma2 = par.df$sigma2
+        loss2 = par.df$loss2
+        loss = par.df$loss
+        epsilon = par.df$epsilon
+        beta2 = par.df$beta2
+        
+      }else if (model=="MSIRNI"){
+        beta=par.dist[j,2]
+        sigma=par.dist[j,3]
+        recru = par.dist[j,4]
+        
+        sigma2 = par.df$sigma2
+        loss2 = par.df$loss2
+        loss = par.df$loss
+        epsilon = par.df$epsilon
+        beta2 = par.df$beta2
+        
+      }else if (model=="MSIRNS"){
+        
+        beta=par.dist[j,2]
+        sigma=par.dist[j,3]
+        loss = par.dist[j,4]
+        
+        sigma2 = par.df$sigma2
+        loss2 = par.df$loss2
+        recru = par.df$recru
+        epsilon = par.df$epsilon
+        beta2 = par.df$beta2
+        
+      }else if(model == "MSIRNNS"){
+        
+        beta=par.dist[j,2]
+        sigma=par.dist[j,3]
+        loss = par.dist[j,4]
+        epsilon = par.dist[j,5]
+        
+        recru = par.df$recru
+        sigma2 = par.df$sigma2
+        loss2 = par.df$loss2
+        beta2 = par.df$beta2
+        
+        
+      }else if(model == "MSIRNNI"){
+        beta=par.dist[j,2]
+        sigma=par.dist[j,3]
+        recru = par.dist[j,4]
+        epsilon = par.dist[j,5]
+        
+        sigma2 = par.df$sigma2
+        loss2 = par.df$loss2
+        loss = par.df$loss
+        beta2 = par.df$beta2
+        
+      }else if (model == "MSIRNIRN" | model == "MSIRNIR"){
+        
+        beta=par.dist[j,2]
+        sigma=par.dist[j,3]
+        recru = par.dist[j,4]
+        sigma2 = par.dist[j,5]
+        
+        
+        
+        loss2 = par.df$loss2
+        loss = par.df$loss
+        epsilon = par.df$epsilon
+        beta2 = par.df$beta2
+        
+      }else if (model =="MSIRNSIRN"){
+        
+        beta=par.dist[j,2]
+        sigma=par.dist[j,3]
+        loss = par.dist[j,4]
+        sigma2 = par.dist[j,5]
+        beta2 = par.dist[j,6]
+        
+        loss2 = par.df$loss2
+        recru = par.df$recru
+        epsilon = par.df$epsilon
+        
+        
+      }else if (model == "MSIRSIR"){
+        beta=par.dist[j,2]
+        sigma=par.dist[j,3]
+        beta2 = par.dist[j,4]
+        
+        sigma2 = par.df$sigma2
+        loss2 = par.df$loss2
+        loss = par.df$loss
+        epsilon = par.df$epsilon
+        recru = par.df$recru
+        
+      }else if(model=="MSIRNIRN-LT"){
+        beta=par.dist[j,2]
+        sigma=par.dist[j,3]
+        recru=par.dist[j,4]
+        sigma2=par.dist[j,5]
+        epsilon=par.dist[j,6]
+        
+        
+        loss2 = par.df$loss2
+        loss = par.df$loss
+        beta2 = par.df$beta2
+        
+        
+      }else if(model=="MSIRNSIRN-LT"){
+        
+        beta=par.dist[j,2]
+        sigma=par.dist[j,3]
+        loss=par.dist[j,4]
+        sigma2=par.dist[j,5]
+        beta2=par.dist[j,6]
+        epsilon=par.dist[j,7]
+        
+        
+        loss2 = par.df$loss2
+        recru = par.df$recru
+        
+      }else if (model =="MSIRNSIRNS"){
+        
+        beta=par.dist[j,2]
+        sigma=par.dist[j,3]
+        loss=par.dist[j,4]
+        sigma2=par.dist[j,5]
+        beta2=par.dist[j,6]
+        loss2=par.dist[j,7]
+        
+        recru = par.df$recru
+        epsilon = par.df$epsilon
+        
+      } 
+      
+      weight.PCR = par.dist[j, ncol(par.dist)]
+      
+      if(mu.sick >1 & mu.rec==1){
+        
+        mu.sick = par.dist[j, (ncol(par.dist)-1)]
+        mu.rec = par.df$mu_rec
+        
+      }else if (mu.sick ==1 & mu.rec >1){
+        
+        mu.sick = par.df$mu_sick
+        mu.rec = par.dist[j, (ncol(par.dist)-1)]
+        
+      }else if(mu.sick >1 & mu.rec >1){
+        
+        mu.sick =par.dist[j, (ncol(par.dist)-2)]
+        mu.rec = par.dist[j, (ncol(par.dist)-1)]
+        
+      }else{
+        mu.sick = par.df$mu_sick
+        mu.rec = par.df$mu_rec
+        
+      }
+      
+      
+    
     
     #the parameters here do not pull from the par.df which are the best fits 
     #but instead from the selections specified in the if/else statements above 
@@ -2891,9 +2891,9 @@ wrap.fit.AngV.CI.cov <- function(model, num_states, beta, sigma, recru, wane, ep
   biwk_preds_seroprev.qs  <- apply(X=biwk_preds_seroprev,MARGIN=1,FUN=quantile,probs=c(0.025,0.975), na.rm=TRUE) 
   biwk_preds_seroprev.qs.iqr  <- apply(X=biwk_preds_seroprev,MARGIN=1,FUN=quantile,probs=c(0.25,0.75), na.rm=TRUE) 
   
-  biwk_preds_prev[biwk_preds_seroprev<0] <- 0
-  biwk_preds_prev.qs  <- apply(X=biwk_preds_seroprev,MARGIN=1,FUN=quantile,probs=c(0.025,0.975), na.rm=TRUE) 
-  biwk_preds_prev.qs.iqr  <- apply(X=biwk_preds_seroprev,MARGIN=1,FUN=quantile,probs=c(0.25,0.75), na.rm=TRUE) 
+  biwk_preds_prev[biwk_preds_prev<0] <- 0
+  biwk_preds_prev.qs  <- apply(X=biwk_preds_prev,MARGIN=1,FUN=quantile,probs=c(0.025,0.975), na.rm=TRUE) 
+  biwk_preds_prev.qs.iqr  <- apply(X=biwk_preds_prev,MARGIN=1,FUN=quantile,probs=c(0.25,0.75), na.rm=TRUE) 
   
   
   #and combine to produce the time series:
