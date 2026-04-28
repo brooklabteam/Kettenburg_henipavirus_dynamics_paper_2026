@@ -1,0 +1,44 @@
+rm(list=ls())
+
+library(plyr)
+library(dplyr)
+library(ggplot2)
+
+homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+
+#set wd
+setwd(paste0(homewd,"/model_fitting/AngV-fits/out-run-AngVs-CI/"))
+#load all the data and add to a list
+
+
+function.load <- function(prefix, list, i){
+  load(paste0(prefix,i,".Rdata")) 
+  list[[i]] <- out.fit
+  print(list)
+  
+  return(list)
+}
+
+dat.fit <- list()
+
+for (i in 1:20){
+  skip_to_next <- FALSE
+  tryCatch({dat.fit <- function.load(prefix = "mean", list=dat.fit, i=i)}, error = function(i) {skip_to_next <<- TRUE})
+  if(skip_to_next) { next }    
+}
+
+#extract first, second, third, item in list
+dat.par <- data.table::rbindlist(sapply(dat.fit, function(x) x[[1]]))
+dat.age.sero <- data.table::rbindlist(sapply(dat.fit, function(x) x[[2]]))
+dat.biweekly.ts <- data.table::rbindlist(sapply(dat.fit, function(x) x[[3]]))
+
+head(dat.par)
+head(dat.age.sero)
+head(dat.biweekly.ts)
+
+#and save these 
+
+write.csv(dat.par, file=paste0(homewd,"/model_fitting/AngV-fits/final_par_fits_AngV.csv"), row.names = F)
+write.csv(dat.age.sero, file=paste0(homewd,"/model_fitting/AngV-fits/final_age_sero_df_AngV.csv"), row.names = F)
+write.csv(dat.biweekly.ts, file=paste0(homewd,"/model_fitting/AngV-fits/final_biweekly_ts_AngV.csv"), row.names = F)
+
