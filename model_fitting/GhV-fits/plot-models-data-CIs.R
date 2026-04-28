@@ -433,7 +433,7 @@ plot.models.data.CI.squiggle(CI.age.fits = age.sero.df,
 
 
 
-
+#and if you want no squiggles
 plot.models.data.CI(CI.age.fits = age.sero.df,
                              CI.ts.fits = biwk.ts.df,
                              dat1=dat, 
