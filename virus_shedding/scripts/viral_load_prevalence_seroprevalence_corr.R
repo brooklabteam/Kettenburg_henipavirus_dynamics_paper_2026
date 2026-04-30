@@ -135,7 +135,8 @@ m1a <- glm(cbind(NGhVSeropos, NGhVseroneg)  ~ GhVprev:roost_site,
           data = shed.sero.prev)
 
 summary(m1) #not sig
-summary(m1a) #now moramanga. suggests they are negatively correlated
+summary(m1a) #now moramanga. suggests they are negatively correlated 
+# (e.g. when prevalence is high, seroprevalence is low)
 
 
 #and AngV
@@ -144,7 +145,7 @@ m2 <- glm(cbind(NAngVSeropos, NAngVseroneg) ~ AngVprev:roost_site,
           data = shed.sero.prev)
 
 #and as a sensitivity analysis, try a version that weights those 
-#sessions with more individuals contributing to Ct score
+#sessions with more individuals contributing to prevalence
 m2a <- glm(cbind(NAngVSeropos, NAngVseroneg) ~ AngVprev:roost_site,
            family = binomial,
            weights = NAngVpos,
@@ -622,7 +623,7 @@ m2 <- glm(cbind(NAngVSeropos, NAngVseroneg) ~ AngVprev:roost_site,
           data = shed.sero.prev)
 
 #and as a sensitivity analysis, try a version that weights those 
-#sessions with more individuals contributing to Ct score
+#sessions with more individuals contributing to prevalence
 m2a <- glm(cbind(NAngVSeropos, NAngVseroneg) ~ AngVprev:roost_site,
            family = binomial,
            weights = NAngVpos,
