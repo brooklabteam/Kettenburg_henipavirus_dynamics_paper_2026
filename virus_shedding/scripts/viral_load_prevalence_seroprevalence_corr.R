@@ -871,17 +871,16 @@ perm_test_short_lag <- function(df, lag_limit, n_perm = 10000) {
 }
 
 perm_test_short_lag(df=shed.sero.prev, lag_limit = 40, n_perm = 10000)
-#p-val = 0.19
+#p-val = 0.1742523
 #no support for lag of 40 days
 
 perm_test_short_lag(df=shed.sero.prev, lag_limit = 30, n_perm = 10000)
-#p-val = 0.22
+#p-val = 0.4217694
 #no support for lag of 30 days 
 
 perm_test_short_lag(df=shed.sero.prev, lag_limit = 15, n_perm = 10000)
-# p-val = 0.63
-# still not significant. no support for lagged time series... but this could be
-# due to data limitations
+# p-val = 0
+# only 2 timepoints to shuffle - ignore
 
 
 ## CONCLUSION
