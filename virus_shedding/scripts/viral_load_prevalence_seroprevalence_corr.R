@@ -80,10 +80,10 @@ merge.eid <- subset(merge.dat, bat_species=="Eidolon dupreanum")
 #now get prevalence for every sampling session
 #first get midpoint date for sampling session
 
-sampling.session <- ddply(merge.dat,.(sampling_session), summarise, min_date =min(processing_date), max_date=max(processing_date))
+sampling.session <- ddply(merge.eid,.(sampling_session), summarise, min_date =min(processing_date), max_date=max(processing_date))
 sampling.session$mid_date <- sampling.session$min_date + ((sampling.session$max_date-sampling.session$min_date)/2)
 
-merge.eid <- merge(merge.dat, sampling.session, by="sampling_session")
+merge.eid <- merge(merge.eid, sampling.session, by="sampling_session")
 
 shed.sero.prev <- ddply(merge.eid,.(bat_species, sampling_session, roost_site, mid_date), summarise, NGhVpos = sum(GhV_pos, na.rm=T), NAngVpos = sum(AngV_pos, na.rm=T), NGhVSeropos = sum(seropos_GhV, na.rm = T), NAngVSeropos = sum(seropos_AngV, na.rm = T), Ntot= length(seropos_AngV))
 head(shed.sero.prev)
@@ -134,7 +134,7 @@ m1a <- glm(cbind(NGhVSeropos, NGhVseroneg)  ~ GhVprev:roost_site,
           weights = NGhVpos,
           data = shed.sero.prev)
 
-summary(m1) #Ankarana is sig (positive corr)
+summary(m1) #not sig
 summary(m1a) #now moramanga. suggests they are negatively correlated
 
 
@@ -160,10 +160,10 @@ summary(m2a) #still not sig
 
 
 weighted_cor <- function(x, y, w) {
-  rx <- rank(x, ties.method = "average")
-  ry <- rank(y, ties.method = "average")
+  #rx <- rank(x, ties.method = "average")
+  #ry <- rank(y, ties.method = "average")
   cov.wt(cbind(x, y), wt = w, cor = TRUE)$cor[1, 2]
-} #spearman
+} #pearson
 perm_cor_weighted <- function(df, virus, n_perm = 10000, seed = NULL) {
   
   if (!is.null(seed)) set.seed(seed)
@@ -223,7 +223,7 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
     
     df=subset(df, !is.na(GhVprev))
    # w <- df$NGhVpos  # or n_bats
-    obs <- cor(df$GhVseroprev, df$GhVprev, method="spearman")
+    obs <- cor(df$GhVseroprev, df$GhVprev, method="pearson")
     
     perm_stats <- replicate(n_perm, {
       
@@ -234,7 +234,7 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
         df_perm$GhVprev[idx] <- sample(df$GhVprev[idx])
       }
       
-      cor(df$GhVseroprev, df$GhVprev, method="spearman")
+      cor(df$GhVseroprev, df$GhVprev, method="pearson")
     })
     
   }else if (virus=="AngV"){
@@ -242,7 +242,7 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
     
     df=subset(df, !is.na(AngVprev))
    # w <- df$NAngVpos  # or n_bats
-    obs <- cor(df$AngVseroprev, df$AngVprev, method="spearman")
+    obs <- cor(df$AngVseroprev, df$AngVprev, method="pearson")
     
     perm_stats <- replicate(n_perm, {
       
@@ -253,7 +253,7 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
         df_perm$AngVprev[idx] <- sample(df$AngVprev[idx])
       }
       
-      cor(df$AngVseroprev, df$AngVprev, method="spearman")
+      cor(df$AngVseroprev, df$AngVprev, method="pearson")
     })
     
   }
@@ -265,15 +265,16 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
 }
 
 perm_cor_weighted(df = subset(shed.sero.prev, roost_site!="Mahabo"), virus="GhV",n_perm = 10000)
-#$observed: -0.493476; $p_value= 0.0407. significant
+#$observed: -0.3198226; $p_value= 0.3081. not significant
 perm_cor_weighted(df = subset(shed.sero.prev, roost_site!="Mahabo"), virus="AngV",n_perm = 10000)
 #$observed: NA; $p_value= NA. not significant
+#not enough AngV positives for the weighting
 
 #and unweighted
 perm_cor_unweighted(df = subset(shed.sero.prev, roost_site!="Mahabo"), virus="GhV",n_perm = 10000)
-#$observed: 0.2047941  $p_value= 15.  not sig
+#$observed: 0.1337647  $p_value= 1.  not sig
 perm_cor_unweighted(df = subset(shed.sero.prev, roost_site!="Mahabo"), virus="AngV",n_perm = 10000)
-#$observed: -0.121954; $p_value= 1. not significant
+#$observed: -0.1617161; $p_value= 1. not significant
 
 # now make a plot for the actual paper (either supp or one component of main):
 head(shed.sero.prev)
@@ -316,7 +317,7 @@ p2 <-  ggplot(data= subset(shed.sero.prev, !is.na(AngVprev))) +
   scale_color_discrete(name="roost site") +
   theme(panel.grid = element_blank(), axis.text = element_text(size=14),
         axis.title = element_text(size=18), legend.position = "inside",
-        legend.position.inside = c(.85,.73), legend.text = element_text(size=12),
+        legend.position.inside = c(.85,.67), legend.text = element_text(size=12),
         legend.title = element_text(size=14));p2
 
 
@@ -375,7 +376,7 @@ perm_test_short_lag <- function(df, lag_limit, n_perm = 10000) {
   # observed
   pairs <- subset(pairs, lag_days > 0 & lag_days <= lag_limit)
   
-  obs <- cor(pairs$GhVprev, pairs$GhVseroprev, method = "spearman")  
+  obs <- cor(pairs$GhVprev, pairs$GhVseroprev, method = "pearson")  
   
   perm_stats <- replicate(n_perm, {
     
@@ -390,7 +391,478 @@ perm_test_short_lag <- function(df, lag_limit, n_perm = 10000) {
     pairs_perm <- lagged_pairs(df_perm)
     pairs_perm <- subset(pairs_perm, lag_days > 0 & lag_days <= lag_limit & !is.na(GhVprev))
     
-    cor(pairs_perm$GhVprev, pairs_perm$GhVseroprev, method = "spearman")
+    cor(pairs_perm$GhVprev, pairs_perm$GhVseroprev, method = "pearson")
+  })
+  
+  perm_stats <- perm_stats[!is.na(perm_stats)]
+  mean(abs(perm_stats) >= abs(obs))
+}
+
+perm_test_short_lag(df=shed.sero.prev, lag_limit = 40, n_perm = 10000)
+#p-val = 0.9083
+#no support for lag of 40 days
+
+perm_test_short_lag(df=shed.sero.prev, lag_limit = 30, n_perm = 10000)
+#p-val = 0.2930223
+#no support for lag of 30 days 
+
+perm_test_short_lag(df=shed.sero.prev, lag_limit = 15, n_perm = 10000)
+# p-val = NA. no paired data at these small lags
+
+
+
+## CONCLUSION
+# there is no support for lagged prevalence and seroprevalence time series
+# but the time windows we can look at are not particularly biologically relevant
+# however, we do have support for negatively correlated time series in Moramanga
+
+# we don't have the fine-scale sampling that is needed to parse this timing precisely.
+# biologically, if there was a lag, it would only be in the ~14-30 day window reflecting
+# the lag in peak prevalence and seroprevalence result
+
+#let's plot the lag duration vs. correlation
+bin_lags <- function(pairs) {
+  
+  pairs <- arrange(pairs, lag_days)
+  pairs$lag_bin <- cut(
+    pairs$lag_days,
+    breaks = c(0, 15, 30, 50, 70, 90),
+    labels = c("0–15d", "15–30d", "30–50d", "50–70d", "70–90d"),
+    right = TRUE
+  )
+  
+  pairs[!is.na(pairs$lag_bin), ]
+}
+
+bin.df <- bin_lags(lagged_pairs(shed.sero.prev))
+
+#get correlation
+summarise_bins <- function(pairs) {
+  
+  aggregate(cbind(GhVprev, GhVseroprev) ~ lag_bin, data = pairs, function(x) NA)  # placeholder
+  
+  library(dplyr)
+  
+  pairs %>%
+    group_by(lag_bin) %>%
+    summarise(
+      r = cor(GhVprev, GhVseroprev, method = "pearson"),#, use = "complete.obs"),
+      n = n()
+    )
+}
+
+#just do Moramanga data because not enough pairs in Ankarana
+bin.sum <- summarise_bins(bin.df[bin.df$roost_site=="Moramanga",])
+
+plot_lag_correlation <- function(summary_df) {
+  
+  ggplot(data=summary_df)+
+    geom_point(aes(x=lag_bin, y=r, size=n), show.legend = F) +
+    scale_size_continuous(name="N bats", breaks = c(10,20,30), labels = c("10", "20", "30")) +
+    theme_bw() + xlab("Lag window") +
+    ylab("Pearson correlation for GhV\n(prevalence vs. seroprevalence)") +
+    geom_hline(aes(yintercept=0), linetype=2) +
+    theme(panel.grid = element_blank(), axis.text = element_text(size=14),
+          axis.title = element_text(size=18), #legend.position = "inside",
+          #legend.position.inside = c(.1,.7), 
+          legend.text = element_text(size=12),
+          legend.title = element_text(size=14),
+          plot.margin = unit(c(1.5,.5,.5,1), "lines")) 
+    
+}
+
+p4 <- plot_lag_correlation(bin.sum)
+p4
+# positively correlated datasets (makes sense), and stronger correlation at lower lags
+
+plot.supp <- cowplot::plot_grid(p2, p4, ncol=1, nrow=2, labels=c("A", "B"), label_size = 22, label_x = -.015, label_y = 1.02, align = "hv"); plot.supp
+
+ ggsave(file = paste0(homewd, "final_figures_tables/tmp/FigSX_seroprev_by_prev_AngV_plus_lag.png"),
+        plot= plot.supp,
+        units="mm",  
+        width=65, 
+        height=75, 
+        scale=3, 
+        dpi=300)
+
+
+#now repeat all for rousettus
+rm(list=ls())
+
+# ask: is high prevalence correlated with seroprevalence?
+# in particular, after a lag?
+
+homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/"
+batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
+
+# First, load the shedding data 
+shed.dat <- read.csv(file = paste0(homewd, "/virus_shedding/data/henipavirus_shedding_data.csv"))
+head(shed.dat)
+names(shed.dat)
+
+
+shed.dat <- dplyr::select(shed.dat, sampleid, GhV_shedding_ur, AngV_shedding_ur, AndV_shedding_ur)
+
+names(shed.dat)[names(shed.dat) == "GhV_shedding_ur"] <- "GhV_pos"
+names(shed.dat)[names(shed.dat) == "AngV_shedding_ur"] <- "AngV_pos"
+names(shed.dat)[names(shed.dat) == "AndV_shedding_ur"] <- "AndV_pos"
+
+
+
+# link this to the catching data to plot by sampling session
+catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/catching_data_clean.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
+
+head(catch.dat)
+#names(catch.dat)
+#catch.dat$net_date[!is.na(catch.dat$net_date)] <- as.Date(catch.dat$net_date[!is.na(catch.dat$net_date)], format = "%m/%d/%Y")
+#catch.dat$net_date[is.na(catch.dat$net_date)] <- catch.dat$processing_date[is.na(catch.dat$net_date)]
+
+# drop most columns and name those you want
+catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, processing_date, sampleid, barcode_id, bat_sex, bat_age_class, young_of_year, pupmom_pair, sampleid_pupmom_pair, bat_weight_g, bat_forearm_mm, mass_forearm_residual, recap_new)
+#names(catch.dat)[names(catch.dat)=="net_date"] <- "processing_date"
+
+#and merge all three datasets
+setdiff(shed.dat$sampleid, catch.dat$sampleid)
+
+
+merge.dat <- merge(shed.dat, catch.dat, by="sampleid")
+head(merge.dat)
+
+merge.dat$processing_date <- as.Date(merge.dat$processing_date)
+
+#change roost site to just Moramanga region or Ankarana
+unique(merge.dat$roost_site)
+merge.dat$roost_site[merge.dat$roost_site=="Ambakoana_Pruf" | merge.dat$roost_site=="Marotsipohy_Pruf" | merge.dat$roost_site=="Analambotaka_Pruf" | merge.dat$roost_site=="Morarano_Pruf" | merge.dat$roost_site=="Marovitsika_Pruf" |  merge.dat$roost_site=="Mahialambo_Pruf"  | merge.dat$roost_site=="Lakato_Edup" | merge.dat$roost_site=="Angavobe_Edup" |merge.dat$roost_site=="Angavokely_Edup"| merge.dat$roost_site=="Maromizaha_Rmad"] <- "Moramanga"
+merge.dat$roost_site[merge.dat$roost_site=="Mahabo_Edup" | merge.dat$roost_site=="Mahabo_Pruf"] <- "Mahabo"
+merge.dat$roost_site[merge.dat$roost_site=="Makira_Rmad" | merge.dat$roost_site=="Makira_Pruf"] <- "Makira"
+merge.dat$roost_site[merge.dat$roost_site!="Moramanga" & merge.dat$roost_site!="Makira" & merge.dat$roost_site!="Mahabo"] <- "Ankarana"
+unique(merge.dat$roost_site)
+merge.dat$processing_date <- as.Date(merge.dat$processing_date)
+merge.dat$doy <- yday(merge.dat$processing_date)
+
+head(merge.dat)
+
+#and add in the seroprevalence data - in wide format
+lum.dat <- read.csv(file = paste0(homewd, "/serology/data/mix_sub_data_75_90_96_wide.csv"))
+
+#and look only at the mean outputs for GhV and AngV
+names(lum.dat) <- gsub(pattern = ".", replacement = "_", x= names(lum.dat), fixed = T)
+lum.dat <- dplyr::select(lum.dat, sampleid, seropos_GhV, seropos_AngV)
+
+#and merge
+merge.dat <- merge(merge.dat, lum.dat, by = "sampleid")
+
+#subset to rousettus
+merge.eid <- subset(merge.dat, bat_species=="Rousettus madagascariensis")
+
+#now get prevalence for every sampling session
+#first get midpoint date for sampling session
+
+sampling.session <- ddply(merge.eid,.(sampling_session), summarise, min_date =min(processing_date), max_date=max(processing_date))
+sampling.session$mid_date <- sampling.session$min_date + ((sampling.session$max_date-sampling.session$min_date)/2)
+
+merge.eid <- merge(merge.eid, sampling.session, by="sampling_session")
+
+shed.sero.prev <- ddply(merge.eid,.(bat_species, sampling_session, roost_site, mid_date), summarise, NGhVpos = sum(GhV_pos, na.rm=T), NAngVpos = sum(AngV_pos, na.rm=T), NGhVSeropos = sum(seropos_GhV, na.rm = T), NAngVSeropos = sum(seropos_AngV, na.rm = T), Ntot= length(seropos_AngV))
+head(shed.sero.prev)
+shed.sero.prev$GhVprev <- shed.sero.prev$NGhVpos/shed.sero.prev$Ntot
+shed.sero.prev$AngVprev <- shed.sero.prev$NAngVpos/shed.sero.prev$Ntot
+
+shed.sero.prev$NGhVneg <- shed.sero.prev$Ntot - shed.sero.prev$NGhVpos
+shed.sero.prev$NAngVneg <- shed.sero.prev$Ntot - shed.sero.prev$NAngVpos
+
+
+shed.sero.prev$GhVseroprev <- shed.sero.prev$NGhVSeropos/shed.sero.prev$Ntot
+shed.sero.prev$AngVseroprev <- shed.sero.prev$NAngVSeropos/shed.sero.prev$Ntot
+
+shed.sero.prev$NGhVseroneg <- shed.sero.prev$Ntot - shed.sero.prev$NGhVSeropos
+shed.sero.prev$NAngVseroneg <- shed.sero.prev$Ntot - shed.sero.prev$NAngVSeropos
+
+
+shed.sero.prev$GhVprevlci <- shed.sero.prev$GhVprevuci <- shed.sero.prev$AngVprevlci <- shed.sero.prev$AngVprevuci <- shed.sero.prev$GhVprevlci <- shed.sero.prev$GhVprevuci <- shed.sero.prev$AngVseroprevlci <- shed.sero.prev$AngVseroprevuci  <-  NA
+
+for(i in 1:nrow(shed.sero.prev)){
+  tmp <- binom.test(x=c(shed.sero.prev$NGhVpos[i], shed.sero.prev$NGhVneg[i]))$conf.int  
+  tmp2 <- binom.test(x=c(shed.sero.prev$NAngVpos[i], shed.sero.prev$NAngVneg[i]))$conf.int  
+  tmp3 <- binom.test(x=c(shed.sero.prev$NGhVSeropos[i], shed.sero.prev$NGhVseroneg[i]))$conf.int  
+  tmp4 <- binom.test(x=c(shed.sero.prev$NAngVSeropos[i], shed.sero.prev$NAngVseroneg[i]))$conf.int  
+  shed.sero.prev$GhVprevlci[i] <- tmp[1]
+  shed.sero.prev$GhVprevuci[i] <- tmp[2]
+  shed.sero.prev$AngVprevlci[i] <- tmp2[1]
+  shed.sero.prev$AngVprevuci[i] <- tmp2[2]
+  shed.sero.prev$GhVseroprevlci[i] <- tmp3[1]
+  shed.sero.prev$GhVseroprevuci[i] <- tmp3[2]
+  shed.sero.prev$AngVseroprevlci[i] <- tmp4[1]
+  shed.sero.prev$AngVseroprevuci[i] <- tmp4[2]
+}
+
+head(shed.sero.prev)
+
+
+#now try some glms... is there a correlation between prevalence and seroprevalence?
+#and later test with a lag
+m1 <- glm(cbind(NGhVSeropos, NGhVseroneg) ~ GhVprev:roost_site,
+          family = binomial,
+          data = shed.sero.prev)
+
+#and as a sensitivity analysis, try a version that weights those 
+#sessions with more individuals contributing to prevalence
+m1a <- glm(cbind(NGhVSeropos, NGhVseroneg)  ~ GhVprev:roost_site,
+           family = binomial,
+           weights = NGhVpos,
+           data = shed.sero.prev)
+
+summary(m1) #not sig
+summary(m1a) #not sig
+
+
+#and AngV
+m2 <- glm(cbind(NAngVSeropos, NAngVseroneg) ~ AngVprev:roost_site,
+          family = binomial,
+          data = shed.sero.prev)
+
+#and as a sensitivity analysis, try a version that weights those 
+#sessions with more individuals contributing to Ct score
+m2a <- glm(cbind(NAngVSeropos, NAngVseroneg) ~ AngVprev:roost_site,
+           family = binomial,
+           weights = NAngVpos,
+           data = shed.sero.prev)
+
+summary(m2) #not sig
+summary(m2a) #still not sig
+
+
+
+#now try a permutation test - shuffle prevalence across sampling sessions within a site
+#first drop mahabo because it had only one visit
+
+
+weighted_cor <- function(x, y, w) {
+  #rx <- rank(x, ties.method = "average")
+  #ry <- rank(y, ties.method = "average")
+  cov.wt(cbind(x, y), wt = w, cor = TRUE)$cor[1, 2]
+} #pearson
+perm_cor_weighted <- function(df, virus, n_perm = 10000, seed = NULL) {
+  
+  if (!is.null(seed)) set.seed(seed)
+  
+  if(virus=="GhV"){
+    
+    
+    df=subset(df, !is.na(GhVprev))
+    w <- df$NGhVpos  # or n_bats
+    obs <- weighted_cor(df$GhVseroprev, df$GhVprev, w)
+    
+    perm_stats <- replicate(n_perm, {
+      
+      df_perm <- df
+      
+      for (s in unique(df$roost_site)) {
+        idx <- which(df$roost_site == s)
+        df_perm$GhVprev[idx] <- sample(df$GhVprev[idx])
+      }
+      
+      weighted_cor(df_perm$GhVseroprev, df_perm$GhVprev, w)
+    })
+    
+  }else if (virus=="AngV"){
+    
+    
+    df=subset(df, !is.na(AngVprev))
+    w <- df$NAngVpos  # or n_bats
+    obs <- weighted_cor(df$AngVseroprev, df$AngVprev, w)
+    
+    perm_stats <- replicate(n_perm, {
+      
+      df_perm <- df
+      
+      for (s in unique(df$roost_site)) {
+        idx <- which(df$roost_site == s)
+        df_perm$AngVprev[idx] <- sample(df$AngVprev[idx])
+      }
+      
+      weighted_cor(df_perm$AngVseroprev, df_perm$AngVprev, w)
+    })
+    
+  }
+  
+  perm_stats <- perm_stats[!is.na(perm_stats)]
+  p_val <- mean(abs(perm_stats) >= abs(obs))
+  
+  list(observed = obs, p_value = p_val)
+}
+perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
+  
+  if (!is.null(seed)) set.seed(seed)
+  
+  
+  if(virus=="GhV"){
+    
+    
+    df=subset(df, !is.na(GhVprev))
+    # w <- df$NGhVpos  # or n_bats
+    obs <- cor(df$GhVseroprev, df$GhVprev, method="pearson")
+    
+    perm_stats <- replicate(n_perm, {
+      
+      df_perm <- df
+      
+      for (s in unique(df$roost_site)) {
+        idx <- which(df$roost_site == s)
+        df_perm$GhVprev[idx] <- sample(df$GhVprev[idx])
+      }
+      
+      cor(df$GhVseroprev, df$GhVprev, method="pearson")
+    })
+    
+  }else if (virus=="AngV"){
+    
+    
+    df=subset(df, !is.na(AngVprev))
+    # w <- df$NAngVpos  # or n_bats
+    obs <- cor(df$AngVseroprev, df$AngVprev, method="pearson")
+    
+    perm_stats <- replicate(n_perm, {
+      
+      df_perm <- df
+      
+      for (s in unique(df$roost_site)) {
+        idx <- which(df$roost_site == s)
+        df_perm$AngVprev[idx] <- sample(df$AngVprev[idx])
+      }
+      
+      cor(df$AngVseroprev, df$AngVprev, method="pearson")
+    })
+    
+  }
+  
+  
+  p_val <- mean(abs(perm_stats) >= abs(obs))
+  
+  list(observed = obs, p_value = p_val)
+}
+
+perm_cor_weighted(df = subset(shed.sero.prev, roost_site!="Mahabo"), virus="GhV",n_perm = 10000)
+#$observed: 0.08743993; $p_value= 0.8495459. not significant
+perm_cor_weighted(df = subset(shed.sero.prev, roost_site!="Mahabo"), virus="AngV",n_perm = 10000)
+#$observed: NA; $p_value= NA. not significant
+#not enough AngV positives for the weighting
+
+#and unweighted
+perm_cor_unweighted(df = subset(shed.sero.prev, roost_site!="Mahabo"), virus="GhV",n_perm = 10000)
+#$observed: 0.09272567  $p_value= 1.  not sig
+perm_cor_unweighted(df = subset(shed.sero.prev, roost_site!="Mahabo"), virus="AngV",n_perm = 10000)
+#$observed: NA; $p_value= NA. not significant
+#not enough AngV positives t
+
+# now make a plot for the actual paper (either supp or one component of main):
+head(shed.sero.prev)
+
+pred.df <- cbind.data.frame(GhVprev = rep(seq(0,1, by=.2), 2), roost_site=rep(c("Moramanga", "Ankarana"), each=6))
+pred.df$seroprevalence <- predict(m1, newdata = pred.df, type = "response")
+pred.df$seroprevalence_lci <- predict(m1, newdata = pred.df, type = "response") -1.96*predict(m1, newdata = pred.df, type = "response", se.fit = T)$se
+pred.df$seroprevalence_lci <- predict(m1, newdata = pred.df, type = "response") +1.96*predict(m1, newdata = pred.df, type = "response", se.fit = T)$se
+
+#I think I like it better without the model, so just plotting data here
+p1 <- ggplot(data= subset(shed.sero.prev, !is.na(GhVprev))) + 
+  geom_point(aes(x=GhVprev, y=GhVseroprev, color=roost_site, size=Ntot)) + theme_bw() +
+  geom_linerange(aes(x=GhVprev, ymin=GhVseroprevlci, ymax=GhVseroprevuci, color=roost_site), linetype=3, alpha=.5) +
+  geom_linerange(aes(xmin=GhVprevlci, xmax=GhVprevuci, y=GhVseroprev, color=roost_site), linetype=3, alpha=.5) +
+  #geom_line(data=pred.df, aes(x=meanGhVCt, y=prevalence, color = roost_site)) +
+  xlab("prevalence (GhV)") + ylab("seroprevalence (GhV)") +
+  scale_size_continuous(name="N bats") +
+  scale_color_discrete(name="roost site") +
+  theme(panel.grid = element_blank(), axis.text = element_text(size=14),
+        axis.title = element_text(size=18), legend.position = "inside",
+        legend.position.inside = c(.85,.73), legend.text = element_text(size=12),
+        legend.title = element_text(size=14));p1
+
+#save this one as supplementary and pair with below lag plot
+p2 <-  ggplot(data= subset(shed.sero.prev, !is.na(AngVprev))) + 
+  geom_point(aes(x=AngVprev, y=AngVseroprev, color=roost_site, size=Ntot)) + theme_bw() +
+  geom_linerange(aes(x=AngVprev, ymin=AngVseroprevlci, ymax=AngVseroprevuci, color=roost_site), linetype=3, alpha=.5) +
+  geom_linerange(aes(xmin=AngVprevlci, xmax=AngVprevuci, y=AngVseroprev, color=roost_site), linetype=3, alpha=.5) +
+  #geom_line(data=pred.df, aes(x=meanAngVCt, y=prevalence, color = roost_site)) +
+  xlab("prevalence (AngV)") + ylab("seroprevalence (AngV)") +
+  scale_size_continuous(name="N bats") +
+  scale_color_discrete(name="roost site") +
+  theme(panel.grid = element_blank(), axis.text = element_text(size=14),
+        axis.title = element_text(size=18), legend.position = "inside",
+        legend.position.inside = c(.85,.67), legend.text = element_text(size=12),
+        legend.title = element_text(size=14));p2
+
+
+
+#and is the correlation improved by a lag?
+#summarize by mean/median ct and prevalence per sampling session
+#first get middate of sampling session
+head(shed.sero.prev)
+tail(shed.sero.prev)
+shed.sero.prev <- subset(shed.sero.prev, mid_date <"2021-01-01" & roost_site!="Mahabo") #only one singleton in mahabo dataset so no use in including it
+
+
+ggplot(shed.sero.prev) + geom_point(aes(x =GhVprev, y=GhVseroprev, color=mid_date)) + facet_grid(~roost_site)
+ggplot(shed.sero.prev) + geom_point(aes(x =AngVprev, y=AngVseroprev, color=mid_date)) + facet_grid(~roost_site)
+#not much for AngV, so we'll just look at GhV
+
+#order by date and site --
+shed.sero.prev <- arrange(shed.sero.prev, roost_site, mid_date)
+
+#now explore lags between sampling sessions
+#data gets much thinner, so let's only look at GhV for now
+lagged_pairs <- function(df) {
+  df = df[!is.na(df$GhVprev),]
+  results <- data.frame()
+  
+  for (i in 1:(nrow(df)-1)) {
+    for (j in (i+1):nrow(df)) {
+      
+      dt <- as.numeric(df$mid_date[j] - df$mid_date[i])  # in days
+      
+      results <- rbind(results, data.frame(
+        lag_days = dt,
+        GhVseroprev = df$GhVseroprev[i],
+        #meanAngVCt = df$meanAngVCt[i],
+        GhVprev = df$GhVprev[j],
+        #prevAngV = df$prevAngV[j],
+        roost_site = df$roost_site[i]
+      ))
+    }
+  }
+  
+  return(results)
+}
+
+
+#and permute - use "lag_limit" to only look at lags within a biologically relevant window
+perm_test_short_lag <- function(df, lag_limit, n_perm = 10000) {
+  df = df[!is.na(df$GhVprev),]
+  
+  
+  site.split <- dlply(df,.(roost_site))
+  
+  pairs <- data.table::rbindlist(lapply(site.split, lagged_pairs))
+  #sort(unique(lag.sites$lag_days))
+  
+  # observed
+  pairs <- subset(pairs, lag_days > 0 & lag_days <= lag_limit)
+  
+  obs <- cor(pairs$GhVprev, pairs$GhVseroprev, method = "pearson")  
+  
+  perm_stats <- replicate(n_perm, {
+    
+    df_perm <- df
+    
+    # shuffle prev within site
+    for (s in unique(df$roost_site)) {
+      idx <- which(df$roost_site == s)
+      df_perm$GhVprev[idx] <- sample(df$GhVprev[idx])
+    }
+    
+    pairs_perm <- lagged_pairs(df_perm)
+    pairs_perm <- subset(pairs_perm, lag_days > 0 & lag_days <= lag_limit & !is.na(GhVprev))
+    
+    cor(pairs_perm$GhVprev, pairs_perm$GhVseroprev, method = "pearson")
   })
   
   perm_stats <- perm_stats[!is.na(perm_stats)]
@@ -446,7 +918,7 @@ summarise_bins <- function(pairs) {
   pairs %>%
     group_by(lag_bin) %>%
     summarise(
-      r = cor(GhVprev, GhVseroprev, method = "spearman"),#, use = "complete.obs"),
+      r = cor(GhVprev, GhVseroprev, method = "pearson"),#, use = "complete.obs"),
       n = n()
     )
 }
@@ -457,10 +929,10 @@ bin.sum <- summarise_bins(bin.df[bin.df$roost_site=="Moramanga",])
 plot_lag_correlation <- function(summary_df) {
   
   ggplot(data=summary_df)+
-    geom_point(aes(x=lag_bin, y=r, size=n)) +
-    scale_size_continuous(name="N bats") +
+    geom_point(aes(x=lag_bin, y=r, size=n), show.legend = F) +
+    scale_size_continuous(name="N bats", breaks = c(4,8,12,16), labels = c("4", "8", "12", "16")) +
     theme_bw() + xlab("Lag window") +
-    ylab("Spearman correlation for GhV\n(prevalence vs. seroprevalence)") +
+    ylab("Pearson correlation for GhV\n(prevalence vs. seroprevalence)") +
     geom_hline(aes(yintercept=0), linetype=2) +
     theme(panel.grid = element_blank(), axis.text = element_text(size=14),
           axis.title = element_text(size=18), #legend.position = "inside",
@@ -468,24 +940,20 @@ plot_lag_correlation <- function(summary_df) {
           legend.text = element_text(size=12),
           legend.title = element_text(size=14),
           plot.margin = unit(c(1.5,.5,.5,1), "lines")) 
-    
+  
 }
 
 p4 <- plot_lag_correlation(bin.sum)
 p4
 # we can see that the most negative correlation (what we expect) is 
-# recovered at 15-30 day lag
+# recovered at 0-15 day lag
 
-plot.supp <- cowplot::plot_grid(p2,p3, p4, ncol=1, nrow=3, labels=c("A", "B", "C"), label_size = 22, label_x = -.015, label_y = 1.02, align = "hv"); plot.supp
+plot.supp <- cowplot::plot_grid(p1,p2, p4, ncol=1, nrow=3, labels=c("A", "B", "C"), label_size = 22, label_x = -.015, label_y = 1.02, align = "hv"); plot.supp
 
-# ggsave(file = paste0(homewd, "final_figures_tables/tmp/FigSX_prev_by_Ct_AngV_AndV_plus_lag.png"),
-#        plot= plot.supp,
-#        units="mm",  
-#        width=65, 
-#        height=95, 
-#        scale=3, 
-#        dpi=300)
-
-
-#now repeat all for rousettus
-rm(list=ls())
+ggsave(file = paste0(homewd, "final_figures_tables/tmp/FigSX_seroprev_by_prev_GhVAngV_plus_lag_Rou.png"),
+       plot= plot.supp,
+       units="mm",  
+       width=65, 
+       height=95, 
+       scale=3, 
+       dpi=300)
