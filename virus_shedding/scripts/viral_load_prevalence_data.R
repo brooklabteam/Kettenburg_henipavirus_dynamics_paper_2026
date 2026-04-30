@@ -153,10 +153,10 @@ summary(m3a) #still not sig
 
 
 weighted_cor <- function(x, y, w) {
-  rx <- rank(x, ties.method = "average")
-  ry <- rank(y, ties.method = "average")
+  #rx <- rank(x, ties.method = "average")
+  #ry <- rank(y, ties.method = "average")
   cov.wt(cbind(x, y), wt = w, cor = TRUE)$cor[1, 2]
-} #spearman
+} #pearson
 perm_cor_weighted <- function(df, virus, n_perm = 10000, seed = NULL) {
   
   if (!is.null(seed)) set.seed(seed)
@@ -232,7 +232,7 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
     
     df=subset(df, !is.na(meanGhVCt))
     #w <- df$NGhVpos  # or n_bats
-    obs <- cor(df$meanGhVCt, df$GhVprev, method = "spearman")
+    obs <- cor(df$meanGhVCt, df$GhVprev, method = "pearson")
     
     perm_stats <- replicate(n_perm, {
       
@@ -243,14 +243,14 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
         df_perm$meanGhVCt[idx] <- sample(df$meanGhVCt[idx])
       }
       
-      cor(df_perm$meanGhVCt, df_perm$GhVprev,method = "spearman")
+      cor(df_perm$meanGhVCt, df_perm$GhVprev,method = "pearson")
     })
     
   }else if (virus=="AngV"){
     
     df=subset(df, !is.na(meanAngVCt))
     #w <- df$NAngVpos  # or n_bats
-    obs <- cor(df$meanAngVCt, df$AngVprev, method = "spearman")
+    obs <- cor(df$meanAngVCt, df$AngVprev, method = "pearson")
     
     perm_stats <- replicate(n_perm, {
       
@@ -261,14 +261,14 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
         df_perm$meanAngVCt[idx] <- sample(df$meanAngVCt[idx])
       }
       
-      cor(df_perm$meanAngVCt, df_perm$AngVprev, method = "spearman")
+      cor(df_perm$meanAngVCt, df_perm$AngVprev, method = "pearson")
     })
     
   }else if (virus=="AndV"){
     
     df=subset(df, !is.na(meanAndVCt))
     #w <- df$NAngVpos  # or n_bats
-    obs <- cor(df$meanAndVCt, df$AndVprev, method = "spearman")
+    obs <- cor(df$meanAndVCt, df$AndVprev, method = "pearson")
     
     perm_stats <- replicate(n_perm, {
       
@@ -279,7 +279,7 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
         df_perm$meanAndVCt[idx] <- sample(df$meanAndVCt[idx])
       }
       
-      cor(df_perm$meanAndVCt, df_perm$AndVprev, method = "spearman")
+      cor(df_perm$meanAndVCt, df_perm$AndVprev, method = "pearson")
     })
     
   }
@@ -290,19 +290,19 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
 }
 
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo"), virus="GhV",n_perm = 10000)
-#$observed: -0.3563853; $p_value= 0.1066. almost significant
+#$observed: --0.3563853; $p_value= 0.11. almost significant
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo"), virus="AngV",n_perm = 10000)
-#$observed: -0.3293304; $p_value= 0.6732. not significant
+#$observed: -0.3293304; $p_value= 0.675. not significant
 perm_cor_weighted(df = subset(shed.prev, roost_site=="Moramanga"), virus="AndV",n_perm = 10000)
-#$observed: -0.9470351 $p_value = 0.0423, sig!
+#$observed: -0.9470351 $p_value = 0.0426, sig!
 
 #and unweighted
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo"), virus="GhV",n_perm = 10000)
-#$observed: -0.3280877  $p_value= 0.0985.  sig
+#$observed: -0.2262418  $p_value= 0.2902.  not sig
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo"), virus="AngV",n_perm = 10000)
-#$observed: -0.3414698; $p_value= 0.6138. not significant
+#$observed: -0.318404; $p_value= 0.7024. not significant
 perm_cor_unweighted(df = subset(shed.prev, roost_site=="Moramanga"), virus="AndV",n_perm = 10000)
-# observed = -0.7; pval = 0.2333
+# observed = -0.9470351; pval = 0.0428
 
 # now make a plot for the actual paper (either supp or one component of main):
 shed.prev$GhVCt_uci <- shed.prev$meanGhVCt+1.96*shed.prev$sdGhVCt
@@ -429,7 +429,7 @@ perm_test_short_lag <- function(df, lag_limit, n_perm = 10000) {
   # observed
   pairs <- subset(pairs, lag_days > 0 & lag_days <= lag_limit)
   
-  obs <- cor(pairs$meanGhVCt, pairs$prevGhV, method = "spearman")  
+  obs <- cor(pairs$meanGhVCt, pairs$prevGhV, method = "pearson")  
   
   perm_stats <- replicate(n_perm, {
     
@@ -444,7 +444,7 @@ perm_test_short_lag <- function(df, lag_limit, n_perm = 10000) {
     pairs_perm <- lagged_pairs(df_perm)
     pairs_perm <- subset(pairs_perm, lag_days > 0 & lag_days <= lag_limit & !is.na(meanGhVCt))
     
-    cor(pairs_perm$meanGhVCt, pairs_perm$prevGhV, method = "spearman")
+    cor(pairs_perm$meanGhVCt, pairs_perm$prevGhV, method = "pearson")
   })
   
   perm_stats <- perm_stats[!is.na(perm_stats)]
@@ -498,7 +498,7 @@ summarise_bins <- function(pairs) {
   pairs %>%
     group_by(lag_bin) %>%
     summarise(
-      r = cor(meanGhVCt, prevGhV, method = "spearman"),#, use = "complete.obs"),
+      r = cor(meanGhVCt, prevGhV, method = "pearson"),#, use = "complete.obs"),
       n = n()
     )
 }
@@ -512,7 +512,7 @@ plot_lag_correlation <- function(summary_df) {
     geom_point(aes(x=lag_bin, y=r, size=n)) +
     scale_size_continuous(name="N bats") +
     theme_bw() + xlab("Lag window") +
-    ylab("Spearman correlation for GhV\n(Ct vs prevalence)") +
+    ylab("Pearson correlation for GhV\n(Ct vs prevalence)") +
     geom_hline(aes(yintercept=0), linetype=2) +
     theme(panel.grid = element_blank(), axis.text = element_text(size=14),
           axis.title = element_text(size=18), #legend.position = "inside",
@@ -526,8 +526,8 @@ plot_lag_correlation <- function(summary_df) {
 p4 <- plot_lag_correlation(bin.sum)
 p4
 # we can see that the negative correlation is strongest at lower lags, indicating
-# that this is a temporally tight relationship - but again, we lack the data to really
-# find the lag specifically
+# that this is a temporally tight relationship where Ct precedes prevalence - 
+# but again, we lack the data to really find the lag specifically
 
 plot.supp <- cowplot::plot_grid(p2,p3, p4, ncol=1, nrow=3, labels=c("A", "B", "C"), label_size = 22, label_x = -.015, label_y = 1.02, align = "hv"); plot.supp
 
@@ -684,10 +684,10 @@ summary(m3a) #still not sig
 
 
 weighted_cor <- function(x, y, w) {
-  rx <- rank(x, ties.method = "average")
-  ry <- rank(y, ties.method = "average")
+ # rx <- rank(x, ties.method = "average")
+  #ry <- rank(y, ties.method = "average")
   cov.wt(cbind(x, y), wt = w, cor = TRUE)$cor[1, 2]
-} #spearman
+} #pearson
 perm_cor_weighted <- function(df, virus, n_perm = 10000, seed = NULL) {
   
   if (!is.null(seed)) set.seed(seed)
@@ -763,7 +763,7 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
     
     df=subset(df, !is.na(meanGhVCt))
     #w <- df$NGhVpos  # or n_bats
-    obs <- cor(df$meanGhVCt, df$GhVprev, method = "spearman")
+    obs <- cor(df$meanGhVCt, df$GhVprev, method = "pearson")
     
     perm_stats <- replicate(n_perm, {
       
@@ -774,14 +774,14 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
         df_perm$meanGhVCt[idx] <- sample(df$meanGhVCt[idx])
       }
       
-      cor(df_perm$meanGhVCt, df_perm$GhVprev,method = "spearman")
+      cor(df_perm$meanGhVCt, df_perm$GhVprev,method = "pearson")
     })
     
   }else if (virus=="AngV"){
     
     df=subset(df, !is.na(meanAngVCt))
     #w <- df$NAngVpos  # or n_bats
-    obs <- cor(df$meanAngVCt, df$AngVprev, method = "spearman")
+    obs <- cor(df$meanAngVCt, df$AngVprev, method = "pearson")
     
     perm_stats <- replicate(n_perm, {
       
@@ -792,14 +792,14 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
         df_perm$meanAngVCt[idx] <- sample(df$meanAngVCt[idx])
       }
       
-      cor(df_perm$meanAngVCt, df_perm$AngVprev, method = "spearman")
+      cor(df_perm$meanAngVCt, df_perm$AngVprev, method = "pearson")
     })
     
   }else if (virus=="AndV"){
     
     df=subset(df, !is.na(meanAndVCt))
     #w <- df$NAngVpos  # or n_bats
-    obs <- cor(df$meanAndVCt, df$AndVprev, method = "spearman")
+    obs <- cor(df$meanAndVCt, df$AndVprev, method = "pearson")
     
     perm_stats <- replicate(n_perm, {
       
@@ -810,7 +810,7 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
         df_perm$meanAndVCt[idx] <- sample(df$meanAndVCt[idx])
       }
       
-      cor(df_perm$meanAndVCt, df_perm$AndVprev, method = "spearman")
+      cor(df_perm$meanAndVCt, df_perm$AndVprev, method = "pearson")
     })
     
   }
@@ -821,9 +821,9 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
 }
 
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Makira"), virus="GhV",n_perm = 10000)
-#$observed: 0.5241467; $p_value= 0.0461. significant... but backwards
+#$observed: 0.5241467; $p_value= 0.0492. significant... but backwards
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Makira"), virus="AngV",n_perm = 10000)
-#$observed: -0.608751; $p_value= 0.1964. not significant but close
+#$observed: -0.608751; $p_value= 0.197. not significant but close
 
 #cannot test for AndV because only two entries had Ct values at all and they were
 #in different sites
@@ -832,9 +832,9 @@ perm_cor_weighted(df = subset(shed.prev, roost_site!="Makira"), virus="AngV",n_p
 
 #and unweighted
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Makira"), virus="GhV",n_perm = 10000)
-#$observed: 0.5222545  $p_value= 0.0902. sig
+#$observed: 0.4674389  $p_value= 0.0787. sig but backwards
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Makira"), virus="AngV",n_perm = 10000)
-#$observed: -0.7807201; $p_value= 0.0564. significant here
+#$observed: -0.672902; $p_value= 0.1128. close to significant here and in the right direction
 
 #cannot test for AndV because only two entries had Ct values at all and they were
 #in different sites
@@ -961,7 +961,7 @@ perm_test_short_lag <- function(df, lag_limit, n_perm = 10000) {
   # observed
   pairs <- subset(pairs, lag_days > 0 & lag_days <= lag_limit)
   
-  obs <- cor(pairs$meanGhVCt, pairs$prevGhV, method = "spearman")  
+  obs <- cor(pairs$meanGhVCt, pairs$prevGhV, method = "pearson")  
   
   perm_stats <- replicate(n_perm, {
     
@@ -976,7 +976,7 @@ perm_test_short_lag <- function(df, lag_limit, n_perm = 10000) {
     pairs_perm <- lagged_pairs(df_perm)
     pairs_perm <- subset(pairs_perm, lag_days > 0 & lag_days <= lag_limit & !is.na(meanGhVCt))
     
-    cor(pairs_perm$meanGhVCt, pairs_perm$prevGhV, method = "spearman")
+    cor(pairs_perm$meanGhVCt, pairs_perm$prevGhV, method = "pearson")
   })
   
   perm_stats <- perm_stats[!is.na(perm_stats)]
