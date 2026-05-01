@@ -28,9 +28,9 @@ for (i in 1:20){
 }
 
 #extract first, second, third, item in list
-dat.par <- data.table::rbindlist(sapply(dat.fit, function(x) x[[1]]))
-dat.age.sero <- data.table::rbindlist(sapply(dat.fit, function(x) x[[2]]))
-dat.biweekly.ts <- data.table::rbindlist(sapply(dat.fit, function(x) x[[3]]))
+dat.par <- data.table::rbindlist(sapply(dat.fit, '[', 1))
+dat.age.sero <- data.table::rbindlist(sapply(dat.fit, '[', 2))
+dat.biweekly.ts <- data.table::rbindlist(sapply(dat.fit, '[', 3))
 
 head(dat.par)
 head(dat.age.sero)
