@@ -102,6 +102,7 @@ get.seroprev.dat = function(data, vis_split, cutoff){
 plot.models.data.CI.squiggle <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split,  do.plot, do.save, filename1, filename2, filename3){
   
   mod.all = subset(CI.age.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
+  CI.ts.fits1 = subset(CI.ts.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
   
   mod.all$model <- factor(mod.all$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
                                                   "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
@@ -117,6 +118,22 @@ plot.models.data.CI.squiggle <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero
                                                   "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
                                                   "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
                                                   "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+  
+  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
+                                                  "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
+                                                  "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
+                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                  "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
+                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                  "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
+                                                  "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
+                                                  "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
+                                                  "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
+                                                  "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
+                                                  "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
+                                                  "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
+                                                  "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+  
   
   #first pull out your data...
   dat.tmp <- subset(dat1, species==species1 & antigen==antigen1)
@@ -186,15 +203,15 @@ plot.models.data.CI.squiggle <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero
     theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
           panel.grid = element_blank(), strip.background = element_rect(fill="white"),
           legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("prevalence") + xlab("biweek of year")  + 
+    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("seroprevalence") + xlab("biweek of year")  + 
     scale_size_continuous(name="N bats") +
     scale_color_discrete(name="year") +
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits, aes(x=biwk, y=seroprevalence), color="red") + 
-    geom_ribbon(data=CI.ts.fits, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=CI.ts.fits, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="red") + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   #prev
@@ -210,9 +227,9 @@ plot.models.data.CI.squiggle <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits, aes(x=biwk, y=prevalence), color="red") + 
-    geom_ribbon(data=CI.ts.fits, aes(x=biwk, ymin=prev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=CI.ts.fits, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prevalence), color="red") + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   if(do.save==TRUE){
@@ -250,6 +267,8 @@ plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.pr
   
   mod.all = subset(CI.age.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
   
+  CI.ts.fits1 = subset(CI.ts.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
+  
   mod.all$model <- factor(mod.all$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
                                                   "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
                                                   "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
@@ -264,6 +283,21 @@ plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.pr
                                                   "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
                                                   "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
                                                   "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+  
+  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
+                                                          "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
+                                                          "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
+                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                          "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
+                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                          "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
+                                                          "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
+                                                          "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
+                                                          "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
+                                                          "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
+                                                          "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
+                                                          "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
+                                                          "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
   
   
   #now summarize across age bins
@@ -355,15 +389,15 @@ plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.pr
     theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
           panel.grid = element_blank(), strip.background = element_rect(fill="white"),
           legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("prevalence") + xlab("biweek of year")  + 
+    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("seroprevalence") + xlab("biweek of year")  + 
     scale_size_continuous(name="N bats") +
     scale_color_discrete(name="year") +
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits, aes(x=biwk, y=seroprevalence), color="red") + 
-    geom_ribbon(data=CI.ts.fits, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=CI.ts.fits, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="red") + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   #prev
@@ -379,9 +413,9 @@ plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.pr
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits, aes(x=biwk, y=prevalence), color="red") + 
-    geom_ribbon(data=CI.ts.fits, aes(x=biwk, ymin=prev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=CI.ts.fits, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prevalence), color="red") + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   if(do.save==TRUE){
