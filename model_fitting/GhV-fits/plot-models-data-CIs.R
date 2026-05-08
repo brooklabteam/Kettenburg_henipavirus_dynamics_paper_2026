@@ -183,9 +183,9 @@ plot.models.data.CI.squiggle <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=mod.all, aes(x=age, y=seroprevalence), color="red") + 
-    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    geom_line(data=mod.all, aes(x=age, y=seroprevalence), color="cornflowerblue") + 
+    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
+    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   
@@ -209,9 +209,9 @@ plot.models.data.CI.squiggle <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="red") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="cornflowerblue") + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   #prev
@@ -369,9 +369,9 @@ plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.pr
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=model.sum, aes(x=age_bin, y=seroprevalence), color="red") + 
-    geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    geom_line(data=mod.all, aes(x=age, y=seroprevalence), color="cornflowerblue") + 
+    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
+    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   
@@ -395,9 +395,9 @@ plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.pr
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="red") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="cornflowerblue") + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   #prev
@@ -532,9 +532,9 @@ plot.models.data.CI.squiggle.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=mod.all, aes(x=age, y=seroprevalence), color="red") + 
-    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    geom_line(data=mod.all, aes(x=age, y=seroprevalence), color="cornflowerblue") + 
+    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
+    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   
@@ -558,9 +558,9 @@ plot.models.data.CI.squiggle.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="red") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="cornflowerblue") + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   #prev
@@ -718,9 +718,9 @@ plot.models.data.CI.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, da
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=model.sum, aes(x=age_bin, y=seroprevalence), color="red") + 
-    geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    geom_line(data=model.sum, aes(x=age, y=seroprevalence), color="cornflowerblue") + 
+    geom_ribbon(data=model.sum, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
+    geom_ribbon(data=model.sum, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   
@@ -744,9 +744,9 @@ plot.models.data.CI.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, da
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="red") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="cornflowerblue") + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   #prev
