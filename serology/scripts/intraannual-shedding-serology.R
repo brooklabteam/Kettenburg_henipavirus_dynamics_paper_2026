@@ -1224,7 +1224,42 @@ pMFR_Ct <- ggplot(data= subset(tot.merge,  bat_species=="Eidolon dupreanum" & Gh
                   axis.text = element_text(size=14),
                   axis.title.y = element_text(size=16)); pMFR_Ct
 
+pMFR_Ctsex <- ggplot(data= subset(tot.merge,  bat_species=="Eidolon dupreanum" & GhV_ct>0 & combo_class!="juvenile"& tot.merge$combo_class!="female-P")) +
+  geom_violin(aes(x=mass_cat, y=GhV_ct), draw_quantiles = c(0,.25,.5,.75)) + 
+  geom_jitter(aes(x=mass_cat, y=GhV_ct, color=bat_sex, shape=as.factor(year)), width = .2,size=3) +
+  theme_bw() + ylab("Ct (GhV)") +
+  scale_shape_manual(name="year", values=yearz) +
+  scale_color_manual(values = c("pink2", "cornflowerblue"), name="bat sex") +
+  theme(panel.grid = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text = element_text(size=14),
+        axis.title.y = element_text(size=16)); pMFR_Ctsex
+
+MFR_leg <- get_legend(pMFR_Ctsex)
+
+pMFR_Ctsex <- ggplot(data= subset(tot.merge,  bat_species=="Eidolon dupreanum" & GhV_ct>0 & combo_class!="juvenile"& tot.merge$combo_class!="female-P")) +
+  geom_violin(aes(x=mass_cat, y=GhV_ct), draw_quantiles = c(0,.25,.5,.75)) + 
+  geom_jitter(aes(x=mass_cat, y=GhV_ct, color=bat_sex, shape=as.factor(year)), width = .2,size=3, show.legend = F) +
+  theme_bw() + ylab("Ct (GhV)") +
+  scale_shape_manual(name="year", values=yearz) +
+  scale_color_manual(values = c("pink2", "cornflowerblue"), name="bat sex") +
+  theme(panel.grid = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text = element_text(size=14),
+        axis.title.y = element_text(size=16)); pMFR_Ctsex
+
   
+pMFR_MFIsex <- ggplot(data= subset(merge.sero.dat,  bat_species=="Eidolon dupreanum" & seropos==1 & antigen=="GhV" & combo_class!="juvenile"& combo_class!="female-P")) +
+  geom_violin(aes(x=mass_cat, y=MFI), draw_quantiles = c(0,.25,.5,.75)) + 
+  geom_jitter(aes(x=mass_cat, y=MFI, color=bat_sex, shape=as.factor(year)), width = .2, size=3, show.legend = F) +
+  theme_bw() + ylab("MFI (GhV)") +
+  scale_shape_manual(name="year", values=yearz) +
+  scale_color_manual(values = c("pink2", "cornflowerblue"), name="bat sex") +
+  theme(panel.grid = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text = element_text(size=14),
+        axis.title.y = element_text(size=16)); pMFR_MFIsex
+
 pMFR_MFI <- ggplot(data= subset(merge.sero.dat,  bat_species=="Eidolon dupreanum" & seropos==1 & antigen=="GhV" & combo_class!="juvenile"& combo_class!="female-P")) +
   geom_violin(aes(x=mass_cat, y=MFI), draw_quantiles = c(0,.25,.5,.75)) + 
   geom_jitter(aes(x=mass_cat, y=MFI, color=roost_site, shape=as.factor(year)), width = .2, show.legend = F,size=3) +
@@ -1238,6 +1273,16 @@ pMFR_MFI <- ggplot(data= subset(merge.sero.dat,  bat_species=="Eidolon dupreanum
 
 #and combined 
 pMFRcombo <- cowplot::plot_grid(pMFR_Ct, pMFR_MFI, ncol=2, nrow = 1, align = "hv"); pMFRcombo
+
+pMFRcombosex <- cowplot::plot_grid(pMFR_Ctsex, pMFR_MFIsex, MFR_leg, ncol=3, nrow = 1, rel_widths = c(1,1,.2)); pMFRcombosex
+
+ggsave(file = paste0(homewd,"/final_figures_tables/tmp/pMFRcombosex.png"),
+       plot=pMFRcombosex,
+       units="mm",  
+       width=75, 
+       height=40, 
+       scale=3, 
+       dpi=300)
 
 #and the Ct-prevalence plot
 
