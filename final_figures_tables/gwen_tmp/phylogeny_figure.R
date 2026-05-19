@@ -1,45 +1,22 @@
-#Script to make figure 1, which shows the polymerase phylogeny side by side with the seasonal viral shedding
+#Script to make figure 1, which shows the polymerase phylogeny with the coverage plots
 
 rm(list=ls())
 
-library(plyr)
-library(dplyr)
 library(ggplot2)
-library(reshape2)
-library(mclust)
-library(ggh4x)
-library(ggcorrplot)
-library(factoextra)
-library(paran)
-library(hopkins)
-library(cluster)
-library(corrr) 
-library(FactoMineR)
-library(ggpmisc)
-library(heatmaply)
-library(seqinr)
-library(scales)
-library(ggdendroplot)
-library(ggimage)
 library(ggtree)
 library(ape)
 library(ggnewscale)
+#install.packages('gdata')
 library(gdata)
 library(phylotools)
 library(phylobase)
 library(cowplot)
-library(lubridate)
-library(tidyr)
-library(mgcv)
-library(reshape2)
-library(Hmisc)
-library(exactci)
 
 ##First plot the phylogenetic tree
 
 ##Set working directory
-homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/phylo_trees/"
-homewd= "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/phylo_trees/"
+homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/phylo_trees/with_GhVlike/"
+#homewd= "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/phylo_trees/"
 
 #refseq tree first
 setwd(paste0(homewd,"/pmx_gene_trees/polymerase"))
@@ -52,7 +29,7 @@ dat1 <- read.csv(("L_metadata_mid.csv"), header = T, stringsAsFactors = F)
 
 #henipa tree next
 setwd(paste0(homewd,"/henipa_focus_L_tree"))
-tree2 <-  read.tree("ref_right_align.fasta.treefile") 
+tree2 <-  read.tree("ref_right_trim.fasta.treefile") 
 rooted.tree2 <- root(tree2, which(tree2$tip.label == "YP_009094051.1"))
 #drop root and other reference sequences for aesthetics
 rooted.tree2<-drop.tip(rooted.tree2, "YP_009094051.1")
@@ -184,29 +161,29 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
         legend.direction = "vertical",
         legend.text = element_text(size=7), 
         legend.key.size = unit(0.2, "cm")) +
-  geom_cladelabel(node=357, label='HeV/NiV sister clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=354, label='AndV clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=113, label='AndV-2 clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=350, label='AndV-3 clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=250, label='AngV clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=247, label='AngV-2 clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=31, label='AchPV2-like virus', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=268, label='ThkPV1-like viruses', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  
-  geom_cladelabel(node = 239, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
-  #geom_cladelabel(node = 344, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 293, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 288, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 301, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 255, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 256, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 315, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 312, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 280, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 307, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 325, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 302, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  xlim(c(0,14))
+  # geom_cladelabel(node=357, label='HeV/NiV sister clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
+  # geom_cladelabel(node=354, label='AndV clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
+  # geom_cladelabel(node=113, label='AndV-2 clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
+  # geom_cladelabel(node=350, label='AndV-3 clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
+  # geom_cladelabel(node=250, label='AngV clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
+  # geom_cladelabel(node=247, label='AngV-2 clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
+  # geom_cladelabel(node=31, label='AchPV2-like virus', offset=8.55, fontsize=4, color="black", align=TRUE)+
+  # geom_cladelabel(node=268, label='ThkPV1-like viruses', offset=8.55, fontsize=4, color="black", align=TRUE)+
+  # 
+  # geom_cladelabel(node = 239, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
+  # #geom_cladelabel(node = 344, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  # geom_cladelabel(node = 293, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  # geom_cladelabel(node = 288, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  # geom_cladelabel(node = 301, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  # geom_cladelabel(node = 255, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  # geom_cladelabel(node = 256, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  # geom_cladelabel(node = 315, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  # geom_cladelabel(node = 312, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  # geom_cladelabel(node = 280, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  # geom_cladelabel(node = 307, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  # geom_cladelabel(node = 325, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  # geom_cladelabel(node = 302, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  xlim(c(0,12))
 
 p1
 
