@@ -1,4 +1,33 @@
 molecule,from,to,gene,type,string
+GhV-like,50,4179,N,KEL86_KEL94,first
+GhV-like,4603,7636,P,KEL86_KEL94,first
+GhV-like,8096,10940,M,KEL86_KEL94,first
+GhV-like,11664,16846,F,KEL86_KEL94,first
+GhV-like,17373,23508,G,KEL86_KEL94,first
+GhV-like,24156,48178,L,KEL86_KEL94,first
+GhV-like,1,242,gap,KEL86_KEL94,first
+GhV-like,536,749,gap,KEL86_KEL94,first
+GhV-like,3362,6281,gap,KEL86_KEL94,first
+GhV-like,7443,8687,gap,KEL86_KEL94,first
+GhV-like,10738,12781,gap,KEL86_KEL94,first
+GhV-like,16866,17236,gap,KEL86_KEL94,first
+GhV-like,19209,19635,gap,KEL86_KEL94,first
+GhV-like,22738,24787,gap,KEL86_KEL94,first
+GhV-like,32316,32923,gap,KEL86_KEL94,first
+GhV-like,44623,44836,gap,KEL86_KEL94,first
+GhV-like,50,242,gap,KEL86_KEL94,second
+GhV-like,536,749,gap,KEL86_KEL94,second
+GhV-like,3362,4180,gap,KEL86_KEL94,second
+GhV-like,4603,6281,gap,KEL86_KEL94,second
+GhV-like,7443,7636,gap,KEL86_KEL94,second
+GhV-like,8096,8687,gap,KEL86_KEL94,second
+GhV-like,10738,10940,gap,KEL86_KEL94,second
+GhV-like,11664,12781,gap,KEL86_KEL94,second
+GhV-like,19209,19635,gap,KEL86_KEL94,second
+GhV-like,22738,23508,gap,KEL86_KEL94,second
+GhV-like,24156,24787,gap,KEL86_KEL94,second
+GhV-like,32316,32923,gap,KEL86_KEL94,second
+GhV-like,44623,44836,gap,KEL86_KEL94,second
 AndV ROU125,111,1718,N,ROU125,first
 AndV ROU125,2114,3823,P,ROU125,first
 AndV ROU125,4284,5315,M,ROU125,first
