@@ -52,6 +52,7 @@ coverage_ghvlike<-  ggplot()+
         axis.title.y = element_text(margin = margin(0,0,0,1)),
         axis.ticks.x=element_blank(),
         axis.text.x = element_blank(),
+        plot.margin = unit(c(0,0.5,0.5,0.5), "cm"),
         axis.title.x = element_blank(),
         axis.line.x = element_blank())
 coverage_ghvlike
@@ -80,6 +81,7 @@ coverage_rou148<-  ggplot()+
         axis.title.y = element_text(margin = margin(0,0,0,1)),
         axis.ticks.x=element_blank(),
         axis.text.x = element_blank(),
+        plot.margin = unit(c(0,0.5,0.5,0.5), "cm"),
         axis.title.x = element_blank(),
         axis.line.x = element_blank())
 coverage_rou148
@@ -109,6 +111,7 @@ coverage_andv<-  ggplot()+
         panel.grid.minor = element_blank(),
         axis.title.y = element_text(margin = margin(0,0,0,1)),
         axis.ticks.x=element_blank(),
+        plot.margin = unit(c(0,0.5,0.5,0.5), "cm"),
         axis.text.x = element_blank(),
         axis.title.x = element_blank(),
         axis.line.x = element_blank())

@@ -25,7 +25,6 @@ library(phylobase)
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/genome_characterization/simplot"
 setwd(paste0(homewd))
 
-
 #nucleotide first
 andv_map <- read.csv(file = "nt_align_AndV_noUTRtest.csv", header = T, stringsAsFactors = F)
 head(andv_map)
@@ -67,22 +66,28 @@ andv_map_nt <- ggplot(long.sim_nt) +
         panel.border = element_rect(linetype = "solid", fill=NA)) + ylab("% Nucleotide identity")+xlab("Genome position")+
   theme(panel.grid = element_blank(), strip.text = element_text(face="italic", size=12),
         strip.background = element_rect(fill="white"), 
-        legend.position="top", legend.direction = "horizontal",legend.margin=margin(),
+        legend.direction = "horizontal",
+        legend.margin=margin(),
         legend.justification = "left",
         legend.text = element_text(face="italic", size = 10),
         legend.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        legend.position=c(0.85,0.9), 
         legend.key.height= unit(3.5, 'mm'),
         legend.key.width= unit(3.5, 'mm'),
         legend.background =element_rect(fill = alpha("white", 0)),
-        axis.text = element_text(size=12), axis.title = element_text(size=12),
-        plot.margin = unit(c(0,0.5,1,0.5), "cm"),
+        axis.text = element_text(size=12), 
+        axis.title = element_text(size=12),
+        plot.margin = unit(c(0,0.5,0.5,0.5), "cm"),
         plot.title = element_text(size = 14, face = "bold")) +
-  guides(colour = guide_legend(nrow = 1))+
+  guides(colour = guide_legend(nrow = 3))+
   scale_color_manual(values=colzpalette) + 
   #scale_color_manual(values=colz2) + 
   scale_fill_distiller()+
   ggtitle(title)+
-  coord_cartesian(ylim=c(0,1.02))+
+  coord_cartesian(ylim=c(0,1.0))+
   scale_x_continuous(expand=c(0,0))+
   scale_y_continuous(limits=c(0,1), expand=c(0,0));andv_map_nt
 
@@ -121,22 +126,27 @@ ghvlike_map_nt <- ggplot(long.sim_nt) +
         panel.border = element_rect(linetype = "solid", fill=NA)) + ylab("% Nucleotide identity")+xlab("Genome position")+
   theme(panel.grid = element_blank(), strip.text = element_text(face="italic", size=12),
         strip.background = element_rect(fill="white"), 
-        legend.position="top", legend.direction = "horizontal",legend.margin=margin(),
+        legend.direction = "horizontal",
+        legend.margin=margin(),
         legend.justification = "left",
         legend.text = element_text(face="italic", size = 10),
         legend.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        legend.position=c(0.85,0.9), 
         legend.key.height= unit(3.5, 'mm'),
         legend.key.width= unit(3.5, 'mm'),
         legend.background =element_rect(fill = alpha("white", 0)),
         axis.text = element_text(size=12), axis.title = element_text(size=12),
-        plot.margin = unit(c(0,0.5,1,0.5), "cm"),
+        plot.margin = unit(c(0,0.5,0.5,0.5), "cm"),
         plot.title = element_text(size = 14, face = "bold")) +
-  guides(colour = guide_legend(nrow = 1))+
+  guides(colour = guide_legend(nrow = 3))+
   scale_color_manual(values=colzpalette) + 
   #scale_color_manual(values=colz2) + 
   scale_fill_distiller()+
   ggtitle(title)+
-  coord_cartesian(ylim=c(0,1.02))+
+  coord_cartesian(ylim=c(0,1.0))+
   scale_x_continuous(expand=c(0,0))+
   scale_y_continuous(limits=c(0,1), expand=c(0,0));ghvlike_map_nt
 
@@ -161,11 +171,11 @@ long.sim_aa$accession[long.sim_aa$accession == "AndV_ROU125"] <- "AndV_ROU125"
 long.sim_aa$accession <- factor(long.sim_aa$accession, levels = c( 
   "AndV_ROU125",
   "AndV_ROU148", 
-  "AndV_ROU177"))
+  "AndV_ROU173"))
 long.sim_aa$value[long.sim_aa$value<0] <- 0
 long.sim_aa$value <- long.sim_aa$value/100
 
-colzpalette<-c("black","grey30","grey")
+colzpalette<-c("grey","grey30","black")
 
 title<-expression(paste(italic("Reference: YuV2")))
 ## amino acid
@@ -181,20 +191,25 @@ andv_map_aa <- ggplot(long.sim_aa) +
         panel.border = element_rect(linetype = "solid", fill=NA)) + ylab("% Amino acid identity")+xlab("Genome position")+
   theme(panel.grid = element_blank(), strip.text = element_text(face="italic", size=12),
         strip.background = element_rect(fill="white"), 
-        legend.position="top", legend.direction = "horizontal",legend.margin=margin(),
+        legend.direction = "horizontal",
+        legend.margin=margin(),
         legend.justification = "left",
         legend.text = element_text(face="italic", size = 10),
         legend.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        legend.position=c(0.85,0.1), 
         legend.key.height= unit(3.5, 'mm'),
         legend.key.width= unit(3.5, 'mm'),
         legend.background =element_rect(fill = alpha("white", 0)),
         axis.text = element_text(size=12), axis.title = element_text(size=12),
-        plot.margin = unit(c(0,0.5,1,0.5), "cm"),
+        plot.margin = unit(c(0,0.5,0.5,0.5), "cm"),
         plot.title = element_text(size = 14, face = "bold")) +
-  guides(colour = guide_legend(nrow = 1))+
+  guides(colour = guide_legend(nrow = 3))+
   ggtitle(title)+
   scale_color_manual(values=colzpalette) + 
-  coord_cartesian(ylim=c(0,1.02))+
+  coord_cartesian(ylim=c(0,1.0))+
   scale_x_continuous(breaks=c(0,2000/3.055,4000/3.055,6000/3.055,8000/3.055, 10000/3.055, 12000/3.055, 14000/3.055, 16000/3.055, 18000/3.055), 
                      labels = c(0,2000, 4000,6000,8000, 10000, 12000, 14000, 16000, 18000),
                      expand=c(0,0))+
@@ -221,6 +236,8 @@ long.sim_aa$accession <- factor(long.sim_aa$accession, levels = c(
 long.sim_aa$value[long.sim_aa$value<0] <- 0
 long.sim_aa$value <- long.sim_aa$value/100
 
+colzpalette<-c("black","grey30","grey")
+
 title<-expression(paste(italic("Reference: GhV")))
 ## amino acid
 ghv_map_aa <- ggplot(long.sim_aa) + 
@@ -236,17 +253,22 @@ ghv_map_aa <- ggplot(long.sim_aa) +
         panel.border = element_rect(linetype = "solid", fill=NA)) + ylab("% Amino acid identity")+xlab("Genome position")+
   theme(panel.grid = element_blank(), strip.text = element_text(face="italic", size=12),
         strip.background = element_rect(fill="white"), 
-        legend.position="top", legend.direction = "horizontal",legend.margin=margin(),
+        legend.direction = "horizontal",
+        legend.margin=margin(),
         legend.justification = "left",
         legend.text = element_text(face="italic", size = 10),
         legend.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        legend.position=c(0.85,0.05), 
         legend.key.height= unit(3.5, 'mm'),
         legend.key.width= unit(3.5, 'mm'),
         legend.background =element_rect(fill = alpha("white", 0)),
         axis.text = element_text(size=12), axis.title = element_text(size=12),
-        plot.margin = unit(c(0,0.5,1,0.5), "cm"),
+        plot.margin = unit(c(0,0.5,0.5,0.5), "cm"),
         plot.title = element_text(size = 14, face = "bold")) +
-  guides(colour = guide_legend(nrow = 1))+
+  guides(colour = guide_legend(nrow = 3))+
   ggtitle(title)+
   scale_color_manual(values=colzpalette) + 
   coord_cartesian(ylim=c(0,1.02))+
@@ -329,7 +351,7 @@ genome2ghvlike<-ggplot(map_combo, aes(xmin = start, xmax = end, y = molecule, fi
 genome2ghvlike
 
 #put coverage and genome maps together
-genomeplot_ghvlike<-genome1ghvlike/genome2ghvlike+plot_layout(nrow=2,  heights = c(1, 1))
+genomeplot_ghvlike<-ghv_map_aa/genome1ghvlike/genome2ghvlike+plot_layout(nrow=3,  heights = c(1, 0.2,0.2))
 genomeplot_ghvlike
 
 genomeplot_ghvlike<-as.ggplot(genomeplot_ghvlike)
@@ -402,14 +424,6 @@ genome2ROU173<-ggplot(map_combo, aes(xmin = start, xmax = end, y = molecule, fil
   xlab("Genome position") + ylab("")
 genome2ROU173
 
-#put coverage and genome maps together
-genomeplot_ROU173<-genome1ROU173/genome2ROU173+plot_layout(nrow=2,  heights = c(1, 1))
-genomeplot_ROU173
-
-genomeplot_ROU173<-as.ggplot(genomeplot_ROU173)
-genomeplot_ROU173
-
-
 #rou125 and rou148 ref
 map <- read.csv("genome_genes.csv", header = T, stringsAsFactors = F)
 map$gene<-factor(map$gene, levels = c("N","P","M","F","G","L","gap"))
@@ -477,22 +491,16 @@ genome2andv<-ggplot(map_combo, aes(xmin = start, xmax = end, y = molecule, fill=
 genome2andv
 
 #Figure with all the AndV figures
-genomeplot_andv<-genome1andv/genome2andv/genome1ROU173/genome2ROU173+plot_layout(nrow=4,  heights = c(1, 1,1,1))
+genomeplot_andv<-andv_map_aa/genome1andv/genome2andv/genome1ROU173/genome2ROU173+plot_layout(nrow=5,  heights = c(1, 0.2,0.2,0.2,0.2))
 genomeplot_andv
 
 genomeplot_andv<-as.ggplot(genomeplot_andv)
 
-
-#put simplot and genome plots together
-
-simGhV<-plot_grid(ghv_map_aa, genomeplot_ghvlike, labels=c("",""),
-               rel_widths=c(1,1), rel_heights = c(1,1),
-               ncol=1,align="v", axis="lr", label_size = 23)
-simGhV
-
-
-
-
+#all together
+simplot<-plot_grid(genomeplot_ghvlike, genomeplot_andv, labels=c("",""),
+                         rel_widths=c(1,1), rel_heights = c(1,1.2),
+                         ncol=1,align="hv", axis="l", label_size = 23)
+simplot
 
 
 
