@@ -271,7 +271,7 @@ ghv_map_aa <- ggplot(long.sim_aa) +
   guides(colour = guide_legend(nrow = 3))+
   ggtitle(title)+
   scale_color_manual(values=colzpalette) + 
-  coord_cartesian(ylim=c(0,1.02))+
+  coord_cartesian(ylim=c(0,1.0))+
   scale_x_continuous(
                      breaks=c(0,2000/3.055,4000/3.055,6000/3.055,8000/3.055, 10000/3.055, 12000/3.055, 14000/3.055, 16000/3.055, 18000/3.055), 
                      labels = c(0,2000, 4000,6000,8000, 10000, 12000, 14000, 16000, 18000),
