@@ -261,9 +261,6 @@ ghv_map_aa <- ggplot(long.sim_aa) +
 
 
 ##Now make genome maps to go with the coverage plots
-homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/genome_characterization/full_genome_coverage"
-setwd(paste0(homewd))
-
 #GhV-like first
 map <- read.csv("genome_genes.csv", header = T, stringsAsFactors = F)
 map$gene<-factor(map$gene, levels = c("N","P","M","F","G","L","gap"))
