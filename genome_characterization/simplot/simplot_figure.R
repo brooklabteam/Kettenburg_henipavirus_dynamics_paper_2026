@@ -31,7 +31,7 @@ andv_map <- read.csv(file = "nt_align_AndV.csv", header = T, stringsAsFactors = 
 head(andv_map)
 
 #move to long
-long.sim_nt <- melt(andv_map, id.vars = c("pointer"), measure.vars = c("AndV_ROU148","AndV_ROU173","AngV","YuV2"))
+long.sim_nt <- melt(andv_map, id.vars = c("pointer"), measure.vars = c("AndV_ROU148","AndV_ROU173","AndV_ROU125"))
 
 unique(long.sim_nt$variable)
 
@@ -41,20 +41,18 @@ names(long.sim_nt)[names(long.sim_nt)=="variable"] <- "accession"
 
 long.sim_nt$accession[long.sim_nt$accession == "AndV_ROU148"] <- "AndV_ROU148"
 long.sim_nt$accession[long.sim_nt$accession == "AndV_ROU173"] <- "AndV_ROU173"
-long.sim_nt$accession[long.sim_nt$accession == "AngV"] <- "AngV"
-long.sim_nt$accession[long.sim_nt$accession == "YuV2"] <- "YuV2"
+long.sim_nt$accession[long.sim_nt$accession == "AndV_ROU125"] <- "AndV_ROU125"
 
 long.sim_nt$accession <- factor(long.sim_nt$accession, levels = c(
-  "AndV_ROU148",
-  "AndV_ROU173", 
-  "AngV", 
-  "YuV2"))
+  "AndV_ROU125",
+  "AndV_ROU148", 
+  "AndV_ROU173"))
 long.sim_nt$value[long.sim_nt$value<0] <- 0
 long.sim_nt$value <- long.sim_nt$value/100
 
-title<-expression(paste(italic("Reference: AndV ROU125")))
+title<-expression(paste(italic("Reference: YuV2")))
 
-colzpalette<-c("#3B9AB2","#EBCC2A","#F21A00","darkslategray2","darkorange1","firebrick4", "black")
+colzpalette<-c("black","grey30","grey")
 
 #Plot nucleotide
 andv_map_nt <- ggplot(long.sim_nt) + 
@@ -88,7 +86,7 @@ ghv_map <- read.csv(file = "nt_align_GhVlike.csv", header = T, stringsAsFactors 
 head(ghv_map)
 
 #move to long
-long.sim_nt <- melt(ghv_map, id.vars = c("pointer"), measure.vars = c("AngV","GhV"))
+long.sim_nt <- melt(ghv_map, id.vars = c("pointer"), measure.vars = c("GhV"))
 
 unique(long.sim_nt$variable)
 
