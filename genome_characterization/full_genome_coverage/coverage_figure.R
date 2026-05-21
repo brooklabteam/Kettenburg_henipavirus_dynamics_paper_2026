@@ -22,7 +22,7 @@ library(phylotools)
 library(phylobase)
 
 #set directory
-homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_circulating_clades/genome_characterization/full_genome_coverage"
+homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/genome_characterization/full_genome_coverage"
 setwd(paste0(homewd))
 
 ##Coverage plots first
