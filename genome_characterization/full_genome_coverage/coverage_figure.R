@@ -38,7 +38,7 @@ coverage_ghvlike<-  ggplot(dat, aes(x=Position, y=rPM))+
   annotate("rect", xmin=11664, xmax=16846, ymin=0, ymax=550, alpha=0.6,  fill="#BD9A5A")+
   annotate("rect", xmin=17373, xmax=23508, ymin=0, ymax=550, alpha=0.6,  fill="#F17983")+
   annotate("rect", xmin=24156, xmax=48178, ymin=0, ymax=550, alpha=0.6,  fill="#6B8C81")+
-  geom_line(linewidth=1) +
+  geom_area(linewidth=0.5) +
   theme_linedraw() +
   theme(legend.position = "none")+
   ggtitle(title)+
@@ -55,42 +55,6 @@ coverage_ghvlike<-  ggplot(dat, aes(x=Position, y=rPM))+
         axis.title.x = element_blank(),
         axis.line.x = element_blank())
 coverage_ghvlike
-
-dat2 <- read.csv(file= "AndV_merged_coverage.csv", header = T, stringsAsFactors = F) #load data
-unique(dat2$virus)
-
-library(ggbreak)
-
-colz<-c("PX127342 AndV"="rosybrown4","PX127343 AndV"="tomato4","PX127344 AndV"="black")
-
-title<-expression(paste(italic("AndV genome coverage")))
-coverage_andv<-  ggplot(dat2, aes(x=Position, y=rPM, color=virus))+ 
-  annotate("rect", xmin=111, xmax=1718, ymin=0, ymax=Inf, alpha=0.4,  fill="#D29292")+
-  annotate("rect", xmin=2114, xmax=3823, ymin=0, ymax=Inf, alpha=0.4,  fill="#525832")+
-  annotate("rect", xmin=4284, xmax=5315, ymin=0, ymax=Inf, alpha=0.4,  fill="#F98F5B")+
-  annotate("rect", xmin=5550, xmax=7235, ymin=0, ymax=Inf, alpha=0.4,  fill="#BD9A5A")+
-  annotate("rect", xmin=7737, xmax=10316, ymin=0, ymax=Inf, alpha=0.4,  fill="#F17983")+
-  annotate("rect", xmin=10749, xmax=17501, ymin=0, ymax=Inf, alpha=0.4,  fill="#6B8C81")+
-  geom_line(linewidth=1) +
-  theme_linedraw() +
-  scale_color_manual(values=colz)+
-  #facet_grid(virus~., scales="free")+
-  theme(legend.position = "top")+
-  ggtitle(title)+
-  scale_y_continuous(position="left")+
-  xlab("Genome position") + ylab("rPM (reads per million) log-scaled")+
-  scale_x_continuous(expand=c(0,0))+
-  scale_y_continuous(expand=c(0,0))+
-  scale_y_log10()+
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        axis.title.y = element_text(margin = margin(0,0,0,1)),
-        axis.ticks.x=element_blank(),
-        axis.text.x = element_blank(),
-        axis.title.x = element_blank(),
-        axis.line.x = element_blank(),
-        legend.title=element_blank())
-coverage_andv
 
 #ROU125
 dat <- read.csv(file= "ROU125_coverage.csv", header = T, stringsAsFactors = F) #load data
@@ -175,6 +139,38 @@ coverage_rou173<-  ggplot(dat, aes(x=Position, y=rPM))+
         axis.title.x = element_blank(),
         axis.line.x = element_blank())
 coverage_rou173
+
+
+#ROU173 and 125 together
+dat <- read.csv(file= "ROU125_coverage.csv", header = T, stringsAsFactors = F) #load data
+dat2 <- read.csv(file= "ROU173_coverage.csv", header = T, stringsAsFactors = F) #load data
+
+title<-expression(paste(italic("PX127342 (black) and PX127344 (grey) AndV genome coverage")))
+coverage_rou125<-  ggplot()+ 
+  annotate("rect", xmin=111, xmax=1718, ymin=0, ymax=1.6, alpha=0.6,  fill="#D29292")+
+  annotate("rect", xmin=2114, xmax=3823, ymin=0, ymax=1.6, alpha=0.6,  fill="#525832")+
+  annotate("rect", xmin=4284, xmax=5315, ymin=0, ymax=1.6, alpha=0.6,  fill="#F98F5B")+
+  annotate("rect", xmin=5550, xmax=7235, ymin=0, ymax=1.6, alpha=0.6,  fill="#BD9A5A")+
+  annotate("rect", xmin=7737, xmax=10316, ymin=0, ymax=1.6, alpha=0.6,  fill="#F17983")+
+  annotate("rect", xmin=10749, xmax=17501, ymin=0, ymax=1.6, alpha=0.6,  fill="#6B8C81")+
+  geom_area(data=dat, aes(x=Position, y=rPM), fill="black") +
+  geom_area(data=dat2, aes(x=Position, y=rPM), fill="grey40") +
+  theme_linedraw() +
+  theme(legend.position = "none")+
+  ggtitle(title)+
+  scale_y_continuous(position="left")+
+  xlab("Genome position") + ylab("rPM (reads per million)")+
+  scale_x_continuous(expand=c(0,0))+
+  scale_y_continuous(expand=c(0,0))+
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        axis.title.y = element_text(margin = margin(0,0,0,1)),
+        axis.ticks.x=element_blank(),
+        axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.line.x = element_blank())
+coverage_rou125
+
 
 ##Now make genome maps to go with the coverage plots
 
