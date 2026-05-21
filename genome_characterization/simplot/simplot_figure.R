@@ -27,7 +27,7 @@ setwd(paste0(homewd))
 
 
 #nucleotide first
-andv_map <- read.csv(file = "nt_align_AndV_noUTR.csv", header = T, stringsAsFactors = F)
+andv_map <- read.csv(file = "nt_align_AndV_noUTRtest.csv", header = T, stringsAsFactors = F)
 head(andv_map)
 
 #move to long
@@ -52,12 +52,17 @@ long.sim_nt$value <- long.sim_nt$value/100
 
 title<-expression(paste(italic("Reference: YuV2")))
 
-colzpalette<-c("black","grey30","grey")
+colzpalette<-c("grey","grey30","black")
 
 #Plot nucleotide
 andv_map_nt <- ggplot(long.sim_nt) + 
+  annotate("rect", xmin=163, xmax=1844, ymin=0, ymax=1, alpha=0.6,  fill="#D29292")+
+  annotate("rect", xmin=2299, xmax=4522, ymin=0, ymax=1, alpha=0.6,  fill="#525832")+
+  annotate("rect", xmin=5047, xmax=6102, ymin=0, ymax=1, alpha=0.6,  fill="#F98F5B")+
+  annotate("rect", xmin=6368, xmax=8136, ymin=0, ymax=1, alpha=0.6,  fill="#BD9A5A")+
+  annotate("rect", xmin=8679, xmax=11408, ymin=0, ymax=1, alpha=0.6,  fill="#F17983")+
+  annotate("rect", xmin=11862, xmax=18859, ymin=0, ymax=1, alpha=0.6,  fill="#6B8C81")+
   geom_line(aes(x=pointer, y=value, color=accession), size=1) +
-  #annotate("rect", xmin=10416, xmax=12260, ymin=0, ymax=1, alpha=1,  fill="grey30")+
   theme(panel.background = element_rect("white"),
         panel.border = element_rect(linetype = "solid", fill=NA)) + ylab("% Nucleotide identity")+xlab("Genome position")+
   theme(panel.grid = element_blank(), strip.text = element_text(face="italic", size=12),
@@ -82,7 +87,7 @@ andv_map_nt <- ggplot(long.sim_nt) +
   scale_y_continuous(limits=c(0,1), expand=c(0,0));andv_map_nt
 
 #GhVlike
-ghv_map <- read.csv(file = "nt_align_GhVlike_noUTR.csv", header = T, stringsAsFactors = F)
+ghv_map <- read.csv(file = "nt_align_GhVlike_noUTRtest.csv", header = T, stringsAsFactors = F)
 head(ghv_map)
 
 #move to long
@@ -103,7 +108,14 @@ long.sim_nt$value <- long.sim_nt$value/100
 
 title<-expression(paste(italic("Reference: GhV")))
 
+colzpalette<-c("black","grey30","grey")
 ghvlike_map_nt <- ggplot(long.sim_nt) + 
+  annotate("rect", xmin=1, xmax=1745, ymin=0, ymax=1, alpha=0.6,  fill="#D29292")+
+  annotate("rect", xmin=2213, xmax=4887, ymin=0, ymax=1, alpha=0.6,  fill="#525832")+
+  annotate("rect", xmin=5347, xmax=6403, ymin=0, ymax=1, alpha=0.6,  fill="#F98F5B")+
+  annotate("rect", xmin=7112, xmax=9123, ymin=0, ymax=1, alpha=0.6,  fill="#BD9A5A")+
+  annotate("rect", xmin=9390, xmax=11633, ymin=0, ymax=1, alpha=0.6,  fill="#F17983")+
+  annotate("rect", xmin=12345, xmax=19379, ymin=0, ymax=1, alpha=0.6,  fill="#6B8C81")+
   geom_line(aes(x=pointer, y=value, color=accession), size=1) +
     theme(panel.background = element_rect("white"),
         panel.border = element_rect(linetype = "solid", fill=NA)) + ylab("% Nucleotide identity")+xlab("Genome position")+
@@ -130,7 +142,7 @@ ghvlike_map_nt <- ggplot(long.sim_nt) +
 
 ##then the aa plots
 #then aa
-andv_map <- read.csv(file = "aa_align_AndV_noUTR.csv", header = T, stringsAsFactors = F)
+andv_map <- read.csv(file = "aa_align_AndV_noUTRtest.csv", header = T, stringsAsFactors = F)
 head(andv_map)
 
 #move to long
@@ -153,9 +165,17 @@ long.sim_aa$accession <- factor(long.sim_aa$accession, levels = c(
 long.sim_aa$value[long.sim_aa$value<0] <- 0
 long.sim_aa$value <- long.sim_aa$value/100
 
+colzpalette<-c("black","grey30","grey")
+
 title<-expression(paste(italic("Reference: YuV2")))
 ## amino acid
 andv_map_aa <- ggplot(long.sim_aa) + 
+  annotate("rect", xmin=57, xmax=592, ymin=0, ymax=1, alpha=0.6,  fill="#D29292")+
+  annotate("rect", xmin=780, xmax=1527, ymin=0, ymax=1, alpha=0.6,  fill="#525832")+
+  annotate("rect", xmin=1702, xmax=2035, ymin=0, ymax=1, alpha=0.6,  fill="#F98F5B")+
+  annotate("rect", xmin=2143, xmax=2742, ymin=0, ymax=1, alpha=0.6,  fill="#BD9A5A")+
+  annotate("rect", xmin=2934, xmax=3847, ymin=0, ymax=1, alpha=0.6,  fill="#F17983")+
+  annotate("rect", xmin=4041, xmax=6340, ymin=0, ymax=1, alpha=0.6,  fill="#6B8C81")+
   geom_line(aes(x=pointer, y=value, color=accession), size=1) +
     theme(panel.background = element_rect("white"),
         panel.border = element_rect(linetype = "solid", fill=NA)) + ylab("% Amino acid identity")+xlab("Genome position")+
@@ -182,7 +202,7 @@ andv_map_aa <- ggplot(long.sim_aa) +
   scale_y_continuous(limits=c(0,1), expand=c(0,0)); andv_map_aa
 
 #ghvlike
-ghv_map <- read.csv(file = "aa_align_GhVlike_noUTR.csv", header = T, stringsAsFactors = F)
+ghv_map <- read.csv(file = "aa_align_GhVlike_noUTRtest.csv", header = T, stringsAsFactors = F)
 head(ghv_map)
 
 #move to long
@@ -204,6 +224,12 @@ long.sim_aa$value <- long.sim_aa$value/100
 title<-expression(paste(italic("Reference: GhV")))
 ## amino acid
 ghv_map_aa <- ggplot(long.sim_aa) + 
+  annotate("rect", xmin=1, xmax=554, ymin=0, ymax=1, alpha=0.6,  fill="#D29292")+
+  annotate("rect", xmin=730, xmax=1628, ymin=0, ymax=1, alpha=0.6,  fill="#525832")+
+  annotate("rect", xmin=1722, xmax=2197, ymin=0, ymax=1, alpha=0.6,  fill="#F98F5B")+
+  annotate("rect", xmin=2448, xmax=3001, ymin=0, ymax=1, alpha=0.6,  fill="#BD9A5A")+
+  annotate("rect", xmin=3117, xmax=3889, ymin=0, ymax=1, alpha=0.6,  fill="#F17983")+
+  annotate("rect", xmin=4061, xmax=6369, ymin=0, ymax=1, alpha=0.6,  fill="#6B8C81")+
   geom_line(aes(x=pointer, y=value, color=accession), size=1) +
   #annotate("rect", xmin=3519, xmax=4168, ymin=0, ymax=1, alpha=1,  fill="grey30")+
   theme(panel.background = element_rect("white"),
@@ -224,14 +250,12 @@ ghv_map_aa <- ggplot(long.sim_aa) +
   ggtitle(title)+
   scale_color_manual(values=colzpalette) + 
   coord_cartesian(ylim=c(0,1.02))+
-  scale_x_continuous(breaks=c(0,2000/3.055,4000/3.055,6000/3.055,8000/3.055, 10000/3.055, 12000/3.055, 14000/3.055, 16000/3.055, 18000/3.055), 
+  scale_x_continuous(
+                     breaks=c(0,2000/3.055,4000/3.055,6000/3.055,8000/3.055, 10000/3.055, 12000/3.055, 14000/3.055, 16000/3.055, 18000/3.055), 
                      labels = c(0,2000, 4000,6000,8000, 10000, 12000, 14000, 16000, 18000),
                      expand=c(0,0))+
   #scale_x_continuous(expand=c(0,0))+
   scale_y_continuous(limits=c(0,1), expand=c(0,0)); ghv_map_aa
-
-
-
 
 
 
