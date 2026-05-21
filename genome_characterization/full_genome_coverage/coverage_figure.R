@@ -61,7 +61,7 @@ unique(dat2$virus)
 
 library(ggbreak)
 
-colz<-c("PX127342 AndV"="darkturquoise","PX127343 AndV"="royalblue","PX127344 AndV"="darkcyan")
+colz<-c("PX127342 AndV"="rosybrown4","PX127343 AndV"="tomato4","PX127344 AndV"="black")
 
 title<-expression(paste(italic("AndV genome coverage")))
 coverage_andv<-  ggplot(dat2, aes(x=Position, y=rPM, color=virus))+ 
