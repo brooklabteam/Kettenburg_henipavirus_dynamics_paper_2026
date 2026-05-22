@@ -13,7 +13,6 @@ NP_872277.1,Goose paramyxovirus SF02,SF02,Goose paramyxovirus SF02,Unclassified,
 NP_958054.1,Mossman virus,,Narmovirus mossmanense,Narmovirus,Paramyxoviridae,Australia,Rattus,2003,0,0
 PX127342,Andrafiabe henipavirus,ROU125,Andrafiabe henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2019,1,1
 PX127343,Andrafiabe henipavirus,ROU148,Andrafiabe henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Rousettus madagascariensis,2019,1,1
-PX127395,Unclassified henipavirus,KEL86_KEL94,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2014,1,1
 PX127396,Unclassified henipavirus,CAT017,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2018,1,1
 PX127397,Unclassified henipavirus,KEL234,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2018,1,1
 PX127399,Unclassified henipavirus,KEL281B,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Madagascar,Eidolon dupreanum,2019,1,1
@@ -72,7 +71,7 @@ XOT37566.1,Crocidura olivieri henipavirus 2,Cr. olivieri_para_2,Crocidura olivie
 XOT39658.1,Sollieres shrew parahenipavirus,sorex_aii#79,Sollieres shrew parahenipavirus,Parahenipavirus,Paramyxoviridae,France,Sorex antinorii,2018,0,0
 XPO94330.1,Henipavirus nipahense,NiV/human/BGD/DMCH00124/2024,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2024,0,0
 XPO94336.1,Henipavirus nipahense,NiV/human/BGD/PMSKH0000424/2024,Henipavirus nipahense,Henipavirus,Paramyxoviridae,Bangladesh,Homo sapiens,2024,0,0
-XQM46514.1,Salt gully virus,Boonah,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Australia,Pteropus sp.,2011,1,0
+XQM46514,Salt gully virus,Boonah,Unclassified henipavirus,Henipavirus,Paramyxoviridae,Australia,Pteropus sp.,2011,1,0
 XRL22894.1,Sosuga virus,,Pararubulavirus sosugaense,Pararubulavirus,Paramyxoviridae,South Sudan,Rousettus aegyptiacus,2021,1,0
 XRT74647.1,Yunnan bat henipavirus 1,WDBS1745,Unclassified henipavirus,Henipavirus,Paramyxoviridae,China,Rousettus leschenaultii,2017,1,0
 XRT74653.1,Yunnan bat henipavirus 2,WDBS1733,Unclassified henipavirus,Henipavirus,Paramyxoviridae,China,Rousettus leschenaultii,2017,1,0
