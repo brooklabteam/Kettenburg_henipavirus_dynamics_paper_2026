@@ -280,6 +280,7 @@ colz2 = c('1' =  "yellow", '0' = "white")
 ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 
 #Refseq alignment
+title<-expression(paste("          Polymerase"))
 p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0,show.legend = T) +
   #scale_fill_manual(values=colz) +
   scale_color_manual(values=colz, guide =
@@ -289,21 +290,22 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   new_scale_color() +
   geom_tiplab(aes(color = novel, show.legend=F), geom = "text", Genus="Helvetica", size=4, nudge_x=0.05) +
   guides(color="none")+#
+  ggtitle(title)+
   scale_color_manual(values=c("0"="black","1"="red")) +
   geom_treescale(fontsize=4, x=0,y=-3, linesize = .5) +
   theme(legend.position = "none", 
         legend.direction = "vertical",
         legend.text = element_text(size=7), 
         legend.key.size = unit(0.2, "cm")) +
-  geom_cladelabel(node=235, label='HeV/NiV sister clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=221, label='AndV clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=10, label='AndV-2 clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=225, label='AndV-3 clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=339, label='AngV clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=336, label='AngV-2 clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=110, label='GhV-like clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=131, label='AchPV2-like virus', offset=8.5, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=350, label='ThkPV1-like viruses', offset=8.5, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=235, label='HeV/NiV sister clade', offset=4.8, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=221, label='AndV clade', offset=4.8, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=10, label='AndV-2 clade', offset=4.8, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=225, label='AndV-3 clade', offset=4.8, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=339, label='AngV clade', offset=4.8, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=336, label='AngV-2 clade', offset=4.8, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=110, label='GhV-like clade', offset=4.8, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=131, label='AchPV2-like virus', offset=4.8, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=350, label='ThkPV1-like viruses', offset=4.8, fontsize=4, color="black", align=TRUE)+
   # 
   geom_cladelabel(node = 236, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
   #geom_cladelabel(node = 344, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
@@ -338,15 +340,15 @@ p1.1<-ggtree::collapse(p1.18, 384)+geom_point2(aes(subset=(node==384)), size=4, 
 p1.1
 
 p1.1<- p1.1 +  
-  geom_hilight(node=235, fill="deeppink3", alpha=0.3, extendto=11.7)+ #HeV/NiV sister
-  geom_hilight(node=221, fill="darkcyan", alpha=0.3, extendto=11.7)+ #AndV
-  geom_hilight(node=10, fill="darkturquoise", alpha=0.3, extendto=11.7)+ #AndV2
-  geom_hilight(node=225, fill="dodgerblue", alpha=0.3, extendto=11.7)+ #AndV3
-  geom_hilight(node=339, fill="springgreen3", alpha=0.3, extendto=11.7)+ #AngV
-  geom_hilight(node=336, fill="chartreuse", alpha=0.3, extendto=11.7)+ #AngV2
-  geom_hilight(node=110, fill="orange", alpha=0.3, extendto=11.7)+ #GhVlike
-  geom_hilight(node=131, fill="grey40", alpha=0.3, extendto=11.7)+ #AchPV2
-  geom_hilight(node=350, fill="grey40", alpha=0.3, extendto=11.7) #ThkPV1
+  geom_hilight(node=235, fill="deeppink3", alpha=0.3, extendto=8)+ #HeV/NiV sister
+  geom_hilight(node=221, fill="darkcyan", alpha=0.3, extendto=8)+ #AndV
+  geom_hilight(node=10, fill="darkturquoise", alpha=0.3, extendto=8)+ #AndV2
+  geom_hilight(node=225, fill="dodgerblue", alpha=0.3, extendto=8)+ #AndV3
+  geom_hilight(node=339, fill="springgreen3", alpha=0.3, extendto=8)+ #AngV
+  geom_hilight(node=336, fill="chartreuse", alpha=0.3, extendto=8)+ #AngV2
+  geom_hilight(node=110, fill="orange", alpha=0.3, extendto=8)+ #GhVlike
+  geom_hilight(node=131, fill="grey40", alpha=0.3, extendto=8)+ #AchPV2
+  geom_hilight(node=350, fill="grey40", alpha=0.3, extendto=8) #ThkPV1
 p1.1
 
 #add node shapes to represent bootstrap values
@@ -360,7 +362,7 @@ polytree <- p1.1  %<+% p0.dat1 +
   ggnewscale::new_scale_fill() + 
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
   scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
-  theme(legend.position = "left",
+  theme(legend.position = "none",
         legend.direction = "vertical",
         legend.text = element_text(size=8),
         legend.title = element_text(size=8),
