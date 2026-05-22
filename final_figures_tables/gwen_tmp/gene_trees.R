@@ -496,7 +496,7 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   # geom_cladelabel(node=31, label='AchPV2-like virus', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # geom_cladelabel(node=268, label='ThkPV1-like viruses', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # 
-  geom_cladelabel(node = , label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 221, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
   geom_cladelabel(node = , label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
   geom_cladelabel(node = , label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
   geom_cladelabel(node = , label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
