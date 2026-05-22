@@ -161,56 +161,58 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
         legend.direction = "vertical",
         legend.text = element_text(size=7), 
         legend.key.size = unit(0.2, "cm")) +
-  # geom_cladelabel(node=357, label='HeV/NiV sister clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  # geom_cladelabel(node=354, label='AndV clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  # geom_cladelabel(node=113, label='AndV-2 clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  # geom_cladelabel(node=350, label='AndV-3 clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  # geom_cladelabel(node=250, label='AngV clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  # geom_cladelabel(node=247, label='AngV-2 clade', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  # geom_cladelabel(node=31, label='AchPV2-like virus', offset=8.55, fontsize=4, color="black", align=TRUE)+
-  # geom_cladelabel(node=268, label='ThkPV1-like viruses', offset=8.55, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=235, label='HeV/NiV sister clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=221, label='AndV clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=10, label='AndV-2 clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=225, label='AndV-3 clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=339, label='AngV clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=336, label='AngV-2 clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=110, label='GhV-like clade', offset=8.5, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=131, label='AchPV2-like virus', offset=8.5, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=350, label='ThkPV1-like viruses', offset=8.5, fontsize=4, color="black", align=TRUE)+
   # 
-  # geom_cladelabel(node = 239, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
-  # #geom_cladelabel(node = 344, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  # geom_cladelabel(node = 293, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  # geom_cladelabel(node = 288, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  # geom_cladelabel(node = 301, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  # geom_cladelabel(node = 255, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  # geom_cladelabel(node = 256, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  # geom_cladelabel(node = 315, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  # geom_cladelabel(node = 312, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  # geom_cladelabel(node = 280, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  # geom_cladelabel(node = 307, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  # geom_cladelabel(node = 325, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  # geom_cladelabel(node = 302, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 236, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
+  #geom_cladelabel(node = 344, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 370, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 378, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 383, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 392, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 387, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 404, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 395, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 362, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 399, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
+  geom_cladelabel(node = 414, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 384, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
   xlim(c(0,12))
 
 p1
 
-p1.2<-ggtree::collapse(p1, 239)+geom_point2(aes(subset=(node==239)), size=4, shape=22, fill="firebrick1")
+p1.2<-ggtree::collapse(p1, 236)+geom_point2(aes(subset=(node==236)), size=4, shape=22, fill="firebrick1")
 #p1.3<-ggtree::collapse(p1.2, 344)+geom_point2(aes(subset=(node==344)), size=4, shape=22, fill="firebrick4")
-p1.4<-ggtree::collapse(p1.2, 293)+geom_point2(aes(subset=(node==293)), size=4, shape=22, fill="darkgoldenrod1")
-p1.5<-ggtree::collapse(p1.4, 288)+geom_point2(aes(subset=(node==288)), size=4, shape=22, fill="darkorange")
-p1.6<-ggtree::collapse(p1.5, 301)+geom_point2(aes(subset=(node==301)), size=4, shape=22, fill="darkorange3")
-p1.7<-ggtree::collapse(p1.6, 255)+geom_point2(aes(subset=(node==255)), size=4, shape=22, fill="lightpink2")
-p1.8<-ggtree::collapse(p1.7, 256)+geom_point2(aes(subset=(node==256)), size=4, shape=22, fill="deeppink1")
-p1.9<-ggtree::collapse(p1.8, 315)+geom_point2(aes(subset=(node==315)), size=4, shape=22, fill="coral")
-p1.10<-ggtree::collapse(p1.9, 312)+geom_point2(aes(subset=(node==312)), size=4, shape=22, fill="lightsalmon3")
-p1.11<-ggtree::collapse(p1.10, 280)+geom_point2(aes(subset=(node==280)), size=4, shape=22, fill="indianred3")
-p1.17<-ggtree::collapse(p1.11, 307)+geom_point2(aes(subset=(node==307)), size=4, shape=22, fill="coral3")
-p1.18<-ggtree::collapse(p1.17, 325)+geom_point2(aes(subset=(node==325)), size=4, shape=22, fill="deeppink4")
-p1.1<-ggtree::collapse(p1.18, 302)+geom_point2(aes(subset=(node==302)), size=4, shape=22, fill="lightpink3")
+p1.4<-ggtree::collapse(p1.2, 370)+geom_point2(aes(subset=(node==370)), size=4, shape=22, fill="darkgoldenrod1")
+p1.5<-ggtree::collapse(p1.4, 378)+geom_point2(aes(subset=(node==378)), size=4, shape=22, fill="darkorange")
+p1.6<-ggtree::collapse(p1.5, 383)+geom_point2(aes(subset=(node==383)), size=4, shape=22, fill="darkorange3")
+p1.7<-ggtree::collapse(p1.6, 392)+geom_point2(aes(subset=(node==392)), size=4, shape=22, fill="lightpink2")
+p1.8<-ggtree::collapse(p1.7, 387)+geom_point2(aes(subset=(node==387)), size=4, shape=22, fill="deeppink1")
+p1.9<-ggtree::collapse(p1.8, 404)+geom_point2(aes(subset=(node==404)), size=4, shape=22, fill="coral")
+p1.10<-ggtree::collapse(p1.9, 395)+geom_point2(aes(subset=(node==395)), size=4, shape=22, fill="lightsalmon3")
+p1.11<-ggtree::collapse(p1.10, 362)+geom_point2(aes(subset=(node==362)), size=4, shape=22, fill="indianred3")
+p1.17<-ggtree::collapse(p1.11, 399)+geom_point2(aes(subset=(node==399)), size=4, shape=22, fill="coral3")
+p1.18<-ggtree::collapse(p1.17, 414)+geom_point2(aes(subset=(node==414)), size=4, shape=22, fill="deeppink4")
+p1.1<-ggtree::collapse(p1.18, 384)+geom_point2(aes(subset=(node==384)), size=4, shape=22, fill="lightpink3")
 p1.1
 
 p1.1<- p1.1 +  
-  geom_hilight(node=357, fill="deeppink3", alpha=0.3, extendto=12.8)+ #HeV/NiV sister
-  geom_hilight(node=354, fill="darkcyan", alpha=0.3, extendto=12.8)+ #AndV
-  geom_hilight(node=113, fill="darkturquoise", alpha=0.3, extendto=12.8)+ #AndV2
-  geom_hilight(node=350, fill="dodgerblue", alpha=0.3, extendto=12.8)+ #AndV3
-  geom_hilight(node=250, fill="springgreen3", alpha=0.3, extendto=12.8)+ #AngV
-  geom_hilight(node=247, fill="chartreuse", alpha=0.3, extendto=12.8)+ #AngV2
-  geom_hilight(node=31, fill="grey40", alpha=0.3, extendto=12.8)+ #AngV
-  geom_hilight(node=268, fill="grey40", alpha=0.3, extendto=12.8) #AngV2
+  geom_hilight(node=235, fill="deeppink3", alpha=0.3, extendto=11.7)+ #HeV/NiV sister
+  geom_hilight(node=221, fill="darkcyan", alpha=0.3, extendto=11.7)+ #AndV
+  geom_hilight(node=10, fill="darkturquoise", alpha=0.3, extendto=11.7)+ #AndV2
+  geom_hilight(node=225, fill="dodgerblue", alpha=0.3, extendto=11.7)+ #AndV3
+  geom_hilight(node=339, fill="springgreen3", alpha=0.3, extendto=11.7)+ #AngV
+  geom_hilight(node=336, fill="chartreuse", alpha=0.3, extendto=11.7)+ #AngV2
+  geom_hilight(node=110, fill="orange", alpha=0.3, extendto=11.7)+ #GhVlike
+  geom_hilight(node=131, fill="grey40", alpha=0.3, extendto=11.7)+ #AchPV2
+  geom_hilight(node=350, fill="grey40", alpha=0.3, extendto=11.7) #ThkPV1
 p1.1
 
 #add node shapes to represent bootstrap values
