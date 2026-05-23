@@ -51,18 +51,15 @@ recap$processing_date <- as.Date(recap$processing_date)
 
 
 #let's just use the shedding status (not Ct) for now
-shed.dat <- dplyr::select(shed.dat, sampleid, qPCR_AngV_multi_any_pos_ur_ur, qPCR_GhV_multi_any_pos_ur_ur)
+shed.dat <- dplyr::select(shed.dat, sampleid, qPCR_AngV_multi_any_pos_ur, qPCR_GhV_multi_any_pos_ur)
 head(shed.dat)
-
-
 
 #and merge with recap
 recap <- merge(recap, shed.dat, by="sampleid", all.x = T)
 recap$qPCR_AngV_multi_any_pos_ur[is.na(recap$qPCR_AngV_multi_any_pos_ur)] <- 2
 recap$qPCR_GhV_multi_any_pos_ur[is.na(recap$qPCR_GhV_multi_any_pos_ur)] <- 2
 
-
-length(unique(recap$sampleid[recap$qPCR_AngV_multi_any_pos_ur<2 |recap$qPCR_GhV_multi_any_pos_ur<2])) #100. not bad to start
+length(unique(recap$sampleid[recap$qPCR_AngV_multi_any_pos_ur<2 |recap$qPCR_GhV_multi_any_pos_ur<2])) #101. not bad to start
 head(recap)
 
 #subset to the antigen/species of interest
@@ -73,7 +70,6 @@ recap$keep[recap$bat_species=="Eidolon dupreanum" & recap$antigen=="NiV"] <- 1
 recap$keep[recap$bat_species=="Eidolon dupreanum" & recap$antigen=="AngV"] <- 1
 recap$keep[recap$bat_species=="Rousettus madagascariensis" & recap$antigen=="GhV"] <- 1
 recap$keep[recap$bat_species=="Rousettus madagascariensis" & recap$antigen=="AngV"] <- 1
-
 
 recap = subset(recap, keep==1)
 head(recap)
@@ -94,8 +90,6 @@ recap$qPCR_AngV_multi_any_pos_ur[recap$qPCR_AngV_multi_any_pos_ur==2] <- "no dat
 recap$qPCR_GhV_multi_any_pos_ur <- factor(recap$qPCR_GhV_multi_any_pos_ur, levels=c("pos", "neg", "no data"))
 recap$qPCR_AngV_multi_any_pos_ur <- factor(recap$qPCR_AngV_multi_any_pos_ur, levels=c("pos", "neg", "no data"))
 
-
-
 Eid <- ggplot(data=subset(recap, bat_species=="Eidolon dupreanum" & Ncap>1),) + 
   facet_grid(antigen~.) + theme_bw() + 
   geom_point(aes(x=processing_date, y=MFI, color=barcode_id, shape = bat_sex), show.legend = F, size=3) +
@@ -114,16 +108,14 @@ Eid_AngV_shed <- ggplot(data=subset(recap, bat_species=="Eidolon dupreanum" & Nc
   geom_line(aes(x=processing_date, y=barcode_id, color=qPCR_AngV_multi_any_pos_ur, group=barcode_id), show.legend = F, size=.8); Eid_AngV_shed
 
 
-
-
-
 ################################################################################
 ################################################################################
 # and look up the old plots of recaps including prior status
 rm(list=ls())
 
-homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
-batwd =  "/Users/carabrook/Developer/Madagascar-Bat-Data"
+homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026"
+batwd =  "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
+
 # re-merge the catching data
 
 #load the recaptures
@@ -143,28 +135,26 @@ recap$processing_date <- as.Date(recap$processing_date)
 min(recap$processing_date)#"2013-11-24"
 max(recap$processing_date)#"2024-09-16"
 
-
 #and merge with shedding data too
-shed.dat <- read.csv(file = paste0(homewd, "/Gwen_AngV_GhV_viral_shedding/indiv_urine_qPCR_AngV_GhV_data.csv"),header = T, stringsAsFactors = F)
+shed.dat <- read.csv(file = paste0(homewd, "/virus_shedding/data/henipavirus_shedding_data.csv"),header = T, stringsAsFactors = F)
 head(shed.dat)
 names(shed.dat)
 
-intersect(unique(recap$sampleid), unique(shed.dat$sampleid)) #158 shedding records for recaps
+intersect(unique(recap$sampleid), unique(shed.dat$sampleid)) #161 shedding records for recaps
 
 #let's juts use the shedding status (not Ct) for now
 shed.dat <- dplyr::select(shed.dat, sampleid, qPCR_AngV_multi_any_pos_ur, qPCR_GhV_multi_any_pos_ur)
 head(shed.dat)
 
-
 #and merge with recap
 recap.shed <- merge(recap, shed.dat, by="sampleid")
 recap.shed$qPCR_AngV_multi_any_pos_ur[is.na(recap.shed$qPCR_AngV_multi_any_pos_ur)] <- 2
 recap.shed$qPCR_GhV_multi_any_pos_ur[is.na(recap.shed$qPCR_GhV_multi_any_pos_ur)] <- 2
-length(unique(recap.shed$sampleid)) #158
-unique(recap.shed$barcode_id) #132
+length(unique(recap.shed$sampleid)) #161
+unique(recap.shed$barcode_id) #135
 
 #and merge recaps with luminex data 
-lum.dat <- read.csv(file = paste0(homewd, "/data/mix_sub_data_75_90_96.csv"))
+lum.dat <- read.csv(file = paste0(homewd, "/serology/data/mix_sub_data_75_90_96_long.csv"))
 head(lum.dat)
 
 lum.dat <- dplyr::select(lum.dat, sampleid, antigen, MFI, log10MFI, seropos, seropos_lci, seropos_uci)
@@ -301,9 +291,8 @@ recap.sum$pos[recap.sum$pos==1] <- "PCR positive"
 recap.sum$pos[is.na(recap.sum$pos)] <- "no PCR data"
 recap.sum$pos <- factor(recap.sum$pos, levels=c("PCR negative", "PCR positive", "no PCR data"))
 
-
-
 #filz = c('seronegative' = "navy",'seropositive'= "violetred")
+filz <- c("PCR negative" = "cornflowerblue", "PCR positive" = "tomato", "no PCR data" = "gray65")
 
 colorz1 = c('always seronegative' = "navy", 
             "always seropositive" = "violetred4",
@@ -311,19 +300,18 @@ colorz1 = c('always seronegative' = "navy",
             "seroreversion" = "lightseagreen",
             "seroconversion" = "orangered")
 
-shapez = c('female' = 21, 'male' = 24)
+shapez = c('seronegative' = 21, 'seropositive' = 24, 'no sero data'=22)
 alphaz <- c('has positives' = 1, 'always seronegative & no PCR pos'=.1)
 
-
 recap.sum$antigen <- factor(recap.sum$antigen, levels=c("GhV", "AngV"))
-recap.sum$class <- factor(recap.sum$class, levels = c("always seronegative", "always seropositive", "seroconversion","seroreversion", "seroconversion-seroreversion" ))
+recap.sum$class <- factor(recap.sum$class, levels = c("always seronegative", "always seropositive", "seroconversion","seroreversion", "seroconversion-seroreversion"))
 
 Eid.recap <- ggplot(subset(recap.sum, bat_species=="Eidolon dupreanum")) + theme_bw()+ 
-  geom_line(aes(x=processing_date, y=barcode_id, group=barcode_id, color=class, alpha=class2), size=1) + 
-  geom_point(aes(x=processing_date, y=barcode_id, group=barcode_id, shape=bat_sex, fill=status, alpha=class2), size=3, color="gray65") + 
-  scale_shape_manual(name="bat sex", values = shapez) + 
-  scale_fill_manual(name = "serostatus", values = filz) +
-  scale_color_manual(name= "serological\ntrajectory", values = colorz1) + ylab("individual barcode id\n\n") +
+  geom_line(aes(x=processing_date, y=barcode_id, group=barcode_id, color=class, alpha=class2), size=2) + 
+  geom_point(aes(x=processing_date, y=barcode_id, group=barcode_id, shape=seropos, fill=pos, alpha=class2), size=4, color="gray65") + 
+  scale_shape_manual(name="Serostatus", values = shapez) + 
+  scale_fill_manual(name = "PCR status", values = filz) +
+  scale_color_manual(name= "Serological\ntrajectory", values = colorz1) + ylab("Individual barcode ID\n\n") +
   facet_nested(bat_sex~antigen, scales = "free", space = "free") + scale_alpha_manual(values = alphaz) +
   theme(axis.text.y = element_blank(), axis.ticks.y=element_blank(), axis.title.x = element_blank(),
         axis.title.y = element_text(size=16),
@@ -334,7 +322,8 @@ Eid.recap <- ggplot(subset(recap.sum, bat_species=="Eidolon dupreanum")) + theme
         legend.text = element_text(size=10),
         legend.title = element_text(size=12),
         plot.margin = unit(c(.3,.3,0,2),"lines"),
-        axis.text.x = element_text(size=14),  strip.text.x = element_text(size=16),
+        axis.text.x = element_text(size=14),  
+        strip.text.x = element_text(size=16),
         strip.text.y = element_text(size=16),#, face="italic"),
         panel.grid = element_blank(), strip.background = element_rect(fill="white")) +
   scale_x_continuous(breaks = c(as.Date("2014-07-01"),as.Date("2015-07-01"), as.Date("2016-07-01"), as.Date("2017-07-01"), as.Date("2018-07-01"), as.Date("2019-07-01")),labels = c(2014,2015,2016,2017,2018,2019)) +
