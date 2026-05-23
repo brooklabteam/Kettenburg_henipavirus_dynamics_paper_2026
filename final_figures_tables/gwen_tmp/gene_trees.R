@@ -80,7 +80,7 @@ head(dat1)
 tree.dat1 <- merge(tree.dat1, dat1, by = "old_tip_label", all.x = T, sort = F)
 names(tree.dat1)
 tree.dat1$tip_label <- tree.dat1$new_label
-tree.dat1 <- dplyr::select(tree.dat1, tip_label, Isolate, Host, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
+tree.dat1 <- dplyr::select(tree.dat1, tip_label, Isolate, Host,Host2, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
 rooted.tree1$tip.label <- tree.dat1$tip_label
 head(tree.dat1)
 cbind(tree.dat1$old_tip_label, rooted.tree1$tip.label)
@@ -129,19 +129,19 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   # geom_cladelabel(node=31, label='AchPV2-like virus', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # geom_cladelabel(node=268, label='ThkPV1-like viruses', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # 
-  geom_cladelabel(node = 275, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 362, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 351, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 341, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 338, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 333, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 324, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 394, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 391, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 372, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 385, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 404, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 380, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 275, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 362, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 351, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 341, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 338, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 333, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 324, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 394, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 391, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 372, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 385, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 404, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
+  geom_cladelabel(node = 380, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
   xlim(c(0,12))
 
 p1
@@ -182,7 +182,7 @@ fulltree <- p1.1  %<+% p0.dat1 +
   ggnewscale::new_scale_fill() + 
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
   scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
-  theme(legend.position = "left",
+  theme(legend.position = "none",
         legend.direction = "vertical",
         legend.text = element_text(size=8),
         legend.title = element_text(size=8),
@@ -191,7 +191,7 @@ fulltree <- p1.1  %<+% p0.dat1 +
         plot.margin = unit(c(0,0,0,2), "cm"))
 fulltree
 
-
+#legtree <- get_legend(fulltree)
 
 #fusion
 setwd(paste0(homewd,"/pmx_gene_trees/fusion"))
@@ -274,7 +274,7 @@ head(dat1)
 tree.dat1 <- merge(tree.dat1, dat1, by = "old_tip_label", all.x = T, sort = F)
 names(tree.dat1)
 tree.dat1$tip_label <- tree.dat1$new_label
-tree.dat1 <- dplyr::select(tree.dat1, tip_label, Isolate, Host, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
+tree.dat1 <- dplyr::select(tree.dat1, tip_label, Isolate, Host, Host2, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
 rooted.tree1$tip.label <- tree.dat1$tip_label
 head(tree.dat1)
 cbind(tree.dat1$old_tip_label, rooted.tree1$tip.label)
@@ -324,19 +324,19 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   # geom_cladelabel(node=31, label='AchPV2-like virus', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # geom_cladelabel(node=268, label='ThkPV1-like viruses', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # 
-  geom_cladelabel(node = 215, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 372, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 398, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 392, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 389, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 358, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 361, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 336, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 355, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 382, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 349, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 314, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 407, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 215, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 372, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 398, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 392, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 389, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 358, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 361, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 336, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 355, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 382, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 349, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 314, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
+  geom_cladelabel(node = 407, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
   xlim(c(0,12))
 
 p1
@@ -377,7 +377,7 @@ fusiontree <- p1.1  %<+% p0.dat1 +
   ggnewscale::new_scale_fill() + 
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
   scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
-  theme(legend.position = "left",
+  theme(legend.position = "none",
         legend.direction = "vertical",
         legend.text = element_text(size=8),
         legend.title = element_text(size=8),
@@ -469,7 +469,7 @@ head(dat1)
 tree.dat1 <- merge(tree.dat1, dat1, by = "old_tip_label", all.x = T, sort = F)
 names(tree.dat1)
 tree.dat1$tip_label <- tree.dat1$new_label
-tree.dat1 <- dplyr::select(tree.dat1, tip_label, Isolate, Host, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
+tree.dat1 <- dplyr::select(tree.dat1, tip_label, Isolate, Host,Host2, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
 rooted.tree1$tip.label <- tree.dat1$tip_label
 head(tree.dat1)
 cbind(tree.dat1$old_tip_label, rooted.tree1$tip.label)
@@ -519,19 +519,19 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   # geom_cladelabel(node=31, label='AchPV2-like virus', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # geom_cladelabel(node=268, label='ThkPV1-like viruses', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # 
-  geom_cladelabel(node = 235, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 340, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 325, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 332, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 338, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 296, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 297, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 303, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 353, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 315, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 355, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 273, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 357, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 235, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 340, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 325, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 332, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 338, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 296, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 297, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 303, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 353, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 315, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 355, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 273, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
+  geom_cladelabel(node = 357, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
   xlim(c(0,12))
 
 p1
@@ -572,7 +572,7 @@ glycotree <- p1.1  %<+% p0.dat1 +
   ggnewscale::new_scale_fill() + 
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
   scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
-  theme(legend.position = "left",
+  theme(legend.position = "none",
         legend.direction = "vertical",
         legend.text = element_text(size=8),
         legend.title = element_text(size=8),
@@ -665,7 +665,7 @@ head(dat1)
 tree.dat1 <- merge(tree.dat1, dat1, by = "old_tip_label", all.x = T, sort = F)
 names(tree.dat1)
 tree.dat1$tip_label <- tree.dat1$new_label
-tree.dat1 <- dplyr::select(tree.dat1, tip_label, Isolate, Host, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
+tree.dat1 <- dplyr::select(tree.dat1, tip_label, Isolate, Host,Host2, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
 rooted.tree1$tip.label <- tree.dat1$tip_label
 head(tree.dat1)
 cbind(tree.dat1$old_tip_label, rooted.tree1$tip.label)
@@ -715,19 +715,19 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   # geom_cladelabel(node=31, label='AchPV2-like virus', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # geom_cladelabel(node=268, label='ThkPV1-like viruses', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # 
-  geom_cladelabel(node = 253, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 377, label = "Orthorubulavirus/Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 399, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 408, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 397, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 375, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 366, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 356, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 225, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  #geom_cladelabel(node = , label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 220, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 228, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 415, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 253, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 377, label = "Orthorubulavirus/Pararubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 399, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 408, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 397, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 375, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 366, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 356, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 225, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  #geom_cladelabel(node = , label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 220, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 228, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
+  geom_cladelabel(node = 415, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
   xlim(c(0,12))
 
 p1
@@ -768,7 +768,7 @@ matrixtree <- p1.1  %<+% p0.dat1 +
   ggnewscale::new_scale_fill() + 
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
   scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
-  theme(legend.position = "left",
+  theme(legend.position = "none",
         legend.direction = "vertical",
         legend.text = element_text(size=8),
         legend.title = element_text(size=8),
@@ -862,7 +862,7 @@ head(dat1)
 tree.dat1 <- merge(tree.dat1, dat1, by = "old_tip_label", all.x = T, sort = F)
 names(tree.dat1)
 tree.dat1$tip_label <- tree.dat1$new_label
-tree.dat1 <- dplyr::select(tree.dat1, tip_label, Isolate, Host, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
+tree.dat1 <- dplyr::select(tree.dat1, tip_label, Isolate, Host,Host2, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
 rooted.tree1$tip.label <- tree.dat1$tip_label
 head(tree.dat1)
 cbind(tree.dat1$old_tip_label, rooted.tree1$tip.label)
@@ -912,19 +912,19 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   # geom_cladelabel(node=31, label='AchPV2-like virus', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # geom_cladelabel(node=268, label='ThkPV1-like viruses', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # 
-  geom_cladelabel(node = 216, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 370, label = "Orthorubulavirus/Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 399, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 392, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 407, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 367, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 358, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 349, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 347, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  #geom_cladelabel(node = , label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 342, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 321, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 409, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 216, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 370, label = "Orthorubulavirus/Pararubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 399, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 392, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 407, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 367, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 358, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 349, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 347, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  #geom_cladelabel(node = , label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 342, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 321, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
+  geom_cladelabel(node = 409, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
   xlim(c(0,12))
 p1
 
@@ -964,7 +964,7 @@ nucleotree <- p1.1  %<+% p0.dat1 +
   ggnewscale::new_scale_fill() + 
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
   scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
-  theme(legend.position = "left",
+  theme(legend.position = "none",
         legend.direction = "vertical",
         legend.text = element_text(size=8),
         legend.title = element_text(size=8),
@@ -1056,7 +1056,7 @@ head(dat1)
 tree.dat1 <- merge(tree.dat1, dat1, by = "old_tip_label", all.x = T, sort = F)
 names(tree.dat1)
 tree.dat1$tip_label <- tree.dat1$new_label
-tree.dat1 <- dplyr::select(tree.dat1, tip_label, Isolate, Host, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
+tree.dat1 <- dplyr::select(tree.dat1, tip_label, Isolate, Host,Host2, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
 rooted.tree1$tip.label <- tree.dat1$tip_label
 head(tree.dat1)
 cbind(tree.dat1$old_tip_label, rooted.tree1$tip.label)
@@ -1159,7 +1159,7 @@ phostree <- p1.1  %<+% p0.dat1 +
   ggnewscale::new_scale_fill() + 
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
   scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
-  theme(legend.position = "left",
+  theme(legend.position = "none",
         legend.direction = "vertical",
         legend.text = element_text(size=8),
         legend.title = element_text(size=8),
@@ -1169,7 +1169,21 @@ phostree <- p1.1  %<+% p0.dat1 +
 phostree
 
 
+#put together
+phylos <- cowplot::plot_grid(nucleotree, phostree, matrixtree,fusiontree, glycotree,legtree,
+                             rel_widths = c(1,1,1,1,1,1), align = "h", axis = "tb",
+                             ncol=3, nrow = 2, labels = c("A", "B","C","D","E"), label_size = 22); phylos
 
+#genetrees <- cowplot::plot_grid(phylos, legtree, ncol=2, nrow = 1, rel_widths = c(1,.2), align = "h", axis = "tb"); genetrees
+
+homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/gwen_tmp/"
+ggsave(file = paste0(homewd, "FigX_genetrees.png"),
+       plot= phylos,
+       units="mm",
+       width=350,
+       height=150,
+       scale=2,
+       dpi=500)
 
 
 
