@@ -1,4 +1,4 @@
-#Script to make figure 2, which shows the mountain plots of henipavirus serology and the seasonal serology
+#Script to make figure 3, which shows the mountain plots of henipavirus serology and the seasonal serology
 
 rm(list=ls())
 
@@ -40,7 +40,6 @@ homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dy
 #make sure this is latest catching file
 dat <- read.csv(paste0(homewd, "/serology/data/lum_catch_merge.csv"), header = T, stringsAsFactors = F)
 head(dat)
-
 
 length(unique(dat$sampleid))
 dat$sampleid[duplicated(dat$sampleid)]
@@ -183,13 +182,16 @@ p2bsave <- ggplot(subset(lumdat.long)) + coord_cartesian(ylim = c(0,27000)) +
   scale_color_manual(values=colorz) + ylab("mean fluorescence intensity (MFI)\n") +
   #geom_dendro(rowclus) +
   theme(axis.title.x = element_blank(), panel.grid = element_blank(),
-        axis.text.x = element_text(size=16), axis.title.y = element_text(size=16), 
+        axis.text.x = element_text(size=14), 
+        axis.title.y = element_text(size=16), 
         axis.text.y = element_text(size=16), 
-        strip.background = element_rect(fill="white"),
-        strip.text.y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
-        plot.margin = unit(c(0,0,0,0), "cm")) +
-  geom_image(data=subset(image.df, virus_family=="Paramyxovirus"), aes(x=antigen, y=c(23000, 24000,23000), image = image), size=.3, nudge_x = .7); p2bsave
-mountain <- cowplot::plot_grid(p2bsave, p.h.row, ncol = 1,nrow = 2, rel_heights = c(1,.2), rel_widths = c(1,1));mountain
+        strip.background = element_rect(fill="black"),
+        strip.text.y = element_text(size=16, color = "white"), 
+        strip.text.x = element_text(size=16, face="italic", color="white"),
+        plot.margin = unit(c(0,0,0,0), "cm")); p2bsave
+  #geom_image(data=subset(image.df, virus_family=="Paramyxovirus"), aes(x=antigen, y=c(23000, 24000,23000), image = image), size=.3, nudge_x = .7); p2bsave
+mountain <- cowplot::plot_grid(p2bsave, p.h.row, ncol = 1,nrow = 2, rel_heights = c(1,.2), rel_widths = c(1,1))+
+  theme(plot.background = element_rect(fill = "white", colour = NA));mountain
 mountain<-as.ggplot(mountain)
 
 ##Now make all the seasonal serology plots
