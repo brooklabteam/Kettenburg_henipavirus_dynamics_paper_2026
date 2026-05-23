@@ -1129,10 +1129,10 @@ genomeplot_andv<-as.ggplot(genomeplot_andv)
 #                 rel_widths=c(1,1,1,1,1,1), rel_heights = c(1,1,1,1,1,1),
 #                 ncol=2,align="hv", axis="l", label_size = 23); fig1
 
-part1<-plot_grid(fulltree, polytree,NULL,
-                labels=c("A","B",""),
-                rel_widths=c(1.2,1,0.05), rel_heights = c(1,1,1),
-                ncol=3,align="hv", axis="l", label_size = 23); part1
+part1<-plot_grid(fulltree, polytree,
+                labels=c("A","B"),
+                rel_widths=c(1.2,1), rel_heights = c(1,1,1),
+                ncol=2,align="hv", axis="l", label_size = 23); part1
 part1<-as.ggplot(part1)
 
 part2<-plot_grid(coverage_ghvlike, andv_coverage, genomeplot_ghvlike, genomeplot_andv,
@@ -1143,16 +1143,57 @@ part2<-as.ggplot(part2)
 
 fig1<-plot_grid(part1, part2, 
                 labels=c("",""),
-                rel_widths=c(1,1), rel_heights = c(1,1),
+                rel_widths=c(1,1), rel_heights = c(0.8,1),
                 ncol=1,nrow=2,align="hv", axis="l", label_size = 23); fig1
+
+
+library(patchwork)
+
+part1<-(fulltree/polytree)+
+  plot_annotation(tag_levels = 'A') & 
+  theme(plot.tag = element_text(size = 23, face = "bold")); part1
+part1<-as.ggplot(part1)
+
+part1<-(fulltree|polytree)+
+  plot_annotation(tag_levels = 'A') & 
+  theme(plot.tag = element_text(size = 23, face = "bold")); part1
+part1<-as.ggplot(part1)
+
+
+part2<-(coverage_ghvlike / andv_coverage)+ plot_layout(heights = c(1, 2))+
+  #plot_annotation(tag_levels = list(c('C',''))) & 
+  theme(plot.tag = element_text(size = 23, face = "bold")); part2
+#part2<-as.ggplot(part2)
+
+# part3<-(genomeplot_ghvlike/ genomeplot_andv)+ plot_layout(heights = c(1, 1.5), widths=c(1,1))+
+#   plot_annotation(tag_levels = list(c('D',''))) & 
+#   theme(plot.tag = element_text(size = 23, face = "bold")); part3
+
+part3<-plot_grid(genomeplot_ghvlike, genomeplot_andv,
+               #labels=c("D",""),
+               rel_widths=c(1,1), rel_heights = c(1,1.4),
+               ncol=1, nrow=2,align="hv", axis="r", label_size = 23);part3
+#part3<-as.ggplot(part3)
+
+bottom<-(part2|part3)+plot_annotation(tag_levels = list(c('C','','D','')))& 
+  theme(plot.tag = element_text(size = 23, face = "bold")); bottom
+
+bottom<-as.ggplot(bottom)
+
+
+fig1<-(part1 | bottom)+ plot_layout(heights = c(1, 1), widths = c(1,1))+
+  #plot_annotation(tag_levels = list(c('C',''))) & 
+  theme(plot.tag = element_text(size = 23, face = "bold")); fig1
+
+
 
 #save
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/gwen_tmp/"
 ggsave(file = paste0(homewd, "Fig1_phylogeny_coverage_simplot.png"),
        plot= fig1,
        units="mm",
-       width=350,
-       height=250,
+       width=300,
+       height=300,
        scale=2,
        dpi=500)
 
