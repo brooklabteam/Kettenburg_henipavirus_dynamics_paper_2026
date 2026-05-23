@@ -188,7 +188,7 @@ p2bsave <- ggplot(subset(lumdat.long)) + coord_cartesian(ylim = c(0,27000)) +
         strip.background = element_rect(fill="white"),
         strip.text.y = element_text(size=16, color = "black"), 
         strip.text.x = element_text(size=16, face="italic", color="black"),
-        plot.margin = unit(c(0,0,0,0), "cm")); p2bsave
+        plot.margin = unit(c(0.1,0.1,0,0), "cm")); p2bsave
   #geom_image(data=subset(image.df, virus_family=="Paramyxovirus"), aes(x=antigen, y=c(23000, 24000,23000), image = image), size=.3, nudge_x = .7); p2bsave
 mountain <- cowplot::plot_grid(p2bsave, p.h.row, ncol = 1,nrow = 2, rel_heights = c(1,.2), rel_widths = c(1,1))+
   theme(plot.background = element_rect(fill = "white", colour = NA));mountain
@@ -1072,7 +1072,7 @@ pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & b
         ) +
   #ggtitle("Interannual seroprevalence (2018-2020 dataset) in" ~ italic("E. dupreanum"))+
   scale_x_continuous(breaks=c(as.Date("2018-01-01"),as.Date("2019-01-01"), as.Date("2020-01-01")), labels=c("2018", "2019", "2020")) +
-  coord_cartesian(expand = F) + ylab("seroprevalence") + guides(alpha="none") + scale_fill_manual(values=filz.antigen) 
+  coord_cartesian(expand = F) + ylab("Seroprevalence") + guides(alpha="none") + scale_fill_manual(values=filz.antigen) 
 pInterannual_new
 
 pInterannual_new2<-pInterannual_new+geom_text(data= dat_text, aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5),
@@ -1770,17 +1770,32 @@ part2<-as.ggplot(part2)
 fig3<-cowplot::plot_grid(mountain, part2,
                           labels=c("A",""),
                           rel_widths=c(1,1), rel_heights = c(1,1),
-                          ncol=2,align="hv", axis="l", label_size = 23)+
+                          ncol=2,align="hv", axis="tb", label_size = 23)+
   theme(plot.margin = unit(c(0,0,0,0), "cm"),
         plot.background = element_rect(fill = "white", colour = NA)); fig3
 
+#v2
+part4<-cowplot::plot_grid(NULL, mountain,
+                          labels=c("",""),
+                          rel_widths=c(0.05,1), rel_heights = c(1,1),
+                          ncol=2,align="hv", axis="r", label_size = 23)+
+  theme(plot.margin = unit(c(0,0,0,0), "cm")); part4
+part4<-as.ggplot(part4)
+
+fig3<-cowplot::plot_grid(part4, part2,
+                         labels=c("A",""),
+                         rel_widths=c(1,1), rel_heights = c(1,1.4),
+                         ncol=1,align="v", label_size = 23)+
+  theme(plot.margin = unit(c(0.1,0.1,0,0), "cm"),
+        plot.background = element_rect(fill = "white", colour = NA)); fig3
+
 #save figures
-homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/main/"
-ggsave(file = paste0(homewd, "Fig3_mountainplot_seasonal_serology.png"),
-       plot= Fig2,
+homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/gwen_tmp/"
+ggsave(file = paste0(homewd, "Fig3_mountainplot_seasonal_serology_v2.png"),
+       plot= fig3,
        units="mm",  
-       width=300, 
-       height=180, 
+       width=200, 
+       height=200, 
        scale=2, 
        dpi=500)
 
