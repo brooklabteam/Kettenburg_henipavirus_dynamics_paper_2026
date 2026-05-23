@@ -292,16 +292,16 @@ NP_054697.1,Tupaia paramyxovirus,,Narmovirus tupaiae,Narmovirus,Southeast Asia,T
 NP_056924.1,Measles morbillivirus,,Morbillivirus hominis,Morbillivirus,Japan,Homo sapiens,1998,0,0,0
 NP_112028.1,Henipavirus nipahense,,Henipavirus nipahense,Henipavirus,Malaysia,Sus scrofa domesticus,1998,0,0,0
 QYC64606.1,Henipavirus hendraense,HeV-var/Australia/Horse/2015/Gympie,Henipavirus hendraense,Henipavirus,Australia,Equus caballus,2015,0,0,0
-QYO90519.1,Daeryong virus,Cs17-65,Daryong henipavirus,Henipavirus,South Korea,Crocidura shantungensis,2017,0,0,0
-QYO90533.1,Gamak virus,Cl17-32,Gamak henipavirus,Henipavirus,South Korea,Crocidura lasiura,2017,0,0,0
+QYO90519.1,Daeryong virus,Cs17-65,Daryong henipavirus,Parahenipavirus,South Korea,Crocidura shantungensis,2017,0,0,0
+QYO90533.1,Gamak virus,Cl17-32,Gamak henipavirus,Parahenipavirus,South Korea,Crocidura lasiura,2017,0,0,0
 URC21339.1,Paramyxovirus PREDICT_PMV-15,TZAB1877,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Tadarida aegyptiaca,2018,0,0,0
 URC21341.1,Paramyxovirus PREDICT_PMV-15,TZAB1885,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Tadarida aegyptiaca,2018,0,0,0
 URC21343.1,Paramyxovirus PREDICT_PMV-15,TZAB1895,Paramyxovirus PREDICT_PMV-15,Unclassified,Tanzania,Tadarida aegyptiaca,2018,0,0,0
-UUV47207.1,Langya virus,SDQD_H1801,Langya henipavirus,Henipavirus,China,Homo sapiens,2018,0,0,0
+UUV47207.1,Langya virus,SDQD_H1801,Langya henipavirus,Parahenipavirus,China,Homo sapiens,2018,0,0,0
 UYS87244.1,Henipavirus hendraense,,Henipavirus hendraense,Henipavirus,Australia,Equus caballus,2021,0,0,0
 UZQ22168.1,Henipavirus nipahense,MCL-21-H-9808,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2021,0,0,0
 WEU70827.1,Chodsigoa hypsibia henipavirus,PMV/SC/C7-49.4/2022,Chodsigoa hypsibia henipavirus,Henipavirus,China,Chodsigoa hypsibia,2022,0,0,0
-WIU81494.1,Crocidura tanakae henipavirus,Shiyan201,Crocidura tanakae henipavirus,Henipavirus,China,Crocidura tanakae,2021,0,0,0
+WIU81494.1,Crocidura tanakae henipavirus,Shiyan201,Crocidura tanakae henipavirus,Parahenipavirus,China,Crocidura tanakae,2021,0,0,0
 WKR82409.1,Henipavirus nipahense,MCL-19-H-1134,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2019,0,0,0
 WVH15778.1,Henipavirus nipahense,MCL-23-H-3874_RNA_11865,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2023,0,0,0
 WVH15787.1,Henipavirus nipahense,MCL-23-H-3764_RNA_11861,Henipavirus nipahense,Henipavirus,India,Homo sapiens,2023,0,0,0
@@ -335,14 +335,14 @@ XJU75812.1,Camp Hill virus,,Camp Hill virus,Henipavirus,USA,Blarina brevicauda,2
 XLS83388.1,Langya virus,,Parahenipavirus langyaense,Parahenipavirus,South Korea,Crocidura lasiura,2023,0,0,0
 XLZ62602.1,Henipavirus hendraense,HeV/Australia/horse/2023/Cardiff Heights,Henipavirus hendraense,Henipavirus,Australia,Equus caballus,2023,0,0,0
 XMP25128.1,Henipavirus sp.,T-NP19/PAR,Henipavirus sp.,Henipavirus,Indonesia,Cynopterus brachyotis,2021,0,0,0
-XOT37560.1,Crocidura olivieri henipavirus 1,Cr. olivieri_para_1,Crocidura olivieri henipavirus 1,Henipavirus,Sierra Leone,Crocidura olivieri,2023,0,0,0
-XOT37567.1,Crocidura olivieri henipavirus 2,Cr. olivieri_para_2,Crocidura olivieri henipavirus 2,Henipavirus,Sierra Leone,Crocidura olivieri,2023,0,0,0
+XOT37560.1,Crocidura olivieri henipavirus 1,Cr. olivieri_para_1,Crocidura olivieri henipavirus 1,Parahenipavirus,Sierra Leone,Crocidura olivieri,2023,0,0,0
+XOT37567.1,Crocidura olivieri henipavirus 2,Cr. olivieri_para_2,Crocidura olivieri henipavirus 2,Parahenipavirus,Sierra Leone,Crocidura olivieri,2023,0,0,0
 XPO94331.1,Henipavirus nipahense,NiV/human/BGD/DMCH00124/2024,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2024,0,0,0
 XPO94337.1,Henipavirus nipahense,NiV/human/BGD/PMSKH0000424/2024,Henipavirus nipahense,Henipavirus,Bangladesh,Homo sapiens,2024,0,0,0
 XTB76844.1,Henipavirus sp.,MCL-24-H-4185,Henipavirus sp.,Henipavirus,India,Homo sapiens,2024,0,0,0
-XUU11145.1,Henipavirus sp.,GH,Henipavirus sp.,Henipavirus,South Korea,Crocidura shantungensis,2022,0,0,0
+XUU11145.1,Henipavirus sp.,GH,Henipavirus sp.,Parahenipavirus,South Korea,Crocidura shantungensis,2022,0,0,0
 YP_009094051.1,Sunshine coast virus,,Sunshine coast virus,Sunshinevirus,Australia,Aspidites melanocephalus,2008,0,0,0
-YP_009094096.1,Mojiang virus,Tongguan1,Henipavirus mojiangense,Henipavirus,China,Rattus tanezumi sladeni,2012,0,0,0
+YP_009094096.1,Mojiang virus,Tongguan1,Parahenipavirus,Henipavirus,China,Rattus tanezumi sladeni,2012,0,0,0
 YP_009094339.1,Salem virus,,Salemvirus salemense,Salemvirus,USA,Equus caballus,1992,0,0,0
 YP_010774627.1,Avian paramyxovirus 4,APMV-4/KR/YJ/06,Paraavulavirus hongkongense,Paraavulavirus,South Korea,Anas platyrhynchos,2006,0,0,0
 YP_010790479.1,Wenzhou pacific spadenose shark paramyxovirus,,Scoliodonvirus scoliodontis,Scoliodonvirus,China,Scoliodon macrorhynchos,2017,0,0,0
