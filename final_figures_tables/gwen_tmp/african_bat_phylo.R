@@ -19,9 +19,8 @@ homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dy
 #homewd= "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/phylo_trees/"
 
 #henipa tree
-setwd(paste0(homewd,"/pmx_gene_trees/polymerase"))
 setwd(paste0(homewd,"/henipa_focus_L_tree"))
-tree2 <-  read.tree("ref_right_trim.fasta.treefile") 
+tree2 <-  read.tree("ref_right_align_new.fasta.treefile") 
 rooted.tree2 <- root(tree2, which(tree2$tip.label == "YP_009094051.1"))
 #drop root and other reference sequences for aesthetics
 rooted.tree2<-drop.tip(rooted.tree2, "YP_009094051.1")
@@ -60,22 +59,33 @@ dat2$new_label <- NA
 
 #now, select the name based on what components are present for each sample
 #all components with values:
+# dat2$new_label[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)] <- paste(dat2$Accession[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+#                                                                                                                   dat2$Organism_Name[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+#                                                                                                                   dat2$Isolate[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|", 
+#                                                                                                                   dat2$source[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+#                                                                                                                   dat2$Country[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+#                                                                                                                   dat2$Collection_Date[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
+# 
+# #and if there is an NA just drop it
+# 
+# #here NA in Isolate only:
+# dat2$new_label[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)] <- paste(dat2$Accession[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|", 
+#                                                                                                                  dat2$Organism_Name[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|", 
+#                                                                                                                  #dat2$Isolate[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|", 
+#                                                                                                                  dat2$source[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+#                                                                                                                  dat2$Country[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+#                                                                                                                  dat2$Collection_Date[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
 dat2$new_label[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)] <- paste(dat2$Accession[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
-                                                                                                                  dat2$Organism_Name[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
-                                                                                                                  dat2$Isolate[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|", 
-                                                                                                                  dat2$source[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
-                                                                                                                  dat2$Country[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
-                                                                                                                  dat2$Collection_Date[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
+                                                                                                                  dat2$Organism_Name[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
 
 #and if there is an NA just drop it
 
 #here NA in Isolate only:
 dat2$new_label[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)] <- paste(dat2$Accession[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|", 
-                                                                                                                 dat2$Organism_Name[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|", 
-                                                                                                                 #dat2$Isolate[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|", 
-                                                                                                                 dat2$source[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
-                                                                                                                 dat2$Country[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
-                                                                                                                 dat2$Collection_Date[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
+                                                                                                                 dat2$Organism_Name[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
+
+
+
 #make sure to sort in order
 colnames(dat2)[colnames(dat2)=="Accession"]="old_tip_label"
 tree.dat2 <- data.frame(old_tip_label=rooted.tree2$tip.label, num =1:length(rooted.tree2$tip.label))
@@ -84,17 +94,24 @@ head(dat2)
 tree.dat2 <- merge(tree.dat2, dat2, by = "old_tip_label", all.x = T, sort = F)
 names(tree.dat2)
 tree.dat2$tip_label <- tree.dat2$new_label
-tree.dat2 <- dplyr::select(tree.dat2, tip_label, Isolate, Host, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
+tree.dat2 <- dplyr::select(tree.dat2, tip_label, Isolate, Host,Host2, source, Country, Collection_Date, Genus, Organism_Name, novel, old_tip_label)
 rooted.tree2$tip.label <- tree.dat2$tip_label
 head(tree.dat2)
 cbind(tree.dat2$old_tip_label, rooted.tree2$tip.label)
 tree.dat2$tip_label#all look good
 
 #shaped and highlighting
-tree.dat2$Host[tree.dat2$Host==0] <- "Non-bat host"
-tree.dat2$Host[tree.dat2$Host==1] <- "Bat host"
+tree.dat2$Host2[tree.dat2$Host2==0] <- "Non-bat host"
+tree.dat2$Host2[tree.dat2$Host2==1] <- "Bat host"
+tree.dat2$Host2 <- as.factor(tree.dat2$Host2)
+#shapez = c("Bat host" =  17, "Non-bat host" = 19)
+tree.dat2$Host[tree.dat2$Host==0] <- "Other host"
+tree.dat2$Host[tree.dat2$Host==1] <- "Eidolon dupreanum"
+tree.dat2$Host[tree.dat2$Host==2] <- "Rousettus madagascariensis"
+tree.dat2$Host[tree.dat2$Host==3] <- "Bat host"
 tree.dat2$Host <- as.factor(tree.dat2$Host)
-shapez = c("Bat host" =  17, "Non-bat host" = 19)
+shapez = c("Other host" =  15, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Bat host" =  18)
+
 colz2 = c('1' =  "yellow", '0' = "white")
 
 ##Get the clade numbers so we can collapse unnecessary clades
