@@ -132,19 +132,19 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   # geom_cladelabel(node=31, label='AchPV2-like virus', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # geom_cladelabel(node=268, label='ThkPV1-like viruses', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # 
-  geom_cladelabel(node = 275, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 362, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 351, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 341, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 338, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 333, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 324, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 394, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 391, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 372, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 385, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 404, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 380, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 275, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 362, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 351, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 341, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 338, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 333, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 324, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 394, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 391, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 372, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 385, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 404, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
+  geom_cladelabel(node = 380, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
   xlim(c(0,12))
 
 p1
@@ -309,19 +309,19 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   geom_cladelabel(node=131, label='AchPV2-like virus', offset=4.8, fontsize=4, color="black", align=TRUE)+
   geom_cladelabel(node=350, label='ThkPV1-like viruses', offset=4.8, fontsize=4, color="black", align=TRUE)+
   # 
-  geom_cladelabel(node = 236, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4, color="black") +
-  #geom_cladelabel(node = 344, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 370, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 378, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 383, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 392, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 387, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 404, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 395, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 362, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 399, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4, color="black") +
-  geom_cladelabel(node = 414, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
-  geom_cladelabel(node = 384, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4, color="black")+
+  geom_cladelabel(node = 236, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  #geom_cladelabel(node = 344, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 370, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 378, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 383, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 392, label = "Aquaparamyxovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 387, label = "Respirovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 404, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 395, label = "Narmovirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 362, label = "Orthorubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 399, label = "Morbillivirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 414, label = "Parahenipavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
+  geom_cladelabel(node = 384, label = "Scoliodonvirus/Synodonvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
   xlim(c(0,12))
 
 p1
@@ -364,7 +364,7 @@ polytree <- p1.1  %<+% p0.dat1 +
   ggnewscale::new_scale_fill() + 
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
   scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
-  theme(legend.position = "none",
+  theme(legend.position = "left",
         legend.direction = "vertical",
         legend.text = element_text(size=8),
         legend.title = element_text(size=8),
@@ -771,6 +771,17 @@ andv_coverage<-plot_grid(genomeplot_ROU148, genomeplot_andv, labels=c("",""),
                          ncol=1,align="hv", axis="l", label_size = 23)
 andv_coverage
 
+andv_coverage_long<-plot_grid(genomeplot_ROU148, genomeplot_andv, labels=c("",""),
+                         rel_widths=c(1,1), rel_heights = c(1,1),
+                         ncol=2,align="hv", axis="l", label_size = 23)
+andv_coverage_long
+
+#all coverage
+all_coverage<-plot_grid(coverage_ghvlike, genomeplot_ROU148, genomeplot_andv, labels=c("","",""),
+                         rel_widths=c(1,1,1), rel_heights = c(1,1,1),
+                         ncol=3,align="hv", axis="l", label_size = 23)
+all_coverage
+
 
 #Now add the simplots in case they end up going with the figure
 #set directory
@@ -1122,78 +1133,45 @@ genomeplot_andv
 
 genomeplot_andv<-as.ggplot(genomeplot_andv)
 
+genomeplot_andv_reduced<-andv_map_aa/genome1ROU173/genome2ROU173+plot_layout(nrow=3,  heights = c(1, 0.2,0.2))
+genomeplot_andv_reduced
+
+#both genome plots together
+simplots<-plot_grid(genomeplot_ghvlike, genomeplot_andv_reduced,
+                 rel_widths=c(1,1), rel_heights = c(1,1),
+                 ncol=2,align="hv", axis="r", label_size = 23); simplots
+simplots<-as.ggplot(simplots)
+
 #all together in figure 1
 
-# fig1<-plot_grid(fulltree, polytree, coverage_ghvlike, andv_coverage, genomeplot_ghvlike, genomeplot_andv,
-#                 labels=c("","","","","",""),
-#                 rel_widths=c(1,1,1,1,1,1), rel_heights = c(1,1,1,1,1,1),
-#                 ncol=2,align="hv", axis="l", label_size = 23); fig1
-
-part1<-plot_grid(fulltree, polytree,
-                labels=c("A","B"),
-                rel_widths=c(1.2,1), rel_heights = c(1,1,1),
-                ncol=2,align="hv", axis="l", label_size = 23); part1
-part1<-as.ggplot(part1)
-
-part2<-plot_grid(coverage_ghvlike, andv_coverage, genomeplot_ghvlike, genomeplot_andv,
-                 labels=c("C","D","E","F"),
-                 rel_widths=c(1,1,1,1), rel_heights = c(1,1,1,1),
-                 ncol=2, nrow=2,align="hv", axis="l", label_size = 23);part2
-part2<-as.ggplot(part2)
-
-fig1<-plot_grid(part1, part2, 
-                labels=c("",""),
-                rel_widths=c(1,1), rel_heights = c(0.8,1),
-                ncol=1,nrow=2,align="hv", axis="l", label_size = 23); fig1
-
-
-library(patchwork)
-
-part1<-(fulltree/polytree)+
-  plot_annotation(tag_levels = 'A') & 
-  theme(plot.tag = element_text(size = 23, face = "bold")); part1
-part1<-as.ggplot(part1)
-
-part1<-(fulltree|polytree)+
-  plot_annotation(tag_levels = 'A') & 
-  theme(plot.tag = element_text(size = 23, face = "bold")); part1
+part1<-plot_grid(all_coverage, simplots,
+                labels=c("B","C"),
+                rel_widths=c(1,1), rel_heights = c(1,1),
+                ncol=1,align="hv", axis="l", label_size = 23)+
+  theme(plot.margin = unit(c(0,0,0,0), "cm")); part1
 part1<-as.ggplot(part1)
 
 
-part2<-(coverage_ghvlike / andv_coverage)+ plot_layout(heights = c(1, 2))+
-  #plot_annotation(tag_levels = list(c('C',''))) & 
-  theme(plot.tag = element_text(size = 23, face = "bold")); part2
-#part2<-as.ggplot(part2)
+fig1<-plot_grid(polytree, part1, 
+                labels=c("A",""),
+                rel_widths=c(1,1.5), rel_heights = c(1,1),
+                ncol=2,nrow=1,align="hv", axis="l", label_size = 23)+
+  theme(plot.background = element_rect(fill = "white", colour = NA)); fig1
 
-# part3<-(genomeplot_ghvlike/ genomeplot_andv)+ plot_layout(heights = c(1, 1.5), widths=c(1,1))+
-#   plot_annotation(tag_levels = list(c('D',''))) & 
-#   theme(plot.tag = element_text(size = 23, face = "bold")); part3
-
-part3<-plot_grid(genomeplot_ghvlike, genomeplot_andv,
-               #labels=c("D",""),
-               rel_widths=c(1,1), rel_heights = c(1,1.4),
-               ncol=1, nrow=2,align="hv", axis="r", label_size = 23);part3
-#part3<-as.ggplot(part3)
-
-bottom<-(part2|part3)+plot_annotation(tag_levels = list(c('C','','D','')))& 
-  theme(plot.tag = element_text(size = 23, face = "bold")); bottom
-
-bottom<-as.ggplot(bottom)
-
-
-fig1<-(part1 | bottom)+ plot_layout(heights = c(1, 1), widths = c(1,1))+
-  #plot_annotation(tag_levels = list(c('C',''))) & 
-  theme(plot.tag = element_text(size = 23, face = "bold")); fig1
-
+fig1.2<-plot_grid(polytree, part1, 
+                labels=c("A",""),
+                rel_widths=c(1,1), rel_heights = c(1,1.2),
+                ncol=1,nrow=2,align="hv", axis="r", label_size = 23)+
+  theme(plot.background = element_rect(fill = "white", colour = NA)); fig1.2
 
 
 #save
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/gwen_tmp/"
-ggsave(file = paste0(homewd, "Fig1_phylogeny_coverage_simplot.png"),
-       plot= fig1,
+ggsave(file = paste0(homewd, "Fig1_phylogeny_coverage_simplot_v2.png"),
+       plot= fig1.2,
        units="mm",
-       width=300,
-       height=300,
+       width=210,
+       height=230,
        scale=2,
        dpi=500)
 
