@@ -13,8 +13,8 @@ library(ggh4x)
 library(epitools)
 
 #first record your wd for this repo (home) 
-homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
-batwd =  "/Users/carabrook/Developer/Madagascar-Bat-Data"
+homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026"
+batwd =  "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
 
 #load the recaptures
 catch.dat <- read.csv(paste0(batwd,"/Catching-Data/catching_data_clean.csv"), header = T, stringsAsFactors = F)
@@ -28,18 +28,18 @@ recap <- dplyr::select(recap, barcode_id, sampleid, roost_site, processing_date,
 head(recap)
 
 #and merge with shedding data too
-shed.dat <- read.csv(file = paste0(homewd, "/Gwen_AngV_GhV_viral_shedding/indiv_urine_qPCR_AngV_GhV_data.csv"),header = T, stringsAsFactors = F)
+shed.dat <- read.csv(file = paste0(homewd, "/virus_shedding/data/henipavirus_shedding_data.csv"),header = T, stringsAsFactors = F)
 head(shed.dat)
 names(shed.dat)
 
-intersect(unique(recap$sampleid), unique(shed.dat$sampleid)) #110 shedding records for recaps
-
+intersect(unique(recap$sampleid), unique(shed.dat$sampleid)) #164 shedding records for recaps
 
 #just take rousettus and eidolon
 recap=subset(recap, bat_species!="Pteropus rufus")
 
 #and merge with luminex data 
-lum.dat <- read.csv(file = paste0(homewd, "/data/mix_sub_data_75_90_96.csv"))
+
+lum.dat <- read.csv(file = paste0(homewd, "/serology/data/mix_sub_data_75_90_96_long.csv"))
 head(lum.dat)
 
 lum.dat <- dplyr::select(lum.dat, sampleid, antigen, MFI, log10MFI, seropos, seropos_lci, seropos_uci)
@@ -50,19 +50,19 @@ recap$processing_date <- as.Date(recap$processing_date)
 
 
 
-#let's juts use the shedding status (not Ct) for now
-shed.dat <- dplyr::select(shed.dat, sampleid, qPCR_AngV_multi_any_pos, qPCR_GhV_multi_any_pos)
+#let's just use the shedding status (not Ct) for now
+shed.dat <- dplyr::select(shed.dat, sampleid, qPCR_AngV_multi_any_pos_ur_ur, qPCR_GhV_multi_any_pos_ur_ur)
 head(shed.dat)
 
 
 
 #and merge with recap
 recap <- merge(recap, shed.dat, by="sampleid", all.x = T)
-recap$qPCR_AngV_multi_any_pos[is.na(recap$qPCR_AngV_multi_any_pos)] <- 2
-recap$qPCR_GhV_multi_any_pos[is.na(recap$qPCR_GhV_multi_any_pos)] <- 2
+recap$qPCR_AngV_multi_any_pos_ur[is.na(recap$qPCR_AngV_multi_any_pos_ur)] <- 2
+recap$qPCR_GhV_multi_any_pos_ur[is.na(recap$qPCR_GhV_multi_any_pos_ur)] <- 2
 
 
-length(unique(recap$sampleid[recap$qPCR_AngV_multi_any_pos<2 |recap$qPCR_GhV_multi_any_pos<2])) #100. not bad to start
+length(unique(recap$sampleid[recap$qPCR_AngV_multi_any_pos_ur<2 |recap$qPCR_GhV_multi_any_pos_ur<2])) #100. not bad to start
 head(recap)
 
 #subset to the antigen/species of interest
@@ -83,16 +83,16 @@ recap.sum <- ddply(recap.sum, .(barcode_id), summarise, Ncap=unique(N))
 
 recap <- merge(recap, recap.sum, by="barcode_id")
 head(recap)
-recap$qPCR_GhV_multi_any_pos[recap$qPCR_GhV_multi_any_pos==1] <- "pos"
-recap$qPCR_GhV_multi_any_pos[recap$qPCR_GhV_multi_any_pos==0] <- "neg"
-recap$qPCR_GhV_multi_any_pos[recap$qPCR_GhV_multi_any_pos==2] <- "no data"
+recap$qPCR_GhV_multi_any_pos_ur[recap$qPCR_GhV_multi_any_pos_ur==1] <- "pos"
+recap$qPCR_GhV_multi_any_pos_ur[recap$qPCR_GhV_multi_any_pos_ur==0] <- "neg"
+recap$qPCR_GhV_multi_any_pos_ur[recap$qPCR_GhV_multi_any_pos_ur==2] <- "no data"
 
-recap$qPCR_AngV_multi_any_pos[recap$qPCR_AngV_multi_any_pos==1] <- "pos"
-recap$qPCR_AngV_multi_any_pos[recap$qPCR_AngV_multi_any_pos==0] <- "neg"
-recap$qPCR_AngV_multi_any_pos[recap$qPCR_AngV_multi_any_pos==2] <- "no data"
+recap$qPCR_AngV_multi_any_pos_ur[recap$qPCR_AngV_multi_any_pos_ur==1] <- "pos"
+recap$qPCR_AngV_multi_any_pos_ur[recap$qPCR_AngV_multi_any_pos_ur==0] <- "neg"
+recap$qPCR_AngV_multi_any_pos_ur[recap$qPCR_AngV_multi_any_pos_ur==2] <- "no data"
 
-recap$qPCR_GhV_multi_any_pos <- factor(recap$qPCR_GhV_multi_any_pos, levels=c("pos", "neg", "no data"))
-recap$qPCR_AngV_multi_any_pos <- factor(recap$qPCR_AngV_multi_any_pos, levels=c("pos", "neg", "no data"))
+recap$qPCR_GhV_multi_any_pos_ur <- factor(recap$qPCR_GhV_multi_any_pos_ur, levels=c("pos", "neg", "no data"))
+recap$qPCR_AngV_multi_any_pos_ur <- factor(recap$qPCR_AngV_multi_any_pos_ur, levels=c("pos", "neg", "no data"))
 
 
 
@@ -104,14 +104,14 @@ Eid <- ggplot(data=subset(recap, bat_species=="Eidolon dupreanum" & Ncap>1),) +
 #or the shedding status
 Eid_GhV_shed <- ggplot(data=subset(recap, bat_species=="Eidolon dupreanum" & Ncap>1 & antigen=="GhV"),) + 
   facet_grid(antigen~.) + theme_bw() + scale_color_manual(values=c("tomato", "cornflowerblue", "gray40"))+
-  geom_point(aes(x=processing_date, y=barcode_id, color=qPCR_GhV_multi_any_pos, shape = bat_sex),  size=3) +
-  geom_line(aes(x=processing_date, y=barcode_id, color=qPCR_GhV_multi_any_pos, group=barcode_id), show.legend = F, size=.8); Eid_GhV_shed
+  geom_point(aes(x=processing_date, y=barcode_id, color=qPCR_GhV_multi_any_pos_ur, shape = bat_sex),  size=3) +
+  geom_line(aes(x=processing_date, y=barcode_id, color=qPCR_GhV_multi_any_pos_ur, group=barcode_id), show.legend = F, size=.8); Eid_GhV_shed
 
 
 Eid_AngV_shed <- ggplot(data=subset(recap, bat_species=="Eidolon dupreanum" & Ncap>1 & antigen=="AngV"),) + 
   facet_grid(antigen~.) + theme_bw() + scale_color_manual(values=c("tomato", "cornflowerblue", "gray40"))+
-  geom_point(aes(x=processing_date, y=barcode_id, color=qPCR_AngV_multi_any_pos, shape = bat_sex),  size=3) +
-  geom_line(aes(x=processing_date, y=barcode_id, color=qPCR_AngV_multi_any_pos, group=barcode_id), show.legend = F, size=.8); Eid_AngV_shed
+  geom_point(aes(x=processing_date, y=barcode_id, color=qPCR_AngV_multi_any_pos_ur, shape = bat_sex),  size=3) +
+  geom_line(aes(x=processing_date, y=barcode_id, color=qPCR_AngV_multi_any_pos_ur, group=barcode_id), show.legend = F, size=.8); Eid_AngV_shed
 
 
 
@@ -152,14 +152,14 @@ names(shed.dat)
 intersect(unique(recap$sampleid), unique(shed.dat$sampleid)) #158 shedding records for recaps
 
 #let's juts use the shedding status (not Ct) for now
-shed.dat <- dplyr::select(shed.dat, sampleid, qPCR_AngV_multi_any_pos, qPCR_GhV_multi_any_pos)
+shed.dat <- dplyr::select(shed.dat, sampleid, qPCR_AngV_multi_any_pos_ur, qPCR_GhV_multi_any_pos_ur)
 head(shed.dat)
 
 
 #and merge with recap
 recap.shed <- merge(recap, shed.dat, by="sampleid")
-recap.shed$qPCR_AngV_multi_any_pos[is.na(recap.shed$qPCR_AngV_multi_any_pos)] <- 2
-recap.shed$qPCR_GhV_multi_any_pos[is.na(recap.shed$qPCR_GhV_multi_any_pos)] <- 2
+recap.shed$qPCR_AngV_multi_any_pos_ur[is.na(recap.shed$qPCR_AngV_multi_any_pos_ur)] <- 2
+recap.shed$qPCR_GhV_multi_any_pos_ur[is.na(recap.shed$qPCR_GhV_multi_any_pos_ur)] <- 2
 length(unique(recap.shed$sampleid)) #158
 unique(recap.shed$barcode_id) #132
 
@@ -201,9 +201,9 @@ recap.shed2$antigen <- "GhV"
 names(recap.shed)[9] <- "pos"
 names(recap.shed2)[9] <- "pos"
 recap.shed$pos #this is AngV pos
-recap.shed2$pos <- recap.shed$qPCR_GhV_multi_any_pos
-recap.shed <- dplyr::select(recap.shed,-(qPCR_GhV_multi_any_pos))
-recap.shed2 <- dplyr::select(recap.shed2,-(qPCR_GhV_multi_any_pos))
+recap.shed2$pos <- recap.shed$qPCR_GhV_multi_any_pos_ur
+recap.shed <- dplyr::select(recap.shed,-(qPCR_GhV_multi_any_pos_ur))
+recap.shed2 <- dplyr::select(recap.shed2,-(qPCR_GhV_multi_any_pos_ur))
 head(recap.shed)
 head(recap.shed2)
 recap.shed <- rbind(recap.shed, recap.shed2)
