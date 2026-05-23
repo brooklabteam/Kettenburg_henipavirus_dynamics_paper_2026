@@ -87,11 +87,16 @@ cbind(tree.dat1$old_tip_label, rooted.tree1$tip.label)
 tree.dat1$tip_label#all look good
 
 #shaped and highlighting
-tree.dat1$Host[tree.dat1$Host==0] <- "Non-bat host"
-tree.dat1$Host[tree.dat1$Host==1] <- "Bat host"
+tree.dat1$Host2[tree.dat1$Host2==0] <- "Non-bat host"
+tree.dat1$Host2[tree.dat1$Host2==1] <- "Bat host"
+tree.dat1$Host2 <- as.factor(tree.dat1$Host2)
+#shapez = c("Bat host" =  17, "Non-bat host" = 19)
+tree.dat1$Host[tree.dat1$Host==0] <- "Other host"
+tree.dat1$Host[tree.dat1$Host==1] <- "Eidolon dupreanum"
+tree.dat1$Host[tree.dat1$Host==2] <- "Rousettus madagascariensis"
+tree.dat1$Host[tree.dat1$Host==3] <- "Bat host"
 tree.dat1$Host <- as.factor(tree.dat1$Host)
-shapez = c("Bat host" =  17, "Non-bat host" = 19)
-colz2 = c('1' =  "yellow", '0' = "white")
+shapez = c("Other host" =  15, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Bat host" =  18)
 
 ##Get the clade numbers so we can collapse unnecessary clades
 ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
@@ -100,8 +105,10 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 title<-expression(paste("          Full genome"))
 p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0,show.legend = T) +
   #scale_fill_manual(values=colz) +
-  scale_color_manual(values=colz)+
-  scale_shape_manual(values=shapez) +
+  scale_color_manual(values=colz, guide =
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
+  scale_shape_manual(values=shapez, guide =
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic"))) +
   new_scale_color() +
   geom_tiplab(aes(color = novel, show.legend=F), geom = "text", Genus="Helvetica", size=4, nudge_x=0.05) +
   guides(color="none")+#
@@ -274,10 +281,16 @@ cbind(tree.dat1$old_tip_label, rooted.tree1$tip.label)
 tree.dat1$tip_label#all look good
 
 #shaped and highlighting
-tree.dat1$Host[tree.dat1$Host==0] <- "Non-bat host"
-tree.dat1$Host[tree.dat1$Host==1] <- "Bat host"
+tree.dat1$Host2[tree.dat1$Host2==0] <- "Non-bat host"
+tree.dat1$Host2[tree.dat1$Host2==1] <- "Bat host"
+tree.dat1$Host2 <- as.factor(tree.dat1$Host2)
+#shapez = c("Bat host" =  17, "Non-bat host" = 19)
+tree.dat1$Host[tree.dat1$Host==0] <- "Other host"
+tree.dat1$Host[tree.dat1$Host==1] <- "Eidolon dupreanum"
+tree.dat1$Host[tree.dat1$Host==2] <- "Rousettus madagascariensis"
+tree.dat1$Host[tree.dat1$Host==3] <- "Bat host"
 tree.dat1$Host <- as.factor(tree.dat1$Host)
-shapez = c("Bat host" =  17, "Non-bat host" = 19)
+shapez = c("Other host" =  15, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Bat host" =  18)
 colz2 = c('1' =  "yellow", '0' = "white")
 
 ##Get the clade numbers so we can collapse unnecessary clades
@@ -287,8 +300,10 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 title<-expression(paste("          Fusion"))
 p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0,show.legend = T) +
   #scale_fill_manual(values=colz) +
-  scale_color_manual(values=colz)+
-  scale_shape_manual(values=shapez) +
+  scale_color_manual(values=colz, guide =
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
+  scale_shape_manual(values=shapez, guide =
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic"))) +
   new_scale_color() +
   geom_tiplab(aes(color = novel, show.legend=F), geom = "text", Genus="Helvetica", size=4, nudge_x=0.05) +
   guides(color="none")+#
@@ -461,10 +476,16 @@ cbind(tree.dat1$old_tip_label, rooted.tree1$tip.label)
 tree.dat1$tip_label#all look good
 
 #shaped and highlighting
-tree.dat1$Host[tree.dat1$Host==0] <- "Non-bat host"
-tree.dat1$Host[tree.dat1$Host==1] <- "Bat host"
+tree.dat1$Host2[tree.dat1$Host2==0] <- "Non-bat host"
+tree.dat1$Host2[tree.dat1$Host2==1] <- "Bat host"
+tree.dat1$Host2 <- as.factor(tree.dat1$Host2)
+#shapez = c("Bat host" =  17, "Non-bat host" = 19)
+tree.dat1$Host[tree.dat1$Host==0] <- "Other host"
+tree.dat1$Host[tree.dat1$Host==1] <- "Eidolon dupreanum"
+tree.dat1$Host[tree.dat1$Host==2] <- "Rousettus madagascariensis"
+tree.dat1$Host[tree.dat1$Host==3] <- "Bat host"
 tree.dat1$Host <- as.factor(tree.dat1$Host)
-shapez = c("Bat host" =  17, "Non-bat host" = 19)
+shapez = c("Other host" =  15, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Bat host" =  18)
 colz2 = c('1' =  "yellow", '0' = "white")
 
 ##Get the clade numbers so we can collapse unnecessary clades
@@ -474,8 +495,10 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 title<-expression(paste("          Glycoprotein"))
 p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0,show.legend = T) +
   #scale_fill_manual(values=colz) +
-  scale_color_manual(values=colz)+
-  scale_shape_manual(values=shapez) +
+  scale_color_manual(values=colz, guide =
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
+  scale_shape_manual(values=shapez, guide =
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic"))) +
   new_scale_color() +
   geom_tiplab(aes(color = novel, show.legend=F), geom = "text", Genus="Helvetica", size=4, nudge_x=0.05) +
   guides(color="none")+#
@@ -649,10 +672,16 @@ cbind(tree.dat1$old_tip_label, rooted.tree1$tip.label)
 tree.dat1$tip_label#all look good
 
 #shaped and highlighting
-tree.dat1$Host[tree.dat1$Host==0] <- "Non-bat host"
-tree.dat1$Host[tree.dat1$Host==1] <- "Bat host"
+tree.dat1$Host2[tree.dat1$Host2==0] <- "Non-bat host"
+tree.dat1$Host2[tree.dat1$Host2==1] <- "Bat host"
+tree.dat1$Host2 <- as.factor(tree.dat1$Host2)
+#shapez = c("Bat host" =  17, "Non-bat host" = 19)
+tree.dat1$Host[tree.dat1$Host==0] <- "Other host"
+tree.dat1$Host[tree.dat1$Host==1] <- "Eidolon dupreanum"
+tree.dat1$Host[tree.dat1$Host==2] <- "Rousettus madagascariensis"
+tree.dat1$Host[tree.dat1$Host==3] <- "Bat host"
 tree.dat1$Host <- as.factor(tree.dat1$Host)
-shapez = c("Bat host" =  17, "Non-bat host" = 19)
+shapez = c("Other host" =  15, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Bat host" =  18)
 colz2 = c('1' =  "yellow", '0' = "white")
 
 ##Get the clade numbers so we can collapse unnecessary clades
@@ -662,8 +691,10 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 title<-expression(paste("          Matrix"))
 p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0,show.legend = T) +
   #scale_fill_manual(values=colz) +
-  scale_color_manual(values=colz)+
-  scale_shape_manual(values=shapez) +
+  scale_color_manual(values=colz, guide =
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
+  scale_shape_manual(values=shapez, guide =
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic"))) +
   new_scale_color() +
   geom_tiplab(aes(color = novel, show.legend=F), geom = "text", Genus="Helvetica", size=4, nudge_x=0.05) +
   guides(color="none")+#
@@ -838,10 +869,16 @@ cbind(tree.dat1$old_tip_label, rooted.tree1$tip.label)
 tree.dat1$tip_label#all look good
 
 #shaped and highlighting
-tree.dat1$Host[tree.dat1$Host==0] <- "Non-bat host"
-tree.dat1$Host[tree.dat1$Host==1] <- "Bat host"
+tree.dat1$Host2[tree.dat1$Host2==0] <- "Non-bat host"
+tree.dat1$Host2[tree.dat1$Host2==1] <- "Bat host"
+tree.dat1$Host2 <- as.factor(tree.dat1$Host2)
+#shapez = c("Bat host" =  17, "Non-bat host" = 19)
+tree.dat1$Host[tree.dat1$Host==0] <- "Other host"
+tree.dat1$Host[tree.dat1$Host==1] <- "Eidolon dupreanum"
+tree.dat1$Host[tree.dat1$Host==2] <- "Rousettus madagascariensis"
+tree.dat1$Host[tree.dat1$Host==3] <- "Bat host"
 tree.dat1$Host <- as.factor(tree.dat1$Host)
-shapez = c("Bat host" =  17, "Non-bat host" = 19)
+shapez = c("Other host" =  15, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Bat host" =  18)
 colz2 = c('1' =  "yellow", '0' = "white")
 
 ##Get the clade numbers so we can collapse unnecessary clades
@@ -851,8 +888,10 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 title<-expression(paste("          Nucleoprotein"))
 p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0,show.legend = T) +
   #scale_fill_manual(values=colz) +
-  scale_color_manual(values=colz)+
-  scale_shape_manual(values=shapez) +
+  scale_color_manual(values=colz, guide =
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
+  scale_shape_manual(values=shapez, guide =
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic"))) +
   new_scale_color() +
   geom_tiplab(aes(color = novel, show.legend=F), geom = "text", Genus="Helvetica", size=4, nudge_x=0.05) +
   guides(color="none")+#
@@ -1024,10 +1063,16 @@ cbind(tree.dat1$old_tip_label, rooted.tree1$tip.label)
 tree.dat1$tip_label#all look good
 
 #shaped and highlighting
-tree.dat1$Host[tree.dat1$Host==0] <- "Non-bat host"
-tree.dat1$Host[tree.dat1$Host==1] <- "Bat host"
+tree.dat1$Host2[tree.dat1$Host2==0] <- "Non-bat host"
+tree.dat1$Host2[tree.dat1$Host2==1] <- "Bat host"
+tree.dat1$Host2 <- as.factor(tree.dat1$Host2)
+#shapez = c("Bat host" =  17, "Non-bat host" = 19)
+tree.dat1$Host[tree.dat1$Host==0] <- "Other host"
+tree.dat1$Host[tree.dat1$Host==1] <- "Eidolon dupreanum"
+tree.dat1$Host[tree.dat1$Host==2] <- "Rousettus madagascariensis"
+tree.dat1$Host[tree.dat1$Host==3] <- "Bat host"
 tree.dat1$Host <- as.factor(tree.dat1$Host)
-shapez = c("Bat host" =  17, "Non-bat host" = 19)
+shapez = c("Other host" =  15, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Bat host" =  18)
 colz2 = c('1' =  "yellow", '0' = "white")
 
 ##Get the clade numbers so we can collapse unnecessary clades
@@ -1037,8 +1082,10 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 title<-expression(paste("          Phosphoprotein"))
 p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0,show.legend = T) +
   #scale_fill_manual(values=colz) +
-  scale_color_manual(values=colz)+
-  scale_shape_manual(values=shapez) +
+  scale_color_manual(values=colz, guide =
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
+  scale_shape_manual(values=shapez, guide =
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic"))) +
   new_scale_color() +
   geom_tiplab(aes(color = novel, show.legend=F), geom = "text", Genus="Helvetica", size=4, nudge_x=0.05) +
   guides(color="none")+#
