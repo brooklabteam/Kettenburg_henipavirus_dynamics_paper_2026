@@ -16,12 +16,12 @@ library(sjPlot)
 
 ################################################################################
 ################################################################################
-homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/"
-batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
+# homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/"
+# batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
 
 # 
-# homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
-# batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
+homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
 
 # plot of seasonality of antigens for analysis
 # also GAMs of predictors of seropositivity and/or seroprevalence
@@ -463,8 +463,10 @@ pIntra <- ggplot(subset(pred.df.supp, sig==1 )) +
   scale_color_manual(values=colorz) + scale_x_continuous(breaks=c(31, 93, 155, 218, 280, 344 ), labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")) +
   scale_fill_manual(values=filz1) +
   scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
-  theme(axis.text = element_text(size=14), axis.title.x = element_blank(), 
-        axis.title.y = element_text(size=16),
+  theme(axis.text = element_text(size=14), 
+        #axis.title.x = element_blank(), 
+        axis.title.x = element_text(size=16, colour = "transparent"),
+        axis.title.y = element_text(size=16), 
         strip.background = element_rect(fill="white"), 
         strip.text.y = element_text(size=16),panel.spacing = unit(1.5, "lines"),
         strip.text.x = element_text(size=16, face = "italic"), panel.grid = element_blank()) +
@@ -480,6 +482,8 @@ pIntraEid <- ggplot(subset(pred.df.supp, sig==1 & bat_species=="Eidolon dupreanu
   scale_fill_manual(values=filz2) +
   scale_size_continuous(name = "N bats", breaks = c(10,20,30)) +
   scale_shape_manual(values=yearz) +
+    annotate("text", y= Inf, x =Inf, label = "italic(p) == 0.005",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
   #ggnewscale::new_scale_fill() +
   #ggnewscale::new_scale_color() +
   #scale_alpha_manual(values=alphaz.new) +
@@ -492,7 +496,9 @@ pIntraEid <- ggplot(subset(pred.df.supp, sig==1 & bat_species=="Eidolon dupreanu
   scale_x_continuous(breaks=c(31, 93, 155, 218, 280, 344 ), labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")) +
   #scale_fill_manual(values=filz1) +
   #scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
-  theme(axis.text = element_text(size=14), axis.title.x = element_blank(), 
+  theme(axis.text = element_text(size=14), 
+        #axis.title.x = element_blank(), 
+        axis.title.x = element_text(size=16, colour = "transparent"),
         axis.title.y = element_text(size=16), 
         strip.background = element_blank(),# element_rect(fill="white"), 
         #strip.text.y = element_text(size=16),
@@ -511,6 +517,8 @@ pIntraEidnoLeg <- ggplot(subset(pred.df.supp, sig==1 & bat_species=="Eidolon dup
   scale_fill_manual(values=filz2) +
   scale_size_continuous(name = "N bats", breaks = c(10,20,30)) +
   scale_shape_manual(values=yearz) +
+  annotate("text", y= Inf, x =Inf, label = "italic(p) == 0.005",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
   #ggnewscale::new_scale_fill() +
   #ggnewscale::new_scale_color() +
   #scale_alpha_manual(values=alphaz.new) +
@@ -523,7 +531,9 @@ pIntraEidnoLeg <- ggplot(subset(pred.df.supp, sig==1 & bat_species=="Eidolon dup
   scale_x_continuous(breaks=c(31, 93, 155, 218, 280, 344 ), labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")) +
   #scale_fill_manual(values=filz1) +
   #scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
-  theme(axis.text = element_text(size=14), axis.title.x = element_blank(), 
+  theme(axis.text = element_text(size=14), 
+        #axis.title.x = element_blank(), 
+        axis.title.x = element_text(size=16, colour = "transparent"),
         axis.title.y = element_text(size=16), 
         strip.background = element_blank(),# element_rect(fill="white"), 
         #strip.text.y = element_text(size=16),
@@ -543,6 +553,8 @@ pIntraRou <- ggplot(subset(pred.df.supp, sig==1 & bat_species=="Rousettus madaga
   scale_color_manual(values=sitez, name="roost site") +
   scale_size_continuous(name = "N bats", breaks = c(15,10,15)) +
   scale_shape_manual(values=yearz) +
+  annotate("text", y= Inf, x =Inf, label = "italic(p) == NS",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
   #ggnewscale::new_scale_fill() +
   #scale_alpha_manual(values=alphaz.new) +
   #geom_ribbon(data = subset(pred.df.supp, sig==2 & bat_species=="Rousettus madagascariensis" ), aes(x=doy, ymin=predicted_seropos_lci, ymax= predicted_seropos_uci, fill = antigen), alpha=.15, show.legend = F) +
@@ -573,6 +585,8 @@ pIntraRounoLeg <- ggplot(subset(pred.df.supp, sig==1 & bat_species=="Rousettus m
   scale_color_manual(values=sitez, name="roost site") +
   scale_size_continuous(name = "N bats", breaks = c(15,10,15)) +
   scale_shape_manual(values=yearz) +
+  annotate("text", y= Inf, x =Inf, label = "italic(p) == NS",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
   #ggnewscale::new_scale_fill() +
   #scale_alpha_manual(values=alphaz.new) +
   #geom_ribbon(data = subset(pred.df.supp, sig==2 & bat_species=="Rousettus madagascariensis" ), aes(x=doy, ymin=predicted_seropos_lci, ymax= predicted_seropos_uci, fill = antigen), alpha=.15, show.legend = F) +
@@ -959,8 +973,12 @@ pIntrannualShedEid <- ggplot(data=subset(prev.dat, bat_species=="Eidolon duprean
   #geom_ribbon(data=pred.df.Rou, aes(x=doy, ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
   #geom_line(data=pred.df.Rou, aes(x=doy, y= prevalence, color=antigen)) +
   facet_grid(~bat_species) + theme_bw() +
-  theme(axis.text = element_text(size=14), axis.title.y = element_text(size=16),
-        axis.title.x = element_blank(),
+  annotate("text", y= Inf, x =Inf, label = "italic(p) == NS",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
+  theme(axis.text = element_text(size=14), 
+        #axis.title.x = element_blank(), 
+        axis.title.x = element_text(size=16, colour = "transparent"),
+        axis.title.y = element_text(size=16),
         strip.background = element_blank(),# element_rect(fill="white"), 
         strip.text = element_blank(),# .y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
@@ -989,8 +1007,12 @@ pIntrannualShedEidnoLeg <- ggplot(data=subset(prev.dat, bat_species=="Eidolon du
   #geom_ribbon(data=pred.df.Rou, aes(x=doy, ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
   #geom_line(data=pred.df.Rou, aes(x=doy, y= prevalence, color=antigen)) +
   facet_grid(~bat_species) + theme_bw() +
-  theme(axis.text = element_text(size=14), axis.title.y = element_text(size=16),
-        axis.title.x = element_blank(),
+  annotate("text", y= Inf, x =Inf, label = "italic(p) == NS",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
+  theme(axis.text = element_text(size=14), 
+        #axis.title.x = element_blank(), 
+        axis.title.x = element_text(size=16, colour = "transparent"),
+        axis.title.y = element_text(size=16),
         strip.background = element_blank(),# element_rect(fill="white"), 
         strip.text = element_blank(),# .y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
@@ -1007,6 +1029,8 @@ pIntrannualShedRou <-  ggplot(data=subset(prev.dat, bat_species=="Rousettus mada
   scale_fill_manual(values=filz) +
   scale_color_manual(values=sitez, name = "roost site") +
   scale_size_continuous(name = "N bats", breaks = c(10,20,30)) +
+  annotate("text", y= Inf, x =Inf, label = "italic(p) == NS",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
   #ggnewscale::new_scale_fill() + 
   scale_x_continuous(breaks=c(31, 93, 155, 218, 280, 344 ), labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")) +
   geom_linerange(aes(x=doy, ymin=prevGhV_lci, ymax=prevGhV_uci, color= roost_site), linetype=2, alpha=.3, show.legend = F) +
@@ -1016,8 +1040,10 @@ pIntrannualShedRou <-  ggplot(data=subset(prev.dat, bat_species=="Rousettus mada
   #geom_ribbon(data=pred.df.Rou, aes(x=doy, ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
   #geom_line(data=pred.df.Rou, aes(x=doy, y= prevalence, color=antigen)) +
   facet_grid(~bat_species) + theme_bw() +
-  theme(axis.text = element_text(size=14), axis.title.y = element_text(size=16),
-        axis.title.x = element_blank(),
+  theme(axis.text = element_text(size=14), 
+        #axis.title.x = element_blank(), 
+        axis.title.x = element_text(size=16, colour = "transparent"),
+        axis.title.y = element_text(size=16),
         strip.background = element_blank(),# element_rect(fill="white"), 
         strip.text = element_blank(),# .y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
@@ -1037,6 +1063,8 @@ pIntrannualShedRounoLeg <-  ggplot(data=subset(prev.dat, bat_species=="Rousettus
   scale_fill_manual(values=filz) +
   scale_color_manual(values=sitez, name = "roost site") +
   scale_size_continuous(name = "N bats", breaks = c(10,20,30)) +
+  annotate("text", y= Inf, x =Inf, label = "italic(p) == NS",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
   #ggnewscale::new_scale_fill() + 
   scale_x_continuous(breaks=c(31, 93, 155, 218, 280, 344 ), labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")) +
   geom_linerange(aes(x=doy, ymin=prevGhV_lci, ymax=prevGhV_uci, color= roost_site), linetype=2, alpha=.3, show.legend = F) +
@@ -1046,8 +1074,10 @@ pIntrannualShedRounoLeg <-  ggplot(data=subset(prev.dat, bat_species=="Rousettus
   #geom_ribbon(data=pred.df.Rou, aes(x=doy, ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
   #geom_line(data=pred.df.Rou, aes(x=doy, y= prevalence, color=antigen)) +
   facet_grid(~bat_species) + theme_bw() +
-  theme(axis.text = element_text(size=14), axis.title.y = element_text(size=16),
-        axis.title.x = element_blank(),
+  theme(axis.text = element_text(size=14), 
+        #axis.title.x = element_blank(), 
+        axis.title.x = element_text(size=16, colour = "transparent"),
+        axis.title.y = element_text(size=16),
         strip.background = element_blank(),# element_rect(fill="white"), 
         strip.text = element_blank(),# .y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
@@ -1068,22 +1098,22 @@ seroshedEid1 <- cowplot::plot_grid(seroshedEid, legEid, ncol=2, nrow=1, rel_widt
 seroshedRou1 <- cowplot::plot_grid(seroshedRou, legRou, ncol=2, nrow=1, rel_widths = c(1,.15))
 
 
-ggsave(file = paste0(homewd,"/final_figures_tables/tmp/Intra-annual-sero-shed-Eid-GhV.png"),
-       plot=seroshedEid1,
-       units="mm",  
-       width=60, 
-       height=80, 
-       scale=3, 
-       dpi=300)
-
-
-ggsave(file = paste0(homewd,"/final_figures_tables/tmp/Intra-annual-sero-shed-Rou-GhV.png"),
-       plot=seroshedRou1,
-       units="mm",  
-       width=60, 
-       height=80, 
-       scale=3, 
-       dpi=300)
+# ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/Intra-annual-sero-shed-Eid-GhV.png"),
+#        plot=seroshedEid1,
+#        units="mm",  
+#        width=60, 
+#        height=80, 
+#        scale=3, 
+#        dpi=300)
+# 
+# 
+# ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/Intra-annual-sero-shed-Rou-GhV.png"),
+#        plot=seroshedRou1,
+#        units="mm",  
+#        width=60, 
+#        height=80, 
+#        scale=3, 
+#        dpi=300)
 
 #and combine with Ct
 
@@ -1219,9 +1249,12 @@ pMFR_Ct <- ggplot(data= subset(tot.merge,  bat_species=="Eidolon dupreanum" & Gh
             theme_bw() + ylab("Ct (GhV)") +
             scale_shape_manual(name="year", values=yearz) +
             scale_color_manual(values = sitez) +
+          annotate("text", y= Inf, x =Inf, label = "italic(p) == 0.06",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
             theme(panel.grid = element_blank(),
-                  axis.title.x = element_blank(),
-                  axis.text = element_text(size=14),
+                  axis.text = element_text(size=14), 
+                  axis.title.x = element_blank(), 
+                  #axis.title.x = element_text(size=16, colour = "transparent"),
                   axis.title.y = element_text(size=16)); pMFR_Ct
 
 pMFR_Ctsex <- ggplot(data= subset(tot.merge,  bat_species=="Eidolon dupreanum" & GhV_ct>0 & combo_class!="juvenile"& tot.merge$combo_class!="female-P")) +
@@ -1230,8 +1263,11 @@ pMFR_Ctsex <- ggplot(data= subset(tot.merge,  bat_species=="Eidolon dupreanum" &
   theme_bw() + ylab("Ct (GhV)") +
   scale_shape_manual(name="year", values=yearz) +
   scale_color_manual(values = c("pink2", "cornflowerblue"), name="bat sex") +
+  annotate("text", y= Inf, x =Inf, label = "italic(p) == 0.06",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
   theme(panel.grid = element_blank(),
-        axis.title.x = element_blank(),
+        axis.title.x = element_blank(), 
+        #axis.title.x = element_text(size=16, colour = "transparent"),
         axis.text = element_text(size=14),
         axis.title.y = element_text(size=16)); pMFR_Ctsex
 
@@ -1243,8 +1279,11 @@ pMFR_Ctsex <- ggplot(data= subset(tot.merge,  bat_species=="Eidolon dupreanum" &
   theme_bw() + ylab("Ct (GhV)") +
   scale_shape_manual(name="year", values=yearz) +
   scale_color_manual(values = c("pink2", "cornflowerblue"), name="bat sex") +
+  annotate("text", y= Inf, x =Inf, label = "italic(p) == 0.06",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
   theme(panel.grid = element_blank(),
-        axis.title.x = element_blank(),
+        axis.title.x = element_blank(), 
+        #axis.title.x = element_text(size=16, colour = "transparent"),
         axis.text = element_text(size=14),
         axis.title.y = element_text(size=16)); pMFR_Ctsex
 
@@ -1255,8 +1294,11 @@ pMFR_MFIsex <- ggplot(data= subset(merge.sero.dat,  bat_species=="Eidolon duprea
   theme_bw() + ylab("MFI (GhV)") +
   scale_shape_manual(name="year", values=yearz) +
   scale_color_manual(values = c("pink2", "cornflowerblue"), name="bat sex") +
+  annotate("text", y= Inf, x =Inf, label = "italic(p) == 0.02",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
   theme(panel.grid = element_blank(),
-        axis.title.x = element_blank(),
+        axis.title.x = element_blank(), 
+        #axis.title.x = element_text(size=16, colour = "transparent"),
         axis.text = element_text(size=14),
         axis.title.y = element_text(size=16)); pMFR_MFIsex
 
@@ -1266,8 +1308,11 @@ pMFR_MFI <- ggplot(data= subset(merge.sero.dat,  bat_species=="Eidolon dupreanum
   theme_bw() + ylab("MFI (GhV)") +
   scale_shape_manual(name="year", values=yearz) +
   scale_color_manual(values = sitez) +
+  annotate("text", y= Inf, x =Inf, label = "italic(p) == 0.02",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
   theme(panel.grid = element_blank(),
-        axis.title.x = element_blank(),
+        axis.title.x = element_blank(), 
+        #axis.title.x = element_text(size=16, colour = "transparent"),
         axis.text = element_text(size=14),
         axis.title.y = element_text(size=16)); pMFR_MFI
 
@@ -1276,13 +1321,13 @@ pMFRcombo <- cowplot::plot_grid(pMFR_Ct, pMFR_MFI, ncol=2, nrow = 1, align = "hv
 
 pMFRcombosex <- cowplot::plot_grid(pMFR_Ctsex, pMFR_MFIsex, MFR_leg, ncol=3, nrow = 1, rel_widths = c(1,1,.2)); pMFRcombosex
 
-ggsave(file = paste0(homewd,"/final_figures_tables/tmp/pMFRcombosex.png"),
-       plot=pMFRcombosex,
-       units="mm",  
-       width=75, 
-       height=40, 
-       scale=3, 
-       dpi=300)
+# ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/pMFRcombosex.png"),
+#        plot=pMFRcombosex,
+#        units="mm",  
+#        width=75, 
+#        height=40, 
+#        scale=3, 
+#        dpi=300)
 
 #and the Ct-prevalence plot
 
@@ -1605,20 +1650,27 @@ pCtprev <- ggplot(data= subset(shed.prev, !is.na(meanGhVCt))) +
   scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
   scale_color_manual(name="roost site", values = sitez) +
   scale_shape_manual(values=yearz, name="year") +
-  theme(panel.grid = element_blank(), axis.text = element_text(size=14),
-        axis.title = element_text(size=18), legend.position = "inside",
-        legend.position.inside = c(.15,.73), legend.text = element_text(size=12),
+  annotate("text", y= Inf, x =Inf, label = "italic(p) == 0",
+           parse = TRUE,hjust=1.1, vjust=1.5)+
+  annotate("text", y= Inf, x =Inf, label = "italic(p) == 0",
+           parse = TRUE,hjust=1.1, vjust=3)+
+  theme(panel.grid = element_blank(),
+        axis.text = element_text(size=14), 
+        axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        legend.text = element_text(size=12),
+        legend.position = "inside",
+        legend.position.inside = c(.15,.73),
         legend.title = element_text(size=14));pCtprev
   #guides(color=guide_legend(ncol=1), shape="none", size="none")
 
 #and all together
 pRight <- cowplot::plot_grid(pMFRcombo, pCtprev, ncol=1, nrow = 2, labels = c("C", "D"), label_size = 22)
 
-
 Fig2 <- cowplot::plot_grid(seroshedEid, pRight, legEid, ncol=3, nrow = 1, rel_widths = c(1,1,.2), align = "h", axis = "tb")
 
 
-ggsave(file = paste0(homewd,"/final_figures_tables/tmp/Fig2-draft.png"),
+ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/Fig2-draft.png"),
        plot=Fig2,
        units="mm",  
        width=110, 
