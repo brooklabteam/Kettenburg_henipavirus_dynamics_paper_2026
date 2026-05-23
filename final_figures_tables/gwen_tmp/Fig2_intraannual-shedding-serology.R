@@ -1667,7 +1667,8 @@ pCtprev <- ggplot(data= subset(shed.prev, !is.na(meanGhVCt))) +
 #and all together
 pRight <- cowplot::plot_grid(pMFRcombo, pCtprev, ncol=1, nrow = 2, labels = c("C", "D"), label_size = 22)
 
-Fig2 <- cowplot::plot_grid(seroshedEid, pRight, legEid, ncol=3, nrow = 1, rel_widths = c(1,1,.2), align = "h", axis = "tb")
+Fig2 <- cowplot::plot_grid(seroshedEid, pRight, legEid, ncol=3, nrow = 1, rel_widths = c(1,1,.2), align = "h", axis = "tb")+
+  theme(plot.background = element_rect(fill = "white", colour = NA)); Fig2
 
 
 ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/Fig2-draft.png"),
