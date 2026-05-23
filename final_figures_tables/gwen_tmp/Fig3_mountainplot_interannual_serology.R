@@ -1042,6 +1042,13 @@ alphaz = c('0' = 0, '1' = 1, '2' = 0.5)
 filz.season <- filz[(length(filz)-2):length(filz)]
 filz.antigen <- filz[1:(length(filz)-2)]
 
+dat_text <- data.frame(
+  label = c("p = 0.05", "p = 0.03", "p = NS", "p = NS"),
+  antigen   = c("AngV", "GhV", "HeV", "NiV"),
+  x     = c(Inf, Inf, Inf, Inf),
+  y     = c(1, 1, 1, 1)
+)
+
 pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & bat_species=="Eidolon dupreanum")) +
   geom_rect(data=subset(cal.dat,bat_species=="Eidolon dupreanum"), aes(xmin=as.Date(start), xmax=as.Date(stop), ymin=0, ymax=1, fill=season), alpha=.3) +
   geom_point(aes(x=mid_date, y=seroprev, size=N, color=antigen, alpha = sig)) + scale_color_manual(values=colorz) + scale_fill_manual(values=filz.season) +scale_alpha_manual(values=alphaz) +
@@ -1049,7 +1056,7 @@ pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & b
   geom_linerange(aes(x=mid_date, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen), linetype=2, alpha=.3, show.legend = F) +
   geom_ribbon(data=subset(pred.df, bat_species=="Eidolon dupreanum"), aes(x=mid_date, ymin= predicted_seroprevalence_lci, ymax=predicted_seroprevalence_uci, fill=antigen), alpha=.3, show.legend = F) +
   geom_line(data=subset(pred.df, bat_species=="Eidolon dupreanum"), aes(x=mid_date, y= predicted_seroprevalence, color=antigen, group = group)) +
-  facet_grid(~.) + theme_bw() +
+  facet_grid(antigen~bat_species) + theme_bw() +
   theme(axis.text.x = element_text(size=14), axis.title.x = element_blank(), 
         axis.text.y = element_blank(),axis.ticks.y = element_blank(),axis.title.y = element_blank(),
         plot.title = element_text(size=16),
@@ -1057,10 +1064,13 @@ pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & b
         strip.text.y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
         plot.margin = unit(c(.5,.5,.5,1), "lines")) +
-  ggtitle("Interannual seroprevalence (2018-2020 dataset) in" ~ italic("E. dupreanum"))+
+  #ggtitle("Interannual seroprevalence (2018-2020 dataset) in" ~ italic("E. dupreanum"))+
   scale_x_continuous(breaks=c(as.Date("2018-01-01"),as.Date("2019-01-01"), as.Date("2020-01-01")), labels=c("2018", "2019", "2020")) +
   coord_cartesian(expand = F) + ylab("seroprevalence") + guides(alpha="none") + scale_fill_manual(values=filz.antigen) 
 pInterannual_new
+
+pInterannual_new2<-pInterannual_new+geom_text(data= dat_text, aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5),
+                                              fontface="italic");pInterannual_new2
 
  ##Add the historical IPM time series for comparison
  
