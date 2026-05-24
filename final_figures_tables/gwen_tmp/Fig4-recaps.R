@@ -309,7 +309,7 @@ Eid.recap <- ggplot(subset(recap.sum, bat_species=="Eidolon dupreanum")) + theme
   geom_point(aes(x=processing_date, y=barcode_id, group=barcode_id, shape=seropos, fill=pos, alpha=class2), size=4, color="gray65") + 
   scale_shape_manual(name="Serostatus", values = shapez) + 
   scale_fill_manual(name = "PCR status", values = filz) +
-  scale_color_manual(name= "Serological\ntrajectory", values = colorz1) + ylab("Individual bat") +
+  scale_color_manual(name= "Serological\ntrajectory", values = colorz1) + ylab("Individual bat\n\n") +
   facet_nested(bat_sex~antigen, scales = "free", space = "free") + scale_alpha_manual(values = alphaz) +
   theme(axis.text.y = element_blank(), 
         axis.ticks.y=element_blank(), 
@@ -318,7 +318,7 @@ Eid.recap <- ggplot(subset(recap.sum, bat_species=="Eidolon dupreanum")) + theme
         axis.ticks.x = element_blank(),  
         axis.title.y = element_text(size=16),
         legend.box = "vertical",
-        legend.position = "none",
+        legend.position = "right",
         #panel.spacing.y = unit(.1, "lines"),
         #panel.spacing.x = unit(1, "lines"),
         legend.text = element_text(size=10),
@@ -330,7 +330,7 @@ Eid.recap <- ggplot(subset(recap.sum, bat_species=="Eidolon dupreanum")) + theme
   scale_x_continuous(breaks = c(as.Date("2014-07-01"),as.Date("2015-07-01"), as.Date("2016-07-01"), as.Date("2017-07-01"), as.Date("2018-07-01"), as.Date("2019-07-01")),labels = c(2014,2015,2016,2017,2018,2019)) +
   guides(alpha="none",  shape=guide_legend(order=1, override.aes = list(size=3, color="black")), fill=guide_legend(order=2, override.aes = list(shape=21,size=3)), color=guide_legend(order=3, ncol=1));Eid.recap
 
-leg <- get_legend(Eid.recap)
+#leg <- get_legend(Eid.recap)
 
 ####################################################################################
 ####################################################################################
@@ -408,7 +408,7 @@ EidMFIall <- ggplot(data=subset(recap.sum, bat_species=="Eidolon dupreanum" )) +
 #and the line up
 Fig4 <- cowplot::plot_grid(Eid.recap, EidMFIall, 
                            labels = c("A", "B"),
-                           ncol=1, nrow=2, rel_heights = c(1,1), align = "v", axis = "l",label_size = 23)+
+                           ncol=1, nrow=2, rel_heights = c(1,1), align = "v", axis = "lr",label_size = 23)+
   theme(plot.margin = unit(c(0,2,0,0),"lines")); Fig4
 
 
@@ -420,7 +420,7 @@ Fig4.1 <- cowplot::plot_grid(Fig4, leg, ncol=2, nrow = 1, rel_widths = c(1,.2), 
 
 homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/gwen_tmp"
 ggsave(file = paste0(homewd,"/Fig4_recaps.png"),
-       plot = Fig4.1,
+       plot = Fig4,
        bg="white",
        units="mm",  
        width=120, 
