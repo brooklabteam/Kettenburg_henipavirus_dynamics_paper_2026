@@ -113,8 +113,9 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
                        guide_legend(label.theme = element_text(angle = 0, face = "italic"))) +
   new_scale_color() +
   geom_tiplab(aes(color = novel, show.legend=F), geom = "text", Genus="Helvetica", size=4, nudge_x=0.05) +
+  guides(fill = guide_legend(ncol = 2))+
   guides(color="none")+#
-  ggtitle(title)+
+  #ggtitle(title)+
   scale_color_manual(values=c("0"="black","1"="red")) +
   geom_treescale(fontsize=4, x=0,y=-3, linesize = .5) +
   theme(legend.position = "none", 
@@ -185,15 +186,25 @@ fulltree <- p1.1  %<+% p0.dat1 +
   ggnewscale::new_scale_fill() + 
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
   scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
-  theme(legend.position = "left",
-        legend.direction = "vertical",
-        legend.text = element_text(size=8),
+  theme(legend.position = "none",
+        legend.key.spacing.y = unit(0.001, "cm"),
+        legend.spacing.y = unit(0.001, "cm"),
+        legend.direction = "horizontal",
+        legend.text = element_text(size=7),
         legend.title = element_text(size=8),
         legend.key.size = unit(0.3, "cm"),
         plot.title = element_text(hjust = -0.1),
         plot.margin = unit(c(0,0,0,0), "cm"))
 fulltree
 
+leg<-get_legend(fulltree)
+
+fulltree2<-cowplot::plot_grid(leg,NULL, fulltree, 
+                         labels=c("","",""),
+                         rel_widths=c(1,1,1), rel_heights = c(0.4,0.001,1),
+                         ncol=1,nrow=3,align="hv", axis="l", label_size = 23)+
+  theme(plot.background = element_rect(fill = "white", colour = NA)); fulltree2
+fulltree2<-as.ggplot(fulltree2)
 
 #then polymerase tree
 setwd(paste0(homewd,"/pmx_gene_trees/polymerase"))
@@ -291,7 +302,7 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   new_scale_color() +
   geom_tiplab(aes(color = novel, show.legend=F), geom = "text", Genus="Helvetica", size=4, nudge_x=0.05) +
   guides(color="none")+#
-  ggtitle(title)+
+  #ggtitle(title)+
   scale_color_manual(values=c("0"="black","1"="red")) +
   geom_treescale(fontsize=4, x=0,y=-3, linesize = .5) +
   theme(legend.position = "none", 
@@ -364,7 +375,7 @@ polytree <- p1.1  %<+% p0.dat1 +
   ggnewscale::new_scale_fill() + 
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
   scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
-  theme(legend.position = "left",
+  theme(legend.position = "none",
         legend.direction = "vertical",
         legend.text = element_text(size=8),
         legend.title = element_text(size=8),
@@ -834,7 +845,7 @@ andv_map_aa <- ggplot(long.sim_aa) +
   geom_line(aes(x=pointer, y=value, color=accession), size=1) +
   theme(panel.background = element_rect("white"),
         panel.border = element_rect(linetype = "solid", fill=NA)) + ylab("% Amino acid identity")+xlab("Genome position")+
-  geom_hline(yintercept = 0.95, linetype = "dashed", color="red")+
+  geom_hline(yintercept = 0.67, linetype = "dashed", color="red")+
   theme(panel.grid = element_blank(), strip.text = element_text(face="italic", size=12),
         strip.background = element_rect(fill="white"), 
         legend.direction = "horizontal",
@@ -895,7 +906,7 @@ ghv_map_aa <- ggplot(long.sim_aa) +
   annotate("rect", xmin=4061, xmax=6369, ymin=0, ymax=1, alpha=0.6,  fill="#6B8C81")+
   geom_line(aes(x=pointer, y=value, color=accession), size=1) +
   #annotate("rect", xmin=3519, xmax=4168, ymin=0, ymax=1, alpha=1,  fill="grey30")+
-  geom_hline(yintercept = 0.67, linetype = "dashed", color="red")+
+  geom_hline(yintercept = 0.96, linetype = "dashed", color="red")+
   theme(panel.background = element_rect("white"),
         panel.border = element_rect(linetype = "solid", fill=NA)) + ylab("% Amino acid identity")+xlab("Genome position")+
   theme(panel.grid = element_blank(), strip.text = element_text(face="italic", size=12),
@@ -1167,7 +1178,7 @@ dat$var1_alt<-factor(dat$var1_alt, levels=c("GhV", "YuV2"))
 #plot comparison to known sequences
 compare_plot <- ggplot(dat, aes(x=var1_alt, y=gene, fill=id)) +
   geom_tile() +
-  geom_text(aes(label = id), color = "black", size = 5) +
+  geom_text(aes(label = id), color = "black", size = 4) +
   # scale_fill_viridis_c(option = "C", direction = -1) +
   scale_fill_gradient(low="yellow", high="red")+
   facet_nested(.~var2, scales="free", space="free",
@@ -1180,46 +1191,68 @@ compare_plot <- ggplot(dat, aes(x=var1_alt, y=gene, fill=id)) +
   theme_linedraw()+
   scale_y_discrete(position="left", limits=rev)+
   scale_x_discrete(position="bottom")+
-  theme(axis.text.x = element_text(size=14), 
+  theme(axis.text.x = element_text(size=12), 
         #axis.ticks.y = element_blank(),
         axis.text.y = element_text(size=14),
+        legend.text = element_text(size=7),
+        legend.title = element_text(size=8),
         #axis.title.x = element_blank(), 
-        axis.title.y = element_text(size=16),
-        axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=14),
+        axis.title.x = element_text(size=14),
         plot.margin = margin(0, 5, 5, 5, "pt"),
         plot.background = element_blank(),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         plot.title = element_text(size=12), 
         legend.position = "right",
-        strip.text = element_text(size=14))
+        strip.text = element_text(size=12))
 compare_plot
 
 
 #all together in figure 1
-all_coverage<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148,genomeplot_andv, labels=c("C","",""),
+all_coverage<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148, genomeplot_ROU173, labels=c("D","",""),
                                   rel_widths=c(1,1,1), rel_heights = c(1,1,1),
                                   ncol=1,align="hv", axis="r", label_size = 23)
 all_coverage
 
-all_coverage2<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148, genomeplot_andv, labels=c("C","",""),
+all_coverage2<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148, genomeplot_ROU173, labels=c("D","",""),
                                   rel_widths=c(1,1,1), rel_heights = c(1,1,1),
                                   ncol=3,align="h", label_size = 23)
 all_coverage2
 
 
-part1<-cowplot::plot_grid(polytree, compare_plot, 
-                labels=c("A","B"),
-                rel_widths=c(2,1), rel_heights = c(1,1),
-                ncol=2,nrow=1,align="hv", axis="l", label_size = 23)+
-  theme(plot.background = element_rect(fill = "white", colour = NA)); part1
+#full comparison
 
-fig1<-cowplot::plot_grid(part1, all_coverage2, 
+part1<-cowplot::plot_grid(NULL,fulltree2, compare_plot, 
+                          labels=c("A","","B"),
+                          rel_widths=c(1,1,1), rel_heights = c(0.01,2.3,1),
+                          ncol=1,nrow=3,align="hv", axis="l", label_size = 23)+
+  theme(plot.background = element_rect(fill = "white", colour = NA)); part1
+part1<-as.ggplot(part1)
+
+part2<-cowplot::plot_grid(part1, polytree, 
+                            labels=c("","C"),
+                            rel_widths=c(1,1), rel_heights = c(1.2,1),
+                            ncol=2,nrow=1,align="hv", axis="l", label_size = 23)+
+  theme(plot.background = element_rect(fill = "white", colour = NA)); part2
+
+# part1<-cowplot::plot_grid(polytree, compare_plot, 
+#                 labels=c("A","B"),
+#                 rel_widths=c(2,1), rel_heights = c(1,1),
+#                 ncol=2,nrow=1,align="hv", axis="l", label_size = 23)+
+#   theme(plot.background = element_rect(fill = "white", colour = NA)); part1
+
+fig1<-cowplot::plot_grid(part2, all_coverage2, 
                 labels=c("",""),
-                rel_widths=c(1,1), rel_heights = c(1.5,1),
+                rel_widths=c(1,1), rel_heights = c(1.8,1),
                 ncol=1,nrow=2,align="hv", axis="r", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); fig1
 
+fig1<-cowplot::plot_grid(part2, NULL,all_coverage2, 
+                         labels=c("","",""),
+                         rel_widths=c(1,1,1), rel_heights = c(1.8,0.1,1),
+                         ncol=1,nrow=3,align="hv", axis="r", label_size = 23)+
+  theme(plot.background = element_rect(fill = "white", colour = NA)); fig1
 
 #save
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/gwen_tmp/"
@@ -1227,7 +1260,7 @@ ggsave(file = paste0(homewd, "Fig1_phylogeny_coverage_pairwise.png"),
        plot= fig1,
        units="mm",
        width=230,
-       height=200,
+       height=190,
        scale=2,
        dpi=500)
 
