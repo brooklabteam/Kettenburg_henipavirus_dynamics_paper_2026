@@ -474,6 +474,11 @@ pIntra <- ggplot(subset(pred.df.supp, sig==1 )) +
 
 
 #just Eidolon and just GhV
+dat_text <- data.frame(
+  label = c("p = 0.005"),
+  x     = c(Inf),
+  y     = c(1))
+
 pIntraEid <- ggplot(subset(pred.df.supp, sig==1 & bat_species=="Eidolon dupreanum" & antigen=="GhV")) + 
   geom_rect(data=subset(cal.dat, bat_species=="Eidolon dupreanum"), aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3) +
   geom_point(data=subset(merge.plot, bat_species=="Eidolon dupreanum"& antigen=="GhV"), aes(x=day_of_year_session, y=seroprevalence, size=N, color=roost_site, shape=year)) +
@@ -482,8 +487,6 @@ pIntraEid <- ggplot(subset(pred.df.supp, sig==1 & bat_species=="Eidolon dupreanu
   scale_fill_manual(values=filz2) +
   scale_size_continuous(name = "N bats", breaks = c(10,20,30)) +
   scale_shape_manual(values=yearz) +
-    annotate("text", y= Inf, x =Inf, label = "italic(p) == 0.005",
-           parse = TRUE,hjust=1.1, vjust=1.5)+
   #ggnewscale::new_scale_fill() +
   #ggnewscale::new_scale_color() +
   #scale_alpha_manual(values=alphaz.new) +
@@ -508,6 +511,10 @@ pIntraEid <- ggplot(subset(pred.df.supp, sig==1 & bat_species=="Eidolon dupreanu
         panel.grid = element_blank()) +
   coord_cartesian(expand = F) + ylab("seroprevalence (GhV)") + xlab("month of year")  + guides(alpha="none");pIntraEid
 
+pIntraEid<-pIntraEid+geom_text(data= dat_text,
+                              mapping = aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5, fontface="italic")); pIntraEid
+
+
 #and no legend
 pIntraEidnoLeg <- ggplot(subset(pred.df.supp, sig==1 & bat_species=="Eidolon dupreanum" & antigen=="GhV")) + 
   geom_rect(data=subset(cal.dat, bat_species=="Eidolon dupreanum"), aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3, show.legend = F) +
@@ -517,8 +524,6 @@ pIntraEidnoLeg <- ggplot(subset(pred.df.supp, sig==1 & bat_species=="Eidolon dup
   scale_fill_manual(values=filz2) +
   scale_size_continuous(name = "N bats", breaks = c(10,20,30)) +
   scale_shape_manual(values=yearz) +
-  annotate("text", y= Inf, x =Inf, label = "italic(p) == 0.005",
-           parse = TRUE,hjust=1.1, vjust=1.5)+
   #ggnewscale::new_scale_fill() +
   #ggnewscale::new_scale_color() +
   #scale_alpha_manual(values=alphaz.new) +
@@ -542,6 +547,8 @@ pIntraEidnoLeg <- ggplot(subset(pred.df.supp, sig==1 & bat_species=="Eidolon dup
         #strip.text.x = element_text(size=16, face = "italic"), 
         panel.grid = element_blank()) +
   coord_cartesian(expand = F) + ylab("seroprevalence (GhV)") + xlab("month of year")  + guides(alpha="none");pIntraEidnoLeg
+pIntraEidnoLeg<-pIntraEidnoLeg+geom_text(data= dat_text,
+                               mapping = aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5, fontface="italic")); pIntraEidnoLeg
 
 
 
@@ -956,7 +963,6 @@ pIntrannualShed <- ggplot(data=subset(prev.dat)) +
   guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
 pIntrannualShed
 
-
 pIntrannualShedEid <- ggplot(data=subset(prev.dat, bat_species=="Eidolon dupreanum")) +
   geom_rect(data=subset(cal.dat, bat_species=="Eidolon dupreanum"), aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3) +
   geom_point(aes(x=doy, y=prevGhV, size=Ntot, shape=year, color = roost_site)) + 
@@ -973,8 +979,6 @@ pIntrannualShedEid <- ggplot(data=subset(prev.dat, bat_species=="Eidolon duprean
   #geom_ribbon(data=pred.df.Rou, aes(x=doy, ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
   #geom_line(data=pred.df.Rou, aes(x=doy, y= prevalence, color=antigen)) +
   facet_grid(~bat_species) + theme_bw() +
-  annotate("text", y= Inf, x =Inf, label = "italic(p) == NS",
-           parse = TRUE,hjust=1.1, vjust=1.5)+
   theme(axis.text = element_text(size=14), 
         #axis.title.x = element_blank(), 
         axis.title.x = element_text(size=16, colour = "transparent"),
@@ -989,7 +993,12 @@ pIntrannualShedEid <- ggplot(data=subset(prev.dat, bat_species=="Eidolon duprean
   guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
 pIntrannualShedEid 
 
-legEid <- get_legend(pIntrannualShedEid)
+#legEid <- get_legend(pIntrannualShedEid)
+
+dat_text <- data.frame(
+  label = c("p = NS"),
+  x     = c(Inf),
+  y     = c(1))
 
 pIntrannualShedEidnoLeg <- ggplot(data=subset(prev.dat, bat_species=="Eidolon dupreanum")) +
   geom_rect(data=subset(cal.dat, bat_species=="Eidolon dupreanum"), aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3, show.legend = F) +
@@ -1007,8 +1016,6 @@ pIntrannualShedEidnoLeg <- ggplot(data=subset(prev.dat, bat_species=="Eidolon du
   #geom_ribbon(data=pred.df.Rou, aes(x=doy, ymin= prev_lci, ymax=prev_uci, fill=antigen), alpha=.3, show.legend = F) +
   #geom_line(data=pred.df.Rou, aes(x=doy, y= prevalence, color=antigen)) +
   facet_grid(~bat_species) + theme_bw() +
-  annotate("text", y= Inf, x =Inf, label = "italic(p) == NS",
-           parse = TRUE,hjust=1.1, vjust=1.5)+
   theme(axis.text = element_text(size=14), 
         #axis.title.x = element_blank(), 
         axis.title.x = element_text(size=16, colour = "transparent"),
@@ -1021,6 +1028,9 @@ pIntrannualShedEidnoLeg <- ggplot(data=subset(prev.dat, bat_species=="Eidolon du
   coord_cartesian(xlim = c(0, 365), ylim = c(0, 1),expand = FALSE) + ylab("prevalence (GhV)") + xlab("month of year") +
   #scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
   guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
+pIntrannualShedEidnoLeg<-pIntrannualShedEidnoLeg+geom_text(data= dat_text,
+                                                 mapping = aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5, fontface="italic"));pIntrannualShedEidnoLeg
+
 
 pIntrannualShedRou <-  ggplot(data=subset(prev.dat, bat_species=="Rousettus madagascariensis")) +
   geom_rect(data=subset(cal.dat, bat_species=="Rousettus madagascariensis"), aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3) +
@@ -1243,19 +1253,24 @@ merge.sero.dat$mass_cat[merge.sero.dat$mass_cat=="poor"] <- "adult\nMFR < 0"
 
 
 #now pair these with Ct and prevalence for the final step
+dat_text <- data.frame(
+  label = c("p = 0.006"),
+  x     = c(Inf),
+  y     = c(Inf))
+
 pMFR_Ct <- ggplot(data= subset(tot.merge,  bat_species=="Eidolon dupreanum" & GhV_ct>0 & combo_class!="juvenile"& tot.merge$combo_class!="female-P")) +
             geom_violin(aes(x=mass_cat, y=GhV_ct), draw_quantiles = c(0,.25,.5,.75)) + 
             geom_jitter(aes(x=mass_cat, y=GhV_ct, color=roost_site, shape=as.factor(year)), width = .2, show.legend = F,size=3) +
             theme_bw() + ylab("Ct (GhV)") +
             scale_shape_manual(name="year", values=yearz) +
             scale_color_manual(values = sitez) +
-          annotate("text", y= Inf, x =Inf, label = "italic(p) == 0.06",
-           parse = TRUE,hjust=1.1, vjust=1.5)+
             theme(panel.grid = element_blank(),
                   axis.text = element_text(size=14), 
                   axis.title.x = element_blank(), 
                   #axis.title.x = element_text(size=16, colour = "transparent"),
                   axis.title.y = element_text(size=16)); pMFR_Ct
+pMFR_Ct<-pMFR_Ct+geom_text(data= dat_text,
+                                              mapping = aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5, fontface = "italic"));pMFR_Ct
 
 pMFR_Ctsex <- ggplot(data= subset(tot.merge,  bat_species=="Eidolon dupreanum" & GhV_ct>0 & combo_class!="juvenile"& tot.merge$combo_class!="female-P")) +
   geom_violin(aes(x=mass_cat, y=GhV_ct), draw_quantiles = c(0,.25,.5,.75)) + 
@@ -1302,19 +1317,23 @@ pMFR_MFIsex <- ggplot(data= subset(merge.sero.dat,  bat_species=="Eidolon duprea
         axis.text = element_text(size=14),
         axis.title.y = element_text(size=16)); pMFR_MFIsex
 
+dat_text <- data.frame(
+  label = c("p = 0.02"),
+  x     = c(Inf),
+  y     = c(Inf))
 pMFR_MFI <- ggplot(data= subset(merge.sero.dat,  bat_species=="Eidolon dupreanum" & seropos==1 & antigen=="GhV" & combo_class!="juvenile"& combo_class!="female-P")) +
   geom_violin(aes(x=mass_cat, y=MFI), draw_quantiles = c(0,.25,.5,.75)) + 
   geom_jitter(aes(x=mass_cat, y=MFI, color=roost_site, shape=as.factor(year)), width = .2, show.legend = F,size=3) +
   theme_bw() + ylab("MFI (GhV)") +
   scale_shape_manual(name="year", values=yearz) +
   scale_color_manual(values = sitez) +
-  annotate("text", y= Inf, x =Inf, label = "italic(p) == 0.02",
-           parse = TRUE,hjust=1.1, vjust=1.5)+
   theme(panel.grid = element_blank(),
         axis.title.x = element_blank(), 
         #axis.title.x = element_text(size=16, colour = "transparent"),
         axis.text = element_text(size=14),
         axis.title.y = element_text(size=16)); pMFR_MFI
+pMFR_MFI<-pMFR_MFI+geom_text(data= dat_text,
+                                              mapping = aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5, fontface = "italic"));pMFR_MFI
 
 #and combined 
 pMFRcombo <- cowplot::plot_grid(pMFR_Ct, pMFR_MFI, ncol=2, nrow = 1, align = "hv"); pMFRcombo
@@ -1641,6 +1660,11 @@ pred.df$prevalence_lci <- predict(m1, newdata = pred.df, type = "response") +1.9
 shed.prev$year <- year(shed.prev$mid_date)
 
 #I think I like it better without the model, so just plotting data here
+dat_text <- data.frame(
+  label = c("p = 0 Ankarana\np = 0 Moramanga"),
+  x     = c(Inf),
+  y     = c(Inf))
+
 pCtprev <- ggplot(data= subset(shed.prev, !is.na(meanGhVCt))) + 
   geom_point(aes(x=meanGhVCt, y=GhVprev, color=roost_site, size=Ntot, shape = as.factor(year)), show.legend = F) + theme_bw() +
   geom_linerange(aes(x=meanGhVCt, ymin=GhVprevlci, ymax=GhVprevuci, color=roost_site), linetype=3, alpha=.5, show.legend = F) +
@@ -1650,10 +1674,6 @@ pCtprev <- ggplot(data= subset(shed.prev, !is.na(meanGhVCt))) +
   scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
   scale_color_manual(name="roost site", values = sitez) +
   scale_shape_manual(values=yearz, name="year") +
-  annotate("text", y= Inf, x =Inf, label = "italic(p) == 0",
-           parse = TRUE,hjust=1.1, vjust=1.5)+
-  annotate("text", y= Inf, x =Inf, label = "italic(p) == 0",
-           parse = TRUE,hjust=1.1, vjust=3)+
   theme(panel.grid = element_blank(),
         axis.text = element_text(size=14), 
         axis.title.x = element_text(size=16),
@@ -1663,15 +1683,39 @@ pCtprev <- ggplot(data= subset(shed.prev, !is.na(meanGhVCt))) +
         legend.position.inside = c(.15,.73),
         legend.title = element_text(size=14));pCtprev
   #guides(color=guide_legend(ncol=1), shape="none", size="none")
+pCtprev<-pCtprev+geom_text(data= dat_text,
+                           mapping = aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5, fontface="italic"));pCtprev
+
+pCtprev_line <- ggplot(data= subset(shed.prev, !is.na(meanGhVCt))) + 
+  geom_point(aes(x=meanGhVCt, y=GhVprev, color=roost_site, size=Ntot, shape = as.factor(year)), show.legend = F) + theme_bw() +
+  geom_linerange(aes(x=meanGhVCt, ymin=GhVprevlci, ymax=GhVprevuci, color=roost_site), linetype=3, alpha=.5, show.legend = F) +
+  geom_linerange(aes(xmin=GhVCt_lci, xmax=GhVCt_uci, y=GhVprev, color=roost_site), linetype=3, alpha=.5, show.legend = F) +
+  geom_line(data=pred.df, aes(x=meanGhVCt, y=prevalence, color = roost_site)) +
+  xlab("Ct (GhV)") + ylab("prevalence (GhV)") +
+  scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
+  scale_color_manual(name="roost site", values = sitez) +
+  scale_shape_manual(values=yearz, name="year") +
+  theme(panel.grid = element_blank(),
+        axis.text = element_text(size=14), 
+        axis.title.x = element_text(size=16),
+        axis.title.y = element_text(size=16),
+        legend.text = element_text(size=12),
+        legend.position = "none",
+        legend.position.inside = c(.15,.73),
+        legend.title = element_text(size=14));pCtprev_line
+#guides(color=guide_legend(ncol=1), shape="none", size="none")
+pCtprev_line<-pCtprev_line+geom_text(data= dat_text,
+                           mapping = aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5, fontface="italic"));pCtprev_line
+
 
 #and all together
-pRight <- cowplot::plot_grid(pMFRcombo, pCtprev, ncol=1, nrow = 2, labels = c("C", "D"), label_size = 22)
+pRight <- cowplot::plot_grid(pMFRcombo, pCtprev_line, ncol=1, nrow = 2, labels = c("C", "D"), label_size = 22)
 
 Fig2 <- cowplot::plot_grid(seroshedEid, pRight, legEid, ncol=3, nrow = 1, rel_widths = c(1,1,.2), align = "h", axis = "tb")+
   theme(plot.background = element_rect(fill = "white", colour = NA)); Fig2
 
 
-ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/Fig2-draft.png"),
+ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/Fig2-draft_v2.png"),
        plot=Fig2,
        units="mm",  
        width=110, 
