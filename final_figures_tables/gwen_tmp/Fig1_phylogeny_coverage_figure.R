@@ -829,6 +829,7 @@ andv_map_aa <- ggplot(long.sim_aa) +
   geom_line(aes(x=pointer, y=value, color=accession), size=1) +
   theme(panel.background = element_rect("white"),
         panel.border = element_rect(linetype = "solid", fill=NA)) + ylab("% Amino acid identity")+xlab("Genome position")+
+  geom_hline(yintercept = 0.95, linetype = "dashed", color="red")+
   theme(panel.grid = element_blank(), strip.text = element_text(face="italic", size=12),
         strip.background = element_rect(fill="white"), 
         legend.direction = "horizontal",
@@ -889,6 +890,7 @@ ghv_map_aa <- ggplot(long.sim_aa) +
   annotate("rect", xmin=4061, xmax=6369, ymin=0, ymax=1, alpha=0.6,  fill="#6B8C81")+
   geom_line(aes(x=pointer, y=value, color=accession), size=1) +
   #annotate("rect", xmin=3519, xmax=4168, ymin=0, ymax=1, alpha=1,  fill="grey30")+
+  geom_hline(yintercept = 0.67, linetype = "dashed", color="red")+
   theme(panel.background = element_rect("white"),
         panel.border = element_rect(linetype = "solid", fill=NA)) + ylab("% Amino acid identity")+xlab("Genome position")+
   theme(panel.grid = element_blank(), strip.text = element_text(face="italic", size=12),
@@ -1140,10 +1142,54 @@ genomeplot_andv_reduced<-andv_map_aa/genome1ROU173/genome2ROU173+plot_layout(nro
 genomeplot_andv_reduced
 
 #both genome plots together
-simplots<-plot_grid(genomeplot_ghvlike, genomeplot_andv_reduced,
+simplots<-cowplot::plot_grid(genomeplot_ghvlike, genomeplot_andv_reduced,
                  rel_widths=c(1,1), rel_heights = c(1,1),
                  ncol=2,align="hv", axis="r", label_size = 23); simplots
 simplots<-as.ggplot(simplots)
+
+
+#simplot for GhVlike looks meh, maybe make a pairwise comparison plot instead
+homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/genome_characterization"
+setwd(paste0(homewd))
+
+dat <- read.csv(file= "pairwise_comparisons_heatmap_aa.csv", header = T, stringsAsFactors = F) #load data
+head(dat)
+names(dat)
+
+dat$gene<-factor(dat$gene, levels=c("N", "P","M","F","G","L"))
+dat$var1_alt<-factor(dat$var1_alt, levels=c("GhV", "YuV2"))
+
+#plot comparison to known sequences
+compare_plot <- ggplot(dat, aes(x=var1_alt, y=gene, fill=id)) +
+  geom_tile() +
+  geom_text(aes(label = id), color = "black", size = 5, fontface="bold") +
+  # scale_fill_viridis_c(option = "C", direction = -1) +
+  scale_fill_gradient(low="yellow", high="red")+
+  facet_nested(.~var2, scales="free", space="free",
+               switch="y", nest_line = element_line(color="white"), solo_line = TRUE)+
+  labs(#title = expression("Diversity of" ~italic(Picornavirales) ~"sequences"),
+    x = "Reference sequence\nfor comparison",
+    y= "Gene",
+    fill="Identity",
+    title="")+
+  theme_linedraw()+
+  scale_y_discrete(position="left", limits=rev)+
+  scale_x_discrete(position="bottom")+
+  theme(axis.text.x = element_text(size=14), 
+        #axis.ticks.y = element_blank(),
+        axis.text.y = element_text(size=14),
+        #axis.title.x = element_blank(), 
+        axis.title.y = element_text(size=16),
+        axis.title.x = element_text(size=16),
+        plot.margin = margin(0, 5, 5, 5, "pt"),
+        plot.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        plot.title = element_text(size=12), 
+        legend.position = "right",
+        strip.text = element_text(size=14))
+compare_plot
+
 
 #all together in figure 1
 
