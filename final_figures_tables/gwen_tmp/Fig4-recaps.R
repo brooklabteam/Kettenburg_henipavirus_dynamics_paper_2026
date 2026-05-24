@@ -423,9 +423,9 @@ ggsave(file = paste0(homewd,"/Fig4_recaps.png"),
        plot = Fig4.1,
        bg="white",
        units="mm",  
-       width=130, 
-       height=80, 
-       scale=3, 
-       dpi=300)
+       width=120, 
+       height=140, 
+       scale=2, 
+       dpi=500)
 
 
