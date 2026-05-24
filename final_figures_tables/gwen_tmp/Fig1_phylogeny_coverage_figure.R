@@ -370,7 +370,7 @@ polytree <- p1.1  %<+% p0.dat1 +
         legend.title = element_text(size=8),
         legend.key.size = unit(0.3, "cm"),
         plot.title = element_text(hjust = -0.1),
-        plot.margin = unit(c(0,0,0,0), "cm"))
+        plot.margin = unit(c(0.5,0,0,0.5), "cm"))
 polytree
 
 
@@ -780,10 +780,15 @@ andv_coverage_long<-cowplot::plot_grid(genomeplot_ROU148, genomeplot_andv, label
 andv_coverage_long
 
 #all coverage
-all_coverage<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148, genomeplot_andv, labels=c("","",""),
+all_coverage<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148, coverage_andv, labels=c("","",""),
                          rel_widths=c(1,1,1), rel_heights = c(1,1,1),
                          ncol=3,align="hv", axis="l", label_size = 23)
 all_coverage
+
+all_coverage2<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148, coverage_andv, labels=c("","",""),
+                                 rel_widths=c(1,1,1), rel_heights = c(1,1,1),
+                                 ncol=1,align="hv", axis="r", label_size = 23)
+all_coverage2
 
 
 #Now add the simplots in case they end up going with the figure
@@ -1162,7 +1167,7 @@ dat$var1_alt<-factor(dat$var1_alt, levels=c("GhV", "YuV2"))
 #plot comparison to known sequences
 compare_plot <- ggplot(dat, aes(x=var1_alt, y=gene, fill=id)) +
   geom_tile() +
-  geom_text(aes(label = id), color = "black", size = 5, fontface="bold") +
+  geom_text(aes(label = id), color = "black", size = 5) +
   # scale_fill_viridis_c(option = "C", direction = -1) +
   scale_fill_gradient(low="yellow", high="red")+
   facet_nested(.~var2, scales="free", space="free",
@@ -1192,35 +1197,37 @@ compare_plot
 
 
 #all together in figure 1
+all_coverage<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148,genomeplot_andv, labels=c("C","",""),
+                                  rel_widths=c(1,1,1), rel_heights = c(1,1,1),
+                                  ncol=1,align="hv", axis="r", label_size = 23)
+all_coverage
 
-part1<-plot_grid(all_coverage, simplots,
-                labels=c("B","C"),
-                rel_widths=c(1,1), rel_heights = c(1,1),
-                ncol=1,align="hv", axis="l", label_size = 23)+
-  theme(plot.margin = unit(c(0,0,0,0), "cm")); part1
-part1<-as.ggplot(part1)
+all_coverage2<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148, genomeplot_andv, labels=c("C","",""),
+                                  rel_widths=c(1,1,1), rel_heights = c(1,1,1),
+                                  ncol=3,align="h", label_size = 23)
+all_coverage2
 
 
-fig1<-plot_grid(polytree, part1, 
-                labels=c("A",""),
-                rel_widths=c(1,1.5), rel_heights = c(1,1),
+part1<-cowplot::plot_grid(polytree, compare_plot, 
+                labels=c("A","B"),
+                rel_widths=c(2,1), rel_heights = c(1,1),
                 ncol=2,nrow=1,align="hv", axis="l", label_size = 23)+
-  theme(plot.background = element_rect(fill = "white", colour = NA)); fig1
+  theme(plot.background = element_rect(fill = "white", colour = NA)); part1
 
-fig1.2<-plot_grid(polytree, part1, 
-                labels=c("A",""),
-                rel_widths=c(1,1), rel_heights = c(1,1.2),
+fig1<-cowplot::plot_grid(part1, all_coverage2, 
+                labels=c("",""),
+                rel_widths=c(1,1), rel_heights = c(1.5,1),
                 ncol=1,nrow=2,align="hv", axis="r", label_size = 23)+
-  theme(plot.background = element_rect(fill = "white", colour = NA)); fig1.2
+  theme(plot.background = element_rect(fill = "white", colour = NA)); fig1
 
 
 #save
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/gwen_tmp/"
-ggsave(file = paste0(homewd, "Fig1_phylogeny_coverage_simplot_v2.png"),
-       plot= fig1.2,
+ggsave(file = paste0(homewd, "Fig1_phylogeny_coverage_pairwise.png"),
+       plot= fig1,
        units="mm",
-       width=210,
-       height=230,
+       width=230,
+       height=200,
        scale=2,
        dpi=500)
 
