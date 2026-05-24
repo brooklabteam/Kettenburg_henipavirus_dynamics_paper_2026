@@ -1051,9 +1051,9 @@ dat_text <- data.frame(
 
 pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & bat_species=="Eidolon dupreanum")) +
   geom_rect(data=subset(cal.dat,bat_species=="Eidolon dupreanum"), aes(xmin=as.Date(start), xmax=as.Date(stop), ymin=0, ymax=1, fill=season), alpha=.3) +
+  geom_linerange(aes(x=mid_date, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen, alpha=sig), linetype=2, show.legend = F) +
   geom_point(aes(x=mid_date, y=seroprev, size=N, color=antigen, alpha = sig)) + scale_color_manual(values=colorz) + scale_fill_manual(values=filz.season) +scale_alpha_manual(values=alphaz) +
   ggnewscale::new_scale_fill() +
-  geom_linerange(aes(x=mid_date, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen), linetype=2, alpha=.3, show.legend = F) +
   geom_ribbon(data=subset(pred.df, bat_species=="Eidolon dupreanum"), aes(x=mid_date, ymin= predicted_seroprevalence_lci, ymax=predicted_seroprevalence_uci, fill=antigen), alpha=.3, show.legend = F) +
   geom_line(data=subset(pred.df, bat_species=="Eidolon dupreanum"), aes(x=mid_date, y= predicted_seroprevalence, color=antigen, group = group)) +
   facet_grid(antigen~bat_species) + theme_bw() +
@@ -1185,108 +1185,108 @@ AIC(gamIPMHeVNoSex, gamIPMHeVSex) # simpler, no sex model prevails
 
 
 # #and plot the predictions
-# pred.df.IPM <- cbind.data.frame(date = rep(seq(as.Date("2005-11-01"), as.Date("2007-04-30"), by = 1), (2*length(unique(IPM.sero$antigen)))), sex=rep(c("female", "male"), each=length(seq(as.Date("2005-11-01"), as.Date("2007-04-30"), by = 1))*length(unique(IPM.sero$antigen))), antigen= rep(rep(unique(IPM.sero$antigen), each = length(seq(as.Date("2005-11-01"), as.Date("2007-04-30"), by = 1))),2))
-# pred.df.IPM$sex = "female"
-# pred.df.tmp <- pred.df.IPM
-# pred.df.tmp$sex <- "male"
-# pred.df.IPM <- rbind(pred.df.IPM, pred.df.tmp)
-# #pred.df.IPM$doy <- yday(pred.df.IPM$date)
-# #pred.df.IPM$year <- year(pred.df.IPM$date)
-# 
-# head(pred.df.IPM)
-# 
-# pred.df.IPM = subset(pred.df.IPM, antigen=="NiV")
-# 
-# #predict without effect of year for plotting
-# #NiV
-# pred.df.IPM$predicted_seropos <- NA
-# pred.df.IPM$predicted_seropos_lci <- NA
-# pred.df.IPM$predicted_seropos_uci <- NA
-# pred.df.IPM$predicted_seropos[pred.df.IPM$antigen=="NiV"] <- predict.gam(gamIPMNiVNoSex, newdata = pred.df.IPM[pred.df.IPM$antigen=="NiV",], type="response")
-# pred.df.IPM$predicted_seropos_lci[pred.df.IPM$antigen=="NiV"] <- pred.df.IPM$predicted_seropos[pred.df.IPM$antigen=="NiV"] - 1.96*predict.gam(gamIPMNiVNoSex, newdata = pred.df.IPM[pred.df.IPM$antigen=="NiV",], type="response", se.fit = T)$se
-# pred.df.IPM$predicted_seropos_uci[pred.df.IPM$antigen=="NiV"] <- pred.df.IPM$predicted_seropos[pred.df.IPM$antigen=="NiV"] + 1.96*predict.gam(gamIPMNiVNoSex, newdata = pred.df.IPM[pred.df.IPM$antigen=="NiV",], type="response", se.fit = T)$se
-# 
-# #HeV
-# pred.df.IPM$predicted_seropos[pred.df.IPM$antigen=="HeV"] <- predict.gam(gamIPMHeVNoSex, newdata = pred.df.IPM[pred.df.IPM$antigen=="HeV",], type="response")
-# pred.df.IPM$predicted_seropos_lci[pred.df.IPM$antigen=="HeV"] <- pred.df.IPM$predicted_seropos[pred.df.IPM$antigen=="HeV"] - 1.96*predict.gam(gamIPMHeVNoSex, newdata = pred.df.IPM[pred.df.IPM$antigen=="HeV",], type="response", se.fit = T)$se
-# pred.df.IPM$predicted_seropos_uci[pred.df.IPM$antigen=="HeV"] <- pred.df.IPM$predicted_seropos[pred.df.IPM$antigen=="HeV"] + 1.96*predict.gam(gamIPMHeVNoSex, newdata = pred.df.IPM[pred.df.IPM$antigen=="HeV",], type="response", se.fit = T)$se
-# 
-# pred.df.IPM$predicted_seropos_lci[pred.df.IPM$predicted_seropos_lci<0]<-0
-# pred.df.IPM$predicted_seropos_uci[pred.df.IPM$predicted_seropos_uci>1]<-1
-# pred.df.IPM$bat_species="Eidolon dupreanum"
-# 
-# #plot
-# 
-# 
-# gest.dat <- cbind.data.frame(bat_species=c("Eidolon dupreanum", "Eidolon dupreanum"), start = c(as.Date("2005-11-01"), as.Date("2006-08-03")), stop=c(as.Date("2005-11-15"), as.Date("2006-11-15")))
-# gest.dat$season = "gestation"
-# gest.dat$sex="female"
-# lact.dat <- cbind.data.frame(bat_species=c("Eidolon dupreanum", "Eidolon dupreanum"), start = c(as.Date("2005-11-16"), as.Date("2006-11-16")), stop=c(as.Date("2006-02-02"), as.Date("2007-02-02")))
-# lact.dat$season = "lactation"
-# lact.dat$sex="female"
-# 
-# #and winter
-# cal.dat <-  cbind.data.frame(bat_species=c("Eidolon dupreanum"), start = c(as.Date("2006-05-15")), stop=c(as.Date("2006-10-10")))
-# cal.dat$season <- "winter"
-# cal.dat$sex="male"
-# 
-# cal.dat <- rbind(cal.dat, gest.dat, lact.dat)
-# cal.dat$bat_species=="Eidolon dupreanum"
-# IPM.sero$bat_species=="Eidolon dupreanum"
-# IPM.sero$sig <- 0
-# IPM.sero$sig[IPM.sero$antigen=="NiV"] <- 1
-# IPM.sero$sig[IPM.sero$antigen=="HeV"] <- 1
-# IPM.sero$sig <- as.factor(IPM.sero$sig)
-# 
-# alphaz = c('0' = 0, '1' = 1, '2' = 0.5)
-# #with legend
-# pIPMLeg <- ggplot(data=IPM.sero) +
-#   scale_color_manual(values=colorz) +
-#   scale_fill_manual(values=filz2) +
-#   scale_size_continuous(name="N bats", breaks = c(10,20,30)) +
-#   geom_rect(data=cal.dat, aes(xmin=as.Date(start), xmax=as.Date(stop), ymin=0, ymax=1, fill=season), alpha=.3) +
-#   geom_point(aes(x=date, y=seroprev, size=N_tot, color=antigen, alpha = sig)) +
-#   #geom_line(aes(x=date, y=seroprev, color=antigen, alpha = sig), linetype=2) +
-#   geom_linerange(aes(x=date, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen, alpha=sig), linetype=2, show.legend = F) +
-#   scale_alpha_manual(values=alphaz) +
-#   ggnewscale::new_scale_fill() +
-#   scale_fill_manual(values=filz1) +
-#   geom_ribbon(data=subset(pred.df.IPM, antigen=="HeV"), aes(x=date, ymin= predicted_seropos_lci, ymax=predicted_seropos_uci, fill=antigen), alpha=.3, show.legend = F) +
-#   geom_line(data=subset(pred.df.IPM, antigen=="HeV"), aes(x=date, y= predicted_seropos, color=antigen), alpha=.3) +
-#   geom_ribbon(data=subset(pred.df.IPM, antigen=="NiV"), aes(x=date, ymin= predicted_seropos_lci, ymax=predicted_seropos_uci, fill=antigen), alpha=.3, show.legend = F) +
-#   geom_line(data=subset(pred.df.IPM, antigen=="NiV"), aes(x=date, y= predicted_seropos, color=antigen)) +
-#   facet_grid(sex~bat_species) + theme_bw()+
-#   theme(axis.text = element_text(size=14), axis.title.x = element_blank(), 
-#         axis.title.y = element_text(size=16), strip.background = element_rect(fill="white"), 
-#         strip.text.y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
-#         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines")) +
-#   coord_cartesian(expand = F) + ylab("seroprevalence") + guides(alpha="none"); pIPMLeg
-# 
-# #strip
-# pIPM <- ggplot(data=IPM.sero) +
-#   scale_color_manual(values=colorz) +
-#   scale_fill_manual(values=filz2) +
-#   scale_size_continuous(name="N bats", breaks = c(10,20,30)) +
-#   geom_rect(data=cal.dat, aes(xmin=as.Date(start), xmax=as.Date(stop), ymin=0, ymax=1, fill=season), alpha=.3, show.legend = F) +
-#   geom_point(aes(x=date, y=seroprev, size=N_tot, color=antigen, alpha = sig), show.legend = F) +
-#   #geom_line(aes(x=date, y=seroprev, color=antigen, alpha = sig), linetype=2, show.legend = F) +
-#   geom_linerange(aes(x=date, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen, alpha=sig), linetype=2, show.legend = F) +
-#   scale_alpha_manual(values=alphaz) +
-#   ggnewscale::new_scale_fill() +
-#   scale_fill_manual(values=filz1) +
-#   geom_ribbon(data=subset(pred.df.IPM, antigen=="HeV"), aes(x=date, ymin= predicted_seropos_lci, ymax=predicted_seropos_uci, fill=antigen), alpha=.3, show.legend = F) +
-#   geom_line(data=subset(pred.df.IPM, antigen=="HeV"), aes(x=date, y= predicted_seropos, color=antigen), show.legend = F) +
-#   geom_ribbon(data=subset(pred.df.IPM, antigen=="NiV"), aes(x=date, ymin= predicted_seropos_lci, ymax=predicted_seropos_uci, fill=antigen), alpha=.3, show.legend = F) +
-#   geom_line(data=subset(pred.df.IPM, antigen=="NiV"), aes(x=date, y= predicted_seropos, color=antigen), show.legend = F) +
-#   facet_grid(sex~bat_species) + theme_bw()+
-#   theme(axis.text = element_text(size=14), axis.title.x = element_blank(), legend.text = element_blank(), legend.title = element_blank(),
-#         strip.background.x = element_rect(fill="white"), strip.background.y = element_blank(), strip.text.y = element_blank(), 
-#         strip.text.x = element_text(size=16, face="italic"),
-#         axis.title.y = element_text(size=16), 
-#         plot.margin = unit(c(.5,1,.5,1), "lines"),
-#         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines")) +
-#   scale_x_continuous(breaks=c(as.Date("2006-01-01"),as.Date("2007-01-01")), labels=c("2006", "2007")) +
-#   coord_cartesian(expand = F) + ylab("seroprevalence\n") + guides(alpha="none"); pIPM
+pred.df.IPM <- cbind.data.frame(date = rep(seq(as.Date("2005-11-01"), as.Date("2007-04-30"), by = 1), (2*length(unique(IPM.sero$antigen)))), sex=rep(c("female", "male"), each=length(seq(as.Date("2005-11-01"), as.Date("2007-04-30"), by = 1))*length(unique(IPM.sero$antigen))), antigen= rep(rep(unique(IPM.sero$antigen), each = length(seq(as.Date("2005-11-01"), as.Date("2007-04-30"), by = 1))),2))
+pred.df.IPM$sex = "female"
+pred.df.tmp <- pred.df.IPM
+pred.df.tmp$sex <- "male"
+pred.df.IPM <- rbind(pred.df.IPM, pred.df.tmp)
+#pred.df.IPM$doy <- yday(pred.df.IPM$date)
+#pred.df.IPM$year <- year(pred.df.IPM$date)
+
+head(pred.df.IPM)
+
+#pred.df.IPM = subset(pred.df.IPM, antigen=="NiV")
+
+#predict without effect of year for plotting
+#NiV
+pred.df.IPM$predicted_seropos <- NA
+pred.df.IPM$predicted_seropos_lci <- NA
+pred.df.IPM$predicted_seropos_uci <- NA
+pred.df.IPM$predicted_seropos[pred.df.IPM$antigen=="NiV"] <- predict.gam(gamIPMNiVNoSex, newdata = pred.df.IPM[pred.df.IPM$antigen=="NiV",], type="response")
+pred.df.IPM$predicted_seropos_lci[pred.df.IPM$antigen=="NiV"] <- pred.df.IPM$predicted_seropos[pred.df.IPM$antigen=="NiV"] - 1.96*predict.gam(gamIPMNiVNoSex, newdata = pred.df.IPM[pred.df.IPM$antigen=="NiV",], type="response", se.fit = T)$se
+pred.df.IPM$predicted_seropos_uci[pred.df.IPM$antigen=="NiV"] <- pred.df.IPM$predicted_seropos[pred.df.IPM$antigen=="NiV"] + 1.96*predict.gam(gamIPMNiVNoSex, newdata = pred.df.IPM[pred.df.IPM$antigen=="NiV",], type="response", se.fit = T)$se
+
+#HeV
+pred.df.IPM$predicted_seropos[pred.df.IPM$antigen=="HeV"] <- predict.gam(gamIPMHeVNoSex, newdata = pred.df.IPM[pred.df.IPM$antigen=="HeV",], type="response")
+pred.df.IPM$predicted_seropos_lci[pred.df.IPM$antigen=="HeV"] <- pred.df.IPM$predicted_seropos[pred.df.IPM$antigen=="HeV"] - 1.96*predict.gam(gamIPMHeVNoSex, newdata = pred.df.IPM[pred.df.IPM$antigen=="HeV",], type="response", se.fit = T)$se
+pred.df.IPM$predicted_seropos_uci[pred.df.IPM$antigen=="HeV"] <- pred.df.IPM$predicted_seropos[pred.df.IPM$antigen=="HeV"] + 1.96*predict.gam(gamIPMHeVNoSex, newdata = pred.df.IPM[pred.df.IPM$antigen=="HeV",], type="response", se.fit = T)$se
+
+pred.df.IPM$predicted_seropos_lci[pred.df.IPM$predicted_seropos_lci<0]<-0
+pred.df.IPM$predicted_seropos_uci[pred.df.IPM$predicted_seropos_uci>1]<-1
+pred.df.IPM$bat_species="Eidolon dupreanum"
+
+#plot
+
+
+gest.dat <- cbind.data.frame(bat_species=c("Eidolon dupreanum", "Eidolon dupreanum"), start = c(as.Date("2005-11-01"), as.Date("2006-08-03")), stop=c(as.Date("2005-11-15"), as.Date("2006-11-15")))
+gest.dat$season = "gestation"
+gest.dat$sex="female"
+lact.dat <- cbind.data.frame(bat_species=c("Eidolon dupreanum", "Eidolon dupreanum"), start = c(as.Date("2005-11-16"), as.Date("2006-11-16")), stop=c(as.Date("2006-02-02"), as.Date("2007-02-02")))
+lact.dat$season = "lactation"
+lact.dat$sex="female"
+
+#and winter
+cal.dat <-  cbind.data.frame(bat_species=c("Eidolon dupreanum"), start = c(as.Date("2006-05-15")), stop=c(as.Date("2006-10-10")))
+cal.dat$season <- "winter"
+cal.dat$sex="male"
+
+cal.dat <- rbind(cal.dat, gest.dat, lact.dat)
+cal.dat$bat_species=="Eidolon dupreanum"
+IPM.sero$bat_species=="Eidolon dupreanum"
+IPM.sero$sig <- 0
+IPM.sero$sig[IPM.sero$antigen=="NiV"] <- 1
+IPM.sero$sig[IPM.sero$antigen=="HeV"] <- 1
+IPM.sero$sig <- as.factor(IPM.sero$sig)
+
+alphaz = c('0' = 0, '1' = 1, '2' = 0.5)
+#with legend
+pIPMLeg <- ggplot(data=IPM.sero) +
+  scale_color_manual(values=colorz) +
+  scale_fill_manual(values=filz2) +
+  scale_size_continuous(name="N bats", breaks = c(10,20,30)) +
+  geom_rect(data=cal.dat, aes(xmin=as.Date(start), xmax=as.Date(stop), ymin=0, ymax=1, fill=season), alpha=.3) +
+  geom_point(aes(x=date, y=seroprev, size=N_tot, color=antigen, alpha = sig)) +
+  #geom_line(aes(x=date, y=seroprev, color=antigen, alpha = sig), linetype=2) +
+  geom_linerange(aes(x=date, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen, alpha=sig), linetype=2, show.legend = F) +
+  scale_alpha_manual(values=alphaz) +
+  ggnewscale::new_scale_fill() +
+  scale_fill_manual(values=filz1) +
+  geom_ribbon(data=subset(pred.df.IPM, antigen=="HeV"), aes(x=date, ymin= predicted_seropos_lci, ymax=predicted_seropos_uci, fill=antigen), alpha=.3, show.legend = F) +
+  geom_line(data=subset(pred.df.IPM, antigen=="HeV"), aes(x=date, y= predicted_seropos, color=antigen), alpha=.3) +
+  geom_ribbon(data=subset(pred.df.IPM, antigen=="NiV"), aes(x=date, ymin= predicted_seropos_lci, ymax=predicted_seropos_uci, fill=antigen), alpha=.3, show.legend = F) +
+  geom_line(data=subset(pred.df.IPM, antigen=="NiV"), aes(x=date, y= predicted_seropos, color=antigen)) +
+  facet_grid(sex~bat_species) + theme_bw()+
+  theme(axis.text = element_text(size=14), axis.title.x = element_blank(),
+        axis.title.y = element_text(size=16), strip.background = element_rect(fill="white"),
+        strip.text.y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
+        panel.grid = element_blank(), panel.spacing = unit(1.5, "lines")) +
+  coord_cartesian(expand = F) + ylab("seroprevalence") + guides(alpha="none"); pIPMLeg
+
+#strip
+pIPM <- ggplot(data=IPM.sero) +
+  scale_color_manual(values=colorz) +
+  scale_fill_manual(values=filz2) +
+  scale_size_continuous(name="N bats", breaks = c(10,20,30)) +
+  geom_rect(data=cal.dat, aes(xmin=as.Date(start), xmax=as.Date(stop), ymin=0, ymax=1, fill=season), alpha=.3, show.legend = F) +
+  geom_point(aes(x=date, y=seroprev, size=N_tot, color=antigen, alpha = sig), show.legend = F) +
+  #geom_line(aes(x=date, y=seroprev, color=antigen, alpha = sig), linetype=2, show.legend = F) +
+  geom_linerange(aes(x=date, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen, alpha=sig), linetype=2, show.legend = F) +
+  scale_alpha_manual(values=alphaz) +
+  ggnewscale::new_scale_fill() +
+  scale_fill_manual(values=filz1) +
+  geom_ribbon(data=subset(pred.df.IPM, antigen=="HeV"), aes(x=date, ymin= predicted_seropos_lci, ymax=predicted_seropos_uci, fill=antigen), alpha=.3, show.legend = F) +
+  geom_line(data=subset(pred.df.IPM, antigen=="HeV"), aes(x=date, y= predicted_seropos, color=antigen), show.legend = F) +
+  geom_ribbon(data=subset(pred.df.IPM, antigen=="NiV"), aes(x=date, ymin= predicted_seropos_lci, ymax=predicted_seropos_uci, fill=antigen), alpha=.3, show.legend = F) +
+  geom_line(data=subset(pred.df.IPM, antigen=="NiV"), aes(x=date, y= predicted_seropos, color=antigen), show.legend = F) +
+  facet_grid(sex~bat_species) + theme_bw()+
+  theme(axis.text = element_text(size=14), axis.title.x = element_blank(), legend.text = element_blank(), legend.title = element_blank(),
+        strip.background.x = element_rect(fill="white"), strip.background.y = element_blank(), strip.text.y = element_blank(),
+        strip.text.x = element_text(size=16, face="italic"),
+        axis.title.y = element_text(size=16),
+        plot.margin = unit(c(.5,1,.5,1), "lines"),
+        panel.grid = element_blank(), panel.spacing = unit(1.5, "lines")) +
+  scale_x_continuous(breaks=c(as.Date("2006-01-01"),as.Date("2007-01-01")), labels=c("2006", "2007")) +
+  coord_cartesian(expand = F) + ylab("seroprevalence\n") + guides(alpha="none"); pIPM
 
 #and replot with the no sex version
 
@@ -1294,7 +1294,7 @@ AIC(gamIPMHeVNoSex, gamIPMHeVSex) # simpler, no sex model prevails
 #and plot the predictions
 pred.df.IPM <- cbind.data.frame(date = rep(seq(as.Date("2005-11-01"), as.Date("2007-04-30"), by = 1), (length(unique(IPM.sero$antigen)))), antigen= rep(rep(unique(IPM.sero$antigen), each = length(seq(as.Date("2005-11-01"), as.Date("2007-04-30"), by = 1)))))
 head(pred.df.IPM)
-pred.df.IPM =subset(pred.df.IPM , antigen=="NiV")
+#pred.df.IPM =subset(pred.df.IPM , antigen=="NiV")
 #pred.df.IPM$doy <- yday(pred.df.IPM$date)
 #pred.df.IPM$year_f <- as.factor(year(pred.df.IPM$date))
 #predict without effect of year for plotting
@@ -1317,7 +1317,7 @@ pred.df.IPM$predicted_seropos_uci[pred.df.IPM$predicted_seropos_uci>1]<-1
 pred.df.IPM$bat_species="Eidolon dupreanum"
 
 IPM.sero.nosex$sig = 1
-IPM.sero.nosex$sig[IPM.sero.nosex$antigen!="NiV"] <- 0
+#IPM.sero.nosex$sig[IPM.sero.nosex$antigen!="NiV"] <- 0
 IPM.sero.nosex$sig <- as.factor(IPM.sero.nosex$sig)
 
 dat_text <- data.frame(
@@ -1393,6 +1393,7 @@ JAE.long <- merge(JAE.long, sample.df, by="sampling_session")
 #now, sub to just NiV in Eidolon
 JAE.long$plot <- 0
 JAE.long$plot[JAE.long$bat_species=="Eidolon dupreanum" & JAE.long$antigen=="NiV"]<- 1
+JAE.long$plot[JAE.long$bat_species=="Eidolon dupreanum" & JAE.long$antigen=="HeV"]<- 1
 
 
 #and do sex- and antigen-specific GAMS
@@ -1717,9 +1718,9 @@ pJAE_inter <- ggplot(data=subset(JAE.sum.all, bat_species=="Eidolon dupreanum"))
   scale_fill_manual(values=filz2) +
   scale_size_continuous(name="N bats", breaks = c(10,20,30)) +
   geom_rect(data=subset(cal.dat, bat_species=="Eidolon dupreanum"), aes(xmin=as.Date(start), xmax=as.Date(stop), ymin=0, ymax=1, fill=season), alpha=.3, show.legend = F) +
-  geom_point(aes(x=mid_date, y=seroprevalence, size=N_tot, color=antigen), show.legend = F) +
+  geom_point(aes(x=mid_date, y=seroprevalence, size=N_tot, color=antigen, alpha=.3,), show.legend = F) +
   #geom_line(aes(x=mid_date, y=seroprev, color=antigen, alpha=sig), linetype=2, show.legend = F) +
-  geom_linerange(aes(x=mid_date, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen), linetype=2, show.legend = F) +
+  geom_linerange(aes(x=mid_date, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen, alpha=.3), linetype=2, show.legend = F) +
   #scale_alpha_manual(values=alphaz) +
   ggnewscale::new_scale_fill() +
   scale_fill_manual(values=filz1) +
@@ -1791,11 +1792,11 @@ fig3<-cowplot::plot_grid(part4, part2,
 
 #save figures
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/gwen_tmp/"
-ggsave(file = paste0(homewd, "Fig3_mountainplot_seasonal_serology_v2.png"),
+ggsave(file = paste0(homewd, "Fig3_mountainplot_seasonal_serology_v1.png"),
        plot= fig3,
        units="mm",  
-       width=200, 
-       height=200, 
+       width=350, 
+       height=100, 
        scale=2, 
        dpi=500)
 
