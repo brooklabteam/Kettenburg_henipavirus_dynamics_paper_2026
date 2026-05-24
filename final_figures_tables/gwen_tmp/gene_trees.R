@@ -1172,7 +1172,8 @@ phostree
 #put together
 phylos <- cowplot::plot_grid(nucleotree, phostree, matrixtree,fusiontree, glycotree,legtree,
                              rel_widths = c(1,1,1,1,1,1), align = "h", axis = "tb",
-                             ncol=3, nrow = 2, labels = c("A", "B","C","D","E"), label_size = 22); phylos
+                             ncol=3, nrow = 2, labels = c("A", "B","C","D","E"), label_size = 22)+
+                            theme(plot.background = element_rect(fill = "white", colour = NA)); phylos
 
 #genetrees <- cowplot::plot_grid(phylos, legtree, ncol=2, nrow = 1, rel_widths = c(1,.2), align = "h", axis = "tb"); genetrees
 
