@@ -394,11 +394,12 @@ coverage_ghvlike<-  ggplot()+
   theme_linedraw() +
   theme(legend.position = "none")+
   ggtitle(title)+
-  scale_y_continuous(position="left")+
+  scale_y_continuous(position="left", expand=c(0,0))+
+  geom_hline(yintercept = 104.2684, linetype = "dashed", color="red")+
   xlab("Genome position") + ylab("rPM (reads per million)")+
   scale_x_continuous(breaks=c(0,5578,10396,17208,24521, 33205, 44590),
                      labels = c(0,3000,6000,9000,12000, 15000, 17000),expand=c(0,0))+
-  scale_y_continuous(expand=c(0,0))+
+  #scale_y_continuous(expand=c(0,0))+
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         axis.title.y = element_text(margin = margin(0,0,0,1)),
@@ -429,6 +430,7 @@ coverage_rou148<-  ggplot()+
   xlab("Genome position") + ylab("rPM (reads per million)")+
   scale_x_continuous(expand=c(0,0))+
   scale_y_continuous(expand=c(0,0))+
+  geom_hline(yintercept = 49.40666, linetype = "dashed", color="red")+
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         axis.title.y = element_text(margin = margin(0,0,0,1)),
@@ -461,6 +463,7 @@ coverage_andv<-  ggplot()+
   xlab("Genome position") + ylab("rPM (reads per million)")+
   scale_x_continuous(expand=c(0,0))+
   scale_y_continuous(expand=c(0,0))+
+  geom_hline(yintercept = 0.5368673, linetype = "dashed", color="red")+
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         axis.title.y = element_text(margin = margin(0,0,0,1)),
@@ -766,18 +769,18 @@ genomeplot_andv<-as.ggplot(genomeplot_andv)
 
 
 #AndV all together
-andv_coverage<-plot_grid(genomeplot_ROU148, genomeplot_andv, labels=c("",""),
+andv_coverage<-cowplot::plot_grid(genomeplot_ROU148, genomeplot_andv, labels=c("",""),
                          rel_widths=c(1,1), rel_heights = c(1,1),
                          ncol=1,align="hv", axis="l", label_size = 23)
 andv_coverage
 
-andv_coverage_long<-plot_grid(genomeplot_ROU148, genomeplot_andv, labels=c("",""),
+andv_coverage_long<-cowplot::plot_grid(genomeplot_ROU148, genomeplot_andv, labels=c("",""),
                          rel_widths=c(1,1), rel_heights = c(1,1),
                          ncol=2,align="hv", axis="l", label_size = 23)
 andv_coverage_long
 
 #all coverage
-all_coverage<-plot_grid(coverage_ghvlike, genomeplot_ROU148, genomeplot_andv, labels=c("","",""),
+all_coverage<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148, genomeplot_andv, labels=c("","",""),
                          rel_widths=c(1,1,1), rel_heights = c(1,1,1),
                          ncol=3,align="hv", axis="l", label_size = 23)
 all_coverage
