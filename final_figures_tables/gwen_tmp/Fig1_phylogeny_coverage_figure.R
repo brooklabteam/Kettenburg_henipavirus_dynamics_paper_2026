@@ -491,9 +491,9 @@ coverage_andv
 #and a version with lines instead of area plots
 dat <- read.csv(file= "AndV_merged_coverage.csv", header = T, stringsAsFactors = F) #load data
 
-colzpalette<-c("grey","grey30","black")
+colzpalette<-c("black","darkslategray4","darkslategray")
 
-title<-expression(paste(xitalic("PX127342 (black) and PX127344 (grey) AndV genome coverage")))
+title<-expression(paste(italic("AndV genome coverage")))
 coverage_andv2<-  ggplot()+ 
   annotate("rect", xmin=111, xmax=1718, ymin=0, ymax=180, alpha=0.6,  fill="#D29292")+
   annotate("rect", xmin=2114, xmax=3823, ymin=0, ymax=180, alpha=0.6,  fill="#525832")+
@@ -513,6 +513,15 @@ coverage_andv2<-  ggplot()+
   scale_color_manual(values=colzpalette) + 
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
+        legend.direction = "horizontal",
+        legend.margin=margin(),
+        legend.justification = "left",
+        legend.text = element_text(face="italic", size = 10),
+        legend.title = element_blank(),
+        legend.position="top", 
+        legend.key.height= unit(3.5, 'mm'),
+        legend.key.width= unit(3.5, 'mm'),
+        legend.background =element_rect(fill = alpha("white", 0)),
         axis.title.y = element_text(margin = margin(0,0,0,1)),
         axis.ticks.x=element_blank(),
         plot.margin = unit(c(0,0.5,0.5,0.5), "cm"),
