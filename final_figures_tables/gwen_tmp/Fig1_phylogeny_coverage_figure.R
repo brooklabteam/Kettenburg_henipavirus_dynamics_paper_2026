@@ -96,7 +96,7 @@ tree.dat1$Host[tree.dat1$Host==1] <- "Eidolon dupreanum"
 tree.dat1$Host[tree.dat1$Host==2] <- "Rousettus madagascariensis"
 tree.dat1$Host[tree.dat1$Host==3] <- "Bat host"
 tree.dat1$Host <- as.factor(tree.dat1$Host)
-shapez = c("Other host" =  15, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Bat host" =  18)
+shapez = c("Other host" =  18, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Bat host" =  15)
 
 colz2 = c('1' =  "yellow", '0' = "white")
 
@@ -133,7 +133,7 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   # geom_cladelabel(node=31, label='AchPV2-like virus', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # geom_cladelabel(node=268, label='ThkPV1-like viruses', offset=8.55, fontsize=4, color="black", align=TRUE)+
   # 
-  geom_cladelabel(node = 275, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 275, label = "Hendra/Nipah virus clade (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   geom_cladelabel(node = 362, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   geom_cladelabel(node = 351, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   geom_cladelabel(node = 341, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
@@ -150,19 +150,19 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
 
 p1
 
-p1.2<-ggtree::collapse(p1, 275)+geom_point2(aes(subset=(node==275)), size=4, shape=22, fill="firebrick1")
-p1.3<-ggtree::collapse(p1.2, 362)+geom_point2(aes(subset=(node==362)), size=4, shape=22, fill="firebrick4")
-p1.4<-ggtree::collapse(p1.3, 351)+geom_point2(aes(subset=(node==351)), size=4, shape=22, fill="darkgoldenrod1")
-p1.5<-ggtree::collapse(p1.4, 341)+geom_point2(aes(subset=(node==341)), size=4, shape=22, fill="darkorange")
-p1.6<-ggtree::collapse(p1.5, 338)+geom_point2(aes(subset=(node==338)), size=4, shape=22, fill="darkorange3")
-p1.7<-ggtree::collapse(p1.6, 333)+geom_point2(aes(subset=(node==333)), size=4, shape=22, fill="lightpink2")
-p1.8<-ggtree::collapse(p1.7, 324)+geom_point2(aes(subset=(node==324)), size=4, shape=22, fill="deeppink1")
-p1.9<-ggtree::collapse(p1.8, 394)+geom_point2(aes(subset=(node==394)), size=4, shape=22, fill="coral")
-p1.10<-ggtree::collapse(p1.9, 391)+geom_point2(aes(subset=(node==391)), size=4, shape=22, fill="lightsalmon3")
-p1.11<-ggtree::collapse(p1.10, 372)+geom_point2(aes(subset=(node==372)), size=4, shape=22, fill="indianred3")
-p1.17<-ggtree::collapse(p1.11, 385)+geom_point2(aes(subset=(node==385)), size=4, shape=22, fill="coral3")
-p1.18<-ggtree::collapse(p1.17, 404)+geom_point2(aes(subset=(node==404)), size=4, shape=22, fill="deeppink4")
-p1.1<-ggtree::collapse(p1.18, 380)+geom_point2(aes(subset=(node==380)), size=4, shape=22, fill="lightpink3")
+p1.2<-ggtree::collapse(p1, 275)+geom_point2(aes(subset=(node==275)), size=4, shape=25, fill="firebrick1")
+p1.3<-ggtree::collapse(p1.2, 362)+geom_point2(aes(subset=(node==362)), size=4, shape=25, fill="firebrick4")
+p1.4<-ggtree::collapse(p1.3, 351)+geom_point2(aes(subset=(node==351)), size=4, shape=25, fill="darkgoldenrod1")
+p1.5<-ggtree::collapse(p1.4, 341)+geom_point2(aes(subset=(node==341)), size=4, shape=25, fill="darkorange")
+p1.6<-ggtree::collapse(p1.5, 338)+geom_point2(aes(subset=(node==338)), size=4, shape=25, fill="darkorange3")
+p1.7<-ggtree::collapse(p1.6, 333)+geom_point2(aes(subset=(node==333)), size=4, shape=25, fill="lightpink2")
+p1.8<-ggtree::collapse(p1.7, 324)+geom_point2(aes(subset=(node==324)), size=4, shape=25, fill="deeppink1")
+p1.9<-ggtree::collapse(p1.8, 394)+geom_point2(aes(subset=(node==394)), size=4, shape=25, fill="coral")
+p1.10<-ggtree::collapse(p1.9, 391)+geom_point2(aes(subset=(node==391)), size=4, shape=25, fill="lightsalmon3")
+p1.11<-ggtree::collapse(p1.10, 372)+geom_point2(aes(subset=(node==372)), size=4, shape=25, fill="indianred3")
+p1.17<-ggtree::collapse(p1.11, 385)+geom_point2(aes(subset=(node==385)), size=4, shape=25, fill="coral3")
+p1.18<-ggtree::collapse(p1.17, 404)+geom_point2(aes(subset=(node==404)), size=4, shape=25, fill="deeppink4")
+p1.1<-ggtree::collapse(p1.18, 380)+geom_point2(aes(subset=(node==380)), size=4, shape=25, fill="lightpink3")
 p1.1
 
 p1.1<- p1.1 +  
@@ -284,7 +284,7 @@ tree.dat1$Host[tree.dat1$Host==1] <- "Eidolon dupreanum"
 tree.dat1$Host[tree.dat1$Host==2] <- "Rousettus madagascariensis"
 tree.dat1$Host[tree.dat1$Host==3] <- "Bat host"
 tree.dat1$Host <- as.factor(tree.dat1$Host)
-shapez = c("Other host" =  15, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Bat host" =  18)
+shapez = c("Other host" =  18, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Bat host" =  15)
 
 colz2 = c('1' =  "yellow", '0' = "white")
 
@@ -320,7 +320,7 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   geom_cladelabel(node=131, label='AchPV2-like virus', offset=4.8, fontsize=4, color="black", align=TRUE)+
   geom_cladelabel(node=350, label='ThkPV1-like viruses', offset=4.8, fontsize=4, color="black", align=TRUE)+
   # 
-  geom_cladelabel(node = 236, label = "Hendra/Nipah henipavirus clade",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 236, label = "Hendra/Nipah virus clade (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   #geom_cladelabel(node = 344, label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   geom_cladelabel(node = 370, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   geom_cladelabel(node = 378, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
@@ -337,19 +337,19 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
 
 p1
 
-p1.2<-ggtree::collapse(p1, 236)+geom_point2(aes(subset=(node==236)), size=4, shape=22, fill="firebrick1")
-#p1.3<-ggtree::collapse(p1.2, 344)+geom_point2(aes(subset=(node==344)), size=4, shape=22, fill="firebrick4")
-p1.4<-ggtree::collapse(p1.2, 370)+geom_point2(aes(subset=(node==370)), size=4, shape=22, fill="darkgoldenrod1")
-p1.5<-ggtree::collapse(p1.4, 378)+geom_point2(aes(subset=(node==378)), size=4, shape=22, fill="darkorange")
-p1.6<-ggtree::collapse(p1.5, 383)+geom_point2(aes(subset=(node==383)), size=4, shape=22, fill="darkorange3")
-p1.7<-ggtree::collapse(p1.6, 392)+geom_point2(aes(subset=(node==392)), size=4, shape=22, fill="lightpink2")
-p1.8<-ggtree::collapse(p1.7, 387)+geom_point2(aes(subset=(node==387)), size=4, shape=22, fill="deeppink1")
-p1.9<-ggtree::collapse(p1.8, 404)+geom_point2(aes(subset=(node==404)), size=4, shape=22, fill="coral")
-p1.10<-ggtree::collapse(p1.9, 395)+geom_point2(aes(subset=(node==395)), size=4, shape=22, fill="lightsalmon3")
-p1.11<-ggtree::collapse(p1.10, 362)+geom_point2(aes(subset=(node==362)), size=4, shape=22, fill="indianred3")
-p1.17<-ggtree::collapse(p1.11, 399)+geom_point2(aes(subset=(node==399)), size=4, shape=22, fill="coral3")
-p1.18<-ggtree::collapse(p1.17, 414)+geom_point2(aes(subset=(node==414)), size=4, shape=22, fill="deeppink4")
-p1.1<-ggtree::collapse(p1.18, 384)+geom_point2(aes(subset=(node==384)), size=4, shape=22, fill="lightpink3")
+p1.2<-ggtree::collapse(p1, 236)+geom_point2(aes(subset=(node==236)), size=4, shape=25, fill="firebrick1")
+#p1.3<-ggtree::collapse(p1.2, 344)+geom_point2(aes(subset=(node==344)), size=4, shape=25, fill="firebrick4")
+p1.4<-ggtree::collapse(p1.2, 370)+geom_point2(aes(subset=(node==370)), size=4, shape=25, fill="darkgoldenrod1")
+p1.5<-ggtree::collapse(p1.4, 378)+geom_point2(aes(subset=(node==378)), size=4, shape=25, fill="darkorange")
+p1.6<-ggtree::collapse(p1.5, 383)+geom_point2(aes(subset=(node==383)), size=4, shape=25, fill="darkorange3")
+p1.7<-ggtree::collapse(p1.6, 392)+geom_point2(aes(subset=(node==392)), size=4, shape=25, fill="lightpink2")
+p1.8<-ggtree::collapse(p1.7, 387)+geom_point2(aes(subset=(node==387)), size=4, shape=25, fill="deeppink1")
+p1.9<-ggtree::collapse(p1.8, 404)+geom_point2(aes(subset=(node==404)), size=4, shape=25, fill="coral")
+p1.10<-ggtree::collapse(p1.9, 395)+geom_point2(aes(subset=(node==395)), size=4, shape=25, fill="lightsalmon3")
+p1.11<-ggtree::collapse(p1.10, 362)+geom_point2(aes(subset=(node==362)), size=4, shape=25, fill="indianred3")
+p1.17<-ggtree::collapse(p1.11, 399)+geom_point2(aes(subset=(node==399)), size=4, shape=25, fill="coral3")
+p1.18<-ggtree::collapse(p1.17, 414)+geom_point2(aes(subset=(node==414)), size=4, shape=25, fill="deeppink4")
+p1.1<-ggtree::collapse(p1.18, 384)+geom_point2(aes(subset=(node==384)), size=4, shape=25, fill="lightpink3")
 p1.1
 
 p1.1<- p1.1 +  
@@ -401,7 +401,8 @@ coverage_ghvlike<-  ggplot()+
   annotate("rect", xmin=11664, xmax=16846, ymin=0, ymax=550, alpha=0.6,  fill="#BD9A5A")+
   annotate("rect", xmin=17373, xmax=23508, ymin=0, ymax=550, alpha=0.6,  fill="#F17983")+
   annotate("rect", xmin=24156, xmax=48178, ymin=0, ymax=550, alpha=0.6,  fill="#6B8C81")+
-  geom_area(data=dat, aes(x=Position, y=rPM), fill="black") +
+  #geom_area(data=dat, aes(x=Position, y=rPM), fill="black") +
+  geom_line(data=dat, aes(x=Position, y=rPM), size=1) +
   theme_linedraw() +
   theme(legend.position = "none")+
   ggtitle(title)+
@@ -485,6 +486,43 @@ coverage_andv<-  ggplot()+
         plot.title = element_text(color = "darkcyan"),
         axis.line.x = element_blank())
 coverage_andv
+
+
+#and a version with lines instead of area plots
+dat <- read.csv(file= "AndV_merged_coverage.csv", header = T, stringsAsFactors = F) #load data
+
+colzpalette<-c("grey","grey30","black")
+
+title<-expression(paste(xitalic("PX127342 (black) and PX127344 (grey) AndV genome coverage")))
+coverage_andv2<-  ggplot()+ 
+  annotate("rect", xmin=111, xmax=1718, ymin=0, ymax=180, alpha=0.6,  fill="#D29292")+
+  annotate("rect", xmin=2114, xmax=3823, ymin=0, ymax=180, alpha=0.6,  fill="#525832")+
+  annotate("rect", xmin=4284, xmax=5315, ymin=0, ymax=180, alpha=0.6,  fill="#F98F5B")+
+  annotate("rect", xmin=5550, xmax=7235, ymin=0, ymax=180, alpha=0.6,  fill="#BD9A5A")+
+  annotate("rect", xmin=7737, xmax=10316, ymin=0, ymax=180, alpha=0.6,  fill="#F17983")+
+  annotate("rect", xmin=10749, xmax=17501, ymin=0, ymax=180, alpha=0.6,  fill="#6B8C81")+
+  #geom_area(data=dat, aes(x=Position, y=rPM, color=virus)) +
+  geom_line(data=dat, aes(x=Position, y=rPM, color=virus), size=1) +
+  theme_linedraw() +
+  theme(legend.position = "none")+
+  ggtitle(title)+
+  xlab("Genome position") + ylab("rPM (reads per million)")+
+  scale_x_continuous(expand=c(0,0))+
+  scale_y_break(c(1.6, 10), scales = 1.5, expand=c(0,0))+
+  geom_hline(yintercept = 0.5368673, linetype = "dashed", color="red")+
+  scale_color_manual(values=colzpalette) + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        axis.title.y = element_text(margin = margin(0,0,0,1)),
+        axis.ticks.x=element_blank(),
+        plot.margin = unit(c(0,0.5,0.5,0.5), "cm"),
+        axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        plot.title = element_text(color = "darkcyan"),
+        axis.line.x = element_blank())
+coverage_andv2
+
+
 
 ##Now make genome maps to go with the coverage plots
 
