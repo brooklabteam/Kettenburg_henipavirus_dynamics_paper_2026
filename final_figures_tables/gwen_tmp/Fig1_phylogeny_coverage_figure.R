@@ -11,6 +11,11 @@ library(gdata)
 library(phylotools)
 library(phylobase)
 library(cowplot)
+library(reshape2)
+library(gggenes)
+library(patchwork)
+library(cowplot)
+library(ggh4x)
 
 ##First plot the phylogenetic tree
 
@@ -818,9 +823,14 @@ genomeplot_ROU173<-as.ggplot(genomeplot_ROU173)
 genomeplot_ROU173
 
 
-#Figure with all the AndV figures
-genomeplot_andv<-coverage_andv/genome1ROU173/genome2ROU173+plot_layout(nrow=3,  heights = c(1, 0.2, 0.2))
+#Figure for all the andv's
+
+genomeplot_andv<-free(coverage_andv2)/genome1ROU173/genome2ROU173+plot_layout(nrow=3,  heights = c(1, 0.2, 0.2))
 genomeplot_andv
+
+genomeplot_andv<-cowplot::plot_grid(gcoverage_andv2, genome1ROU173, genome2ROU173, labels=c("","",""),
+                                    rel_widths = c(1,1,1), rel_heights = c(1,1,1),
+                                    ncol=1, align="hv", axis="l", label_size = 23); genomeplot_andv
 
 genomeplot_andv<-as.ggplot(genomeplot_andv)
 
@@ -1232,7 +1242,7 @@ compare_plot <- ggplot(dat, aes(x=var1_alt, y=gene, fill=id)) +
   labs(#title = expression("Diversity of" ~italic(Picornavirales) ~"sequences"),
     x = "Reference sequence\nfor comparison",
     y= "Gene",
-    fill="Identity",
+    fill="Amino acid \nidentity",
     title="")+
   theme_linedraw()+
   scale_y_discrete(position="left", limits=rev)+
@@ -1256,14 +1266,14 @@ compare_plot
 
 
 #all together in figure 1
-all_coverage<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148, genomeplot_ROU173, labels=c("D","",""),
-                                  rel_widths=c(1,1,1), rel_heights = c(1,1,1),
+all_coverage<-cowplot::plot_grid(coverage_ghvlike, coverage_andv2, labels=c("D",""),
+                                  rel_widths=c(1,1), rel_heights = c(1,1),
                                   ncol=1,align="hv", axis="r", label_size = 23)
 all_coverage
 
-all_coverage2<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148, genomeplot_ROU173, labels=c("D","",""),
-                                  rel_widths=c(1,1,1), rel_heights = c(1,1,1),
-                                  ncol=3,align="h", label_size = 23)
+all_coverage2<-cowplot::plot_grid(coverage_ghvlike, coverage_andv2, labels=c("D",""),
+                                  rel_widths=c(1,1), rel_heights = c(1,1),
+                                  ncol=2,align="h", label_size = 23)
 all_coverage2
 
 
