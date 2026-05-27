@@ -532,7 +532,6 @@ coverage_andv2<-  ggplot()+
 coverage_andv2
 
 
-
 ##Now make genome maps to go with the coverage plots
 
 #GhV-like first
