@@ -655,7 +655,7 @@ make.Fig5 <- function(panel1, CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev
   g <- rasterGrob(as.raster(img), interpolate = TRUE)
   p1 <- ggplot() + annotation_custom(g,xmin = 0,xmax = 1,ymin = 0,ymax = 1) + coord_cartesian(xlim = c(-0.03, 1.03),ylim = c(-0.03, 1.03),clip = "off") +
     theme_void() +
-    theme(plot.margin = margin(0.1,0.1,0.1,0.1))
+    theme(plot.margin = margin(0.01,0.01,0.01,0.01))
   p2 <- plot.matAb(dat = dat1)
   p3 <- plot.adultAB(stoch_df=stoch_df, det.bat = det.bat, stan_df = stan_df)
   p4 <- return.models.data.CI.one(CI.age.fits = CI.age.fits,  CI.ts.fits = CI.ts.fits, dat1=dat1,  dat.sero1 = dat.sero1,dat.prev1 =dat.prev1, antigen1 =antigen1, cutoff1=cutoff1,species1=species1, vis_split=vis_split)
