@@ -747,7 +747,7 @@ pred.df$predicted_seroprevalence_lci[pred.df$predicted_seroprevalence_lci <0] <-
 pred.df$predicted_seroprevalence_uci[pred.df$predicted_seroprevalence_uci >1] <- 1
 
 
-filz <- c(colorz, 'gestation' = "yellow", 'lactation' = "greenyellow", 'winter' = "skyblue")
+filz <- c(colorz, 'gestation' = "yellow", 'lactation' = "lightpink", 'winter' = "skyblue")
 #alphaz = c('0' = 0, '1' = 1, '2' = 0.5)
 
 p5 <- ggplot(data=subset(seroprev.sum.sex, roost_site=="Moramanga")) +
@@ -1078,7 +1078,7 @@ pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & b
   ggnewscale::new_scale_fill() +
   geom_ribbon(data=subset(pred.df, bat_species=="Eidolon dupreanum"), aes(x=mid_date, ymin= predicted_seroprevalence_lci, ymax=predicted_seroprevalence_uci, fill=antigen), alpha=.3, show.legend = F) +
   geom_line(data=subset(pred.df, bat_species=="Eidolon dupreanum"), aes(x=mid_date, y= predicted_seroprevalence, color=antigen, group = group)) +
-  facet_grid(viralcat~bat_species) + theme_bw() +
+  facet_grid(viralcat+bat_species~.) + theme_bw() +
   theme(axis.text.x = element_text(size=14), 
         axis.title.x = element_blank(), 
         # axis.text.y = element_blank(),
@@ -1088,7 +1088,8 @@ pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & b
         axis.title.y = element_text(size=16),
         plot.title = element_text(size=16),
         strip.background = element_rect(fill="white"), 
-        strip.text.y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
+        strip.text.x = element_text(size=16), 
+        strip.text.y = element_text(size=16, face="italic"),
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
         plot.margin = unit(c(.5,.5,.5,1), "lines")
         ) +
@@ -1663,6 +1664,8 @@ pJAELeg <- ggplot(data=subset(JAE.sum, bat_species=="Eidolon dupreanum")) +
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines")) +
   coord_cartesian(expand = F) + ylab("seroprevalence") + guides(alpha="none"); pJAELeg
 
+leg<-get_legend(pJAELeg)
+
 #strip
 pJAE <- ggplot(data=subset(JAE.sum, bat_species=="Eidolon dupreanum")) +
   scale_color_manual(values=colorz) +
@@ -1758,6 +1761,7 @@ pJAE_inter <- ggplot(data=subset(JAE.sum.all, bat_species=="Eidolon dupreanum"))
         axis.text.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.title.y = element_blank(),
+        legend.position = "right",
         #axis.text.y = element_text(size=14),
         #axis.title.y = element_text(size=16),
         plot.title = element_text(size=16),
@@ -1784,10 +1788,10 @@ fig3<-cowplot::plot_grid(mountain, inter,
         plot.background = element_rect(fill = "white", colour = NA)); fig3
 
 
-supp<-cowplot::plot_grid(pIPM_new2, pJAE_inter2, pInterannual_new_Rou2, leg, 
-                          labels=c("A","B","C",""),
-                          rel_widths=c(1,1, 1, 0.2), rel_heights = c(1,1,1,1),
-                          ncol=4,align="hv", axis="l", label_size = 23)+
+supp<-cowplot::plot_grid(pIPM_new2, pJAE_inter2, leg, 
+                          labels=c("A","B","",""),
+                          rel_widths=c(0.6,1,  0.2), rel_heights = c(1,1,1),
+                          ncol=3,align="hv", axis="l", label_size = 23)+
   theme(plot.margin = unit(c(0,0,0,0), "cm"),
         plot.background = element_rect(fill = "white", colour = NA)); supp
 
@@ -1805,7 +1809,7 @@ ggsave(file = paste0(homewd, "Fig3_mountainplot_seasonal_serology.png"),
 ggsave(file = paste0(homewd, "FigX_historical_and_rousettus_serology.png"),
        plot= supp,
        units="mm",  
-       width=200, 
+       width=150, 
        height=50, 
        scale=2, 
        dpi=500)
