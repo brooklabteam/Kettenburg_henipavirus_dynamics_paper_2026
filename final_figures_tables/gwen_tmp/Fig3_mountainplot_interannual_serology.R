@@ -1342,10 +1342,11 @@ IPM.sero.nosex$sig = 1
 IPM.sero.nosex$sig <- as.factor(IPM.sero.nosex$sig)
 
 dat_text <- data.frame(
-  label = c("p = 0", "p = 0"),
-  antigen   = c("HeV", "NiV"),
-  x     = c(Inf, Inf),
-  y     = c(1, 1))
+  label = c("p = 0 HeV\n p = 0 NiV"),
+  x     = c(Inf),
+  y     = c(1))
+
+IPM.sero.nosex$dataset <- "Eidolon dupreanum - IPM"
 
 pIPM_new <- ggplot(data=IPM.sero.nosex) +
   scale_color_manual(values=colorz) +
@@ -1362,7 +1363,7 @@ pIPM_new <- ggplot(data=IPM.sero.nosex) +
   geom_line(data=subset(pred.df.IPM, antigen=="HeV"), aes(x=date, y= predicted_seropos, color=antigen), show.legend = F) +
   geom_ribbon(data=subset(pred.df.IPM, antigen=="NiV"), aes(x=date, ymin= predicted_seropos_lci, ymax=predicted_seropos_uci, fill=antigen), alpha=.3, show.legend = F) +
   geom_line(data=subset(pred.df.IPM, antigen=="NiV"), aes(x=date, y= predicted_seropos, color=antigen), show.legend = F) +
-  facet_grid(antigen~bat_species) + theme_bw()+
+  facet_grid(.~dataset) + theme_bw()+
   theme(axis.text.x = element_text(size=14), 
         axis.title.x = element_blank(), 
         # axis.text.y = element_blank(),
@@ -1728,10 +1729,11 @@ JAE.sum.all$seroprev_lci <- binom.exact(JAE.sum.all$N_seropos, JAE.sum.all$N_tot
 JAE.sum.all$seroprev_uci <- binom.exact(JAE.sum.all$N_seropos, JAE.sum.all$N_tot)$upper
 
 dat_text <- data.frame(
-  label = c("p = NS", "p = NS"),
-  antigen   = c("HeV", "NiV"),
-  x     = c(Inf, Inf),
-  y     = c(1, 1))
+  label = c("p = 0 HeV\n p = 0 NiV"),
+  x     = c(Inf),
+  y     = c(1))
+
+JAE.sum.all$dataset <- "Eidolon dupreanum - JAE"
 
 #strip
 pJAE_inter <- ggplot(data=subset(JAE.sum.all, bat_species=="Eidolon dupreanum")) +
@@ -1749,7 +1751,7 @@ pJAE_inter <- ggplot(data=subset(JAE.sum.all, bat_species=="Eidolon dupreanum"))
   geom_line(data=subset(pred.df.JAE, bat_species=="Eidolon dupreanum"& antigen=="HeV"), aes(x=mid_date, y= predicted_seropos, color=antigen), show.legend = F) +
   geom_ribbon(data=subset(pred.df.JAE, bat_species=="Eidolon dupreanum" & antigen=="NiV") , aes(x=mid_date, ymin= predicted_seropos_lci, ymax=predicted_seropos_uci, fill=antigen), alpha=.3, show.legend = F) +
   geom_line(data=subset(pred.df.JAE, bat_species=="Eidolon dupreanum"& antigen=="NiV"), aes(x=mid_date, y= predicted_seropos, color=antigen, group=year), show.legend = F) +
-  facet_grid(antigen~bat_species, space = "free", scales = "free") + theme_bw() +
+  facet_grid(.~dataset, space = "free", scales = "free") + theme_bw() +
   theme(axis.text.x = element_text(size=14), 
         axis.title.x = element_blank(), 
         # axis.text.y = element_blank(),
