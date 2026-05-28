@@ -1529,7 +1529,6 @@ log.lik.age <- function(par, c, data, sero.dat, shed.dat, cutoff, sim_pop, yrs, 
     
     #print(-ll)
     #calculate and return the negative log-likelihood 
-    #force mu.sick to be 1 or more
     
     return(-ll)
   }}}
