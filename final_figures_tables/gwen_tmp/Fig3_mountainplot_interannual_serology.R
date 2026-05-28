@@ -161,21 +161,22 @@ p.h.1 <- ggplot() + geom_dendro(hc.henipa, size=1) + theme_bw() +
             axis.title = element_blank(), axis.text = element_blank(),
             axis.ticks = element_blank(), plot.margin = unit(c(0,1,0,3.3), "cm")) 
 p.h.1
-p.h.2 <- ggplot() + geom_dendro(hc.henipa, size=1) + theme_bw() +
-  scale_y_reverse() + scale_x_reverse()+
-  theme(panel.grid = element_blank(), panel.border = element_blank(),
-        axis.title = element_blank(), axis.text = element_blank(),
-        axis.ticks = element_blank(), plot.margin = unit(c(0,1,0,1), "cm")) 
-p.h.3 <- ggplot() + geom_dendro(hc.henipa, size=1) + theme_bw() +
-  scale_y_reverse() + scale_x_reverse()+
-  theme(panel.grid = element_blank(), panel.border = element_blank(),
-        axis.title = element_blank(), axis.text = element_blank(),
-        axis.ticks = element_blank(), plot.margin = unit(c(0,1,0,1), "cm")) 
+# p.h.2 <- ggplot() + geom_dendro(hc.henipa, size=1) + theme_bw() +
+#   scale_y_reverse() + scale_x_reverse()+
+#   theme(panel.grid = element_blank(), panel.border = element_blank(),
+#         axis.title = element_blank(), axis.text = element_blank(),
+#         axis.ticks = element_blank(), plot.margin = unit(c(0,1,0,1), "cm")) 
+# p.h.3 <- ggplot() + geom_dendro(hc.henipa, size=1) + theme_bw() +
+#   scale_y_reverse() + scale_x_reverse()+
+#   theme(panel.grid = element_blank(), panel.border = element_blank(),
+#         axis.title = element_blank(), axis.text = element_blank(),
+#         axis.ticks = element_blank(), plot.margin = unit(c(0,1,0,1), "cm")) 
 
-p.h.row <- cowplot::plot_grid(p.h.1,p.h.2,p.h.3, ncol = 3, nrow = 1, rel_widths = c(1.22,1,1)) + theme(plot.margin = unit(c(0,0,0,0), "cm")) 
+# p.h.row <- cowplot::plot_grid(p.h.1,p.h.2,p.h.3, ncol = 3, nrow = 1, rel_widths = c(1.22,1,1)) + theme(plot.margin = unit(c(0,0,0,0), "cm")) 
 
-p2bsave <- ggplot(subset(lumdat.long)) + coord_cartesian(ylim = c(0,27000)) +
-  facet_nested(.~bat_species, scales = "free", space = "free") +
+p2bsave <- ggplot(subset(lumdat.long)) + 
+  #coord_cartesian(ylim = c(0,27000)) +
+  facet_nested(bat_species~., scales = "free") +
   geom_line(aes(x=antigen, y=MFI, group=sampleid), show.legend=F) + theme_bw()+
   geom_point(aes(x=antigen, y=MFI, color=antigen), show.legend=F) + 
   geom_hline(data = subset(plot.cut, virus_family=="Paramyxovirus"), aes(yintercept = MFI), color="red", linetype=2, size=.8) +
@@ -186,11 +187,11 @@ p2bsave <- ggplot(subset(lumdat.long)) + coord_cartesian(ylim = c(0,27000)) +
         axis.title.y = element_text(size=16), 
         axis.text.y = element_text(size=16), 
         strip.background = element_rect(fill="white"),
-        strip.text.y = element_text(size=16, color = "black"), 
+        strip.text.y = element_text(size=16, face="italic",color = "black"), 
         strip.text.x = element_text(size=16, face="italic", color="black"),
         plot.margin = unit(c(0.1,0.1,0,0), "cm")); p2bsave
   #geom_image(data=subset(image.df, virus_family=="Paramyxovirus"), aes(x=antigen, y=c(23000, 24000,23000), image = image), size=.3, nudge_x = .7); p2bsave
-mountain <- cowplot::plot_grid(p2bsave, p.h.row, ncol = 1,nrow = 2, rel_heights = c(1,.2), rel_widths = c(1,1))+
+mountain <- cowplot::plot_grid(p2bsave, p.h.1, ncol = 1,nrow = 2, rel_heights = c(1,.2), rel_widths = c(1,0.2))+
   theme(plot.background = element_rect(fill = "white", colour = NA));mountain
 mountain<-as.ggplot(mountain)
 
@@ -1012,7 +1013,17 @@ pred.df2$group <- paste0(pred.df2$bat_species, "-", pred.df2$antigen, "-", pred.
 
 
 pred.df <- rbind(pred.df, pred.df2)
+pred.df$viralcat <- NA
+pred.df$viralcat[pred.df$antigen == "HeV"] <- "HeV and NiV"
+pred.df$viralcat[pred.df$antigen == "NiV"] <- "HeV and NiV"
+pred.df$viralcat[pred.df$antigen == "AngV"] <- "AngV"
+pred.df$viralcat[pred.df$antigen == "GhV"] <- "GhV"
 
+dat_text <- data.frame(
+  label = c("p = NS"),
+  x     = c(Inf),
+  y     = c(1)
+)
 
 #and plot with data:
 pInterannual_new_Rou <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & bat_species=="Rousettus madagascariensis")) +
@@ -1031,6 +1042,10 @@ pInterannual_new_Rou <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga"
   scale_x_continuous(breaks=c(as.Date("2018-01-01"),as.Date("2019-01-01"), as.Date("2020-01-01")), labels=c("2018", "2019", "2020")) +
   coord_cartesian(expand = F) + ylab("seroprevalence") + guides(alpha="none")
 pInterannual_new_Rou
+pInterannual_new_Rou2<-pInterannual_new_Rou+geom_text(data= dat_text, aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5),
+                                              fontface="italic");pInterannual_new_Rou2
+
+
 
 seroprev.sum$sig <- 2
 seroprev.sum$sig[seroprev.sum$antigen=="AngV" | seroprev.sum$antigen=="GhV"] <- 1
@@ -1043,11 +1058,17 @@ filz.season <- filz[(length(filz)-2):length(filz)]
 filz.antigen <- filz[1:(length(filz)-2)]
 
 dat_text <- data.frame(
-  label = c("p = 0.05", "p = 0.03", "p = NS", "p = NS"),
-  antigen   = c("AngV", "GhV", "HeV", "NiV"),
-  x     = c(Inf, Inf, Inf, Inf),
-  y     = c(1, 1, 1, 1)
+  label = c("p = 0.05", "p = 0.03", "p = NS HeV\n p = NS NiV"),
+  viralcat   = c("AngV", "GhV", "HeV and NiV"),
+  x     = c(Inf, Inf, Inf),
+  y     = c(1, 1, 1)
 )
+
+seroprev.sum$viralcat <- NA
+seroprev.sum$viralcat[seroprev.sum$antigen == "HeV"] <- "HeV and NiV"
+seroprev.sum$viralcat[seroprev.sum$antigen == "NiV"] <- "HeV and NiV"
+seroprev.sum$viralcat[seroprev.sum$antigen == "AngV"] <- "AngV"
+seroprev.sum$viralcat[seroprev.sum$antigen == "GhV"] <- "GhV"
 
 pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & bat_species=="Eidolon dupreanum")) +
   geom_rect(data=subset(cal.dat,bat_species=="Eidolon dupreanum"), aes(xmin=as.Date(start), xmax=as.Date(stop), ymin=0, ymax=1, fill=season), alpha=.3) +
@@ -1056,7 +1077,7 @@ pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & b
   ggnewscale::new_scale_fill() +
   geom_ribbon(data=subset(pred.df, bat_species=="Eidolon dupreanum"), aes(x=mid_date, ymin= predicted_seroprevalence_lci, ymax=predicted_seroprevalence_uci, fill=antigen), alpha=.3, show.legend = F) +
   geom_line(data=subset(pred.df, bat_species=="Eidolon dupreanum"), aes(x=mid_date, y= predicted_seroprevalence, color=antigen, group = group)) +
-  facet_grid(antigen~bat_species) + theme_bw() +
+  facet_grid(viralcat~bat_species) + theme_bw() +
   theme(axis.text.x = element_text(size=14), 
         axis.title.x = element_blank(), 
         # axis.text.y = element_blank(),
