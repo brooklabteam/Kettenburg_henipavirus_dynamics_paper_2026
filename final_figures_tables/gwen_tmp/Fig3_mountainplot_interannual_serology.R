@@ -180,7 +180,7 @@ p2bsave <- ggplot(subset(lumdat.long)) +
   geom_line(aes(x=antigen, y=MFI, group=sampleid), show.legend=F) + theme_bw()+
   geom_point(aes(x=antigen, y=MFI, color=antigen), show.legend=F) + 
   geom_hline(data = subset(plot.cut, virus_family=="Paramyxovirus"), aes(yintercept = MFI), color="red", linetype=2, size=.8) +
-  scale_color_manual(values=colorz) + ylab("mean fluorescence intensity (MFI)\n") +
+  scale_color_manual(values=colorz) + ylab("Mean fluorescence intensity (MFI)") +
   #geom_dendro(rowclus) +
   theme(axis.title.x = element_blank(), panel.grid = element_blank(),
         axis.text.x = element_text(size=14), 
