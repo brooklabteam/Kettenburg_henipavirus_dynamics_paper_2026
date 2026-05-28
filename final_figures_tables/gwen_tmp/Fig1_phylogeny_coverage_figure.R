@@ -36,13 +36,22 @@ dat1 <- read.csv(("fullgenome_metadata.csv"), header = T, stringsAsFactors = F)
 unique(dat1$Genus)
 dat1$novel <- as.factor(dat1$novel)
 
-colz = c("Orthoavulavirus"="darkorange","Paraavulavirus"="darkorange3","Metaavulavirus"="darkgoldenrod1","Jeilongvirus"="coral",
-         "Morbillivirus"="coral3","Respirovirus"="deeppink1", "Parahenipavirus"="deeppink4",
-         "Henipavirus"="firebrick1","Cynoglossusvirus"="grey50","Pararubulavirus"="firebrick4","Salemvirus"="indianred1",
-         "Ferlavirus"="indianred3","Orthorubulavirus"="indianred4",
-         "Hoplichthysvirus"="lightsalmon1","Narmovirus"="lightsalmon3","Aquaparamyxovirus"="lightpink2","Scoliodonvirus"="lightpink3",
-         "Synodonvirus"="pink1","Unclassified"="black",
-         "Sunshinevirus"="chartreuse1")
+# colz = c("Orthoavulavirus"="darkorange","Paraavulavirus"="darkorange3","Metaavulavirus"="darkgoldenrod1","Jeilongvirus"="coral",
+#          "Morbillivirus"="coral3","Respirovirus"="deeppink1", "Parahenipavirus"="deeppink4",
+#          "Henipavirus"="firebrick1","Cynoglossusvirus"="grey50","Pararubulavirus"="firebrick4","Salemvirus"="indianred1",
+#          "Ferlavirus"="indianred3","Orthorubulavirus"="indianred4",
+#          "Hoplichthysvirus"="lightsalmon1","Narmovirus"="lightsalmon3","Aquaparamyxovirus"="lightpink2","Scoliodonvirus"="lightpink3",
+#          "Synodonvirus"="pink1","Unclassified"="black",
+#          "Sunshinevirus"="chartreuse1")
+
+colz = c("Orthoavulavirus"="black","Paraavulavirus"="black","Metaavulavirus"="black","Jeilongvirus"="black",
+         "Morbillivirus"="black","Respirovirus"="black", "Parahenipavirus"="black",
+         "Henipavirus"="deepskyblue2","Cynoglossusvirus"="black","Pararubulavirus"="aquamarine2","Salemvirus"="black",
+         "Ferlavirus"="black","Orthorubulavirus"="black",
+         "Hoplichthysvirus"="black","Narmovirus"="black","Aquaparamyxovirus"="black","Scoliodonvirus"="black",
+         "Synodonvirus"="black","Unclassified"="black",
+         "Sunshinevirus"="black")
+
 
 #now get new tip labels
 dat1$old_tip_label <- dat1$tip_label
@@ -111,6 +120,7 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 #full genome alignment
 title<-expression(paste("                    Full genome"))
 p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=4,stroke=0,show.legend = T) +
+  guides(color="none")+
   #scale_fill_manual(values=colz) +
   scale_color_manual(values=colz, guide =
                        guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
@@ -155,29 +165,29 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
 
 p1
 
-p1.2<-ggtree::collapse(p1, 275)+geom_point2(aes(subset=(node==275)), size=4, shape=25, fill="firebrick1")
-p1.3<-ggtree::collapse(p1.2, 362)+geom_point2(aes(subset=(node==362)), size=4, shape=25, fill="firebrick4")
-p1.4<-ggtree::collapse(p1.3, 351)+geom_point2(aes(subset=(node==351)), size=4, shape=25, fill="darkgoldenrod1")
-p1.5<-ggtree::collapse(p1.4, 341)+geom_point2(aes(subset=(node==341)), size=4, shape=25, fill="darkorange")
-p1.6<-ggtree::collapse(p1.5, 338)+geom_point2(aes(subset=(node==338)), size=4, shape=25, fill="darkorange3")
-p1.7<-ggtree::collapse(p1.6, 333)+geom_point2(aes(subset=(node==333)), size=4, shape=25, fill="lightpink2")
-p1.8<-ggtree::collapse(p1.7, 324)+geom_point2(aes(subset=(node==324)), size=4, shape=25, fill="deeppink1")
-p1.9<-ggtree::collapse(p1.8, 394)+geom_point2(aes(subset=(node==394)), size=4, shape=25, fill="coral")
-p1.10<-ggtree::collapse(p1.9, 391)+geom_point2(aes(subset=(node==391)), size=4, shape=25, fill="lightsalmon3")
-p1.11<-ggtree::collapse(p1.10, 372)+geom_point2(aes(subset=(node==372)), size=4, shape=25, fill="indianred3")
-p1.17<-ggtree::collapse(p1.11, 385)+geom_point2(aes(subset=(node==385)), size=4, shape=25, fill="coral3")
-p1.18<-ggtree::collapse(p1.17, 404)+geom_point2(aes(subset=(node==404)), size=4, shape=25, fill="deeppink4")
-p1.1<-ggtree::collapse(p1.18, 380)+geom_point2(aes(subset=(node==380)), size=4, shape=25, fill="lightpink3")
+p1.2<-ggtree::collapse(p1, 275)+geom_point2(aes(subset=(node==275)), size=4, shape=25, fill="deepskyblue2")
+p1.3<-ggtree::collapse(p1.2, 362)+geom_point2(aes(subset=(node==362)), size=4, shape=25, fill="black")
+p1.4<-ggtree::collapse(p1.3, 351)+geom_point2(aes(subset=(node==351)), size=4, shape=25, fill="black")
+p1.5<-ggtree::collapse(p1.4, 341)+geom_point2(aes(subset=(node==341)), size=4, shape=25, fill="black")
+p1.6<-ggtree::collapse(p1.5, 338)+geom_point2(aes(subset=(node==338)), size=4, shape=25, fill="black")
+p1.7<-ggtree::collapse(p1.6, 333)+geom_point2(aes(subset=(node==333)), size=4, shape=25, fill="black")
+p1.8<-ggtree::collapse(p1.7, 324)+geom_point2(aes(subset=(node==324)), size=4, shape=25, fill="black")
+p1.9<-ggtree::collapse(p1.8, 394)+geom_point2(aes(subset=(node==394)), size=4, shape=25, fill="black")
+p1.10<-ggtree::collapse(p1.9, 391)+geom_point2(aes(subset=(node==391)), size=4, shape=25, fill="black")
+p1.11<-ggtree::collapse(p1.10, 372)+geom_point2(aes(subset=(node==372)), size=4, shape=25, fill="black")
+p1.17<-ggtree::collapse(p1.11, 385)+geom_point2(aes(subset=(node==385)), size=4, shape=25, fill="black")
+p1.18<-ggtree::collapse(p1.17, 404)+geom_point2(aes(subset=(node==404)), size=4, shape=25, fill="black")
+p1.1<-ggtree::collapse(p1.18, 380)+geom_point2(aes(subset=(node==380)), size=4, shape=25, fill="black")
 p1.1
 
 p1.1<- p1.1 +  
   #geom_hilight(node=357, fill="deeppink3", alpha=0.3, extendto=12.8)+ #HeV/NiV sister
-  geom_hilight(node=425, fill="darkcyan", alpha=0.3, extendto=8)+ #AndV
+  geom_hilight(node=425, fill="darkorange1", alpha=0.3, extendto=8)+ #AndV
   # geom_hilight(node=113, fill="darkturquoise", alpha=0.3, extendto=12.8)+ #AndV2
   # geom_hilight(node=350, fill="dodgerblue", alpha=0.3, extendto=12.8)+ #AndV3
   # geom_hilight(node=250, fill="springgreen3", alpha=0.3, extendto=12.8)+ #AngV
   # geom_hilight(node=247, fill="chartreuse", alpha=0.3, extendto=12.8)+ #AngV2
-  geom_hilight(node=213, fill="orange", alpha=0.3, extendto=8) #GhVlike
+  geom_hilight(node=213, fill="#00C094", alpha=0.3, extendto=8) #GhVlike
 p1.1
 
 #add node shapes to represent bootstrap values
@@ -224,13 +234,21 @@ dat1 <- read.csv(("L_metadata_mid.csv"), header = T, stringsAsFactors = F)
 unique(dat1$Genus)
 dat1$novel <- as.factor(dat1$novel)
 
-colz = c("Orthoavulavirus"="darkorange","Paraavulavirus"="darkorange3","Metaavulavirus"="darkgoldenrod1","Jeilongvirus"="coral",
-         "Morbillivirus"="coral3","Respirovirus"="deeppink1", "Parahenipavirus"="deeppink4",
-         "Henipavirus"="firebrick1","Cynoglossusvirus"="grey50","Pararubulavirus"="firebrick4","Salemvirus"="indianred1",
-         "Ferlavirus"="indianred3","Orthorubulavirus"="indianred4",
-         "Hoplichthysvirus"="lightsalmon1","Narmovirus"="lightsalmon3","Aquaparamyxovirus"="lightpink2","Scoliodonvirus"="lightpink3",
-         "Synodonvirus"="pink1","Unclassified"="black",
-         "Sunshinevirus"="chartreuse1")
+# colz = c("Orthoavulavirus"="darkorange","Paraavulavirus"="darkorange3","Metaavulavirus"="darkgoldenrod1","Jeilongvirus"="coral",
+#          "Morbillivirus"="coral3","Respirovirus"="deeppink1", "Parahenipavirus"="deeppink4",
+#          "Henipavirus"="firebrick1","Cynoglossusvirus"="grey50","Pararubulavirus"="firebrick4","Salemvirus"="indianred1",
+#          "Ferlavirus"="indianred3","Orthorubulavirus"="indianred4",
+#          "Hoplichthysvirus"="lightsalmon1","Narmovirus"="lightsalmon3","Aquaparamyxovirus"="lightpink2","Scoliodonvirus"="lightpink3",
+#          "Synodonvirus"="pink1","Unclassified"="black",
+#          "Sunshinevirus"="chartreuse1")
+
+colz = c("Orthoavulavirus"="black","Paraavulavirus"="black","Metaavulavirus"="black","Jeilongvirus"="black",
+         "Morbillivirus"="black","Respirovirus"="black", "Parahenipavirus"="black",
+         "Henipavirus"="deepskyblue2","Cynoglossusvirus"="black","Pararubulavirus"="aquamarine2","Salemvirus"="black",
+         "Ferlavirus"="black","Orthorubulavirus"="black",
+         "Hoplichthysvirus"="black","Narmovirus"="black","Aquaparamyxovirus"="black","Scoliodonvirus"="black",
+         "Synodonvirus"="black","Unclassified"="black",
+         "Sunshinevirus"="black")
 
 #now get new tip labels
 dat1$old_tip_label <- dat1$tip_label
@@ -300,6 +318,7 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 title<-expression(paste("                    Polymerase"))
 p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0,show.legend = T) +
   #scale_fill_manual(values=colz) +
+  guides(color="none")+
   scale_color_manual(values=colz, guide =
                        guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
   scale_shape_manual(values=shapez, guide =
@@ -342,29 +361,29 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
 
 p1
 
-p1.2<-ggtree::collapse(p1, 236)+geom_point2(aes(subset=(node==236)), size=4, shape=25, fill="firebrick1")
+p1.2<-ggtree::collapse(p1, 236)+geom_point2(aes(subset=(node==236)), size=4, shape=25, fill="deepskyblue2")
 #p1.3<-ggtree::collapse(p1.2, 344)+geom_point2(aes(subset=(node==344)), size=4, shape=25, fill="firebrick4")
-p1.4<-ggtree::collapse(p1.2, 370)+geom_point2(aes(subset=(node==370)), size=4, shape=25, fill="darkgoldenrod1")
-p1.5<-ggtree::collapse(p1.4, 378)+geom_point2(aes(subset=(node==378)), size=4, shape=25, fill="darkorange")
-p1.6<-ggtree::collapse(p1.5, 383)+geom_point2(aes(subset=(node==383)), size=4, shape=25, fill="darkorange3")
-p1.7<-ggtree::collapse(p1.6, 392)+geom_point2(aes(subset=(node==392)), size=4, shape=25, fill="lightpink2")
-p1.8<-ggtree::collapse(p1.7, 387)+geom_point2(aes(subset=(node==387)), size=4, shape=25, fill="deeppink1")
-p1.9<-ggtree::collapse(p1.8, 404)+geom_point2(aes(subset=(node==404)), size=4, shape=25, fill="coral")
-p1.10<-ggtree::collapse(p1.9, 395)+geom_point2(aes(subset=(node==395)), size=4, shape=25, fill="lightsalmon3")
-p1.11<-ggtree::collapse(p1.10, 362)+geom_point2(aes(subset=(node==362)), size=4, shape=25, fill="indianred3")
-p1.17<-ggtree::collapse(p1.11, 399)+geom_point2(aes(subset=(node==399)), size=4, shape=25, fill="coral3")
-p1.18<-ggtree::collapse(p1.17, 414)+geom_point2(aes(subset=(node==414)), size=4, shape=25, fill="deeppink4")
-p1.1<-ggtree::collapse(p1.18, 384)+geom_point2(aes(subset=(node==384)), size=4, shape=25, fill="lightpink3")
+p1.4<-ggtree::collapse(p1.2, 370)+geom_point2(aes(subset=(node==370)), size=4, shape=25, fill="black")
+p1.5<-ggtree::collapse(p1.4, 378)+geom_point2(aes(subset=(node==378)), size=4, shape=25, fill="black")
+p1.6<-ggtree::collapse(p1.5, 383)+geom_point2(aes(subset=(node==383)), size=4, shape=25, fill="black")
+p1.7<-ggtree::collapse(p1.6, 392)+geom_point2(aes(subset=(node==392)), size=4, shape=25, fill="black")
+p1.8<-ggtree::collapse(p1.7, 387)+geom_point2(aes(subset=(node==387)), size=4, shape=25, fill="black")
+p1.9<-ggtree::collapse(p1.8, 404)+geom_point2(aes(subset=(node==404)), size=4, shape=25, fill="black")
+p1.10<-ggtree::collapse(p1.9, 395)+geom_point2(aes(subset=(node==395)), size=4, shape=25, fill="black")
+p1.11<-ggtree::collapse(p1.10, 362)+geom_point2(aes(subset=(node==362)), size=4, shape=25, fill="black")
+p1.17<-ggtree::collapse(p1.11, 399)+geom_point2(aes(subset=(node==399)), size=4, shape=25, fill="black")
+p1.18<-ggtree::collapse(p1.17, 414)+geom_point2(aes(subset=(node==414)), size=4, shape=25, fill="black")
+p1.1<-ggtree::collapse(p1.18, 384)+geom_point2(aes(subset=(node==384)), size=4, shape=25, fill="black")
 p1.1
 
 p1.1<- p1.1 +  
-  geom_hilight(node=235, fill="deeppink3", alpha=0.3, extendto=8)+ #HeV/NiV sister
-  geom_hilight(node=221, fill="darkcyan", alpha=0.3, extendto=8)+ #AndV
-  geom_hilight(node=10, fill="darkturquoise", alpha=0.3, extendto=8)+ #AndV2
-  geom_hilight(node=225, fill="dodgerblue", alpha=0.3, extendto=8)+ #AndV3
-  geom_hilight(node=339, fill="springgreen3", alpha=0.3, extendto=8)+ #AngV
-  geom_hilight(node=336, fill="chartreuse", alpha=0.3, extendto=8)+ #AngV2
-  geom_hilight(node=110, fill="orange", alpha=0.3, extendto=8)+ #GhVlike
+  geom_hilight(node=235, fill="#A58AFF", alpha=0.3, extendto=8)+ #HeV/NiV sister
+  geom_hilight(node=221, fill="darkslategray1", alpha=0.3, extendto=8)+ #AndV
+  geom_hilight(node=10, fill="dodgerblue1", alpha=0.3, extendto=8)+ #AndV2
+  geom_hilight(node=225, fill="dodgerblue4", alpha=0.3, extendto=8)+ #AndV3
+  geom_hilight(node=339, fill="#F8766D", alpha=0.3, extendto=8)+ #AngV
+  geom_hilight(node=336, fill="darkorange1", alpha=0.3, extendto=8)+ #AngV2
+  geom_hilight(node=110, fill="#00C094", alpha=0.3, extendto=8)+ #GhVlike
   geom_hilight(node=131, fill="grey40", alpha=0.3, extendto=8)+ #AchPV2
   geom_hilight(node=350, fill="grey40", alpha=0.3, extendto=8) #ThkPV1
 p1.1
