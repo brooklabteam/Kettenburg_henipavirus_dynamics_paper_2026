@@ -46,7 +46,7 @@ dat1$novel <- as.factor(dat1$novel)
 
 colz = c("Orthoavulavirus"="black","Paraavulavirus"="black","Metaavulavirus"="black","Jeilongvirus"="black",
          "Morbillivirus"="black","Respirovirus"="black", "Parahenipavirus"="black",
-         "Henipavirus"="deepskyblue2","Cynoglossusvirus"="black","Pararubulavirus"="aquamarine2","Salemvirus"="black",
+         "Henipavirus"="deepskyblue2","Cynoglossusvirus"="black","Pararubulavirus"="goldenrod","Salemvirus"="black",
          "Ferlavirus"="black","Orthorubulavirus"="black",
          "Hoplichthysvirus"="black","Narmovirus"="black","Aquaparamyxovirus"="black","Scoliodonvirus"="black",
          "Synodonvirus"="black","Unclassified"="black",
@@ -105,12 +105,15 @@ tree.dat1$Host2[tree.dat1$Host2==0] <- "Non-bat host"
 tree.dat1$Host2[tree.dat1$Host2==1] <- "Bat host"
 tree.dat1$Host2 <- as.factor(tree.dat1$Host2)
 #shapez = c("Bat host" =  17, "Non-bat host" = 19)
-tree.dat1$Host[tree.dat1$Host==0] <- "Other host"
+tree.dat1$Host[tree.dat1$Host==0] <- "Non-bat host"
 tree.dat1$Host[tree.dat1$Host==1] <- "Eidolon dupreanum"
 tree.dat1$Host[tree.dat1$Host==2] <- "Rousettus madagascariensis"
-tree.dat1$Host[tree.dat1$Host==3] <- "Bat host"
-tree.dat1$Host <- as.factor(tree.dat1$Host)
-shapez = c("Other host" =  18, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Bat host" =  15)
+tree.dat1$Host[tree.dat1$Host==3] <- "Other bat host"
+tree.dat1$Host[tree.dat1$Host==4] <- "Collapsed clade - multihost"
+tree.dat1$Host <- factor(tree.dat1$Host, levels = c("Eidolon dupreanum", "Rousettus madagascariensis", 
+                                                    "Other bat host", "Non-bat host", "Collapsed clade - multihost"))
+#tree.dat1$Host <- as.factor(tree.dat1$Host)
+shapez = c("Non-bat host" =  18, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Other bat host" =  15, "Collapsed clade - multihost"=25)
 
 colz2 = c('1' =  "yellow", '0' = "white")
 
@@ -119,16 +122,15 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 
 #full genome alignment
 title<-expression(paste("                    Full genome"))
-p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=4,stroke=0,show.legend = T) +
+p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=4,stroke=0.5,show.legend = T) +
   guides(color="none")+
   #scale_fill_manual(values=colz) +
   scale_color_manual(values=colz, guide =
                        guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
   scale_shape_manual(values=shapez, guide =
-                       guide_legend(label.theme = element_text(angle = 0, face = "italic"))) +
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic"), nrow=3)) +
   new_scale_color() +
   geom_tiplab(aes(color = novel, show.legend=F), geom = "text", Genus="Helvetica", size=4, nudge_x=0.05) +
-  guides(fill = guide_legend(ncol = 2))+
   guides(color="none")+#
   #ggtitle(title)+
   scale_color_manual(values=c("0"="black","1"="red")) +
@@ -182,7 +184,7 @@ p1.1
 
 p1.1<- p1.1 +  
   #geom_hilight(node=357, fill="deeppink3", alpha=0.3, extendto=12.8)+ #HeV/NiV sister
-  geom_hilight(node=425, fill="darkorange1", alpha=0.3, extendto=8)+ #AndV
+  geom_hilight(node=425, fill="darkslategray1", alpha=0.3, extendto=8)+ #AndV
   # geom_hilight(node=113, fill="darkturquoise", alpha=0.3, extendto=12.8)+ #AndV2
   # geom_hilight(node=350, fill="dodgerblue", alpha=0.3, extendto=12.8)+ #AndV3
   # geom_hilight(node=250, fill="springgreen3", alpha=0.3, extendto=12.8)+ #AngV
@@ -244,7 +246,7 @@ dat1$novel <- as.factor(dat1$novel)
 
 colz = c("Orthoavulavirus"="black","Paraavulavirus"="black","Metaavulavirus"="black","Jeilongvirus"="black",
          "Morbillivirus"="black","Respirovirus"="black", "Parahenipavirus"="black",
-         "Henipavirus"="deepskyblue2","Cynoglossusvirus"="black","Pararubulavirus"="aquamarine2","Salemvirus"="black",
+         "Henipavirus"="deepskyblue2","Cynoglossusvirus"="black","Pararubulavirus"="goldenrod","Salemvirus"="black",
          "Ferlavirus"="black","Orthorubulavirus"="black",
          "Hoplichthysvirus"="black","Narmovirus"="black","Aquaparamyxovirus"="black","Scoliodonvirus"="black",
          "Synodonvirus"="black","Unclassified"="black",
@@ -302,12 +304,15 @@ tree.dat1$Host2[tree.dat1$Host2==0] <- "Non-bat host"
 tree.dat1$Host2[tree.dat1$Host2==1] <- "Bat host"
 tree.dat1$Host2 <- as.factor(tree.dat1$Host2)
 #shapez = c("Bat host" =  17, "Non-bat host" = 19)
-tree.dat1$Host[tree.dat1$Host==0] <- "Other host"
+tree.dat1$Host[tree.dat1$Host==0] <- "Non-bat host"
 tree.dat1$Host[tree.dat1$Host==1] <- "Eidolon dupreanum"
 tree.dat1$Host[tree.dat1$Host==2] <- "Rousettus madagascariensis"
-tree.dat1$Host[tree.dat1$Host==3] <- "Bat host"
-tree.dat1$Host <- as.factor(tree.dat1$Host)
-shapez = c("Other host" =  18, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Bat host" =  15)
+tree.dat1$Host[tree.dat1$Host==3] <- "Other bat host"
+tree.dat1$Host[tree.dat1$Host==4] <- "Collapsed clade - multihost"
+tree.dat1$Host <- factor(tree.dat1$Host, levels = c("Eidolon dupreanum", "Rousettus madagascariensis", 
+                                                    "Other bat host", "Non-bat host", "Collapsed clade - multihost"))
+#tree.dat1$Host <- as.factor(tree.dat1$Host)
+shapez = c("Non-bat host" =  18, "Eidolon dupreanum" = 17, "Rousettus madagascariensis" = 19, "Other bat host" =  15, "Collapsed clade - multihost"=25)
 
 colz2 = c('1' =  "yellow", '0' = "white")
 
@@ -322,7 +327,7 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   scale_color_manual(values=colz, guide =
                        guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
   scale_shape_manual(values=shapez, guide =
-                       guide_legend(label.theme = element_text(angle = 0, face = "italic"))) +
+                       guide_legend(label.theme = element_text(angle = 0, face = "italic"), nrow=3)) +
   new_scale_color() +
   geom_tiplab(aes(color = novel, show.legend=F), geom = "text", Genus="Helvetica", size=4, nudge_x=0.05) +
   guides(color="none")+#
