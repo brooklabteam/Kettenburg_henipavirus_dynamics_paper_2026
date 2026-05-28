@@ -656,8 +656,8 @@ genome2ghvlike<-ggplot(map_combo, aes(xmin = start, xmax = end, y = molecule, fi
 genome2ghvlike
 
 #put coverage and genome maps together
-coverage_ghvlike<-coverage_ghvlike/genome1ghvlike/genome2ghvlike+plot_layout(nrow=3,  heights = c(1, 0.2, 0.2))
-coverage_ghvlike
+# coverage_ghvlike<-coverage_ghvlike/genome1ghvlike/genome2ghvlike+plot_layout(nrow=3,  heights = c(1, 0.2, 0.2))
+# coverage_ghvlike
 
 coverage_ghvlike2<-genome1ghvlike/genome2ghvlike+plot_layout(nrow=2,  heights = c(1,1))
 coverage_ghvlike2
@@ -739,8 +739,8 @@ genomeplot_ROU148
 genomeplot_ROU148.2<-genome1ROU148/genome2ROU148+plot_layout(nrow=2,  heights = c(1,1))
 genomeplot_ROU148.2
 
-genomeplot_ROU148<-as.ggplot(genomeplot_ROU148)
-genomeplot_ROU148
+genomeplot_ROU148.2<-as.ggplot(genomeplot_ROU148.2)
+genomeplot_ROU148.2
 
 
 #rou125 and rou148 ref
@@ -883,405 +883,8 @@ genomeplot_ROU173
 genomeplot_ROU173.2<-genome1ROU173/genome2ROU173+plot_layout(nrow=2,  heights = c(1, 1))
 genomeplot_ROU173.2
 
-genomeplot_ROU173<-as.ggplot(genomeplot_ROU173)
-genomeplot_ROU173
-
-
-#Figure for all the andv's
-genomeplot_andv<-cowplot::plot_grid(gcoverage_andv2, genome1ROU173, genome2ROU173, labels=c("","",""),
-                                    rel_widths = c(1,1,1), rel_heights = c(1,1,1),
-                                    ncol=1, align="hv", axis="l", label_size = 23); genomeplot_andv
-
-genomeplot_andv<-as.ggplot(genomeplot_andv)
-
-
-#AndV all together
-andv_coverage<-cowplot::plot_grid(genomeplot_ROU148, genomeplot_andv, labels=c("",""),
-                         rel_widths=c(1,1), rel_heights = c(1,1),
-                         ncol=1,align="hv", axis="l", label_size = 23)
-andv_coverage
-
-andv_coverage_long<-cowplot::plot_grid(genomeplot_ROU148, genomeplot_andv, labels=c("",""),
-                         rel_widths=c(1,1), rel_heights = c(1,1),
-                         ncol=2,align="hv", axis="l", label_size = 23)
-andv_coverage_long
-
-#all coverage
-all_coverage<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148, coverage_andv, labels=c("","",""),
-                         rel_widths=c(1,1,1), rel_heights = c(1,1,1),
-                         ncol=3,align="hv", axis="l", label_size = 23)
-all_coverage
-
-all_coverage2<-cowplot::plot_grid(coverage_ghvlike, genomeplot_ROU148, coverage_andv, labels=c("","",""),
-                                 rel_widths=c(1,1,1), rel_heights = c(1,1,1),
-                                 ncol=1,align="hv", axis="r", label_size = 23)
-all_coverage2
-
-
-##new version of figure
-
-
-
-#Now add the simplots in case they end up going with the figure
-#set directory
-homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/genome_characterization/simplot"
-setwd(paste0(homewd))
-
-#aa plots
-andv_map <- read.csv(file = "aa_align_AndV_noUTRtest.csv", header = T, stringsAsFactors = F)
-head(andv_map)
-
-#move to long
-long.sim_aa <- melt(andv_map, id.vars = c("pointer"), measure.vars = c("AndV_ROU148","AndV_ROU173","AndV_ROU125"))
-
-unique(long.sim_aa$variable)
-
-long.sim_aa$variable <- as.character(long.sim_aa$variable)
-
-names(long.sim_aa)[names(long.sim_aa)=="variable"] <- "accession"
-
-long.sim_aa$accession[long.sim_aa$accession == "AndV_ROU148"] <- "PX127343 AndV"
-long.sim_aa$accession[long.sim_aa$accession == "AndV_ROU173"] <- "PX127344 AndV"
-long.sim_aa$accession[long.sim_aa$accession == "AndV_ROU125"] <- "PX127342 AndV"
-
-long.sim_aa$accession <- factor(long.sim_aa$accession, levels = c( 
-  "PX127342 AndV",
-  "PX127343 AndV", 
-  "PX127344 AndV"))
-long.sim_aa$value[long.sim_aa$value<0] <- 0
-long.sim_aa$value <- long.sim_aa$value/100
-
-colzpalette<-c("grey","grey30","black")
-
-title<-expression(paste(italic("Reference: YuV2")))
-## amino acid
-andv_map_aa <- ggplot(long.sim_aa) + 
-  annotate("rect", xmin=57, xmax=592, ymin=0, ymax=1, alpha=0.6,  fill="#D29292")+
-  annotate("rect", xmin=780, xmax=1527, ymin=0, ymax=1, alpha=0.6,  fill="#525832")+
-  annotate("rect", xmin=1702, xmax=2035, ymin=0, ymax=1, alpha=0.6,  fill="#F98F5B")+
-  annotate("rect", xmin=2143, xmax=2742, ymin=0, ymax=1, alpha=0.6,  fill="#BD9A5A")+
-  annotate("rect", xmin=2934, xmax=3847, ymin=0, ymax=1, alpha=0.6,  fill="#F17983")+
-  annotate("rect", xmin=4041, xmax=6340, ymin=0, ymax=1, alpha=0.6,  fill="#6B8C81")+
-  geom_line(aes(x=pointer, y=value, color=accession), size=1) +
-  theme(panel.background = element_rect("white"),
-        panel.border = element_rect(linetype = "solid", fill=NA)) + ylab("% Amino acid identity")+xlab("Genome position")+
-  geom_hline(yintercept = 0.67, linetype = "dashed", color="red")+
-  theme(panel.grid = element_blank(), strip.text = element_text(face="italic", size=12),
-        strip.background = element_rect(fill="white"), 
-        legend.direction = "horizontal",
-        legend.margin=margin(),
-        legend.justification = "left",
-        legend.text = element_text(face="italic", size = 10),
-        legend.title = element_blank(),
-        axis.title.x = element_blank(),
-        axis.ticks.x = element_blank(),
-        axis.text.x = element_blank(),
-        legend.position=c(0.8,0.1), 
-        legend.key.height= unit(3.5, 'mm'),
-        legend.key.width= unit(3.5, 'mm'),
-        legend.background =element_rect(fill = alpha("white", 0)),
-        axis.text = element_text(size=12), axis.title = element_text(size=12),
-        plot.margin = unit(c(0,0.5,0.5,0.5), "cm"),
-        plot.title = element_text(size = 14, face = "bold")) +
-  guides(colour = guide_legend(nrow = 3))+
-  ggtitle(title)+
-  scale_color_manual(values=colzpalette) + 
-  coord_cartesian(ylim=c(0,1.0))+
-  scale_x_continuous(breaks=c(0,2000/3.055,4000/3.055,6000/3.055,8000/3.055, 10000/3.055, 12000/3.055, 14000/3.055, 16000/3.055, 18000/3.055), 
-                     labels = c(0,2000, 4000,6000,8000, 10000, 12000, 14000, 16000, 18000),
-                     expand=c(0,0))+
-  #scale_x_continuous(expand=c(0,0))+
-  scale_y_continuous(limits=c(0,1), expand=c(0,0)); andv_map_aa
-
-#ghvlike
-ghv_map <- read.csv(file = "aa_align_GhVlike_noUTRtest.csv", header = T, stringsAsFactors = F)
-head(ghv_map)
-
-#move to long
-long.sim_aa <- melt(ghv_map, id.vars = c("pointer"), measure.vars = c("GhVlike"))
-
-unique(long.sim_aa$variable)
-
-long.sim_aa$variable <- as.character(long.sim_aa$variable)
-
-names(long.sim_aa)[names(long.sim_aa)=="variable"] <- "accession"
-
-long.sim_aa$accession[long.sim_aa$accession == "GhVlike"] <- "GhVlike"
-
-long.sim_aa$accession <- factor(long.sim_aa$accession, levels = c( 
-  "GhVlike"))
-long.sim_aa$value[long.sim_aa$value<0] <- 0
-long.sim_aa$value <- long.sim_aa$value/100
-
-colzpalette<-c("black","grey30","grey")
-
-title<-expression(paste(italic("Reference: GhV")))
-## amino acid
-ghv_map_aa <- ggplot(long.sim_aa) + 
-  annotate("rect", xmin=1, xmax=554, ymin=0, ymax=1, alpha=0.6,  fill="#D29292")+
-  annotate("rect", xmin=730, xmax=1628, ymin=0, ymax=1, alpha=0.6,  fill="#525832")+
-  annotate("rect", xmin=1722, xmax=2197, ymin=0, ymax=1, alpha=0.6,  fill="#F98F5B")+
-  annotate("rect", xmin=2448, xmax=3001, ymin=0, ymax=1, alpha=0.6,  fill="#BD9A5A")+
-  annotate("rect", xmin=3117, xmax=3889, ymin=0, ymax=1, alpha=0.6,  fill="#F17983")+
-  annotate("rect", xmin=4061, xmax=6369, ymin=0, ymax=1, alpha=0.6,  fill="#6B8C81")+
-  geom_line(aes(x=pointer, y=value, color=accession), size=1) +
-  #annotate("rect", xmin=3519, xmax=4168, ymin=0, ymax=1, alpha=1,  fill="grey30")+
-  geom_hline(yintercept = 0.96, linetype = "dashed", color="red")+
-  theme(panel.background = element_rect("white"),
-        panel.border = element_rect(linetype = "solid", fill=NA)) + ylab("% Amino acid identity")+xlab("Genome position")+
-  theme(panel.grid = element_blank(), strip.text = element_text(face="italic", size=12),
-        strip.background = element_rect(fill="white"), 
-        legend.direction = "horizontal",
-        legend.margin=margin(),
-        legend.justification = "left",
-        legend.text = element_text(face="italic", size = 10),
-        legend.title = element_blank(),
-        axis.title.x = element_blank(),
-        axis.ticks.x = element_blank(),
-        axis.text.x = element_blank(),
-        legend.position=c(0.8,0.05), 
-        legend.key.height= unit(3.5, 'mm'),
-        legend.key.width= unit(3.5, 'mm'),
-        legend.background =element_rect(fill = alpha("white", 0)),
-        axis.text = element_text(size=12), axis.title = element_text(size=12),
-        plot.margin = unit(c(0,0.5,0.5,0.5), "cm"),
-        plot.title = element_text(size = 14, face = "bold")) +
-  guides(colour = guide_legend(nrow = 3))+
-  ggtitle(title)+
-  scale_color_manual(values=colzpalette) + 
-  coord_cartesian(ylim=c(0,1.0))+
-  scale_x_continuous(
-    breaks=c(0,2000/3.055,4000/3.055,6000/3.055,8000/3.055, 10000/3.055, 12000/3.055, 14000/3.055, 16000/3.055, 18000/3.055), 
-    labels = c(0,2000, 4000,6000,8000, 10000, 12000, 14000, 16000, 18000),
-    expand=c(0,0))+
-  #scale_x_continuous(expand=c(0,0))+
-  scale_y_continuous(limits=c(0,1), expand=c(0,0)); ghv_map_aa
-
-
-
-##Now make genome maps to go with the coverage plots
-#GhV-like first
-map <- read.csv("genome_genes.csv", header = T, stringsAsFactors = F)
-map$gene<-factor(map$gene, levels = c("N","P","M","F","G","L","gap"))
-#Load the peptide files
-map_pep <- read.csv("genome_peptides.csv", header = T, stringsAsFactors = F)
-map_pep$gene<-factor(map_pep$gene, levels = c("N","P","M","F","G","L","gap"))
-map_pep$string<-factor(map_pep$string, levels = c("first","second"))
-#Load the feature file in case its needed
-map_feat <- read.csv("genome_features.csv", header = T, stringsAsFactors = F)
-map_feat$gene<-factor(map_feat$gene, levels = c("N","P","M","F","G","L","gap"))
-
-colz=c("N"="#D29292","P"="#525832","M"="#F98F5B","F"="#BD9A5A","G"="#F17983","L"="#6B8C81","gap"="#0E171E","gap2"="#0E171E")
-colz2=c("N"="white","P"="white","M"="white","F"="white","G"="white","L"="white","gap"="#0E171E")
-
-#subset by the sequence you want
-map_combo<-subset(map,type=="KEL86_KEL94" & alignment=="nt")
-map_combo_pep<-subset(map_pep,type=="KEL86_KEL94"& alignment=="nt")
-map_combo_pep1<-subset(map_combo_pep,string=="first"& alignment=="nt")
-map_combo_feat<-subset(map_feat,type=="KEL86_KEL94"& alignment=="nt")
-map_combo_pep2<-subset(map_combo_pep,string=="second"& alignment=="nt")
-
-#map the genomes
-genome1ghvlike<-ggplot(map_combo_pep1, aes(xmin = from, xmax = to, y = molecule, fill=gene)) +
-  geom_gene_arrow(arrowhead_width = grid::unit(0, "mm"),
-                  arrowhead_height = grid::unit(5, "mm"),
-                  arrow_body_height = grid::unit(5, "mm")
-  ) +
-  scale_fill_manual(values=colz2)+
-  theme_genes()+
-  scale_x_continuous(breaks=c(0,5578,10396,17208,24521, 33205, 44590),
-                     labels = c(0,3000,6000,9000,12000, 15000, 17000),expand=c(0,0))+
-  theme(legend.position = "none")+
-  theme(plot.margin = unit(c(0,0,0,0), "cm"),
-        axis.text.y = element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.text.x = element_blank(),
-        axis.title.x = element_blank(),
-        axis.line.x = element_blank())+
-  xlab("Genome position") + ylab("")
-genome1ghvlike
-
-genome2ghvlike<-ggplot(map_combo, aes(xmin = start, xmax = end, y = molecule, fill=gene)) +
-  geom_gene_arrow(arrowhead_width = grid::unit(3, "mm"),
-                  arrowhead_height = grid::unit(5, "mm"),
-                  arrow_body_height = grid::unit(5, "mm")) +
-  geom_subgene_arrow(data = map_combo_pep2, mapping=aes(xmin = from, xmax = to, y = molecule, fill=gene,
-                                                        xsubmin=from, xsubmax=to), color="black",
-                     arrowhead_width = grid::unit(3, "mm"),
-                     arrowhead_height = grid::unit(5, "mm"),
-                     arrow_body_height = grid::unit(5, "mm"))+
-  geom_text(data=map_combo_feat,mapping=aes(x = mid, y = 1.5, label = gene), size=4) +
-  scale_fill_manual(values=colz)+
-  theme_genes()+
-  scale_x_continuous(
-    #breaks=c(0,5578,10396,17208,24521, 33205, 44590),
-    #labels = c(0,3000,6000,9000,12000, 15000, 17000),
-    expand=c(0,0))+
-  theme(legend.position = "none")+
-  theme(plot.margin = unit(c(0,0,0,0), "cm"),
-        axis.text.y = element_blank(),
-        # axis.ticks.x=element_blank(),
-        # axis.text.x = element_blank(),
-        # axis.title.x = element_blank(),
-        # axis.line.x = element_blank()
-  )+
-  xlab("Genome position") + ylab("")
-genome2ghvlike
-
-#put coverage and genome maps together
-genomeplot_ghvlike<-ghv_map_aa/genome1ghvlike/genome2ghvlike+plot_layout(nrow=3,  heights = c(1, 0.2,0.2))
-genomeplot_ghvlike
-
-genomeplot_ghvlike<-as.ggplot(genomeplot_ghvlike)
-genomeplot_ghvlike
-
-
-#ROU173
-map <- read.csv("genome_genes.csv", header = T, stringsAsFactors = F)
-map$gene<-factor(map$gene, levels = c("N","P","M","F","G","L","gap"))
-#Load the peptide files
-map_pep <- read.csv("genome_peptides.csv", header = T, stringsAsFactors = F)
-map_pep$gene<-factor(map_pep$gene, levels = c("N","P","M","F","G","L","gap"))
-map_pep$string<-factor(map_pep$string, levels = c("first","second"))
-#Load the feature file in case its needed
-map_feat <- read.csv("genome_features.csv", header = T, stringsAsFactors = F)
-map_feat$gene<-factor(map_feat$gene, levels = c("N","P","M","F","G","L","gap"))
-
-colz=c("N"="#D29292","P"="#525832","M"="#F98F5B","F"="#BD9A5A","G"="#F17983","L"="#6B8C81","gap"="#0E171E","gap2"="#0E171E")
-colz2=c("N"="white","P"="white","M"="white","F"="white","G"="white","L"="white","gap"="#0E171E")
-
-#subset by the sequence you want
-map_combo<-subset(map,type=="ROU173" & alignment=="nt")
-map_combo_pep<-subset(map_pep,type=="ROU173"& alignment=="nt")
-map_combo_pep1<-subset(map_combo_pep,string=="first"& alignment=="nt")
-map_combo_feat<-subset(map_feat,type=="ROU173"& alignment=="nt")
-map_combo_pep2<-subset(map_combo_pep,string=="second"& alignment=="nt")
-
-#map the genomes
-title<-expression(paste(italic("PX127344")))
-genome1ROU173<-ggplot(map_combo_pep1, aes(xmin = from, xmax = to, y = molecule, fill=gene)) +
-  geom_gene_arrow(arrowhead_width = grid::unit(0, "mm"),
-                  arrowhead_height = grid::unit(5, "mm"),
-                  arrow_body_height = grid::unit(5, "mm")
-  ) +
-  scale_fill_manual(values=colz2)+
-  theme_genes()+
-  ggtitle(title)+
-  scale_x_continuous(expand=c(0,0))+
-  theme(legend.position = "none")+
-  theme(plot.margin = unit(c(0,0,0,0), "cm"),
-        axis.text.y = element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.text.x = element_blank(),
-        axis.title.x = element_blank(),
-        axis.line.x = element_blank())+
-  xlab("Genome position") + ylab("")
-genome1ROU173
-
-genome2ROU173<-ggplot(map_combo, aes(xmin = start, xmax = end, y = molecule, fill=gene)) +
-  geom_gene_arrow(arrowhead_width = grid::unit(3, "mm"),
-                  arrowhead_height = grid::unit(5, "mm"),
-                  arrow_body_height = grid::unit(5, "mm")) +
-  geom_subgene_arrow(data = map_combo_pep2, mapping=aes(xmin = from, xmax = to, y = molecule, fill=gene,
-                                                        xsubmin=from, xsubmax=to), color="black",
-                     arrowhead_width = grid::unit(3, "mm"),
-                     arrowhead_height = grid::unit(5, "mm"),
-                     arrow_body_height = grid::unit(5, "mm"))+
-  geom_text(data=map_combo_feat,mapping=aes(x = mid, y = 1.5, label = gene), size=4) +
-  scale_fill_manual(values=colz)+
-  theme_genes()+
-  scale_x_continuous(expand=c(0,0))+
-  theme(legend.position = "none")+
-  theme(plot.margin = unit(c(0,0,0,0), "cm"),
-        axis.text.y = element_blank(),
-        # axis.ticks.x=element_blank(),
-        # axis.text.x = element_blank(),
-        # axis.title.x = element_blank(),
-        # axis.line.x = element_blank()
-  )+
-  xlab("Genome position") + ylab("")
-genome2ROU173
-
-#rou125 and rou148 ref
-map <- read.csv("genome_genes.csv", header = T, stringsAsFactors = F)
-map$gene<-factor(map$gene, levels = c("N","P","M","F","G","L","gap"))
-#Load the peptide files
-map_pep <- read.csv("genome_peptides.csv", header = T, stringsAsFactors = F)
-map_pep$gene<-factor(map_pep$gene, levels = c("N","P","M","F","G","L","gap"))
-map_pep$string<-factor(map_pep$string, levels = c("first","second"))
-#Load the feature file in case its needed
-map_feat <- read.csv("genome_features.csv", header = T, stringsAsFactors = F)
-map_feat$gene<-factor(map_feat$gene, levels = c("N","P","M","F","G","L","gap"))
-
-colz=c("N"="#D29292","P"="#525832","M"="#F98F5B","F"="#BD9A5A","G"="#F17983","L"="#6B8C81","gap"="#0E171E","gap2"="#0E171E")
-colz2=c("N"="white","P"="white","M"="white","F"="white","G"="white","L"="white","gap"="#0E171E")
-
-#subset by the sequence you want
-map_combo<-subset(map,type=="AndV"& alignment=="nt")
-map_combo_pep<-subset(map_pep,type=="AndV"& alignment=="nt")
-map_combo_pep1<-subset(map_combo_pep,string=="first"& alignment=="nt")
-map_combo_feat<-subset(map_feat,type=="AndV"& alignment=="nt")
-map_combo_pep2<-subset(map_combo_pep,string=="second"& alignment=="nt")
-
-#map the genomes
-title<-expression(paste(italic("PX127342 & PX127343")))
-genome1andv<-ggplot(map_combo_pep1, aes(xmin = from, xmax = to, y = molecule, fill=gene)) +
-  geom_gene_arrow(arrowhead_width = grid::unit(0, "mm"),
-                  arrowhead_height = grid::unit(5, "mm"),
-                  arrow_body_height = grid::unit(5, "mm")
-  ) +
-  scale_fill_manual(values=colz2)+
-  theme_genes()+
-  ggtitle(title)+
-  scale_x_continuous(expand=c(0,0))+
-  theme(legend.position = "none")+
-  theme(plot.margin = unit(c(0,0,0,0), "cm"),
-        axis.text.y = element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.text.x = element_blank(),
-        axis.title.x = element_blank(),
-        axis.line.x = element_blank())+
-  xlab("Genome position") + ylab("")
-genome1andv
-
-genome2andv<-ggplot(map_combo, aes(xmin = start, xmax = end, y = molecule, fill=gene)) +
-  geom_gene_arrow(arrowhead_width = grid::unit(3, "mm"),
-                  arrowhead_height = grid::unit(5, "mm"),
-                  arrow_body_height = grid::unit(5, "mm")) +
-  geom_subgene_arrow(data = map_combo_pep2, mapping=aes(xmin = from, xmax = to, y = molecule, fill=gene,
-                                                        xsubmin=from, xsubmax=to), color="black",
-                     arrowhead_width = grid::unit(3, "mm"),
-                     arrowhead_height = grid::unit(5, "mm"),
-                     arrow_body_height = grid::unit(5, "mm"))+
-  geom_text(data=map_combo_feat,mapping=aes(x = mid, y = 1.5, label = gene), size=4) +
-  scale_fill_manual(values=colz)+
-  theme_genes()+
-  scale_x_continuous(expand=c(0,0))+
-  theme(legend.position = "none")+
-  theme(plot.margin = unit(c(0,0,0,0), "cm"),
-        axis.text.y = element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.text.x = element_blank(),
-        axis.title.x = element_blank(),
-        axis.line.x = element_blank()
-  )+
-  xlab("") + ylab("")
-genome2andv
-
-#Figure with all the AndV figures
-genomeplot_andv<-andv_map_aa/genome1andv/genome2andv/genome1ROU173/genome2ROU173+plot_layout(nrow=5,  heights = c(1, 0.2,0.2,0.2,0.2))
-genomeplot_andv
-
-genomeplot_andv<-as.ggplot(genomeplot_andv)
-
-genomeplot_andv_reduced<-andv_map_aa/genome1ROU173/genome2ROU173+plot_layout(nrow=3,  heights = c(1, 0.2,0.2))
-genomeplot_andv_reduced
-
-#both genome plots together
-simplots<-cowplot::plot_grid(genomeplot_ghvlike, genomeplot_andv_reduced,
-                 rel_widths=c(1,1), rel_heights = c(1,1),
-                 ncol=2,align="hv", axis="r", label_size = 23); simplots
-simplots<-as.ggplot(simplots)
+genomeplot_ROU173.2<-as.ggplot(genomeplot_ROU173.2)
+genomeplot_ROU173.2
 
 
 #simplot for GhVlike looks meh, maybe make a pairwise comparison plot instead
@@ -1345,10 +948,10 @@ part2<-cowplot::plot_grid(part1, polytree,
   theme(plot.background = element_rect(fill = "white", colour = NA)); part2
 
 
-part3<-cowplot::plot_grid(coverage_ghvlike, coverage_rou148, coverage_andv,
-                        labels=c("D","",""),
-                        rel_widths=c(1,1,1), rel_heights = c(1,1,1),
-                        ncol=1,nrow=3,align="hv", axis="l", label_size = 23)+
+part3<-cowplot::plot_grid(coverage_ghvlike, coverage_rou148,
+                        labels=c("D",""),
+                        rel_widths=c(1,1), rel_heights = c(1,1),
+                        ncol=1,nrow=2,align="hv", axis="l", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); part3
 
 part4<-cowplot::plot_grid(coverage_ghvlike2, genomeplot_ROU148.2, genomeplot_ROU173.2,
@@ -1357,20 +960,18 @@ part4<-cowplot::plot_grid(coverage_ghvlike2, genomeplot_ROU148.2, genomeplot_ROU
                           ncol=1,nrow=3,align="hv", axis="r", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); part4
 
-part5<-cowplot::plot_grid(NULL, part4,
-                          labels=c("",""),
-                          rel_widths=c(0.04,1), rel_heights = c(1,1),
-                          ncol=2,nrow=1,align="hv", axis="lr", label_size = 23)+
+part5<-cowplot::plot_grid(NULL, part4, NULL,
+                          labels=c("","",""),
+                          rel_widths=c(0.05,1,0.03), rel_heights = c(1,1,1),
+                          ncol=3,nrow=1,align="hv", axis="lr", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); part5
 
 part6<-cowplot::plot_grid(part3, part5,
                           labels=c("",""),
-                          rel_widths=c(1,1), rel_heights = c(1,1),
+                          rel_widths=c(1,1), rel_heights = c(1,1.5),
                           ncol=1,nrow=2,align="hv", axis="lr", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); part6
 part6<-as.ggplot(part6)
-
-
 
 
 fig1<-cowplot::plot_grid(part2, part6, 
