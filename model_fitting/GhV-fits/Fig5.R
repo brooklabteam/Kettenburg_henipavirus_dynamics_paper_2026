@@ -607,7 +607,7 @@ plot.matAb <- function(dat){
   
   #replot with just the deterministic model
   p2 <- ggplot(df.stoch) + #ggtitle("Simulated maternal antibody trajectories for 100 bats") +
-    geom_line(aes(x = age, y = log10MFI, group=bat, alpha=bat), color="lightskyblue2", show.legend = F) +
+    geom_line(aes(x = age, y = log10MFI, group=bat, alpha=bat), color="lightsteelblue1", show.legend = F) +
     geom_point(data = dat.mat, aes(x=age,y=log10MFI), size=2) + 
     geom_hline(aes(yintercept =cutoff.df$log10MFI[cutoff.df$type=="mean"]), linetype=2, color="red") +
     theme_bw() + theme(panel.grid = element_blank(),
@@ -630,13 +630,14 @@ plot.adultAB <- function(stoch_df, det.bat, stan_df){
   
   #plot with data (100 sims)
   p4 <- ggplot() +
-    geom_line(data=stoch_df , aes(x = t, y = MFI_sim, group = bat, alpha=as.factor(bat)), color = "lightskyblue2", show.legend = F) +
+    geom_line(data=stoch_df , aes(x = t, y = MFI_sim, group = bat, alpha=as.factor(bat)), color = "lightsteelblue1", show.legend = F) +
     labs(#title = "Simulated adult antibody trajectories for 100 bats",
          x = "Days since exposure",
          y = "MFI") +
     geom_line(data=det.bat, aes(x=t, y=MFI),size=1, color="cornflowerblue") +
     theme_bw() + coord_cartesian(ylim=c(0,20000), xlim=c(0,150)) + 
     theme(panel.grid = element_blank(),
+          plot.margin = margin(t = 1,r = 70,b = 1,l = 1),
           axis.title = element_text(size=18),
           plot.title = element_text(size=18),
           axis.text = element_text(size=14)) +
@@ -651,21 +652,24 @@ plot.adultAB <- function(stoch_df, det.bat, stan_df){
 make.Fig5 <- function(panel1, CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split, stoch_df, det.bat, stan_df, filename){
   
   img <- image_read_pdf(panel1, density = 300)
-  p1 <- rasterGrob(as.raster(img), interpolate = TRUE)
+  g <- rasterGrob(as.raster(img), interpolate = TRUE)
+  p1 <- ggplot() + annotation_custom(g,xmin = 0,xmax = 1,ymin = 0,ymax = 1) + coord_cartesian(xlim = c(-0.03, 1.03),ylim = c(-0.03, 1.03),clip = "off") +
+    theme_void() +
+    theme(plot.margin = margin(0.1,0.1,0.1,0.1))
   p2 <- plot.matAb(dat = dat1)
   p3 <- plot.adultAB(stoch_df=stoch_df, det.bat = det.bat, stan_df = stan_df)
   p4 <- return.models.data.CI.one(CI.age.fits = CI.age.fits,  CI.ts.fits = CI.ts.fits, dat1=dat1,  dat.sero1 = dat.sero1,dat.prev1 =dat.prev1, antigen1 =antigen1, cutoff1=cutoff1,species1=species1, vis_split=vis_split)
   
   
   
-  ptop <- cowplot::plot_grid(p1, p2,p3, ncol=3, nrow=1, rel_widths = c(1,1,1.1), labels = c("A", "B", "C"), label_size = 22)
+  ptop <- cowplot::plot_grid(p1, p2,p3, ncol=3, nrow=1, rel_widths = c(1.1,1,1.3), labels = c("A", "B", "C"), label_size = 22, label_x = c(0,0,-.02))
   
   Fig5 <- cowplot:: plot_grid(ptop, p4, ncol=1, nrow=2)
   
   ggsave(file =filename,
          plot = Fig5,
          units="mm",  
-         width=115, 
+         width=125, 
          height=75, 
          scale=3, 
          dpi=300)
