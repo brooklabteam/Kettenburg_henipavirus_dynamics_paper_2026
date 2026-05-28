@@ -321,7 +321,7 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 
 #Refseq alignment
 title<-expression(paste("                    Polymerase"))
-p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0,show.legend = T) +
+p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0.5,show.legend = T) +
   #scale_fill_manual(values=colz) +
   guides(color="none")+
   scale_color_manual(values=colz, guide =
@@ -423,11 +423,10 @@ setwd(paste0(homewd))
 dat <- read.csv(file= "KEL86_KEL94_coverage_noUTR.csv", header = T, stringsAsFactors = F) #load data
 
 dat_text <- data.frame(
-    label = c("GhV-like genome"),
+    label = c("GhV-like"),
   x     = c(Inf),
   y     = c(Inf))
 
-title<-expression(paste(italic("GhV-like genome coverage")))
 coverage_ghvlike<-  ggplot()+ 
   annotate("rect", xmin=50, xmax=4179, ymin=0, ymax=550, alpha=0.6,  fill="#D29292")+
   annotate("rect", xmin=4603, xmax=7636, ymin=0, ymax=550, alpha=0.6,  fill="#525832")+
@@ -466,7 +465,7 @@ coverage_ghvlike<-coverage_ghvlike+geom_text(data= dat_text,
 dat <- read.csv(file= "ROU148_coverage.csv", header = T, stringsAsFactors = F) #load data
 
 dat_text <- data.frame(
-  label = c("PX127343 AndV"),
+  label = c("AndV PX127343"),
   x     = c(Inf),
   y     = c(Inf))
 
@@ -506,7 +505,7 @@ dat <- read.csv(file= "ROU125_coverage.csv", header = T, stringsAsFactors = F) #
 dat2 <- read.csv(file= "ROU173_coverage.csv", header = T, stringsAsFactors = F) #load data
 
 dat_text <- data.frame(
-  label = c("PX127342 AndV (black) \nPX127344 AndV (grey)"),
+  label = c("AndV PX127342 (black) \nAndV PX127344 (grey)"),
   x     = c(Inf),
   y     = c(Inf))
 
@@ -621,7 +620,7 @@ genome1ghvlike<-ggplot(map_combo_pep1, aes(xmin = from, xmax = to, y = molecule,
                   arrow_body_height = grid::unit(5, "mm")
   ) +
   scale_fill_manual(values=colz2)+
-  ggtitle(title)+
+  #ggtitle(title)+
   theme_genes()+
   scale_x_continuous(breaks=c(0,5578,10396,17208,24521, 33205, 44590),
                      labels = c(0,3000,6000,9000,12000, 15000, 17000),expand=c(0,0))+
@@ -651,20 +650,20 @@ genome2ghvlike<-ggplot(map_combo, aes(xmin = start, xmax = end, y = molecule, fi
                      labels = c(0,3000,6000,9000,12000, 15000, 17000),expand=c(0,0))+
   theme(legend.position = "none")+
   theme(plot.margin = unit(c(0,0,0,0), "cm"),
-        axis.text.y = element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.text.x = element_blank(),
-        axis.title.x = element_blank(),
-        axis.line.x = element_blank()
+        axis.text.y = element_blank()
+        #axis.ticks.x=element_blank(),
+        #axis.text.x = element_blank(),
+        #axis.title.x = element_blank(),
+        #axis.line.x = element_blank()
   )+
   xlab("Genome position") + ylab("")
 genome2ghvlike
 
 #put coverage and genome maps together
-# coverage_ghvlike<-coverage_ghvlike/genome1ghvlike/genome2ghvlike+plot_layout(nrow=3,  heights = c(1, 0.2, 0.2))
-# coverage_ghvlike
+coverageplot_ghvlike<-coverage_ghvlike/genome1ghvlike/genome2ghvlike+plot_layout(nrow=3,  heights = c(1, 0.2, 0.4))
+coverageplot_ghvlike
 
-coverage_ghvlike2<-genome1ghvlike/genome2ghvlike+plot_layout(nrow=2,  heights = c(1,1))
+coverage_ghvlike2<-genome1ghvlike/genome2ghvlike+plot_layout(nrow=2,  heights = c(1,1.2))
 coverage_ghvlike2
 
 
@@ -693,7 +692,7 @@ map_combo_feat<-subset(map_feat,type=="ROU148")
 map_combo_pep2<-subset(map_combo_pep,string=="second")
 
 #map the genomes
-title<-expression(paste(italic("PX127342 and PX127343")))
+title<-expression(paste(italic("AndV PX127342 and AndV PX127343")))
 genome1ROU148<-ggplot(map_combo_pep1, aes(xmin = from, xmax = to, y = molecule, fill=gene)) +
   geom_gene_arrow(arrowhead_width = grid::unit(0, "mm"),
                   arrowhead_height = grid::unit(5, "mm"),
@@ -738,10 +737,10 @@ genome2ROU148<-ggplot(map_combo, aes(xmin = start, xmax = end, y = molecule, fil
 genome2ROU148
 
 #put coverage and genome maps together
-genomeplot_ROU148<-coverage_rou148/genome1ROU148/genome2ROU148+plot_layout(nrow=3,  heights = c(1, 0.2, 0.2))
+genomeplot_ROU148<-coverage_rou148/genome1ROU148/genome2ROU148+plot_layout(nrow=3,  heights = c(1, 0.2, 0.4))
 genomeplot_ROU148
 
-genomeplot_ROU148.2<-genome1ROU148/genome2ROU148+plot_layout(nrow=2,  heights = c(1,1))
+genomeplot_ROU148.2<-genome1ROU148/genome2ROU148+plot_layout(nrow=2,  heights = c(1,1.2))
 genomeplot_ROU148.2
 
 genomeplot_ROU148.2<-as.ggplot(genomeplot_ROU148.2)
@@ -837,7 +836,7 @@ map_combo_feat<-subset(map_feat,type=="ROU173")
 map_combo_pep2<-subset(map_combo_pep,string=="second")
 
 #map the genomes
-title<-expression(paste(italic("PX127344")))
+title<-expression(paste(italic("AndV PX127344")))
 genome1ROU173<-ggplot(map_combo_pep1, aes(xmin = from, xmax = to, y = molecule, fill=gene)) +
   geom_gene_arrow(arrowhead_width = grid::unit(0, "mm"),
                   arrowhead_height = grid::unit(5, "mm"),
@@ -885,11 +884,15 @@ genome2ROU173
 genomeplot_ROU173<-coverage_andv/genome1ROU173/genome2ROU173+plot_layout(nrow=3,  heights = c(1, 0.2, 0.2))
 genomeplot_ROU173
 
-genomeplot_ROU173.2<-genome1ROU173/genome2ROU173+plot_layout(nrow=2,  heights = c(1, 1))
+genomeplot_ROU173.2<-genome1ROU173/genome2ROU173+plot_layout(nrow=2,  heights = c(1, 1.2))
 genomeplot_ROU173.2
 
 genomeplot_ROU173.2<-as.ggplot(genomeplot_ROU173.2)
 genomeplot_ROU173.2
+
+genomeplot_andv<-coverage_rou148/genome1ROU148/genome2ROU148/genome1ROU173/genome2ROU173+plot_layout(nrow=5,  heights = c(1, 0.2, 0.4, 0.2, 0.4))
+genomeplot_andv
+
 
 
 #simplot for GhVlike looks meh, maybe make a pairwise comparison plot instead
@@ -902,6 +905,7 @@ names(dat)
 
 dat$gene<-factor(dat$gene, levels=c("N", "P","M","F","G","L"))
 dat$var1_alt<-factor(dat$var1_alt, levels=c("GhV", "YuV2"))
+dat$var2<-factor(dat$var2, levels=c("GhV-like identity to GhV", "AndV identity to YuV2"))
 
 #plot comparison to known sequences
 compare_plot <- ggplot(dat, aes(x=var1_alt, y=gene, fill=id)) +
@@ -912,19 +916,19 @@ compare_plot <- ggplot(dat, aes(x=var1_alt, y=gene, fill=id)) +
   facet_nested(.~var2, scales="free", space="free",
                switch="y", nest_line = element_line(color="white"), solo_line = TRUE)+
   labs(#title = expression("Diversity of" ~italic(Picornavirales) ~"sequences"),
-    x = "Reference sequence\nfor comparison",
+    x = "",
     y= "Gene",
     fill="Amino acid \nidentity",
     title="")+
   theme_linedraw()+
   scale_y_discrete(position="left", limits=rev)+
   scale_x_discrete(position="bottom")+
-  theme(axis.text.x = element_text(size=12), 
-        #axis.ticks.y = element_blank(),
+  theme( 
+        axis.ticks.x = element_blank(),
         axis.text.y = element_text(size=14),
         legend.text = element_text(size=7),
-        legend.title = element_text(size=8),
-        #axis.title.x = element_blank(), 
+        legend.title = element_text(size=10),
+        axis.text.x = element_blank(), 
         axis.title.y = element_text(size=14),
         axis.title.x = element_text(size=14),
         plot.margin = margin(0, 5, 5, 5, "pt"),
@@ -953,43 +957,37 @@ part2<-cowplot::plot_grid(part1, polytree,
   theme(plot.background = element_rect(fill = "white", colour = NA)); part2
 
 
-part3<-cowplot::plot_grid(coverage_ghvlike, coverage_rou148,
+part3<-cowplot::plot_grid(coverageplot_ghvlike, genomeplot_andv,
                         labels=c("D",""),
-                        rel_widths=c(1,1), rel_heights = c(1,1),
+                        rel_widths=c(1,1), rel_heights = c(1,1.4),
                         ncol=1,nrow=2,align="hv", axis="l", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); part3
 
-part4<-cowplot::plot_grid(coverage_ghvlike2, genomeplot_ROU148.2, genomeplot_ROU173.2,
-                          labels=c("","",""),
-                          rel_widths=c(1,1,1), rel_heights = c(1,1,1),
-                          ncol=1,nrow=3,align="hv", axis="r", label_size = 23)+
-  theme(plot.background = element_rect(fill = "white", colour = NA)); part4
+# part4<-cowplot::plot_grid(coverage_ghvlike2, genomeplot_ROU148.2, genomeplot_ROU173.2,
+#                           labels=c("","",""),
+#                           rel_widths=c(1,1,1), rel_heights = c(1,1,1),
+#                           ncol=1,nrow=3,align="hv", axis="r", label_size = 23)+
+#   theme(plot.background = element_rect(fill = "white", colour = NA)); part4
+# 
+# part5<-cowplot::plot_grid(NULL, part4, NULL,
+#                           labels=c("","",""),
+#                           rel_widths=c(0.05,1,0.03), rel_heights = c(1,1,1),
+#                           ncol=3,nrow=1,align="hv", axis="lr", label_size = 23)+
+#   theme(plot.background = element_rect(fill = "white", colour = NA)); part5
+# 
+# part6<-cowplot::plot_grid(part3, part5,
+#                           labels=c("",""),
+#                           rel_widths=c(1,1), rel_heights = c(1,1.5),
+#                           ncol=1,nrow=2,align="hv", axis="lr", label_size = 23)+
+#   theme(plot.background = element_rect(fill = "white", colour = NA)); part6
+# part6<-as.ggplot(part6)
 
-part5<-cowplot::plot_grid(NULL, part4, NULL,
-                          labels=c("","",""),
-                          rel_widths=c(0.05,1,0.03), rel_heights = c(1,1,1),
-                          ncol=3,nrow=1,align="hv", axis="lr", label_size = 23)+
-  theme(plot.background = element_rect(fill = "white", colour = NA)); part5
 
-part6<-cowplot::plot_grid(part3, part5,
-                          labels=c("",""),
-                          rel_widths=c(1,1), rel_heights = c(1,1.5),
-                          ncol=1,nrow=2,align="hv", axis="lr", label_size = 23)+
-  theme(plot.background = element_rect(fill = "white", colour = NA)); part6
-part6<-as.ggplot(part6)
-
-
-fig1<-cowplot::plot_grid(part2, part6, 
+fig1<-cowplot::plot_grid(part2, part3, 
                 labels=c("",""),
                 rel_widths=c(2,1), rel_heights = c(1,1),
                 ncol=2,nrow=1,align="hv", axis="r", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); fig1
-
-# fig1<-cowplot::plot_grid(part2, NULL,all_coverage2, 
-#                          labels=c("","",""),
-#                          rel_widths=c(1,1,1), rel_heights = c(1.8,0.1,1),
-#                          ncol=1,nrow=3,align="hv", axis="r", label_size = 23)+
-#   theme(plot.background = element_rect(fill = "white", colour = NA)); fig1
 
 #save
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/gwen_tmp/"

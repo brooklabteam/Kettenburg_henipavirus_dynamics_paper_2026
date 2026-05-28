@@ -1,13 +1,13 @@
 ﻿var1_alt,var2,id,gene,type
-GhV,GhVlike,98.444,N,compare
-GhV,GhVlike,95.708,P,compare
-GhV,GhVlike,100,M,compare
-GhV,GhVlike,97.959,F,compare
-GhV,GhVlike,96.522,G,compare
-GhV,GhVlike,98.065,L,compare
-YuV2,AndV,87.687,N,compare
-YuV2,AndV,64.336,P,compare
-YuV2,AndV,93.023,M,compare
-YuV2,AndV,67.851,F,compare
-YuV2,AndV,57.027,G,compare
-YuV2,AndV,80.728,L,compare
+GhV,GhV-like identity to GhV,98.444,N,compare
+GhV,GhV-like identity to GhV,95.708,P,compare
+GhV,GhV-like identity to GhV,100,M,compare
+GhV,GhV-like identity to GhV,97.959,F,compare
+GhV,GhV-like identity to GhV,96.522,G,compare
+GhV,GhV-like identity to GhV,98.065,L,compare
+YuV2,AndV identity to YuV2,87.687,N,compare
+YuV2,AndV identity to YuV2,64.336,P,compare
+YuV2,AndV identity to YuV2,93.023,M,compare
+YuV2,AndV identity to YuV2,67.851,F,compare
+YuV2,AndV identity to YuV2,57.027,G,compare
+YuV2,AndV identity to YuV2,80.728,L,compare
