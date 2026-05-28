@@ -123,15 +123,16 @@ shapez = c("Non-bat host" =  18, "Eidolon dupreanum" = 17, "Rousettus madagascar
 ggtree(rooted.tree2) + geom_text(aes(label=node), hjust=-.3)
 
 #henipavirus focused tree
-#title<-expression(paste("                                Polymerase"))
+title<-expression(paste("                                Polymerase"))
 p2 <- ggtree(rooted.tree2) %<+% tree.dat2 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0.5,show.legend = T) +
+  guides(color="none")+
   scale_fill_manual(values=colz) +
   scale_color_manual(values=colz, guide =
                        guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
   scale_shape_manual(values=shapez, guide =
                        guide_legend(label.theme = element_text(angle = 0, face = "italic"))) +
   new_scale_color() +
-  ggtitle(title)+
+  #ggtitle(title)+
   geom_tiplab(aes(color = novel, show.legend=F), geom = "text", Genus="Helvetica", size=4, nudge_x=0.05) +
   guides(color="none")+#
   scale_color_manual(values=c("0"="black","1"="red")) +
@@ -197,7 +198,7 @@ tree2 <- p2.1  %<+% p0.dat1 +
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
   scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
   #guides(fill_continuous = guide_legend(order = 2),col = guide_legend(order = 1))+
-  theme(legend.position = "none",
+  theme(legend.position = "left",
         legend.direction = "vertical",
         legend.text = element_text(size=8),
         legend.title = element_text(size=8),
@@ -205,16 +206,11 @@ tree2 <- p2.1  %<+% p0.dat1 +
         plot.title = element_text(hjust = -0.1))
 tree2
 
-#put together
-fig <- cowplot::plot_grid(fulltree, tree2,
-                             rel_widths = c(1.2,1), align = "h", axis = "tb",
-                             ncol=2, nrow = 1, labels = c("A", "B"), label_size = 23); fig
-
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/gwen_tmp/"
-ggsave(file = paste0(homewd, "FigX_fullgenome_african_bat_polymerase.png"),
-       plot= fig,
+ggsave(file = paste0(homewd, "FigX_african_bat_polymerase.png"),
+       plot= tree2,
        units="mm",
-       width=300,
+       width=160,
        height=110,
        scale=2,
        dpi=500)
