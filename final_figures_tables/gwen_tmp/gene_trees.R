@@ -341,7 +341,8 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 
 #plot
 title<-expression(paste("          Glycoprotein"))
-p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0,show.legend = T) +
+p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0.5,show.legend = T) +
+  guides(color="none")+
   #scale_fill_manual(values=colz) +
   scale_color_manual(values=colz, guide =
                        guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
@@ -384,28 +385,28 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
 
 p1
 
-p1.2<-ggtree::collapse(p1, 235)+geom_point2(aes(subset=(node==235)), size=4, shape=22, fill="firebrick1")
-p1.3<-ggtree::collapse(p1.2, 340)+geom_point2(aes(subset=(node==340)), size=4, shape=22, fill="firebrick4")
-p1.4<-ggtree::collapse(p1.3, 325)+geom_point2(aes(subset=(node==325)), size=4, shape=22, fill="darkgoldenrod1")
-p1.5<-ggtree::collapse(p1.4, 332)+geom_point2(aes(subset=(node==332)), size=4, shape=22, fill="darkorange")
-p1.6<-ggtree::collapse(p1.5, 338)+geom_point2(aes(subset=(node==338)), size=4, shape=22, fill="darkorange3")
-p1.7<-ggtree::collapse(p1.6, 296)+geom_point2(aes(subset=(node==296)), size=4, shape=22, fill="lightpink2")
-p1.8<-ggtree::collapse(p1.7, 297)+geom_point2(aes(subset=(node==297)), size=4, shape=22, fill="deeppink1")
-p1.9<-ggtree::collapse(p1.8, 303)+geom_point2(aes(subset=(node==303)), size=4, shape=22, fill="coral")
-p1.10<-ggtree::collapse(p1.9, 353)+geom_point2(aes(subset=(node==353)), size=4, shape=22, fill="lightsalmon3")
-p1.11<-ggtree::collapse(p1.10, 315)+geom_point2(aes(subset=(node==315)), size=4, shape=22, fill="indianred3")
-p1.17<-ggtree::collapse(p1.11, 355)+geom_point2(aes(subset=(node==355)), size=4, shape=22, fill="coral3")
-p1.18<-ggtree::collapse(p1.17, 273)+geom_point2(aes(subset=(node==273)), size=4, shape=22, fill="deeppink4")
-p1.1<-ggtree::collapse(p1.18, 357)+geom_point2(aes(subset=(node==357)), size=4, shape=22, fill="lightpink3")
+p1.2<-ggtree::collapse(p1, 235)+geom_point2(aes(subset=(node==235)), size=4, shape=25, fill="black")
+p1.3<-ggtree::collapse(p1.2, 340)+geom_point2(aes(subset=(node==340)), size=4, shape=25, fill="black")
+p1.4<-ggtree::collapse(p1.3, 325)+geom_point2(aes(subset=(node==325)), size=4, shape=25, fill="black")
+p1.5<-ggtree::collapse(p1.4, 332)+geom_point2(aes(subset=(node==332)), size=4, shape=25, fill="black")
+p1.6<-ggtree::collapse(p1.5, 338)+geom_point2(aes(subset=(node==338)), size=4, shape=25, fill="black")
+p1.7<-ggtree::collapse(p1.6, 296)+geom_point2(aes(subset=(node==296)), size=4, shape=25, fill="black")
+p1.8<-ggtree::collapse(p1.7, 297)+geom_point2(aes(subset=(node==297)), size=4, shape=25, fill="black")
+p1.9<-ggtree::collapse(p1.8, 303)+geom_point2(aes(subset=(node==303)), size=4, shape=25, fill="black")
+p1.10<-ggtree::collapse(p1.9, 353)+geom_point2(aes(subset=(node==353)), size=4, shape=25, fill="black")
+p1.11<-ggtree::collapse(p1.10, 315)+geom_point2(aes(subset=(node==315)), size=4, shape=25, fill="black")
+p1.17<-ggtree::collapse(p1.11, 355)+geom_point2(aes(subset=(node==355)), size=4, shape=25, fill="black")
+p1.18<-ggtree::collapse(p1.17, 273)+geom_point2(aes(subset=(node==273)), size=4, shape=25, fill="black")
+p1.1<-ggtree::collapse(p1.18, 357)+geom_point2(aes(subset=(node==357)), size=4, shape=25, fill="black")
 p1.1
 
 p1.1<- p1.1 +  
   #geom_hilight(node=357, fill="deeppink3", alpha=0.3, extendto=12.8)+ #HeV/NiV sister
-  geom_hilight(node=364, fill="darkcyan", alpha=0.3, extendto=8.75)+ #AndV
-  geom_hilight(node=166, fill="darkturquoise", alpha=0.3, extendto=8.75)+ #AndV2
-  geom_hilight(node=165, fill="dodgerblue", alpha=0.3, extendto=8.75)+ #AndV3
-  geom_hilight(node=360, fill="springgreen3", alpha=0.3, extendto=8.75)+ #AngV
-  geom_hilight(node=359, fill="chartreuse", alpha=0.3, extendto=8.75) #AngV2
+  geom_hilight(node=364, fill="darkslategray1", alpha=0.3, extendto=8.75)+ #AndV
+  geom_hilight(node=166, fill="dodgerblue1", alpha=0.3, extendto=8.75)+ #AndV2
+  geom_hilight(node=165, fill="dodgerblue4", alpha=0.3, extendto=8.75)+ #AndV3
+  geom_hilight(node=360, fill="darkorange", alpha=0.3, extendto=8.75)+ #AngV
+  geom_hilight(node=359, fill="tomato1", alpha=0.3, extendto=8.75) #AngV2
   #geom_hilight(node=170, fill="orange", alpha=0.3, extendto=8.75) #GhVlike
 p1.1
 
@@ -548,7 +549,8 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 
 #plot
 title<-expression(paste("          Matrix"))
-p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0,show.legend = T) +
+p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0.5,show.legend = T) +
+  guides(color="none")+
   #scale_fill_manual(values=colz) +
   scale_color_manual(values=colz, guide =
                        guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
@@ -591,29 +593,29 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
 
 p1
 
-p1.2<-ggtree::collapse(p1, 253)+geom_point2(aes(subset=(node==253)), size=4, shape=22, fill="firebrick1")
-p1.3<-ggtree::collapse(p1.2, 377)+geom_point2(aes(subset=(node==377)), size=4, shape=22, fill="firebrick4")
-p1.4<-ggtree::collapse(p1.3, 399)+geom_point2(aes(subset=(node==399)), size=4, shape=22, fill="darkgoldenrod1")
-p1.5<-ggtree::collapse(p1.4, 408)+geom_point2(aes(subset=(node==408)), size=4, shape=22, fill="darkorange")
-p1.6<-ggtree::collapse(p1.5, 397)+geom_point2(aes(subset=(node==397)), size=4, shape=22, fill="darkorange3")
-p1.7<-ggtree::collapse(p1.6, 375)+geom_point2(aes(subset=(node==375)), size=4, shape=22, fill="lightpink2")
-p1.8<-ggtree::collapse(p1.7, 366)+geom_point2(aes(subset=(node==366)), size=4, shape=22, fill="deeppink1")
-p1.9<-ggtree::collapse(p1.8, 356)+geom_point2(aes(subset=(node==356)), size=4, shape=22, fill="coral")
-p1.10<-ggtree::collapse(p1.9, 225)+geom_point2(aes(subset=(node==225)), size=4, shape=22, fill="lightsalmon3")
-#p1.11<-ggtree::collapse(p1.10, 382)+geom_point2(aes(subset=(node==382)), size=4, shape=22, fill="indianred3")
-p1.17<-ggtree::collapse(p1.10, 220)+geom_point2(aes(subset=(node==220)), size=4, shape=22, fill="coral3")
-p1.18<-ggtree::collapse(p1.17, 228)+geom_point2(aes(subset=(node==228)), size=4, shape=22, fill="deeppink4")
-p1.1<-ggtree::collapse(p1.18, 415)+geom_point2(aes(subset=(node==415)), size=4, shape=22, fill="lightpink3")
+p1.2<-ggtree::collapse(p1, 253)+geom_point2(aes(subset=(node==253)), size=4, shape=25, fill="black")
+p1.3<-ggtree::collapse(p1.2, 377)+geom_point2(aes(subset=(node==377)), size=4, shape=25, fill="black")
+p1.4<-ggtree::collapse(p1.3, 399)+geom_point2(aes(subset=(node==399)), size=4, shape=25, fill="black")
+p1.5<-ggtree::collapse(p1.4, 408)+geom_point2(aes(subset=(node==408)), size=4, shape=25, fill="black")
+p1.6<-ggtree::collapse(p1.5, 397)+geom_point2(aes(subset=(node==397)), size=4, shape=25, fill="black")
+p1.7<-ggtree::collapse(p1.6, 375)+geom_point2(aes(subset=(node==375)), size=4, shape=25, fill="black")
+p1.8<-ggtree::collapse(p1.7, 366)+geom_point2(aes(subset=(node==366)), size=4, shape=25, fill="black")
+p1.9<-ggtree::collapse(p1.8, 356)+geom_point2(aes(subset=(node==356)), size=4, shape=25, fill="black")
+p1.10<-ggtree::collapse(p1.9, 225)+geom_point2(aes(subset=(node==225)), size=4, shape=25, fill="black")
+#p1.11<-ggtree::collapse(p1.10, 382)+geom_point2(aes(subset=(node==382)), size=4, shape=25, fill="black")
+p1.17<-ggtree::collapse(p1.10, 220)+geom_point2(aes(subset=(node==220)), size=4, shape=25, fill="black")
+p1.18<-ggtree::collapse(p1.17, 228)+geom_point2(aes(subset=(node==228)), size=4, shape=25, fill="black")
+p1.1<-ggtree::collapse(p1.18, 415)+geom_point2(aes(subset=(node==415)), size=4, shape=25, fill="black")
 p1.1
 
 p1.1<- p1.1 +  
   #geom_hilight(node=, fill="deeppink3", alpha=0.3, extendto=8.75)+ #HeV/NiV sister
-  geom_hilight(node=353, fill="darkcyan", alpha=0.3, extendto=8.75)+ #AndV
-  geom_hilight(node=141, fill="darkturquoise", alpha=0.3, extendto=8.75)+ #AndV2
-  geom_hilight(node=355, fill="dodgerblue", alpha=0.3, extendto=8.75)+ #AndV3
-  geom_hilight(node=348, fill="springgreen3", alpha=0.3, extendto=8.75)+ #AngV
-  geom_hilight(node=133, fill="chartreuse", alpha=0.3, extendto=8.75)+ #AngV2
-  geom_hilight(node=35, fill="orange", alpha=0.3, extendto=8.75) #GhVlike
+  geom_hilight(node=353, fill="darkslategray1", alpha=0.3, extendto=8.75)+ #AndV
+  geom_hilight(node=141, fill="dodgerblue1", alpha=0.3, extendto=8.75)+ #AndV2
+  geom_hilight(node=355, fill="dodgerblue4", alpha=0.3, extendto=8.75)+ #AndV3
+  geom_hilight(node=348, fill="tomato1", alpha=0.3, extendto=8.75)+ #AngV
+  geom_hilight(node=133, fill="darkorange1", alpha=0.3, extendto=8.75)+ #AngV2
+  geom_hilight(node=35, fill="#00C094", alpha=0.3, extendto=8.75) #GhVlike
 p1.1
 
 #add node shapes to represent bootstrap values
@@ -756,7 +758,8 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 
 #plot
 title<-expression(paste("          Nucleoprotein"))
-p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0,show.legend = T) +
+p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0.5,show.legend = T) +
+  guides(color="none")+
   #scale_fill_manual(values=colz) +
   scale_color_manual(values=colz, guide =
                        guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
@@ -798,28 +801,28 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
   xlim(c(0,12))
 p1
 
-p1.2<-ggtree::collapse(p1, 216)+geom_point2(aes(subset=(node==216)), size=4, shape=22, fill="firebrick1")
-p1.3<-ggtree::collapse(p1.2, 370)+geom_point2(aes(subset=(node==370)), size=4, shape=22, fill="firebrick4")
-p1.4<-ggtree::collapse(p1.3, 399)+geom_point2(aes(subset=(node==399)), size=4, shape=22, fill="darkgoldenrod1")
-p1.5<-ggtree::collapse(p1.4, 392)+geom_point2(aes(subset=(node==392)), size=4, shape=22, fill="darkorange")
-p1.6<-ggtree::collapse(p1.5, 407)+geom_point2(aes(subset=(node==407)), size=4, shape=22, fill="darkorange3")
-p1.7<-ggtree::collapse(p1.6, 367)+geom_point2(aes(subset=(node==367)), size=4, shape=22, fill="lightpink2")
-p1.8<-ggtree::collapse(p1.7, 358)+geom_point2(aes(subset=(node==358)), size=4, shape=22, fill="deeppink1")
-p1.9<-ggtree::collapse(p1.8, 349)+geom_point2(aes(subset=(node==349)), size=4, shape=22, fill="coral")
-p1.10<-ggtree::collapse(p1.9, 347)+geom_point2(aes(subset=(node==347)), size=4, shape=22, fill="lightsalmon3")
-#p1.11<-ggtree::collapse(p1.10, 382)+geom_point2(aes(subset=(node==382)), size=4, shape=22, fill="indianred3")
-p1.17<-ggtree::collapse(p1.10, 342)+geom_point2(aes(subset=(node==342)), size=4, shape=22, fill="coral3")
-p1.18<-ggtree::collapse(p1.17, 321)+geom_point2(aes(subset=(node==321)), size=4, shape=22, fill="deeppink4")
-p1.1<-ggtree::collapse(p1.18, 409)+geom_point2(aes(subset=(node==409)), size=4, shape=22, fill="lightpink3")
+p1.2<-ggtree::collapse(p1, 216)+geom_point2(aes(subset=(node==216)), size=4, shape=25, fill="black")
+p1.3<-ggtree::collapse(p1.2, 370)+geom_point2(aes(subset=(node==370)), size=4, shape=25, fill="black")
+p1.4<-ggtree::collapse(p1.3, 399)+geom_point2(aes(subset=(node==399)), size=4, shape=25, fill="black")
+p1.5<-ggtree::collapse(p1.4, 392)+geom_point2(aes(subset=(node==392)), size=4, shape=25, fill="black")
+p1.6<-ggtree::collapse(p1.5, 407)+geom_point2(aes(subset=(node==407)), size=4, shape=25, fill="black")
+p1.7<-ggtree::collapse(p1.6, 367)+geom_point2(aes(subset=(node==367)), size=4, shape=25, fill="black")
+p1.8<-ggtree::collapse(p1.7, 358)+geom_point2(aes(subset=(node==358)), size=4, shape=25, fill="black")
+p1.9<-ggtree::collapse(p1.8, 349)+geom_point2(aes(subset=(node==349)), size=4, shape=25, fill="black")
+p1.10<-ggtree::collapse(p1.9, 347)+geom_point2(aes(subset=(node==347)), size=4, shape=25, fill="black")
+#p1.11<-ggtree::collapse(p1.10, 382)+geom_point2(aes(subset=(node==382)), size=4, shape=25, fill="black")
+p1.17<-ggtree::collapse(p1.10, 342)+geom_point2(aes(subset=(node==342)), size=4, shape=25, fill="black")
+p1.18<-ggtree::collapse(p1.17, 321)+geom_point2(aes(subset=(node==321)), size=4, shape=25, fill="black")
+p1.1<-ggtree::collapse(p1.18, 409)+geom_point2(aes(subset=(node==409)), size=4, shape=25, fill="black")
 p1.1
 
 p1.1<- p1.1 +  
   #geom_hilight(node=, fill="deeppink3", alpha=0.3, extendto=8.75)+ #HeV/NiV sister
-  geom_hilight(node=315, fill="darkcyan", alpha=0.3, extendto=8.75)+ #AndV
-  geom_hilight(node=109, fill="darkturquoise", alpha=0.3, extendto=8.75)+ #AndV2
-  geom_hilight(node=312, fill="dodgerblue", alpha=0.3, extendto=8.75)+ #AndV3
+  geom_hilight(node=315, fill="darkslategray1", alpha=0.3, extendto=8.75)+ #AndV
+  geom_hilight(node=109, fill="dodgerblue1", alpha=0.3, extendto=8.75)+ #AndV2
+  geom_hilight(node=312, fill="dodgerblue4", alpha=0.3, extendto=8.75)+ #AndV3
   #geom_hilight(node=348, fill="springgreen3", alpha=0.3, extendto=8.75)+ #AngV
-  geom_hilight(node=320, fill="chartreuse", alpha=0.3, extendto=8.75) #AngV2
+  geom_hilight(node=320, fill="darkorange1", alpha=0.3, extendto=8.75) #AngV2
   #geom_hilight(node=35, fill="orange", alpha=0.3, extendto=8.75) #GhVlike
 p1.1
 
@@ -961,7 +964,8 @@ ggtree(rooted.tree1) + geom_text(aes(label=node), hjust=-.3)
 
 #plot
 title<-expression(paste("          Phosphoprotein"))
-p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0,show.legend = T) +
+p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape=Host), size=3,stroke=0.5,show.legend = T) +
+  guides(color="none")+
   #scale_fill_manual(values=colz) +
   scale_color_manual(values=colz, guide =
                        guide_legend(label.theme = element_text(angle = 0, face = "italic")))+
@@ -1004,29 +1008,29 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
 
 p1
 
-p1.2<-ggtree::collapse(p1, 263)+geom_point2(aes(subset=(node==263)), size=4, shape=22, fill="firebrick1")
-p1.3<-ggtree::collapse(p1.2, 324)+geom_point2(aes(subset=(node==324)), size=4, shape=22, fill="firebrick4")
-p1.4<-ggtree::collapse(p1.3, 344)+geom_point2(aes(subset=(node==344)), size=4, shape=22, fill="darkgoldenrod1")
-p1.5<-ggtree::collapse(p1.4, 355)+geom_point2(aes(subset=(node==355)), size=4, shape=22, fill="darkorange")
-p1.6<-ggtree::collapse(p1.5, 353)+geom_point2(aes(subset=(node==353)), size=4, shape=22, fill="darkorange3")
-p1.7<-ggtree::collapse(p1.6, 322)+geom_point2(aes(subset=(node==322)), size=4, shape=22, fill="lightpink2")
-p1.8<-ggtree::collapse(p1.7, 362)+geom_point2(aes(subset=(node==362)), size=4, shape=22, fill="deeppink1")
-p1.9<-ggtree::collapse(p1.8, 383)+geom_point2(aes(subset=(node==383)), size=4, shape=22, fill="coral")
-p1.10<-ggtree::collapse(p1.9, 373)+geom_point2(aes(subset=(node==373)), size=4, shape=22, fill="lightsalmon3")
-#p1.11<-ggtree::collapse(p1.10, 382)+geom_point2(aes(subset=(node==382)), size=4, shape=22, fill="indianred3")
-p1.17<-ggtree::collapse(p1.10, 377)+geom_point2(aes(subset=(node==377)), size=4, shape=22, fill="coral3")
-p1.1<-ggtree::collapse(p1.17, 301)+geom_point2(aes(subset=(node==301)), size=4, shape=22, fill="deeppink4")
-#p1.1<-ggtree::collapse(p1.18, 415)+geom_point2(aes(subset=(node==415)), size=4, shape=22, fill="lightpink3")
+p1.2<-ggtree::collapse(p1, 263)+geom_point2(aes(subset=(node==263)), size=4, shape=25, fill="black")
+p1.3<-ggtree::collapse(p1.2, 324)+geom_point2(aes(subset=(node==324)), size=4, shape=25, fill="black")
+p1.4<-ggtree::collapse(p1.3, 344)+geom_point2(aes(subset=(node==344)), size=4, shape=25, fill="black")
+p1.5<-ggtree::collapse(p1.4, 355)+geom_point2(aes(subset=(node==355)), size=4, shape=25, fill="black")
+p1.6<-ggtree::collapse(p1.5, 353)+geom_point2(aes(subset=(node==353)), size=4, shape=25, fill="black")
+p1.7<-ggtree::collapse(p1.6, 322)+geom_point2(aes(subset=(node==322)), size=4, shape=25, fill="black")
+p1.8<-ggtree::collapse(p1.7, 362)+geom_point2(aes(subset=(node==362)), size=4, shape=25, fill="black")
+p1.9<-ggtree::collapse(p1.8, 383)+geom_point2(aes(subset=(node==383)), size=4, shape=25, fill="black")
+p1.10<-ggtree::collapse(p1.9, 373)+geom_point2(aes(subset=(node==373)), size=4, shape=25, fill="black")
+#p1.11<-ggtree::collapse(p1.10, 382)+geom_point2(aes(subset=(node==382)), size=4, shape=25, fill="black")
+p1.17<-ggtree::collapse(p1.10, 377)+geom_point2(aes(subset=(node==377)), size=4, shape=25, fill="black")
+p1.1<-ggtree::collapse(p1.17, 301)+geom_point2(aes(subset=(node==301)), size=4, shape=25, fill="black")
+#p1.1<-ggtree::collapse(p1.18, 415)+geom_point2(aes(subset=(node==415)), size=4, shape=25, fill="black")
 p1.1
 
 p1.1<- p1.1 +  
   #geom_hilight(node=, fill="deeppink3", alpha=0.3, extendto=8.75)+ #HeV/NiV sister
-  geom_hilight(node=398, fill="darkcyan", alpha=0.3, extendto=8.75)+ #AndV
+  geom_hilight(node=398, fill="darkslategray1", alpha=0.3, extendto=8.75)+ #AndV
   #geom_hilight(node=141, fill="darkturquoise", alpha=0.3, extendto=8.75)+ #AndV2
   #geom_hilight(node=355, fill="dodgerblue", alpha=0.3, extendto=8.75)+ #AndV3
-  geom_hilight(node=403, fill="springgreen3", alpha=0.3, extendto=8.75)+ #AngV
-  geom_hilight(node=202, fill="chartreuse", alpha=0.3, extendto=8.75)+ #AngV2
-  geom_hilight(node=191, fill="orange", alpha=0.3, extendto=8.75) #GhVlike
+  geom_hilight(node=403, fill="tomato1", alpha=0.3, extendto=8.75)+ #AngV
+  geom_hilight(node=202, fill="darkorange1", alpha=0.3, extendto=8.75)+ #AngV2
+  geom_hilight(node=191, fill="#00C094", alpha=0.3, extendto=8.75) #GhVlike
 p1.1
 
 #add node shapes to represent bootstrap values
@@ -1051,7 +1055,7 @@ phostree
 
 
 #put together
-phylos <- cowplot::plot_grid(nucleotree, phostree, matrixtree,fusiontree, glycotree,legtree,
+phylos <- cowplot::plot_grid(nucleotree, phostree, matrixtree,fusiontree, glycotree,leg,
                              rel_widths = c(1,1,1,1,1,1), align = "h", axis = "tb",
                              ncol=3, nrow = 2, labels = c("A", "B","C","D","E"), label_size = 22)+
                             theme(plot.background = element_rect(fill = "white", colour = NA)); phylos
