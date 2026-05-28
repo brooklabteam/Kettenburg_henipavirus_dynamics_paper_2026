@@ -3511,7 +3511,7 @@ wrap.fit.CI.boot <- function(N_boot, model, num_states, beta, sigma, recru, epsi
                               cutoff=cutoff1, s=s, sim_pop=sim_pop, ntyr=ntyr, yrs=yrs, age.brk=age.brk, 
                               N_stat=N_stat), simplify=FALSE)
   
-  save(out.sim, filename1)
+  save(out.sim, file = filename1)
   
   #now separate these into three lists of the three types of data
   all.age.sero <- lapply(out.sim, '[', 1)
@@ -3523,7 +3523,7 @@ wrap.fit.CI.boot <- function(N_boot, model, num_states, beta, sigma, recru, epsi
                                    par.df=par.df, cutoff1=cutoff1, s=s, sim_pop=sim_pop,
                                    ntyr=ntyr, yrs=yrs, age.brk=age.brk, N_stat=N_stat), SIMPLIFY = FALSE)
 
-  save(fit.sims, filename2)
+  save(fit.sims, file = filename2)
   #then run the models again using the fitted parameters and save the output seroprevalence
   #to estimate the CIs on the seroprevalence
   
@@ -3533,7 +3533,7 @@ wrap.fit.CI.boot <- function(N_boot, model, num_states, beta, sigma, recru, epsi
                                          age.brk=age.brk, s=s,N_stat = N_stat), 
                            SIMPLIFY = FALSE)
    
-  save(run.fitted.sims, filename3)
+  save(run.fitted.sims, file = filename3)
   #collect the age-seroprev data and the biweekly-seroprev/prev data
   all.age.sero.fitted <- lapply(run.fitted.sims, '[', 1)
   all.biwk.sero.fitted <- lapply(run.fitted.sims, '[', 2)
