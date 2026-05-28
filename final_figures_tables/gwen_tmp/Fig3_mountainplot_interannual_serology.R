@@ -189,7 +189,7 @@ p2bsave <- ggplot(subset(lumdat.long)) +
         strip.background = element_rect(fill="white"),
         strip.text.y = element_text(size=16, face="italic",color = "black"), 
         strip.text.x = element_text(size=16, face="italic", color="black"),
-        plot.margin = unit(c(0.1,0.1,0,0), "cm")); p2bsave
+        plot.margin = unit(c(.5,.5,.5,1), "lines")); p2bsave
   #geom_image(data=subset(image.df, virus_family=="Paramyxovirus"), aes(x=antigen, y=c(23000, 24000,23000), image = image), size=.3, nudge_x = .7); p2bsave
 mountain <- cowplot::plot_grid(p2bsave, p.h.1, ncol = 1,nrow = 2, rel_heights = c(1,.2), rel_widths = c(1,0.2))+
   theme(plot.background = element_rect(fill = "white", colour = NA));mountain
@@ -1038,6 +1038,7 @@ pInterannual_new_Rou <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga"
         strip.background = element_rect(fill="white"), 
         strip.text.y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
+        legend.position = "none",
         plot.margin = unit(c(.5,.5,.5,1), "lines")) +
   scale_x_continuous(breaks=c(as.Date("2018-01-01"),as.Date("2019-01-01"), as.Date("2020-01-01")), labels=c("2018", "2019", "2020")) +
   coord_cartesian(expand = F) + ylab("seroprevalence") + guides(alpha="none")
@@ -1729,7 +1730,7 @@ JAE.sum.all$seroprev_lci <- binom.exact(JAE.sum.all$N_seropos, JAE.sum.all$N_tot
 JAE.sum.all$seroprev_uci <- binom.exact(JAE.sum.all$N_seropos, JAE.sum.all$N_tot)$upper
 
 dat_text <- data.frame(
-  label = c("p = 0 HeV\n p = 0 NiV"),
+  label = c("p = NS HeV\n p = NS NiV"),
   x     = c(Inf),
   y     = c(1))
 
@@ -1754,11 +1755,11 @@ pJAE_inter <- ggplot(data=subset(JAE.sum.all, bat_species=="Eidolon dupreanum"))
   facet_grid(.~dataset, space = "free", scales = "free") + theme_bw() +
   theme(axis.text.x = element_text(size=14), 
         axis.title.x = element_blank(), 
-        # axis.text.y = element_blank(),
-        # axis.ticks.y = element_blank(),
-        # axis.title.y = element_blank(),
-        axis.text.y = element_text(size=14),
-        axis.title.y = element_text(size=16),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.y = element_blank(),
+        #axis.text.y = element_text(size=14),
+        #axis.title.y = element_text(size=16),
         plot.title = element_text(size=16),
         strip.background = element_rect(fill="white"), 
         strip.text.y = element_text(size=16), strip.text.x = element_text(size=16, face="italic"),
@@ -1771,55 +1772,41 @@ pJAE_inter2<-pJAE_inter+geom_text(data= dat_text,
                               mapping = aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5, fontface="italic"));pJAE_inter2
 
 ####put figures together
-inter <- cowplot::plot_grid(pIPM_new, pJAE_inter, pInterannual_new, ncol = 3, nrow = 1, rel_widths = c(1,.9,1.1), labels = c("B", "", ""), label_size = 23, label_x = c(0,-.04,-.02));inter
+inter <- cowplot::plot_grid(pInterannual_new2, NULL, ncol = 1, nrow = 2, 
+                            rel_widths = c(1,1), rel_heights = c(1,0.2), labels = c("", ""));inter
 as.ggplot(inter)
 
-library(patchwork)
-library(cowplot)
-
-part1<-cowplot::plot_grid(pIPM_new2, pJAE_inter2,
-                 labels=c("B","C"),
+fig3<-cowplot::plot_grid(mountain, inter,
+                 labels=c("A","B"),
                  rel_widths=c(1,1), rel_heights = c(1,1),
-                 ncol=1,align="hv", axis="l", label_size = 23)+
-  theme(plot.margin = unit(c(0,0,0,0), "cm")); part1
-part1<-as.ggplot(part1)
-
-part2<-cowplot::plot_grid(part1, pInterannual_new2,
-                          labels=c("","D"),
-                          rel_widths=c(1,1), rel_heights = c(1,1),
-                          ncol=2,align="hv", axis="l", label_size = 23)+
-  theme(plot.margin = unit(c(0,0,0,0), "cm")); part2
-part2<-as.ggplot(part2)
-
-fig3<-cowplot::plot_grid(mountain, part2,
-                          labels=c("A",""),
-                          rel_widths=c(1,1), rel_heights = c(1,1),
-                          ncol=2,align="hv", axis="tb", label_size = 23)+
+                 ncol=2,align="hv", axis="l", label_size = 23)+
   theme(plot.margin = unit(c(0,0,0,0), "cm"),
         plot.background = element_rect(fill = "white", colour = NA)); fig3
 
-#v2
-part4<-cowplot::plot_grid(NULL, mountain,
-                          labels=c("",""),
-                          rel_widths=c(0.05,1), rel_heights = c(1,1),
-                          ncol=2,align="hv", axis="r", label_size = 23)+
-  theme(plot.margin = unit(c(0,0,0,0), "cm")); part4
-part4<-as.ggplot(part4)
 
-fig3<-cowplot::plot_grid(part4, part2,
-                         labels=c("A",""),
-                         rel_widths=c(1,1), rel_heights = c(1,1.4),
-                         ncol=1,align="v", label_size = 23)+
-  theme(plot.margin = unit(c(0.1,0.1,0,0), "cm"),
-        plot.background = element_rect(fill = "white", colour = NA)); fig3
+supp<-cowplot::plot_grid(pIPM_new2, pJAE_inter2, pInterannual_new_Rou2, leg, 
+                          labels=c("A","B","C",""),
+                          rel_widths=c(1,1, 1, 0.2), rel_heights = c(1,1,1,1),
+                          ncol=4,align="hv", axis="l", label_size = 23)+
+  theme(plot.margin = unit(c(0,0,0,0), "cm"),
+        plot.background = element_rect(fill = "white", colour = NA)); supp
+
 
 #save figures
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/gwen_tmp/"
-ggsave(file = paste0(homewd, "Fig3_mountainplot_seasonal_serology_v1.png"),
+ggsave(file = paste0(homewd, "Fig3_mountainplot_seasonal_serology.png"),
        plot= fig3,
        units="mm",  
-       width=350, 
-       height=100, 
+       width=150, 
+       height=150, 
+       scale=2, 
+       dpi=500)
+
+ggsave(file = paste0(homewd, "FigX_historical_and_rousettus_serology.png"),
+       plot= supp,
+       units="mm",  
+       width=200, 
+       height=50, 
        scale=2, 
        dpi=500)
 
