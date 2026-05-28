@@ -1655,7 +1655,10 @@ head(shed.prev)
 pred.df <- cbind.data.frame(meanGhVCt = rep(25:39, 2), roost_site=rep(c("Moramanga", "Ankarana"), each=15))
 pred.df$prevalence <- predict(m1, newdata = pred.df, type = "response")
 pred.df$prevalence_lci <- predict(m1, newdata = pred.df, type = "response") -1.96*predict(m1, newdata = pred.df, type = "response", se.fit = T)$se
-pred.df$prevalence_lci <- predict(m1, newdata = pred.df, type = "response") +1.96*predict(m1, newdata = pred.df, type = "response", se.fit = T)$se
+pred.df$prevalence_uci <- predict(m1, newdata = pred.df, type = "response") +1.96*predict(m1, newdata = pred.df, type = "response", se.fit = T)$se
+
+pred.df$prevalence_lci[pred.df$prevalence_lci <0] <- 0
+pred.df$prevalence_uci[pred.df$prevalence_uci >1] <- 1
 
 shed.prev$year <- year(shed.prev$mid_date)
 
@@ -1691,9 +1694,11 @@ pCtprev_line <- ggplot(data= subset(shed.prev, !is.na(meanGhVCt))) +
   geom_linerange(aes(x=meanGhVCt, ymin=GhVprevlci, ymax=GhVprevuci, color=roost_site), linetype=3, alpha=.5, show.legend = F) +
   geom_linerange(aes(xmin=GhVCt_lci, xmax=GhVCt_uci, y=GhVprev, color=roost_site), linetype=3, alpha=.5, show.legend = F) +
   geom_line(data=pred.df, aes(x=meanGhVCt, y=prevalence, color = roost_site)) +
+  geom_ribbon(data=pred.df, aes(x=meanGhVCt, ymin= prevalence_lci, ymax=prevalence_uci, fill=roost_site), alpha=.3) +
   xlab("Ct (GhV)") + ylab("prevalence (GhV)") +
   scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
   scale_color_manual(name="roost site", values = sitez) +
+  scale_fill_manual(name="roost site", values = sitez) +
   scale_shape_manual(values=yearz, name="year") +
   theme(panel.grid = element_blank(),
         axis.text = element_text(size=14), 
@@ -1715,7 +1720,7 @@ Fig2 <- cowplot::plot_grid(seroshedEid, pRight, legEid, ncol=3, nrow = 1, rel_wi
   theme(plot.background = element_rect(fill = "white", colour = NA)); Fig2
 
 
-ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/Fig2-draft_v2.png"),
+ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/Fig2-draft.png"),
        plot=Fig2,
        units="mm",  
        width=110, 
