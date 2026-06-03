@@ -1085,6 +1085,8 @@ pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & b
         # axis.ticks.y = element_blank(),
         # axis.title.y = element_blank(),
         axis.text.y = element_text(size=14),
+        legend.position="none",
+        legend.direction = "vertical",
         axis.title.y = element_text(size=16),
         plot.title = element_text(size=16),
         strip.background = element_rect(fill="white"), 
@@ -1097,6 +1099,8 @@ pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & b
   scale_x_continuous(breaks=c(as.Date("2018-01-01"),as.Date("2019-01-01"), as.Date("2020-01-01")), labels=c("2018", "2019", "2020")) +
   coord_cartesian(expand = F) + ylab("Seroprevalence") + guides(alpha="none") + scale_fill_manual(values=filz.antigen) 
 pInterannual_new
+
+legend<-get_legend(pInterannual_new)
 
 pInterannual_new2<-pInterannual_new+geom_text(data= dat_text, aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5),
                                               fontface="italic");pInterannual_new2
@@ -1780,9 +1784,13 @@ inter <- cowplot::plot_grid(pInterannual_new2, NULL, ncol = 1, nrow = 2,
                             rel_widths = c(1,1), rel_heights = c(1,0.2), labels = c("", ""));inter
 as.ggplot(inter)
 
+inter <- cowplot::plot_grid(pInterannual_new2, legend, ncol = 1, nrow = 2, 
+                            rel_widths = c(1,1), rel_heights = c(1,0.2), labels = c("", ""));inter
+as.ggplot(inter)
+
 fig3<-cowplot::plot_grid(mountain, inter,
                  labels=c("A","B"),
-                 rel_widths=c(1,1), rel_heights = c(1,1),
+                 rel_widths=c(1,1.6), rel_heights = c(1,1),
                  ncol=2,align="hv", axis="l", label_size = 23)+
   theme(plot.margin = unit(c(0,0,0,0), "cm"),
         plot.background = element_rect(fill = "white", colour = NA)); fig3
@@ -1802,7 +1810,7 @@ ggsave(file = paste0(homewd, "Fig3_mountainplot_seasonal_serology.png"),
        plot= fig3,
        units="mm",  
        width=150, 
-       height=150, 
+       height=140, 
        scale=2, 
        dpi=500)
 
