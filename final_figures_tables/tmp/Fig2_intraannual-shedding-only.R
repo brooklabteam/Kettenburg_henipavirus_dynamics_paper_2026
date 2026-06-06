@@ -142,7 +142,7 @@ tot.merge$bat_sex <- as.factor(tot.merge$bat_sex)
 #########
 #########
 
-# FIRST, we ask, we are the correlates of positive infection status with all three viruses in all three bat species?
+# FIRST, we ask, what are the correlates of positive infection status with all three viruses in all three bat species?
 ### the ambiguous age class bats won't be included in the first models because they have NA values
 length(tot.merge$bat_age_class[is.na(tot.merge$bat_age_class)])#46
 #but they can be retained for seasonality
@@ -602,6 +602,40 @@ pIntrannualShedEid_noLeg <- ggplot(data=subset(session.sum, bat_species=="Eidolo
 pIntrannualShedEid_noLeg
 
 
+
+## and a version of all the shedding with AngV
+pIntrannualShedAllAngV <- ggplot(data=session.sum) +
+  geom_rect(data=cal.dat, aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3) +
+  geom_point(aes(x=doy, y=prevalence_AngV, size=Ntot, shape=year, color = roost_site)) + 
+  geom_linerange(aes(x=doy, ymin=prevAngV_lci, ymax=prevAngV_uci, color=roost_site),linetype=2, alpha=.3, show.legend = F) +
+  scale_x_continuous(breaks=c(31, 93, 155, 218, 280, 344 ), labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")) +
+  scale_fill_manual(values=filz) +
+  scale_color_manual(values=sitez, name="roost site") +
+  #ggnewscale::new_scale_fill() + 
+  geom_ribbon(data=subset(pred.df,antigen=="AngV"), aes(x=doy, ymin= prev_lci, ymax=prev_uci), fill = "#F8766D", alpha=.3, show.legend = F) +
+  geom_line(data=subset(pred.df,antigen=="AngV"), aes(x=doy, y= prevalence), color = "#F8766D") +
+  facet_grid(bat_species~.) + theme_bw() +
+  theme(axis.text = element_text(size=14), axis.title = element_text(size=16),, 
+        strip.background = element_rect(fill="white"), 
+        strip.text.y = element_text(size=16, face="italic"), 
+        #strip.text.x = element_text(size=16, face="italic"),
+        panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
+        plot.margin = unit(c(.5,.5,.5,1), "lines")) +
+  scale_shape_manual(values=yearz) +
+  coord_cartesian(xlim = c(0, 365), ylim = c(0, 1),expand = FALSE) + ylab("prevalence") + xlab("month of year") +
+  #scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
+  guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
+pIntrannualShedAllAngV
+
+
+
+ggsave(file = paste0(homewd,"/final_figures_tables/tmp/Fig2X-supplement-draft-AngV.png"),
+       plot=pIntrannualShedAllAngV,
+       units="mm",  
+       width=65, 
+       height=85, 
+       scale=3, 
+       dpi=300)
 
 #####
 
