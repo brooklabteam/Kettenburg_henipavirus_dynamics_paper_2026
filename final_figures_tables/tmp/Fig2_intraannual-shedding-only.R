@@ -12,7 +12,7 @@ library(Hmisc)
 library(epitools)
 library(cowplot)
 library(sjPlot)
-
+library(lme4)
 
 ################################################################################
 ################################################################################
@@ -518,38 +518,55 @@ session.sum$bat_species <- factor(session.sum$bat_species, levels = c("Pteropus 
 pred.df$bat_species <- factor(pred.df$bat_species, levels = c("Pteropus rufus", "Eidolon dupreanum", "Rousettus madagascariensis"))
 cal.dat$bat_species <- factor(cal.dat$bat_species, levels = c("Pteropus rufus", "Eidolon dupreanum", "Rousettus madagascariensis"))
 
-pIntrannualShedAll <- ggplot(data=session.sum) +
+head(session.sum)
+
+session.wide <- dplyr::select(session.sum, bat_species, roost_site, doy,year, Ntot, prevalence_GhV, prevalence_AngV, prevGhV_lci, prevGhV_uci, prevAngV_lci, prevAngV_uci)
+
+library(tidyr)
+names(session.wide) <- c(names(session.wide)[1:5], "prevalence_GhV", "prevalence_AngV", "prev_lci_GhV", "prev_uci_GhV", "prev_lci_AngV", "prev_uci_AngV")
+session.long <-session.wide %>%
+  pivot_longer(
+    cols = prevalence_GhV:prev_uci_AngV,
+    names_to = c(".value", "antigen"),
+    names_pattern = "(prevalence|prev_lci|prev_uci)_(GhV|AngV)"
+  )
+ head(session.long)
+
+pIntrannualShedAll <- ggplot(data=session.long) +
   geom_rect(data=cal.dat, aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3) +
-  geom_point(aes(x=doy, y=prevalence_GhV, size=Ntot, shape=year, color = roost_site)) + 
-  geom_linerange(aes(x=doy, ymin=prevGhV_lci, ymax=prevGhV_uci, color=roost_site),linetype=2, alpha=.3, show.legend = F) +
+  geom_point(aes(x=doy, y=prevalence, size=Ntot, shape=year, color = roost_site)) + 
+  geom_linerange(aes(x=doy, ymin=prev_lci, ymax=prev_uci, color=roost_site),linetype=2, alpha=.3, show.legend = F) +
   scale_x_continuous(breaks=c(31, 93, 155, 218, 280, 344 ), labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")) +
   scale_fill_manual(values=filz) +
+  scale_size_continuous(name="N bats", breaks = c(10,20,30)) +
   scale_color_manual(values=sitez, name="roost site") +
-  #ggnewscale::new_scale_fill() + 
-  geom_ribbon(data=subset(pred.df,antigen=="GhV"), aes(x=doy, ymin= prev_lci, ymax=prev_uci), fill = "#00C094", alpha=.3, show.legend = F) +
-  geom_line(data=subset(pred.df,antigen=="GhV"), aes(x=doy, y= prevalence), color = "#00C094") +
-  facet_grid(bat_species~.) + theme_bw() +
+  ggnewscale::new_scale_fill() + 
+  ggnewscale::new_scale_color() + 
+  geom_ribbon(data=subset(pred.df, antigen!="AndV"), aes(x=doy, ymin= prev_lci, ymax=prev_uci, fill=antigen),  alpha=.3, show.legend = F) +
+  geom_line(data=subset(pred.df, antigen!="AndV"), aes(x=doy, y= prevalence, color=antigen), show.legend = F) +
+  facet_grid(bat_species~antigen) + theme_bw() +
   theme(axis.text = element_text(size=14), axis.title = element_text(size=16),, 
         strip.background = element_rect(fill="white"), 
         strip.text.y = element_text(size=16, face="italic"), 
-        #strip.text.x = element_text(size=16, face="italic"),
+        strip.text.x = element_text(size=16),
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
         plot.margin = unit(c(.5,.5,.5,1), "lines")) +
   scale_shape_manual(values=yearz) +
   coord_cartesian(xlim = c(0, 365), ylim = c(0, 1),expand = FALSE) + ylab("prevalence") + xlab("month of year") +
-  #scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
+  scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
   guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
-pIntrannualShedAll
-
+pIntrannualShedAll #this goes in supplement
 
 
 ggsave(file = paste0(homewd,"/final_figures_tables/tmp/Fig2X-supplement-draft.png"),
        plot=pIntrannualShedAll,
        units="mm",  
-       width=65, 
-       height=85, 
+       width=80, 
+       height=90, 
        scale=3, 
        dpi=300)
+
+
 
 #and for the main text, plot just Eidolon data
 
@@ -575,6 +592,8 @@ pIntrannualShedEid <- ggplot(data=subset(session.sum, bat_species=="Eidolon dupr
   #scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
   guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
 pIntrannualShedEid
+
+
 
 Eid_Leg <- cowplot::get_legend(pIntrannualShedEid)
 
@@ -603,39 +622,7 @@ pIntrannualShedEid_noLeg
 
 
 
-## and a version of all the shedding with AngV
-pIntrannualShedAllAngV <- ggplot(data=session.sum) +
-  geom_rect(data=cal.dat, aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3) +
-  geom_point(aes(x=doy, y=prevalence_AngV, size=Ntot, shape=year, color = roost_site)) + 
-  geom_linerange(aes(x=doy, ymin=prevAngV_lci, ymax=prevAngV_uci, color=roost_site),linetype=2, alpha=.3, show.legend = F) +
-  scale_x_continuous(breaks=c(31, 93, 155, 218, 280, 344 ), labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")) +
-  scale_fill_manual(values=filz) +
-  scale_color_manual(values=sitez, name="roost site") +
-  #ggnewscale::new_scale_fill() + 
-  geom_ribbon(data=subset(pred.df,antigen=="AngV"), aes(x=doy, ymin= prev_lci, ymax=prev_uci), fill = "#F8766D", alpha=.3, show.legend = F) +
-  geom_line(data=subset(pred.df,antigen=="AngV"), aes(x=doy, y= prevalence), color = "#F8766D") +
-  facet_grid(bat_species~.) + theme_bw() +
-  theme(axis.text = element_text(size=14), axis.title = element_text(size=16),, 
-        strip.background = element_rect(fill="white"), 
-        strip.text.y = element_text(size=16, face="italic"), 
-        #strip.text.x = element_text(size=16, face="italic"),
-        panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
-        plot.margin = unit(c(.5,.5,.5,1), "lines")) +
-  scale_shape_manual(values=yearz) +
-  coord_cartesian(xlim = c(0, 365), ylim = c(0, 1),expand = FALSE) + ylab("prevalence") + xlab("month of year") +
-  #scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
-  guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
-pIntrannualShedAllAngV
 
-
-
-ggsave(file = paste0(homewd,"/final_figures_tables/tmp/Fig2X-supplement-draft-AngV.png"),
-       plot=pIntrannualShedAllAngV,
-       units="mm",  
-       width=65, 
-       height=85, 
-       scale=3, 
-       dpi=300)
 
 #####
 
@@ -1532,7 +1519,7 @@ Fig2 <- cowplot::plot_grid(Fig2_left, Eid_Leg, ncol=2, nrow=1, rel_widths = c(1,
 ggsave(file = paste0(homewd,"/final_figures_tables/tmp/Fig2-draft-new.png"),
        plot=Fig2,
        units="mm",  
-       width=120, 
-       height=40, 
+       width=140, 
+       height=50, 
        scale=3, 
        dpi=300)
