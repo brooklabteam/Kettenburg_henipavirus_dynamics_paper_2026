@@ -33,19 +33,20 @@ library(cowplot)
 
 
 #first record your wd for this repo (home) 
-homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/"
+homewd= "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/"
+#homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/"
 
 #now load in the merged luminex data from the "data" folder
 
 #make sure this is latest catching file
-dat <- read.csv(paste0(homewd, "/serology/data/lum_catch_merge.csv"), header = T, stringsAsFactors = F)
+dat <- read.csv(paste0(homewd, "serology/data/lum_catch_merge.csv"), header = T, stringsAsFactors = F)
 head(dat)
 
 length(unique(dat$sampleid))
 dat$sampleid[duplicated(dat$sampleid)]
 
-test <- ddply(dat, .(bat_species, bat_sex), summarise, Ntot=length(unique(sampleid)))
-test
+# test <- ddply(dat, .(bat_species, bat_sex), summarise, Ntot=length(unique(sampleid)))
+# test
 
 #now for cutoffs, just slim to antigen data only and convert to long format
 lumdat <- dplyr::select(dat, sampleid, bat_species, names(dat)[2:7])
@@ -207,8 +208,10 @@ library(reshape2)
 library(Hmisc)
 library(epitools)
 
-homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
-batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
+homewd="/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+batwd="/Users/carabrook/Developer/Madagascar-Bat-Data"
+#homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+#batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
 
 ## Section 1. Prep the data
 
@@ -216,7 +219,11 @@ batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
 # seronegative in the other scripts
 lum.dat <- read.csv(file = paste0(homewd, "/serology/data/mix_sub_data_75_90_96_long.csv"))
 head(lum.dat)
-lum.dat = subset(lum.dat, bat_species=="Eidolon dupreanum"| bat_species=="Rousettus madagascariensis" & antigen=="GhV")
+# Pteropus plots are all cross-reactivity and only two seropositives so no point examining them statistically
+# For Eid and Rou, the only antigens with known viruses from sequence data are GhV and AngV
+# Rou has no seropositives for AngV, so we focus exclusively on GhV in Rou and ghV/AngV in Eid
+
+lum.dat = subset(lum.dat, bat_species=="Eidolon dupreanum" & antigen=="GhV"|  bat_species=="Eidolon dupreanum" & antigen=="AngV" | bat_species=="Rousettus madagascariensis" & antigen=="GhV")
 
 lum.dat <- dplyr::select(lum.dat, sampleid, antigen, MFI, log10MFI, seropos, seropos_lci, seropos_uci)
 ## merge the luminex data with the catching data
@@ -251,7 +258,8 @@ merge.dat$month[merge.dat$month!="10"& merge.dat$month!="11" &merge.dat$month!="
 #merge.dat$mid_date <- as.Date(paste0(merge.dat$year, "-", merge.dat$month, "-15"))
 head(merge.dat)
 
-merge.dat <- subset(merge.dat, mid_date>"2018-01-01")
+#focusing just on 2018-2020 window
+#merge.dat <- subset(merge.dat, mid_date>"2018-01-01")
 merge.dat <- subset(merge.dat, mid_date>"2018-01-15")
 
 #change roost site to just Moramanga region or Ankarana
@@ -260,14 +268,14 @@ merge.dat$roost_site[merge.dat$roost_site=="Angavobe_Edup" |merge.dat$roost_site
 merge.dat$roost_site[merge.dat$roost_site!="Moramanga"] <- "Ankarana"
 
 #also add in quantitative age data where available:
-age.dat <- read.csv(file = paste0(batwd, "/Age-Data/aged_bats.csv"), header = T, stringsAsFactors = F)
-head(age.dat)
+#age.dat <- read.csv(file = paste0(batwd, "/Age-Data/aged_bats.csv"), header = T, stringsAsFactors = F)
+#head(age.dat)
 
 #slim to just the columns you want to add
-age.dat <- dplyr::select(age.dat, sampleid, age)
+#age.dat <- dplyr::select(age.dat, sampleid, age)
 
 #and merge
-merge.dat <- merge(merge.dat, age.dat, by="sampleid", all.x = T)
+#merge.dat <- merge(merge.dat, age.dat, by="sampleid", all.x = T)
 head(merge.dat)
 #names(merge.dat)[names(merge.dat)=="mid_date"] <- "mid_date_old"
 #names(merge.dat)[names(merge.dat)=="processing_date"] <- "mid_date"
@@ -551,143 +559,6 @@ summary(gamEidSexAngV)
 AIC(gamEidNoSexAngV, gamEidSexAngV) # better with no sex
 
 
-#and HeV
-Eid.sum.HeV <- subset(seroprev.sum, bat_species=="Eidolon dupreanum" & antigen=="HeV")
-# 
-Eid.sum.HeV$year <- year(Eid.sum.HeV$mid_date)
-Eid.sum.HeV$year_f <- as.factor(Eid.sum.HeV$year)
-Eid.sum.HeV$month <- month(Eid.sum.HeV$mid_date)
-Eid.sum.HeV$roost_site <- droplevels(Eid.sum.HeV$roost_site)
-Eid.sum.HeV$antigen <- droplevels(Eid.sum.HeV$antigen)
-Eid.sum.HeV$year_f <- droplevels(Eid.sum.HeV$year_f)
-
-gamEidNoSexHeV <- gam(cbind(seropos, seroneg) ~ 
-                        roost_site + 
-                        s(as.numeric(doy), bs = "cc", k =10, by = roost_site) +
-                        s(as.numeric(mid_date),  bs="tp", k=6, by= roost_site),
-                      data= Eid.sum.HeV, 
-                      family = "binomial", 
-                      method = "REML", 
-                      gamma = 1,
-                      select = TRUE) #
-
-
-gamEidNoSexHeVPlot <- gam(cbind(seropos, seroneg) ~ 
-                            roost_site + 
-                            s(as.numeric(doy), bs = "cc", k =10, by = roost_site) +
-                            s(as.numeric(mid_date),  bs="tp", k=6, by= roost_site),
-                          data= Eid.sum.HeV, 
-                          family = "binomial", 
-                          method = "REML", 
-                          gamma = .22,
-                          select = TRUE) #
-
-summary(gamEidNoSexHeV) #nothing sig
-#plot(gamEidNoSexHeV)
-# Ankarana edf = 0
-
-
-#now try with sex too
-
-seroprev.sum.sex$doy <- yday(seroprev.sum.sex$mid_date)
-seroprev.sum.sex$year <- year(seroprev.sum.sex$mid_date)
-
-Eid.sex.HeV = subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum" & antigen=="HeV")
-Eid.sex.HeV$antigen <- droplevels(Eid.sex.HeV$antigen)
-Eid.sex.HeV$roost_site <- droplevels(Eid.sex.HeV$roost_site)
-Eid.sex.HeV$bat_sex <- droplevels(Eid.sex.HeV$bat_sex)
-
-group <- interaction( Eid.sex.HeV$bat_sex, Eid.sex.HeV$roost_site, drop = TRUE)
-
-Eid.sex.HeV$group <- group
-Eid.sex.HeV$year_f <- as.factor(Eid.sex.HeV$year)
-Eid.sex.HeV$year <- as.numeric(as.character(Eid.sex.HeV$year))
-
-gamEidSexHeV <- gam(cbind(seropos, seroneg)~ 
-                      roost_site + bat_sex +
-                      s(as.numeric(doy), bs = c("cc"), k = 10, by = group) +
-                      s(as.numeric(mid_date), bs="tp", k=6, by=group),
-                    data=Eid.sex.HeV, 
-                    family = "binomial", 
-                    method = "REML", 
-                    gamma =1,
-                    select = TRUE) #this term allows non-impactful terms to essentially be removed from model - check edf in summary to see if this happened to any
-summary(gamEidSexHeV)
-# significant interannual trends for female Moramanga 
-# most Ankarana  data reduced to edf = 0, especial interannual
-
-
-AIC(gamEidNoSexHeV, gamEidSexHeV) # better with no sex
-
-
-#and NiV
-#now try for NiV as well
-Eid.sum.NiV <- subset(seroprev.sum, bat_species=="Eidolon dupreanum" & antigen=="NiV")
-# 
-Eid.sum.NiV$year <- year(Eid.sum.NiV$mid_date)
-Eid.sum.NiV$year_f <- as.factor(Eid.sum.NiV$year)
-Eid.sum.NiV$month <- month(Eid.sum.NiV$mid_date)
-Eid.sum.NiV$roost_site <- droplevels(Eid.sum.NiV$roost_site)
-Eid.sum.NiV$antigen <- droplevels(Eid.sum.NiV$antigen)
-Eid.sum.NiV$year_f <- droplevels(Eid.sum.NiV$year_f)
-
-gamEidNoSexNiV <- gam(cbind(seropos, seroneg) ~ 
-                        roost_site + 
-                        s(as.numeric(doy), bs = "cc", k =10, by = roost_site) +
-                        s(as.numeric(mid_date),  bs="tp", k=6, by= roost_site),
-                      data= Eid.sum.NiV, 
-                      family = "binomial", 
-                      method = "REML", 
-                      gamma = 1,
-                      select = TRUE) #
-
-
-gamEidNoSexNiVPlot <- gam(cbind(seropos, seroneg) ~ 
-                            roost_site + 
-                            s(as.numeric(doy), bs = "cc", k =10, by = roost_site) +
-                            s(as.numeric(mid_date),  bs="tp", k=6, by= roost_site),
-                          data= Eid.sum.NiV, 
-                          family = "binomial", 
-                          method = "REML", 
-                          gamma = .97,
-                          select = TRUE) #
-
-summary(gamEidNoSexNiV) #nothing sig
-#plot(gamEidNoSexNiV)
-# Ankarana edf = 0
-
-
-#now try with sex too
-
-seroprev.sum.sex$doy <- yday(seroprev.sum.sex$mid_date)
-seroprev.sum.sex$year <- year(seroprev.sum.sex$mid_date)
-
-Eid.sex.NiV = subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum" & antigen=="NiV")
-Eid.sex.NiV$antigen <- droplevels(Eid.sex.NiV$antigen)
-Eid.sex.NiV$roost_site <- droplevels(Eid.sex.NiV$roost_site)
-Eid.sex.NiV$bat_sex <- droplevels(Eid.sex.NiV$bat_sex)
-
-group <- interaction( Eid.sex.NiV$bat_sex, Eid.sex.NiV$roost_site, drop = TRUE)
-
-Eid.sex.NiV$group <- group
-Eid.sex.NiV$year_f <- as.factor(Eid.sex.NiV$year)
-Eid.sex.NiV$year <- as.numeric(as.character(Eid.sex.NiV$year))
-
-gamEidSexNiV <- gam(cbind(seropos, seroneg)~ 
-                      roost_site + bat_sex +
-                      s(as.numeric(doy), bs = c("cc"), k = 10, by = group) +
-                      s(as.numeric(mid_date), bs="tp", k=6, by=group),
-                    data=Eid.sex.NiV, 
-                    family = "binomial", 
-                    method = "REML", 
-                    gamma =1,
-                    select = TRUE) #this term allows non-impactful terms to essentially be removed from model - check edf in summary to see if this happened to any
-summary(gamEidSexNiV)
-#nothing sig
-# most Ankarana  data reduced to edf = 0, especial interannual
-
-
-AIC(gamEidNoSexNiV, gamEidSexNiV) # better with no sex
 
 
 
@@ -729,17 +600,6 @@ pred.df$predicted_seroprevalence_lci[pred.df$antigen=="AngV"] <-pred.df$predicte
 pred.df$predicted_seroprevalence_uci[pred.df$antigen=="AngV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="AngV"] + 1.96*predict.gam(gamEidSexAngV, newdata=subset(pred.df,antigen=="AngV"), type = "response", se.fit = T)$se
 
 
-#HeV
-pred.df$predicted_seroprevalence[pred.df$antigen=="HeV"] <- predict.gam(gamEidSexHeV, newdata=subset(pred.df,antigen=="HeV"), type = "response", se.fit = T)$fit
-pred.df$predicted_seroprevalence_lci[pred.df$antigen=="HeV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="HeV"] - 1.96*predict.gam(gamEidSexHeV, newdata=subset(pred.df,antigen=="HeV"), type = "response", se.fit = T)$se
-pred.df$predicted_seroprevalence_uci[pred.df$antigen=="HeV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="HeV"] + 1.96*predict.gam(gamEidSexHeV, newdata=subset(pred.df,antigen=="HeV"), type = "response", se.fit = T)$se
-
-
-#NiV
-pred.df$predicted_seroprevalence[pred.df$antigen=="NiV"] <- predict.gam(gamEidSexNiV, newdata=subset(pred.df,antigen=="NiV"), type = "response", se.fit = T)$fit
-pred.df$predicted_seroprevalence_lci[pred.df$antigen=="NiV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="NiV"] - 1.96*predict.gam(gamEidSexNiV, newdata=subset(pred.df,antigen=="NiV"), type = "response", se.fit = T)$se
-pred.df$predicted_seroprevalence_uci[pred.df$antigen=="NiV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="NiV"] + 1.96*predict.gam(gamEidSexNiV, newdata=subset(pred.df,antigen=="NiV"), type = "response", se.fit = T)$se
-
 
 
 pred.df$bat_species = "Eidolon dupreanum"
@@ -761,18 +621,6 @@ p5
 
 #look at lag between females and males
 head(pred.df)
-library(stats)
-ccf.GhV <- ccf(pred.df$predicted_seroprevalence[pred.df$antigen=="GhV" & pred.df$bat_sex=="female"], pred.df$predicted_seroprevalence[pred.df$antigen=="GhV" & pred.df$bat_sex=="male"], lag.max = 365)
-best_lag <- ccf.GhV$lag[which.max(ccf.GhV$acf)]
-best_lag #0
-
-ccf.AngV <- ccf(pred.df$predicted_seroprevalence[pred.df$antigen=="AngV" & pred.df$bat_sex=="female"], pred.df$predicted_seroprevalence[pred.df$antigen=="AngV" & pred.df$bat_sex=="male"], lag.max = 365)
-best_lag <- ccf.AngV$lag[which.max(ccf.AngV$acf)]
-best_lag #22
-
-
-#there is not really support for a lag between males and females, 
-#which suggests the collective time series might be best
 
 #predict males and females all together here
 pred.df <- cbind.data.frame(mid_date = rep(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1), (length(unique(subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum")$antigen)))), antigen= rep(unique(subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum")$antigen), each = length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))))
@@ -807,20 +655,6 @@ pred.df$predicted_seroprevalence_uci[pred.df$antigen=="AngV"] <-pred.df$predicte
 
 
 
-#HeV
-pred.df$predicted_seroprevalence[pred.df$antigen=="HeV"] <- predict.gam(gamEidNoSexHeVPlot, newdata=subset(pred.df,antigen=="HeV"), type = "response", se.fit = T)$fit
-pred.df$predicted_seroprevalence_lci[pred.df$antigen=="HeV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="HeV"] - 1.96*predict.gam(gamEidNoSexHeVPlot, newdata=subset(pred.df,antigen=="HeV"), type = "response", se.fit = T)$se
-pred.df$predicted_seroprevalence_uci[pred.df$antigen=="HeV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="HeV"] + 1.96*predict.gam(gamEidNoSexHeVPlot, newdata=subset(pred.df,antigen=="HeV"), type = "response", se.fit = T)$se
-
-
-
-
-#NiV
-pred.df$predicted_seroprevalence[pred.df$antigen=="NiV"] <- predict.gam(gamEidNoSexNiVPlot, newdata=subset(pred.df,antigen=="NiV"), type = "response", se.fit = T)$fit
-pred.df$predicted_seroprevalence_lci[pred.df$antigen=="NiV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="NiV"] - 1.96*predict.gam(gamEidNoSexNiVPlot, newdata=subset(pred.df,antigen=="NiV"), type = "response", se.fit = T)$se
-pred.df$predicted_seroprevalence_uci[pred.df$antigen=="NiV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="NiV"] + 1.96*predict.gam(gamEidNoSexNiVPlot, newdata=subset(pred.df,antigen=="NiV"), type = "response", se.fit = T)$se
-
-
 
 pred.df$bat_species = "Eidolon dupreanum"
 pred.df$predicted_seroprevalence_lci[pred.df$predicted_seroprevalence_lci <0] <- 0
@@ -849,39 +683,6 @@ p6b <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & antigen=="GhV"
   geom_line(data=subset(pred.df, antigen=="GhV"& bat_species =="Eidolon dupreanum"), aes(x=mid_date, y= predicted_seroprevalence, color=antigen, group=year)) +
   facet_grid(~bat_species) + theme_bw()
 p6b
-
-
-#and predict just within a year
-# 
-# pred.yr <- cbind.data.frame(doy= 1:365)
-# head(pred.yr)
-# pred.yr$antigen <- "GhV"
-# pred.yr$year_f <- "2019"
-# pred.yr$roost_site <- "Moramanga"
-# 
-# pred.yr$seroprevalence <- predict(gamEidNoSexGhV, type = "response", newdata = pred.yr, exclude = "s(year_corrected_f)")
-# pred.yr$seroprev_uci <- predict(gamEidNoSexGhV, type = "response", newdata = pred.yr, exclude = "s(year_corrected_f)") + 1.96*predict(gamEidNoSexGhV, type = "response", newdata = pred.yr, exclude = "s(year_corrected_f)", se.fit = T)$se
-# pred.yr$seroprev_lci <- predict(gamEidNoSexGhV, type = "response", newdata = pred.yr, exclude = "s(year_corrected_f)") - 1.96*predict(gamEidNoSexGhV, type = "response", newdata = pred.yr, exclude = "s(year_corrected_f)", se.fit = T)$se
-# pred.yr$bat_species <- "Eidolon dupreanum"
-# 
-# cal.dat$year <- year(cal.dat$stop)
-# cal.sub = subset(cal.dat, bat_species =="Eidolon dupreanum" & year==2019)
-# cal.sub$doy_start <- yday(cal.sub$start)
-# cal.sub$doy_stop <- yday(cal.sub$stop)
-# cal.sub$year <- year(cal.sub$stop)
-# cal.sub$doy_stop[cal.sub$season=="lactation"] <- 365
-# cal.sub <- rbind(cal.sub, cal.sub[nrow(cal.sub),])
-# cal.sub$doy_start[4] <- 1
-# cal.sub$doy_stop[4] <- yday("2019-02-02")
-# 
-# p6c <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & antigen=="GhV" & bat_species =="Eidolon dupreanum")) +
-#   geom_rect(data=cal.sub, aes(xmin=as.Date(doy_start), xmax=as.Date(doy_stop), ymin=0, ymax=1, fill=season), alpha=.3) +
-#   geom_point(aes(x=doy, y=seroprev, size=N, color=antigen, shape =year_f)) + scale_color_manual(values=colorz) + scale_fill_manual(values=filz) +
-#   geom_linerange(aes(x=doy, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen), linetype=2, alpha=.3, show.legend = F) +
-#   geom_ribbon(data=subset(pred.yr), aes(x=doy, ymin= seroprev_lci, ymax=seroprev_uci, fill=antigen), alpha=.3) +
-#   geom_line(data=subset(pred.yr), aes(x=doy, y= seroprevalence, color=antigen)) +
-#   facet_grid(~bat_species) + theme_bw()
-# p6c
 
 
 
@@ -1033,6 +834,7 @@ pInterannual_new_Rou <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga"
   geom_ribbon(data=subset(pred.df, bat_species=="Rousettus madagascariensis"), aes(x=mid_date, ymin= predicted_seroprevalence_lci, ymax=predicted_seroprevalence_uci, fill=antigen), alpha=.3) +
   geom_line(data=subset(pred.df, bat_species=="Rousettus madagascariensis"), aes(x=mid_date, y= predicted_seroprevalence, color=antigen, group = group)) +
   facet_grid(~bat_species) + theme_bw() +
+  scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
   theme(axis.text.x = element_text(size=14), axis.title.x = element_blank(), 
         axis.text.y = element_blank(),axis.ticks.y = element_blank(),axis.title.y = element_blank(),
         strip.background = element_rect(fill="white"), 
@@ -1058,16 +860,23 @@ alphaz = c('0' = 0, '1' = 1, '2' = 0.5)
 filz.season <- filz[(length(filz)-2):length(filz)]
 filz.antigen <- filz[1:(length(filz)-2)]
 
+# dat_text <- data.frame(
+#   label = c("p = 0.05", "p = 0.03", "p = NS HeV\n p = NS NiV"),
+#   viralcat   = c("AngV", "GhV", "HeV and NiV"),
+#   x     = c(Inf, Inf, Inf),
+#   y     = c(1, 1, 1)
+# )
+
 dat_text <- data.frame(
-  label = c("p = 0.05", "p = 0.03", "p = NS HeV\n p = NS NiV"),
-  viralcat   = c("AngV", "GhV", "HeV and NiV"),
-  x     = c(Inf, Inf, Inf),
-  y     = c(1, 1, 1)
+  label = c("p = 0.05", "p = 0.03"),
+  viralcat   = c("AngV", "GhV"),
+  x     = c(Inf, Inf),
+  y     = c(1, 1)
 )
 
 seroprev.sum$viralcat <- NA
-seroprev.sum$viralcat[seroprev.sum$antigen == "HeV"] <- "HeV and NiV"
-seroprev.sum$viralcat[seroprev.sum$antigen == "NiV"] <- "HeV and NiV"
+#seroprev.sum$viralcat[seroprev.sum$antigen == "HeV"] <- "HeV and NiV"
+#seroprev.sum$viralcat[seroprev.sum$antigen == "NiV"] <- "HeV and NiV"
 seroprev.sum$viralcat[seroprev.sum$antigen == "AngV"] <- "AngV"
 seroprev.sum$viralcat[seroprev.sum$antigen == "GhV"] <- "GhV"
 
@@ -1076,9 +885,10 @@ pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & b
   geom_linerange(aes(x=mid_date, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen, alpha=sig), linetype=2, show.legend = F) +
   geom_point(aes(x=mid_date, y=seroprev, size=N, color=antigen, alpha = sig)) + scale_color_manual(values=colorz) + scale_fill_manual(values=filz.season) +scale_alpha_manual(values=alphaz) +
   ggnewscale::new_scale_fill() +
+  scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
   geom_ribbon(data=subset(pred.df, bat_species=="Eidolon dupreanum"), aes(x=mid_date, ymin= predicted_seroprevalence_lci, ymax=predicted_seroprevalence_uci, fill=antigen), alpha=.3, show.legend = F) +
   geom_line(data=subset(pred.df, bat_species=="Eidolon dupreanum"), aes(x=mid_date, y= predicted_seroprevalence, color=antigen, group = group)) +
-  facet_grid(viralcat+bat_species~.) + theme_bw() +
+  facet_grid(viralcat~bat_species) + theme_bw() +
   theme(axis.text.x = element_text(size=14), 
         axis.title.x = element_blank(), 
         # axis.text.y = element_blank(),
@@ -1090,8 +900,8 @@ pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & b
         axis.title.y = element_text(size=16),
         plot.title = element_text(size=16),
         strip.background = element_rect(fill="white"), 
-        strip.text.x = element_text(size=16), 
-        strip.text.y = element_text(size=16, face="italic"),
+        strip.text.x = element_text(size=16, face="italic"), 
+        strip.text.y = element_text(size=16),
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
         plot.margin = unit(c(.5,.5,.5,1), "lines")
         ) +
@@ -1100,12 +910,466 @@ pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & b
   coord_cartesian(expand = F) + ylab("Seroprevalence") + guides(alpha="none") + scale_fill_manual(values=filz.antigen) 
 pInterannual_new
 
-legend<-get_legend(pInterannual_new)
+#legend<-get_legend(pInterannual_new)
 
 pInterannual_new2<-pInterannual_new+geom_text(data= dat_text, aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5),
                                               fontface="italic");pInterannual_new2
 
- ##Add the historical IPM time series for comparison
+ 
+# now test the predictors of seropositivity from the raw data
+# reload the serology and catching
+
+lum.dat <- read.csv(file = paste0(homewd, "/serology/data/mix_sub_data_75_90_96_long.csv"))
+head(lum.dat)
+# Pteropus plots are all cross-reactivity and only two seropositives so no point examining them statistically
+# For Eid and Rou, the only antigens with known viruses from sequence data are GhV and AngV
+# Rou has no seropositives for AngV, so we focus exclusively on GhV in Rou and ghV/AngV in Eid
+
+lum.dat = subset(lum.dat, bat_species=="Eidolon dupreanum" & antigen=="GhV"|  bat_species=="Eidolon dupreanum" & antigen=="AngV" | bat_species=="Rousettus madagascariensis" & antigen=="GhV")
+
+lum.dat <- dplyr::select(lum.dat, sampleid, antigen, MFI, log10MFI, seropos, seropos_lci, seropos_uci)
+## merge the luminex data with the catching data
+
+# link this to the catching data to plot by sampling session
+catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/catching_data_clean.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
+#catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/Historic-Catching-Data-Through2020/catching_data_historic.csv"))
+
+head(catch.dat)
+names(catch.dat)
+
+# drop most columns and name those you want
+catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, processing_date, sampleid, barcode_id, bat_sex, bat_age_class, young_of_year, pupmom_pair, sampleid_pupmom_pair, bat_weight_g, bat_forearm_mm, mass_forearm_residual, recap_new)
+
+#and merge all three datasets
+merge.dat <- merge(lum.dat, catch.dat, by="sampleid", all.x = T)
+head(merge.dat)
+
+
+#get the midpoint processing date per sampling session
+merge.dat$processing_date <- as.Date(merge.dat$processing_date)
+sampling.date <- ddply(merge.dat, .(bat_species, sampling_session), summarise, min_date = min(processing_date), max_date = max(processing_date))
+sampling.date$mid_date <- (sampling.date$max_date-sampling.date$min_date)/2 + sampling.date$min_date
+
+#and slim to merge
+sampling.merge <- dplyr::select(sampling.date, bat_species, sampling_session, mid_date)
+
+merge.dat <- merge(merge.dat, sampling.merge, by = c("bat_species", "sampling_session"))
+merge.dat$year <- year(merge.dat$processing_date)
+merge.dat$month <- as.character(month(merge.dat$processing_date))
+merge.dat$month[merge.dat$month!="10"& merge.dat$month!="11" &merge.dat$month!="12"]<-paste0("0", merge.dat$month[merge.dat$month!="10"& merge.dat$month!="11" &merge.dat$month!="12"])
+#merge.dat$mid_date <- as.Date(paste0(merge.dat$year, "-", merge.dat$month, "-15"))
+head(merge.dat)
+
+#focusing just on 2018-2020 window
+#merge.dat <- subset(merge.dat, mid_date>"2018-01-01")
+merge.dat <- subset(merge.dat, mid_date>"2018-01-15")
+
+#change roost site to just Moramanga region or Ankarana
+unique(merge.dat$roost_site)
+merge.dat$roost_site[merge.dat$roost_site=="Angavobe_Edup" |merge.dat$roost_site=="Angavokely_Edup"| merge.dat$roost_site=="Maromizaha_Rmad"] <- "Moramanga"
+merge.dat$roost_site[merge.dat$roost_site!="Moramanga"] <- "Ankarana"
+head(merge.dat)
+
+# #curate date once more
+sampling.date <- ddply(merge.dat, .(bat_species, roost_site, mid_date), summarise)
+sampling.date# examine
+# #write over those that are super close
+merge.dat$mid_date <- as.character(merge.dat$mid_date)
+merge.dat$mid_date[merge.dat$bat_species=="Eidolon dupreanum" & merge.dat$roost_site=="Moramanga" & merge.dat$mid_date=="2018-02-15"] <- "2018-02-14"
+merge.dat$mid_date[merge.dat$bat_species=="Rousettus madagascariensis" & merge.dat$roost_site=="Moramanga" & merge.dat$mid_date=="2019-01-09"] <- "2019-01-05"
+merge.dat$mid_date <- as.Date(merge.dat$mid_date)
+
+head(merge.dat)
+
+#as with shedding data, we count everything as a yoy as a juvenile
+unique(merge.dat$young_of_year)
+unique(merge.dat$bat_age_class[merge.dat$young_of_year=="yes" & !is.na(merge.dat$young_of_year)]) #lots of NL and A in young of year
+merge.dat$bat_age_class[merge.dat$young_of_year=="yes"& !is.na(merge.dat$young_of_year)]<- "J" #all yoy are juveniles
+# 
+unique(merge.dat$bat_age_class)
+
+# make a few extra variables
+merge.dat$combo_class <- paste0(merge.dat$bat_sex, "-", merge.dat$bat_age_class)
+#combine juveniles 
+merge.dat$combo_class[merge.dat$bat_age_class=="J"] <- "juvenile"
+merge.dat$combo_class[merge.dat$combo_class=="male-NA" | merge.dat$combo_class=="female-NA" | merge.dat$combo_class=="NA-NA"] <- NA
+unique(merge.dat$combo_class) # don't use NAs in this analysis
+merge.dat$MFR_class <- merge.dat$combo_class
+merge.dat$MFR_class[merge.dat$MFR_class=="female-L" | merge.dat$MFR_class=="male-A" | merge.dat$MFR_class=="female-NL"] <- "adult"
+merge.dat$MFR_class <- as.factor(merge.dat$MFR_class)
+merge.dat$combo_class <- as.factor(merge.dat$combo_class)
+unique(merge.dat$MFR_class) # don't use NAs in this analysis
+merge.dat$mass_forearm_residual[merge.dat$MFR_class=="juvenile"] <- 0
+merge.dat$doy <- yday(merge.dat$mid_date)
+merge.dat$year <- as.factor(year(merge.dat$processing_date))
+merge.dat$roost_site <- as.factor(merge.dat$roost_site)
+
+#Eidolon
+#GhV
+gamGhV <- gam(seropos ~ combo_class + mass_forearm_residual:MFR_class +
+                s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
+                s(year, bs="re"),
+              family = "binomial",
+              method = "REML", 
+              gamma = 1,
+              select = TRUE,
+              data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV"))
+
+summary(gamGhV) # moramanga and year
+
+gamAngV <- gam(seropos ~ combo_class + mass_forearm_residual:MFR_class +
+                s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
+                s(year, bs="re"),
+              family = "binomial",
+              method = "REML", 
+              gamma = 1,
+              select = TRUE,
+              data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="AngV"))
+
+summary(gamAngV) # nothing
+
+#Rousettus 
+gamRGhV <- gam(seropos ~ combo_class + mass_forearm_residual:MFR_class +
+                s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
+                s(year, bs="re"),
+              family = "binomial",
+              method = "REML", 
+              gamma = 1,
+              select = TRUE,
+              data= subset(merge.dat, bat_species =="Rousettus madagascariensis" & antigen=="GhV"))
+
+summary(gamRGhV) # nothing sig
+
+#because there was clear seasonality, at least for GhV in Eidolon, now sum across intraannual
+
+#then, look at predictors of MFI among seropositives
+merge.sum <- ddply(merge.dat,.(bat_species, antigen, roost_site, mid_date, year, doy), summarise, Nseropos=sum(seropos), Ntot=length(seropos))
+merge.sum$seroneg = merge.sum$Ntot- merge.sum$Nseropos
+
+
+
+#and new gams
+gamGhV <- gam(cbind(Nseropos, seroneg) ~ 
+                s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
+                s(year, bs="re"),
+              family = "binomial",
+              method = "REML", 
+              gamma = 1,
+              select = TRUE,
+              data= subset(merge.sum, bat_species =="Eidolon dupreanum" & antigen=="GhV"))
+
+summary(gamGhV) # moramanga and year
+
+
+gamAngV <- gam(cbind(Nseropos, seroneg) ~ 
+                s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
+                s(year, bs="re"),
+              family = "binomial",
+              method = "REML", 
+              gamma = 1,
+              select = TRUE,
+              data= subset(merge.sum, bat_species =="Eidolon dupreanum" & antigen=="AngV"))
+
+summary(gamAngV) # nothing
+
+
+#Rousettus madagascariensis
+gamRGhV <- gam(cbind(Nseropos, seroneg) ~ 
+                s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
+                s(year, bs="re"),
+              family = "binomial",
+              method = "REML", 
+              gamma = 1,
+              select = TRUE,
+              data= subset(merge.sum, bat_species =="Rousettus madagascariensis" & antigen=="GhV"))
+
+summary(gamRGhV) # nothing
+
+
+#only significant seasonality for GhV in Eidolon in Moramanga
+
+#plot that next
+
+
+pred.df <- cbind.data.frame(mid_date = seq(from= as.Date("2019-01-01"), to = as.Date("2019-12-31"), by=1), doy=1:365)
+pred.df$bat_species <- "Eidolon dupreanum"
+pred.df$antigen <- "GhV"
+# pred.df2 <- pred.df
+# pred.df2$antigen <- "AngV"
+# pred.df <- rbind(pred.df, pred.df2)
+pred.df$roost_site <- "Moramanga"
+pred.df$year <- 2019
+
+pred.df$prevalence <- NA
+pred.df$prev_lci <- NA
+pred.df$prev_uci <- NA
+
+
+
+pred.df$prevalence[pred.df$antigen=="GhV"] <- predict(gamGhV, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(year)"))
+pred.df$prev_lci[pred.df$antigen=="GhV"] <- predict(gamGhV, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(year)")) - 1.96*predict(gamGhV, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(year)"), se.fit = TRUE)$se
+pred.df$prev_uci[pred.df$antigen=="GhV"] <- predict(gamGhV, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(year)")) + 1.96*predict(gamGhV, type = "response", newdata = pred.df[pred.df$antigen=="GhV",], exclude = c("s(year)"), se.fit = TRUE)$se
+# 
+# pred.df$prevalence[pred.df$antigen=="AngV"] <- predict(gamAngV, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(year)"))
+# pred.df$prev_lci[pred.df$antigen=="AngV"] <- predict(gamAngV, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(year)")) - 1.96*predict(gamAngV, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(year)"), se.fit = TRUE)$se
+# pred.df$prev_uci[pred.df$antigen=="AngV"] <- predict(gamAngV, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(year)")) + 1.96*predict(gamAngV, type = "response", newdata = pred.df[pred.df$antigen=="AngV",], exclude = c("s(year)"), se.fit = TRUE)$se
+
+pred.df$prev_lci[pred.df$prev_lci<0] <- 0
+pred.df$prev_uci[pred.df$prev_uci>1] <- 1
+pred.df$sig <- 1
+
+
+#and make the gestation database
+gest.dat <- cbind.data.frame(bat_species=c("Eidolon dupreanum", "Rousettus madagascariensis"), start = c(as.Date("2019-08-03"), as.Date("2019-09-11")), stop=c(as.Date("2019-11-15"),  as.Date("2019-12-11")))
+gest.dat$season = "gestation"
+lact.dat <- cbind.data.frame(bat_species=c("Eidolon dupreanum", "Eidolon dupreanum", "Rousettus madagascariensis",  "Rousettus madagascariensis"), start = c(as.Date("2019-11-16"), as.Date("2019-01-01"), as.Date("2019-12-12"),  as.Date("2019-01-01")), stop=c(as.Date("2019-12-31"), as.Date("2019-02-02"), as.Date("2019-12-31"), as.Date("2015-02-19")))
+lact.dat$season = "lactation"
+
+#and winter
+cal.dat <-  cbind.data.frame(bat_species=c("Eidolon dupreanum", "Rousettus madagascariensis"), start = c( as.Date("2019-05-15"),as.Date("2019-05-15")), stop=c(as.Date("2019-10-10"),as.Date("2019-10-10")))
+cal.dat$season <- "winter"
+cal.dat <- rbind(cal.dat, gest.dat, lact.dat)
+cal.dat$year <- year(cal.dat$stop)
+
+cal.dat$doy_start <- yday(cal.dat$start)
+cal.dat$doy_stop <- yday(cal.dat$stop)
+
+
+
+
+#collect data on prevalence just for plotting
+head(merge.sum)
+
+merge.sum$seroprevalence_lci <- merge.sum$seroprevalence_uci <- NA
+
+for (i in 1:length(merge.sum$bat_species)){
+  merge.sum$seroprevalence_lci[i] <-  binom.test(merge.sum$Nseropos[i],merge.sum$Ntot[i])$conf.int[1]
+  merge.sum$seroprevalence_uci[i] <-  binom.test(merge.sum$Nseropos[i],merge.sum$Ntot[i])$conf.int[2]
+  
+}
+
+merge.sum$seroprevalence <- merge.sum$Nseropos/merge.sum$Ntot
+
+
+merge.sum$seroprevalence_lcimerge.sum$sig = 1
+
+
+
+
+colorz = c('AngV' = "#F8766D", 'GhV' = "#00C094")
+
+sitez = c('Ankarana' ="#A58AFF",  'Moramanga' = "#00C094", 'Mahabo' = "#619CFF")
+
+filz <- c(colorz, 'gestation' = "yellow", 'lactation' = "lightpink", 'winter' = "skyblue")
+
+filz1 <- filz[1:(length(filz)-3)]
+filz2 <- filz[(length(filz)-2):length(filz)]
+
+yearz <- c('2013'=3, '2014' = 7, '2015'=8, '2016'=18, '2018' = 16, '2019' = 17, '2020' = 15, '2021' = 4, '2023' = 6)
+
+
+pIntra <- ggplot(pred.df) + 
+  geom_point(data=subset(merge.sum, bat_species=="Eidolon dupreanum" & antigen=="GhV"), aes(x=doy, y=seroprevalence, size=Ntot, color=antigen, shape=year)) +
+  geom_linerange(data=subset(merge.sum, bat_species=="Eidolon dupreanum" & antigen=="GhV"), aes(x=doy, ymin=seroprevalence_lci, ymax=seroprevalence_uci, color=antigen,  group=year), linetype=2, show.legend = F) +
+  geom_rect(data=subset(cal.dat, bat_species=="Eidolon dupreanum"), aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3) +
+  scale_fill_manual(values=filz2) +
+  scale_shape_manual(values=yearz) +
+  ggnewscale::new_scale_fill() +
+  geom_ribbon(data = subset(pred.df), aes(x=doy, ymin=prev_lci, ymax= prev_uci, fill = antigen), alpha=.3, show.legend = F) +
+  geom_line(data = subset(pred.df),aes(x=doy, y=prevalence, color=antigen)) +
+  # geom_ribbon(aes(x=doy, ymin=prev_lci, ymax= prev_uci, fill = antigen), alpha=.3, show.legend = F) +
+  # geom_line(aes(x=doy, y=prevalence, color=antigen)) + 
+  facet_grid(bat_species~antigen) + theme_bw() +
+  scale_color_manual(values=colorz) + scale_x_continuous(breaks=c(31, 93, 155, 218, 280, 344 ), labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")) +
+  scale_fill_manual(values=filz1) +
+  scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
+  theme(axis.text = element_text(size=14), axis.title.x = element_blank(), 
+        axis.title.y = element_text(size=16),
+        strip.background.x = element_rect(fill="white"), 
+        strip.background.y = element_blank(),
+        strip.text.y = element_blank(),
+        #strip.text.y = element_text(size=16),panel.spacing = unit(1.5, "lines"),
+        strip.text.x = element_text(size=16), 
+        panel.grid = element_blank()) +
+  coord_cartesian(expand = F) + ylab("seroprevalence") + xlab("month of year") + guides(color="none") ;pIntra
+
+
+legend <- cowplot::get_legend(pIntra)
+
+pIntra_noLeg <- ggplot(pred.df) + 
+  geom_point(data=subset(merge.sum, bat_species=="Eidolon dupreanum" & antigen=="GhV"), aes(x=doy, y=seroprevalence, size=Ntot, color=antigen, shape=year), show.legend = F) +
+  geom_linerange(data=subset(merge.sum, bat_species=="Eidolon dupreanum" & antigen=="GhV"), aes(x=doy, ymin=seroprevalence_lci, ymax=seroprevalence_uci, color=antigen,  group=year), linetype=2, show.legend = F) +
+  geom_rect(data=subset(cal.dat, bat_species=="Eidolon dupreanum"), aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3, show.legend = F) +
+  scale_fill_manual(values=filz2) +
+  scale_shape_manual(values=yearz) +
+  ggnewscale::new_scale_fill() +
+  geom_ribbon(data = subset(pred.df), aes(x=doy, ymin=prev_lci, ymax= prev_uci, fill = antigen), alpha=.3, show.legend = F) +
+  geom_line(data = subset(pred.df),aes(x=doy, y=prevalence, color=antigen)) +
+  # geom_ribbon(aes(x=doy, ymin=prev_lci, ymax= prev_uci, fill = antigen), alpha=.3, show.legend = F) +
+  # geom_line(aes(x=doy, y=prevalence, color=antigen)) + 
+  facet_grid(bat_species~antigen) + theme_bw() +
+  scale_color_manual(values=colorz) + scale_x_continuous(breaks=c(31, 93, 155, 218, 280, 344 ), labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")) +
+  scale_fill_manual(values=filz1) +
+  scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
+  theme(axis.text = element_text(size=14), axis.title.x = element_blank(), 
+        axis.title.y = element_text(size=16),
+        strip.background.x = element_rect(fill="white"), 
+        strip.background.y = element_blank(),
+        strip.text.y = element_blank(),
+        #strip.text.y = element_text(size=16),panel.spacing = unit(1.5, "lines"),
+        strip.text.x = element_text(size=16), 
+        panel.grid = element_blank()) +
+  coord_cartesian(expand = F) + ylab("seroprevalence") + xlab("month of year") + guides(color="none") ;pIntra_noLeg
+
+
+#Next, test predictors of MFI in seropositives  and plot that for GhV in Eid
+merge.dat$combo_class <- factor(merge.dat$combo_class, levels=c("female-NL", "female-P", "female-L", "male-A", "juvenile"))
+
+#Eidolon
+#GhV
+gamMFIGhV <- gam(MFI ~ combo_class + mass_forearm_residual:MFR_class +
+                s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
+                s(year, bs="re"),
+              method = "REML", 
+              gamma = 1,
+              select = TRUE,
+              data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & combo_class!="female-P"))
+
+summary(gamMFIGhV) # moramanga,  juveniles and lactating females associated with higher MFI as compared with female-NL
+
+
+gamMFIAngV <- gam(MFI ~ combo_class + mass_forearm_residual:MFR_class +
+                 s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
+                 s(year, bs="re"),
+               method = "REML", 
+               gamma = 1,
+               select = TRUE,
+               data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="AngV" & combo_class!="female-P"))
+
+summary(gamMFIAngV) # adult males associated with lower MFI as compared with female-NL
+
+#Rousettus 
+gamRMFIGhV <- gam(MFI ~ combo_class + mass_forearm_residual:MFR_class +
+                 s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
+                 s(year, bs="re"),
+               method = "REML", 
+               gamma = 1,
+               select = TRUE,
+               data= subset(merge.dat, bat_species =="Rousettus madagascariensis" & antigen=="GhV" & combo_class!="female-P"))
+
+summary(gamRMFIGhV) # nothing sig
+
+#and try the same analysis as with the shedding data
+merge.dat$mass_cat <- NA
+merge.dat$mass_cat[merge.dat$mass_forearm_residual<0 &!is.na(merge.dat$mass_forearm_residual) & merge.dat$combo_class!="juvenile"|merge.dat$mass_forearm_residual<0 &!is.na(merge.dat$mass_forearm_residual) & merge.dat$combo_class!="female-P"] <- "poor"
+merge.dat$mass_cat[merge.dat$mass_forearm_residual>0 &!is.na(merge.dat$mass_forearm_residual) & merge.dat$combo_class!="juvenile"|merge.dat$mass_forearm_residual>0 &!is.na(merge.dat$mass_forearm_residual) & merge.dat$combo_class!="female-P"] <- "good"
+merge.dat$mass_cat[ merge.dat$combo_class=="juvenile"] <- "juvenile"
+merge.dat$mass_cat[ merge.dat$combo_class=="female-P"] <- "female-P"
+merge.dat$mass_cat <- as.factor(merge.dat$mass_cat)
+
+
+#and redo these with simler predictors
+#GhV
+gamMFIGhV <- lmer(MFI ~ mass_cat + (1|year), REML = T,
+                 data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & mass_cat!="female-P")) # singlular fit, remove random effect
+
+gamMFIGhV <- lm(MFI ~ mass_cat,
+                  data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & mass_cat!="female-P")) 
+
+summary(gamMFIGhV) #juveniles and poor body condition associated with higher MFI vs good body condition
+
+
+gamMFIAngV <- lmer(MFI ~ mass_cat + (1|year), REML = T,
+                  data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="AngV" & mass_cat!="female-P"))# singlular fit, remove random effect
+
+gamMFIAngV <- lm(MFI ~ mass_cat, 
+                   data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="AngV" & mass_cat!="female-P"))
+
+summary(gamMFIAngV) # nothing
+
+#Rousettus 
+gamRMFIGhV <- lmer(MFI ~ mass_cat + (1|year), REML = T,
+                  data= subset(merge.dat, bat_species =="Rousettus madagascariensis" & antigen=="GhV" & mass_cat!="female-P"))# singlular fit, remove random effect
+
+gamRMFIGhV <- lm(MFI ~ mass_cat,
+                   data= subset(merge.dat, bat_species =="Rousettus madagascariensis" & antigen=="GhV" & mass_cat!="female-P"))
+
+summary(gamRMFIGhV) # nothing sig
+
+
+#and plot
+merge.dat$cat_plot <- as.character(merge.dat$mass_cat)
+merge.dat$cat_plot[merge.dat$cat_plot=="good"] <- "adult,\nMFR>0"
+merge.dat$cat_plot[merge.dat$cat_plot=="poor"] <- "adult,\nMFR<0"
+merge.dat$cat_plot[merge.dat$cat_plot=="pregnant"] <- "pregnant\nfemale"
+merge.dat$cat_plot <- factor(merge.dat$cat_plot, levels = c("adult,\nMFR>0", "adult,\nMFR<0", "pregnant\nfemale", "juvenile"))
+
+#and plot MFI by condition/juvenile status - leave out pregnant females since there are so few
+pMFR_MFI_GhV <- ggplot(data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & mass_cat!="female-P")) +
+  geom_violin(aes(x=cat_plot, y=MFI), draw_quantiles = c(0,.25,.5,.75)) + 
+  geom_jitter(aes(x=cat_plot, y=MFI, color=roost_site, shape=as.factor(year)), width = .2, size=3) +
+  theme_bw() + ylab("Ct") + facet_grid(bat_species~antigen)+
+  scale_shape_manual(name="year", values=yearz) +
+  scale_color_manual(values = sitez, name="roost site") +
+  theme(panel.grid = element_blank(),
+        axis.text = element_text(size=14), 
+        strip.background.y = element_blank(),
+        legend.position = "inside",
+        legend.position.inside = c(.23,.85),
+        strip.text.y = element_blank(),
+        strip.background.x = element_rect(fill="white"),
+        strip.text.x = element_text(size = 16),
+        axis.title.x = element_blank(), 
+        #axis.title.x = element_text(size=16, colour = "transparent"),
+        axis.title.y = element_text(size=16)) + guides(shape="none");pMFR_MFI_GhV 
+
+#now put these all together
+pCD <- cowplot::plot_grid(pIntra_noLeg, pMFR_MFI_GhV, nrow = 1, ncol = 2, labels = c("C", "D"), label_size = 22);pCD
+
+
+#and complete the rest of fig3 
+
+# inter <- cowplot::plot_grid(pInterannual_new2, NULL, ncol = 1, nrow = 2, 
+#                             rel_widths = c(1,1), rel_heights = c(1,0.2), labels = c("B"), label_size = 22);inter
+# as.ggplot(inter)
+
+inter <- cowplot::plot_grid(pInterannual_new2, 
+                             labels = c("B"), label_size = 22);inter
+as.ggplot(inter)
+
+# inter <- cowplot::plot_grid(pInterannual_new2, legend, ncol = 1, nrow = 2, 
+#                             rel_widths = c(1,1), rel_heights = c(1,0.2), labels = c("", ""));inter
+# as.ggplot(inter)
+
+#right column
+pRight <- cowplot::plot_grid(inter, pCD, ncol = 1, nrow = 2, 
+                             rel_widths = c(1,1), rel_heights = c(1.8,1), labels = c("", ""));pRight
+
+#add overall legend
+pRightwLeg <- cowplot::plot_grid(pRight, legend, ncol = 2, nrow = 1, 
+                             rel_widths = c(1,.2), labels = c("", ""));pRightwLeg
+
+
+#and the whole plot
+
+fig3<-cowplot::plot_grid(mountain, pRightwLeg,
+                         labels=c("A",""),
+                         rel_widths=c(1,1.6), rel_heights = c(1,1),
+                         ncol=2,align="hv", axis="l", label_size = 23)+
+  theme(plot.margin = unit(c(0,0,0,0), "cm"),
+        plot.background = element_rect(fill = "white", colour = NA)); fig3
+
+
+ggsave(file = paste0(homewd, "/final_figures_tables/tmp/Fig3_mountainplot_seasonal_serology_new.png"),
+       plot= fig3,
+       units="mm",  
+       width=180, 
+       height=140, 
+       scale=2, 
+       dpi=500)
+
+
+##Add the historical IPM time series for comparison
  
  # load the IPM data and the JAE data
  
@@ -1780,22 +2044,6 @@ pJAE_inter2<-pJAE_inter+geom_text(data= dat_text,
                               mapping = aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5, fontface="italic"));pJAE_inter2
 
 ####put figures together
-inter <- cowplot::plot_grid(pInterannual_new2, NULL, ncol = 1, nrow = 2, 
-                            rel_widths = c(1,1), rel_heights = c(1,0.2), labels = c("", ""));inter
-as.ggplot(inter)
-
-inter <- cowplot::plot_grid(pInterannual_new2, legend, ncol = 1, nrow = 2, 
-                            rel_widths = c(1,1), rel_heights = c(1,0.2), labels = c("", ""));inter
-as.ggplot(inter)
-
-fig3<-cowplot::plot_grid(mountain, inter,
-                 labels=c("A","B"),
-                 rel_widths=c(1,1.6), rel_heights = c(1,1),
-                 ncol=2,align="hv", axis="l", label_size = 23)+
-  theme(plot.margin = unit(c(0,0,0,0), "cm"),
-        plot.background = element_rect(fill = "white", colour = NA)); fig3
-
-
 supp<-cowplot::plot_grid(pIPM_new2, pJAE_inter2, leg, 
                           labels=c("A","B","",""),
                           rel_widths=c(0.6,1,  0.2), rel_heights = c(1,1,1),
