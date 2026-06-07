@@ -1183,8 +1183,8 @@ pIntra <- ggplot(pred.df) +
   scale_color_manual(values=colorz) + scale_x_continuous(breaks=c(31, 93, 155, 218, 280, 344 ), labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")) +
   scale_fill_manual(values=filz1) +
   scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
-  theme(axis.text = element_text(size=14), axis.title.x = element_blank(), 
-        axis.title.y = element_text(size=16),
+  theme(axis.text = element_text(size=14), #axis.title.x = element_blank(), 
+        axis.title = element_text(size=16),
         strip.background.x = element_rect(fill="white"), 
         strip.background.y = element_blank(),
         strip.text.y = element_blank(),
@@ -1211,8 +1211,8 @@ pIntra_noLeg <- ggplot(pred.df) +
   scale_color_manual(values=colorz) + scale_x_continuous(breaks=c(31, 93, 155, 218, 280, 344 ), labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov")) +
   scale_fill_manual(values=filz1) +
   scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
-  theme(axis.text = element_text(size=14), axis.title.x = element_blank(), 
-        axis.title.y = element_text(size=16),
+  theme(axis.text = element_text(size=14), #axis.title.x = element_blank(), 
+        axis.title = element_text(size=16),
         strip.background.x = element_rect(fill="white"), 
         strip.background.y = element_blank(),
         strip.text.y = element_blank(),

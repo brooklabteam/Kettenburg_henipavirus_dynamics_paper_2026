@@ -13,6 +13,7 @@ library(epitools)
 library(cowplot)
 library(sjPlot)
 library(lme4)
+library(lmerTest)
 
 ################################################################################
 ################################################################################
@@ -755,7 +756,7 @@ lmAngV <- lmer(AngV_ct ~
 
 lmAngV <- lm(AngV_ct ~ 
               mass_cat,
-            data= subset(tot.merge, bat_species =="Eidolon dupreanum" &  AngV_ct>0)) #singular fit, no need for random effect
+            data= subset(tot.merge, bat_species =="Eidolon dupreanum" &  AngV_ct>0)) 
 summary(lmAngV) # nothing
 
 #AndV
@@ -804,7 +805,7 @@ summary(lmRAndV) # nothing.
 lmPGhV <- lmer(GhV_ct ~ 
                  mass_cat + (1| year),
                REML=T,
-               data= subset(tot.merge, bat_species =="Pteropus rufus" &  GhV_ct>0)) #singular fit, no need for random effect
+               data= subset(tot.merge, bat_species =="Pteropus rufus" &  GhV_ct>0)) 
 
 summary(lmPGhV) # nothing
 
@@ -814,9 +815,9 @@ summary(lmPGhV) # nothing
 lmPAngV <- lmer(AngV_ct ~ 
                   mass_cat + (1| year),
                 REML=T,
-                data= subset(tot.merge, bat_species =="Pteropus rufus" &  AngV_ct>0)) #singular fit, no need for random effect
+                data= subset(tot.merge, bat_species =="Pteropus rufus" &  AngV_ct>0))
 
-summary(lmPAngV) # poor body condition with low Ct
+summary(lmPAngV) 
 
 #AndV
 lmPAndV <- lmer(AndV_ct ~ 
@@ -825,7 +826,7 @@ lmPAndV <- lmer(AndV_ct ~
                 data= subset(tot.merge, bat_species =="Pteropus rufus" &  AndV_ct>0)) #singular fit
 
 lmPAndV <- lm(AndV_ct ~ mass_cat,
-                data= subset(tot.merge, bat_species =="Pteropus rufus" &  AndV_ct>0)) #singular fit
+                data= subset(tot.merge, bat_species =="Pteropus rufus" &  AndV_ct>0)) 
 
 summary(lmPAndV) # nothing. 
 
