@@ -910,6 +910,13 @@ pMFR_Ct_AndV <- ggplot(data= subset(tot.merge, AndV_ct>0 & !is.na(cat_plot) & ca
 #finally, what about coinfection?
 tot.merge$sum_infections <- rowSums(cbind(tot.merge$GhV_pos, tot.merge$AngV_pos, tot.merge$AndV_pos))
 
+length(tot.merge$sum_infections[tot.merge$sum_infections>1 & tot.merge$bat_species=="Eidolon dupreanum"]) #6
+length(tot.merge$sum_infections[tot.merge$sum_infections>1 & tot.merge$bat_species=="Pteropus rufus"]) #2
+length(tot.merge$sum_infections[tot.merge$sum_infections>1 & tot.merge$bat_species=="Rousettus madagascariensis"]) #3
+
+length(tot.merge$sum_infections[tot.merge$sum_infections>2 & tot.merge$bat_species=="Eidolon dupreanum"]) #0
+length(tot.merge$sum_infections[tot.merge$sum_infections>2 & tot.merge$bat_species=="Pteropus rufus"]) #0
+length(tot.merge$sum_infections[tot.merge$sum_infections>2 & tot.merge$bat_species=="Rousettus madagascariensis"]) #0
 #Eidolon
 glmCoInf <- glm(sum_infections ~ combo_class,
           family = "poisson",

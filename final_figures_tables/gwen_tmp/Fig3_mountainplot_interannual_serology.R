@@ -521,7 +521,7 @@ gamEidNoSexAngVPlot <- gam(cbind(seropos, seroneg) ~
                            gamma = .48,
                            select = TRUE) #
 
-summary(gamEidNoSexAngV) #nothing sig
+summary(gamEidNoSexAngV) #Moramanga interannual sig
 #plot(gamEidNoSexAngV)
 # Ankarana edf = 0
 
@@ -1308,7 +1308,7 @@ merge.dat$cat_plot <- factor(merge.dat$cat_plot, levels = c("adult,\nMFR>0", "ad
 pMFR_MFI_GhV <- ggplot(data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & mass_cat!="female-P")) +
   geom_violin(aes(x=cat_plot, y=MFI), draw_quantiles = c(0,.25,.5,.75)) + 
   geom_jitter(aes(x=cat_plot, y=MFI, color=roost_site, shape=as.factor(year)), width = .2, size=3) +
-  theme_bw() + ylab("Ct") + facet_grid(bat_species~antigen)+
+  theme_bw() + ylab("MFI") + facet_grid(bat_species~antigen)+
   scale_shape_manual(name="year", values=yearz) +
   scale_color_manual(values = sitez, name="roost site") +
   theme(panel.grid = element_blank(),
