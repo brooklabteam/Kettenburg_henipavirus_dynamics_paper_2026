@@ -13,6 +13,8 @@ library(ggh4x)
 library(epitools)
 
 #first record your wd for this repo (home) 
+#homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+#batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
 homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026"
 batwd =  "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
 
@@ -33,6 +35,14 @@ head(shed.dat)
 names(shed.dat)
 
 intersect(unique(recap$sampleid), unique(shed.dat$sampleid)) #164 shedding records for recaps
+
+recap = subset(recap, processing_date < "2021-01-01")
+length(recap$sampleid[recap$bat_species=="Eidolon dupreanum"]) #180
+length(unique(recap$barcode_id[recap$bat_species=="Eidolon dupreanum"])) #88
+length(recap$sampleid[recap$bat_species=="Rousettus madagascariensis"]) #115
+length(unique(recap$barcode_id[recap$bat_species=="Rousettus madagascariensis"])) #57
+length(recap$sampleid[recap$bat_species=="Pteropus rufus"]) #1
+length(unique(recap$barcode_id[recap$bat_species=="Pteropus rufus"])) #1. only 1 sampling point for this bat, so cannot use it
 
 #just take rousettus and eidolon
 recap=subset(recap, bat_species!="Pteropus rufus")
@@ -56,6 +66,7 @@ head(shed.dat)
 
 #and merge with recap
 recap <- merge(recap, shed.dat, by="sampleid", all.x = T)
+length(unique(recap$bat_species=="Eidolon dupreanum"))
 recap$qPCR_AngV_multi_any_pos_ur[is.na(recap$qPCR_AngV_multi_any_pos_ur)] <- 2
 recap$qPCR_GhV_multi_any_pos_ur[is.na(recap$qPCR_GhV_multi_any_pos_ur)] <- 2
 
@@ -115,7 +126,10 @@ rm(list=ls())
 
 homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026"
 batwd =  "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
+# homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+# batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
 
+setwd(homewd)
 # re-merge the catching data
 
 #load the recaptures
@@ -132,7 +146,8 @@ head(recap)
 recap=subset(recap, bat_species!="Pteropus rufus")
 recap$processing_date <- as.Date(recap$processing_date)
 min(recap$processing_date)#"2013-11-24"
-max(recap$processing_date)#"2024-09-16"
+max(recap$processing_date)#"2026-05-05"
+recap <- subset(recap, processing_date < "2021-01-01")
 
 #and merge with shedding data too
 shed.dat <- read.csv(file = paste0(homewd, "/virus_shedding/data/henipavirus_shedding_data.csv"),header = T, stringsAsFactors = F)
@@ -149,8 +164,8 @@ head(shed.dat)
 recap.shed <- merge(recap, shed.dat, by="sampleid")
 recap.shed$qPCR_AngV_multi_any_pos_ur[is.na(recap.shed$qPCR_AngV_multi_any_pos_ur)] <- 2
 recap.shed$qPCR_GhV_multi_any_pos_ur[is.na(recap.shed$qPCR_GhV_multi_any_pos_ur)] <- 2
-length(unique(recap.shed$sampleid)) #161
-unique(recap.shed$barcode_id) #135
+length(unique(recap.shed$sampleid)) #133
+length(unique(recap.shed$barcode_id)) #105
 
 #and merge recaps with luminex data 
 lum.dat <- read.csv(file = paste0(homewd, "/serology/data/mix_sub_data_75_90_96_long.csv"))
@@ -164,20 +179,20 @@ recap.lum$processing_date <- as.Date(recap.lum$processing_date)
 unique(recap.lum$barcode_id) #117
 
 intersect(unique(recap.lum$barcode_id), unique(recap.shed$barcode_id)) #85 shedding bats records for recaps that also have serology
-setdiff(unique(recap.lum$barcode_id), unique(recap.shed$barcode_id)) #32 bats with serology but no PCR
-setdiff(unique(recap.shed$barcode_id), unique(recap.lum$barcode_id)) #47 bats with PCR but no serology - mostly early time series
+setdiff(unique(recap.lum$barcode_id), unique(recap.shed$barcode_id)) #34 bats with serology but no PCR
+setdiff(unique(recap.shed$barcode_id), unique(recap.lum$barcode_id)) #20 bats with PCR but no serology 
 
 #check dates
 min(recap.shed$processing_date)#"2013-11-24"
-max(recap.shed$processing_date)#"2023-07-03"
+max(recap.shed$processing_date)#2020-03-10"
 
 head(recap.shed)
 
 #we only want to compare with serology so just take after 2017
 recap.shed <- subset(recap.shed, processing_date>"2017-01-01")
 setdiff(unique(recap.shed$barcode_id), unique(recap.lum$barcode_id)) 
-#now 33 bats with PCR but no serology 
-setdiff(unique(recap.shed$sampleid), unique(recap.lum$sampleid)) #32 sampling events
+#now 6 bats with PCR but no serology 
+setdiff(unique(recap.shed$sampleid), unique(recap.lum$sampleid)) #6 sampling events
 
 head(recap.lum)
 
@@ -379,6 +394,9 @@ cutoff.df <- cbind.data.frame(bat_species=c(rep("Eidolon dupreanum", 2)),
 cutoff.df$MFI = c(1141,1763)
 cutoff.df$antigen <- factor(cutoff.df$antigen, levels=c("GhV", "AngV"))
 
+cutoff.df <- rbind(cutoff.df, c("Rousettus madagascariensis", "GhV", "2018-2020", 2642 ))
+cutoff.df$MFI <- as.numeric(cutoff.df$MFI)
+
 EidMFIall <- ggplot(data=subset(recap.sum, bat_species=="Eidolon dupreanum" )) + 
   facet_nested(bat_sex~antigen, scales = "free") + theme_bw() +
   scale_shape_manual(name="Serostatus", values = shapez) + 
@@ -429,3 +447,78 @@ ggsave(file = paste0(homewd,"/Fig4_recaps.png"),
        dpi=500)
 
 
+#and the Rousettus version for the supplement
+
+
+Rou.recap <- ggplot(subset(recap.sum, bat_species=="Rousettus madagascariensis" & antigen=="GhV")) + theme_bw()+ 
+  geom_line(aes(x=processing_date, y=barcode_id, group=barcode_id, color=class, alpha=class2), size=1.5) + 
+  geom_point(aes(x=processing_date, y=barcode_id, group=barcode_id, shape=seropos, fill=pos, alpha=class2), size=4, color="gray65") + 
+  scale_shape_manual(name="Serostatus", values = shapez) + 
+  scale_fill_manual(name = "PCR status", values = filz) +
+  scale_color_manual(name= "Serological\ntrajectory", values = colorz1) + ylab("Individual bat\n\n") +
+  facet_nested(bat_sex~antigen, scales = "free", space = "free") + scale_alpha_manual(values = alphaz) +
+  theme(axis.text.y = element_blank(), 
+        axis.ticks.y=element_blank(), 
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),  
+        axis.ticks.x = element_blank(),  
+        axis.title.y = element_text(size=16),
+        legend.box = "vertical",
+        legend.position = "right",
+        #panel.spacing.y = unit(.1, "lines"),
+        #panel.spacing.x = unit(1, "lines"),
+        legend.text = element_text(size=10),
+        legend.title = element_text(size=12),
+        plot.margin = unit(c(.3,.3,.3,2),"lines"),
+        strip.text.x = element_text(size=16),
+        strip.text.y = element_text(size=16),
+        panel.grid = element_blank(), strip.background = element_rect(fill="white")) +
+  scale_x_continuous(breaks = c(as.Date("2014-07-01"),as.Date("2015-07-01"), as.Date("2016-07-01"), as.Date("2017-07-01"), as.Date("2018-07-01"), as.Date("2019-07-01")),labels = c(2014,2015,2016,2017,2018,2019)) +
+  guides(alpha="none",  shape=guide_legend(order=1, override.aes = list(size=3, color="black")), fill=guide_legend(order=2, override.aes = list(shape=21,size=3)), color=guide_legend(order=3, ncol=1));Rou.recap
+
+
+RouMFIall <- ggplot(data=subset(recap.sum, bat_species=="Rousettus madagascariensis" & antigen=="GhV" )) + 
+  facet_nested(bat_sex~antigen, scales = "free") + theme_bw() +
+  scale_shape_manual(name="Serostatus", values = shapez) + 
+  scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
+  theme(axis.text.y = element_text(size=14),   
+        #axis.ticks.y=element_blank(), 
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size=16),
+        legend.box = "vertical",
+        legend.position = "left",
+        #panel.spacing.y = unit(.1, "lines"),
+        #panel.spacing.x = unit(1, "lines"),
+        legend.text = element_text(size=10),
+        legend.title = element_text(size=12),
+        plot.margin = unit(c(2,.3,0,2),"lines"),
+        axis.text.x = element_text(size=14),  
+        strip.text.x =element_blank(),
+        strip.text.y = element_text(size=16),#, face="italic"),
+        panel.grid = element_blank(), strip.background = element_rect(fill="white")) +
+  geom_hline(data = subset(cutoff.df, bat_species=="Rousettus madagascariensis"), aes(yintercept = MFI), color="red", linetype=2) + 
+  geom_line(aes(x=processing_date, y=MFI, color=barcode_id, alpha = simple_class), show.legend = F, size=1.5)+
+  geom_point(aes(x=processing_date, y=MFI, fill=barcode_id, shape = seropos, alpha = simple_class), show.legend = F, size=4) +
+  scale_x_continuous(breaks = c(as.Date("2014-07-01"),as.Date("2015-07-01"), as.Date("2016-07-01"), as.Date("2017-07-01"), as.Date("2018-07-01"), as.Date("2019-07-01")),labels = c(2014,2015,2016,2017,2018,2019)) +
+  guides(alpha="none",  shape=guide_legend(order=1));RouMFIall
+
+
+#and the line up
+Fig4supp <- cowplot::plot_grid(Rou.recap, RouMFIall, 
+                           labels = c("A", "B"),
+                           ncol=1, nrow=2, rel_heights = c(1,1), align = "v", axis = "lr",label_size = 23)+
+  theme(plot.margin = unit(c(0,2,0,0),"lines")); Fig4supp
+
+# 
+# Fig4.1supp <- cowplot::plot_grid(Fig4supp, leg, ncol=2, nrow = 1, rel_widths = c(1,.2), align = "h", axis = "tb")+
+#   theme(plot.background = element_rect(fill = "white", colour = NA),
+#         plot.margin = unit(c(0,2,0,0),"lines")); Fig4.1supp
+
+ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/Fig4_supp_recaps_Rousettus.png"),
+       plot = Fig4supp,
+       bg="white",
+       units="mm",  
+       width=80, 
+       height=140, 
+       scale=2, 
+       dpi=500)
