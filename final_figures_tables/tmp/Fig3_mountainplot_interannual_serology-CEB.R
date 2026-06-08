@@ -34,7 +34,8 @@ library(cowplot)
 
 #first record your wd for this repo (home) 
 homewd= "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/"
-
+homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+setwd(homewd)
 #now load in the merged luminex data from the "data" folder
 
 #make sure this is latest catching file

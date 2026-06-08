@@ -904,6 +904,19 @@ pMFR_Ct_AndV <- ggplot(data= subset(tot.merge, AndV_ct>0 & !is.na(cat_plot) & ca
         axis.title.y = element_text(size=16)); pMFR_Ct_AndV
 
 
+#supplementary plot
+fig2_supp_ct <- cowplot::plot_grid(pMFR_Ct_GhV, pMFR_Ct_AngV, pMFR_Ct_AndV, ncol = 3, nrow=1, labels = c("A", "B", "C"), label_size = 22, label_x = -.02)
+
+
+ggsave(file = paste0(homewd,"/final_figures_tables/tmp/Fig2X-Ct-supplement-draft.png"),
+       plot=fig2_supp_ct,
+       units="mm",  
+       width=120, 
+       height=90, 
+       scale=3, 
+       dpi=300)
+
+
 #poor body condition and juvenile status are associated with lower Ct
 
 

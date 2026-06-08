@@ -848,6 +848,7 @@ pInterannual_new_Rou
 pInterannual_new_Rou2<-pInterannual_new_Rou+geom_text(data= dat_text, aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5),
                                               fontface="italic");pInterannual_new_Rou2
 
+#save for supplement
 
 
 seroprev.sum$sig <- 2

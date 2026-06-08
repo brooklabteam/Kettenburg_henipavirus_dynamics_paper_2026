@@ -450,7 +450,7 @@ ggsave(file = paste0(homewd,"/Fig4_recaps.png"),
 #and the Rousettus version for the supplement
 
 
-Rou.recap <- ggplot(subset(recap.sum, bat_species=="Rousettus madagascariensis" & antigen=="GhV")) + theme_bw()+ 
+Rou.recap <- ggplot(subset(recap.sum, bat_species=="Rousettus madagascariensis")) + theme_bw()+ 
   geom_line(aes(x=processing_date, y=barcode_id, group=barcode_id, color=class, alpha=class2), size=1.5) + 
   geom_point(aes(x=processing_date, y=barcode_id, group=barcode_id, shape=seropos, fill=pos, alpha=class2), size=4, color="gray65") + 
   scale_shape_manual(name="Serostatus", values = shapez) + 
@@ -477,7 +477,7 @@ Rou.recap <- ggplot(subset(recap.sum, bat_species=="Rousettus madagascariensis" 
   guides(alpha="none",  shape=guide_legend(order=1, override.aes = list(size=3, color="black")), fill=guide_legend(order=2, override.aes = list(shape=21,size=3)), color=guide_legend(order=3, ncol=1));Rou.recap
 
 
-RouMFIall <- ggplot(data=subset(recap.sum, bat_species=="Rousettus madagascariensis" & antigen=="GhV" )) + 
+RouMFIall <- ggplot(data=subset(recap.sum, bat_species=="Rousettus madagascariensis" )) + 
   facet_nested(bat_sex~antigen, scales = "free") + theme_bw() +
   scale_shape_manual(name="Serostatus", values = shapez) + 
   scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
