@@ -1265,7 +1265,7 @@ min(det.bat$t[det.bat$MFI<cutoff.df$MFI[cutoff.df$bat_species=="Eidolon dupreanu
 ### there is enough shedding data to develop a similar process for the I class
 ### Verdict: THERE IS NOT - commented out
 # rm(list=ls())
-# 
+# https://files.osf.io/v1/resources/kqdsn_v1/providers/osfstorage/655c82f12ee3334478c4165b?action=download&direct&version=1
 # ################################################################################
 # ################################################################################
 # homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
