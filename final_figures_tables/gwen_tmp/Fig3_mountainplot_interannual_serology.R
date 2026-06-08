@@ -851,6 +851,18 @@ pInterannual_new_Rou2<-pInterannual_new_Rou+geom_text(data= dat_text, aes(x = x,
 #save for supplement
 
 
+
+ggsave(file = paste0(homewd, "/final_figures_tables/tmp/Fig3_supplement_mountainplot_seasonal_serology_Rousettus.png"),
+       plot= pInterannual_new_Rou2,
+       units="mm",  
+       width=60, 
+       height=45, 
+       scale=2, 
+       dpi=500)
+
+
+
+
 seroprev.sum$sig <- 2
 seroprev.sum$sig[seroprev.sum$antigen=="AngV" | seroprev.sum$antigen=="GhV"] <- 1
 
