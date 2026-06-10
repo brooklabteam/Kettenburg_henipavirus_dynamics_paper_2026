@@ -145,7 +145,6 @@ plot.cut <- cbind.data.frame(bat_species=rep(c("Eidolon dupreanum", "Rousettus m
                              virus_family=rep(c("Filovirus", "Paramyxovirus"), 3),
                              MFI= c(rep(1672,2), 2642, 6132, rep(1672,2))) #might come back and mixture model all of these
 
-
 plot.cut$bat_species <- factor(plot.cut$bat_species, levels=c("Eidolon dupreanum", "Rousettus madagascariensis", "Pteropus rufus"))
 
 hc.henipa <- hclust(dist.henipa)
