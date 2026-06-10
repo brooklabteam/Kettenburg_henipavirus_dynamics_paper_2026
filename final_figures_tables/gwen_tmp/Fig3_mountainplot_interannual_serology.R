@@ -427,20 +427,20 @@ Eid.sum.GhV$roost_site <- droplevels(Eid.sum.GhV$roost_site)
 Eid.sum.GhV$antigen <- droplevels(Eid.sum.GhV$antigen)
 Eid.sum.GhV$year_f <- droplevels(Eid.sum.GhV$year_f)
 
+# 
+# gamEidNoSexGhV <- gam(cbind(seropos, seroneg) ~ 
+#                         roost_site + 
+#                         s(as.numeric(doy), bs = "cc", k =10, by = roost_site) +
+#                         s(year_f,  bs="fs", k=3, by= roost_site),
+#                       data= Eid.sum.GhV, 
+#                       family = "binomial", 
+#                       method = "REML", 
+#                       gamma = 1,
+#                       select = TRUE) #
+
 
 gamEidNoSexGhV <- gam(cbind(seropos, seroneg) ~ 
-                        roost_site + 
-                        s(as.numeric(doy), bs = "cc", k =10, by = roost_site) +
-                        s(year_f,  bs="fs", k=3, by= roost_site),
-                      data= Eid.sum.GhV, 
-                      family = "binomial", 
-                      method = "REML", 
-                      gamma = 1,
-                      select = TRUE) #
-
-
-gamEidNoSexGhV <- gam(cbind(seropos, seroneg) ~ 
-                        roost_site + 
+                        #roost_site + 
                         s(as.numeric(doy), bs = "cc", k =10, by = roost_site) +
                         s(as.numeric(mid_date), bs = "tp", k =6, by = roost_site),
                       data= Eid.sum.GhV, 
@@ -456,37 +456,37 @@ summary(gamEidNoSexGhV)
 # sig seasonality inter- and intra-annual for GhV Moramanga
 # Ankarana interannual edf = 0
 
-
-#now try with sex too
-seroprev.sum.sex$doy <- yday(seroprev.sum.sex$mid_date)
-seroprev.sum.sex$year <- year(seroprev.sum.sex$mid_date)
-
-Eid.sex.GhV = subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum" & antigen=="GhV")
-Eid.sex.GhV$year_f <- as.factor(Eid.sex.GhV$year)
-Eid.sex.GhV$antigen <- droplevels(Eid.sex.GhV$antigen)
-Eid.sex.GhV$roost_site <- droplevels(Eid.sex.GhV$roost_site)
-Eid.sex.GhV$bat_sex <- droplevels(Eid.sex.GhV$bat_sex)
-
-group <- interaction( Eid.sex.GhV$bat_sex, Eid.sex.GhV$roost_site, drop = TRUE)
-
-Eid.sex.GhV$group <- group
-Eid.sex.GhV$year <- as.numeric(as.character(Eid.sex.GhV$year))
-
-gamEidSexGhV <- gam(cbind(seropos, seroneg)~ 
-                      roost_site + bat_sex +
-                      s(as.numeric(doy), bs = c("cc"), k = 10, by = group) +
-                      s(year_f, bs="fs", k=3, by=group),
-                    data=Eid.sex.GhV, 
-                    family = "binomial", 
-                    method = "REML", 
-                    gamma =1,
-                    select = TRUE) #this term allows non-impactful terms to essentially be removed from model - check edf in summary to see if this happened to any
-summary(gamEidSexGhV)
+# 
+# #now try with sex too
+# seroprev.sum.sex$doy <- yday(seroprev.sum.sex$mid_date)
+# seroprev.sum.sex$year <- year(seroprev.sum.sex$mid_date)
+# 
+# Eid.sex.GhV = subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum" & antigen=="GhV")
+# Eid.sex.GhV$year_f <- as.factor(Eid.sex.GhV$year)
+# Eid.sex.GhV$antigen <- droplevels(Eid.sex.GhV$antigen)
+# Eid.sex.GhV$roost_site <- droplevels(Eid.sex.GhV$roost_site)
+# Eid.sex.GhV$bat_sex <- droplevels(Eid.sex.GhV$bat_sex)
+# 
+# group <- interaction( Eid.sex.GhV$bat_sex, Eid.sex.GhV$roost_site, drop = TRUE)
+# 
+# Eid.sex.GhV$group <- group
+# Eid.sex.GhV$year <- as.numeric(as.character(Eid.sex.GhV$year))
+# 
+# gamEidSexGhV <- gam(cbind(seropos, seroneg)~ 
+#                       roost_site + bat_sex +
+#                       s(as.numeric(doy), bs = c("cc"), k = 10, by = group) +
+#                       s(year_f, bs="fs", k=3, by=group),
+#                     data=Eid.sex.GhV, 
+#                     family = "binomial", 
+#                     method = "REML", 
+#                     gamma =1,
+#                     select = TRUE) #this term allows non-impactful terms to essentially be removed from model - check edf in summary to see if this happened to any
+# summary(gamEidSexGhV)
 # significant interannual trends for female Moramanga and significant intraanual trends for male Moramanga 
 # most Ankarana  data reduced to edf = 0, especial interannual
 
 
-AIC(gamEidNoSexGhV, gamEidSexGhV) # a lot better with no sex
+#AIC(gamEidNoSexGhV, gamEidSexGhV) # a lot better with no sex
 
 #now try for AngV as well
 Eid.sum.AngV <- subset(seroprev.sum, bat_species=="Eidolon dupreanum" & antigen=="AngV")
@@ -499,7 +499,7 @@ Eid.sum.AngV$antigen <- droplevels(Eid.sum.AngV$antigen)
 Eid.sum.AngV$year_f <- droplevels(Eid.sum.AngV$year_f)
 
 gamEidNoSexAngV <- gam(cbind(seropos, seroneg) ~ 
-                         roost_site + 
+                       #  roost_site + 
                          s(as.numeric(doy), bs = "cc", k =10, by = roost_site) +
                          s(as.numeric(mid_date),  bs="tp", k=6, by= roost_site),
                        data= Eid.sum.AngV, 
@@ -510,52 +510,52 @@ gamEidNoSexAngV <- gam(cbind(seropos, seroneg) ~
 
 
 
-gamEidNoSexAngVPlot <- gam(cbind(seropos, seroneg) ~ 
-                             roost_site + 
-                             s(as.numeric(doy), bs = "cc", k =10, by = roost_site) +
-                             s(as.numeric(mid_date),  bs="tp", k=6, by= roost_site),
-                           data= Eid.sum.AngV, 
-                           family = "binomial", 
-                           method = "REML", 
-                           gamma = .48,
-                           select = TRUE) #
+# gamEidNoSexAngVPlot <- gam(cbind(seropos, seroneg) ~ 
+#                              roost_site + 
+#                              s(as.numeric(doy), bs = "cc", k =10, by = roost_site) +
+#                              s(as.numeric(mid_date),  bs="tp", k=6, by= roost_site),
+#                            data= Eid.sum.AngV, 
+#                            family = "binomial", 
+#                            method = "REML", 
+#                            gamma = .48,
+#                            select = TRUE) #
 
 summary(gamEidNoSexAngV) #Moramanga interannual sig
-#plot(gamEidNoSexAngV)
-# Ankarana edf = 0
-
-
-#now try with sex too
-
-seroprev.sum.sex$doy <- yday(seroprev.sum.sex$mid_date)
-seroprev.sum.sex$year <- year(seroprev.sum.sex$mid_date)
-
-Eid.sex.AngV = subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum" & antigen=="AngV")
-Eid.sex.AngV$antigen <- droplevels(Eid.sex.AngV$antigen)
-Eid.sex.AngV$roost_site <- droplevels(Eid.sex.AngV$roost_site)
-Eid.sex.AngV$bat_sex <- droplevels(Eid.sex.AngV$bat_sex)
-
-group <- interaction( Eid.sex.AngV$bat_sex, Eid.sex.AngV$roost_site, drop = TRUE)
-
-Eid.sex.AngV$group <- group
-Eid.sex.AngV$year_f <- as.factor(Eid.sex.AngV$year)
-Eid.sex.AngV$year <- as.numeric(as.character(Eid.sex.AngV$year))
-
-gamEidSexAngV <- gam(cbind(seropos, seroneg)~ 
-                       roost_site + bat_sex +
-                       s(as.numeric(doy), bs = c("cc"), k = 10, by = group) +
-                       s(as.numeric(mid_date), bs="tp", k=6, by=group),
-                     data=Eid.sex.AngV, 
-                     family = "binomial", 
-                     method = "REML", 
-                     gamma =1,
-                     select = TRUE) #this term allows non-impactful terms to essentially be removed from model - check edf in summary to see if this happened to any
-summary(gamEidSexAngV)
+# #plot(gamEidNoSexAngV)
+# # Ankarana edf = 0
+# 
+# 
+# #now try with sex too
+# 
+# seroprev.sum.sex$doy <- yday(seroprev.sum.sex$mid_date)
+# seroprev.sum.sex$year <- year(seroprev.sum.sex$mid_date)
+# 
+# Eid.sex.AngV = subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum" & antigen=="AngV")
+# Eid.sex.AngV$antigen <- droplevels(Eid.sex.AngV$antigen)
+# Eid.sex.AngV$roost_site <- droplevels(Eid.sex.AngV$roost_site)
+# Eid.sex.AngV$bat_sex <- droplevels(Eid.sex.AngV$bat_sex)
+# 
+# group <- interaction( Eid.sex.AngV$bat_sex, Eid.sex.AngV$roost_site, drop = TRUE)
+# 
+# Eid.sex.AngV$group <- group
+# Eid.sex.AngV$year_f <- as.factor(Eid.sex.AngV$year)
+# Eid.sex.AngV$year <- as.numeric(as.character(Eid.sex.AngV$year))
+# 
+# gamEidSexAngV <- gam(cbind(seropos, seroneg)~ 
+#                        roost_site + bat_sex +
+#                        s(as.numeric(doy), bs = c("cc"), k = 10, by = group) +
+#                        s(as.numeric(mid_date), bs="tp", k=6, by=group),
+#                      data=Eid.sex.AngV, 
+#                      family = "binomial", 
+#                      method = "REML", 
+#                      gamma =1,
+#                      select = TRUE) #this term allows non-impactful terms to essentially be removed from model - check edf in summary to see if this happened to any
+# summary(gamEidSexAngV)
 # significant interannual trends for female Moramanga and significant intraanual trends for male Moramanga 
 # most Ankarana  data reduced to edf = 0, especial interannual
 
 
-AIC(gamEidNoSexAngV, gamEidSexAngV) # better with no sex
+#AIC(gamEidNoSexAngV, gamEidSexAngV) # better with no sex
 
 
 
@@ -580,46 +580,46 @@ pred.df$group <- group.pred
 
 
 levels(pred.df$group)
-levels(Eid.sex.GhV$group)
+#levels(Eid.sex.GhV$group)
 
 
-#GhV
-pred.df$predicted_seroprevalence <- NA
-pred.df$predicted_seroprevalence_lci <- NA
-pred.df$predicted_seroprevalence_uci <- NA
-#pred.df$predicted_seroprevalence <- predict.gam(gamEidSexGhV, newdata=pred.df, type = "response", se.fit = T)$fit
-pred.df$predicted_seroprevalence[pred.df$antigen=="GhV"] <- predict.gam(gamEidSexGhV, newdata=subset(pred.df,antigen=="GhV"), type = "response", se.fit = T)$fit
-pred.df$predicted_seroprevalence_lci[pred.df$antigen=="GhV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="GhV"] - 1.96*predict.gam(gamEidSexGhV, newdata=subset(pred.df,antigen=="GhV"), type = "response", se.fit = T)$se
-pred.df$predicted_seroprevalence_uci[pred.df$antigen=="GhV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="GhV"] + 1.96*predict.gam(gamEidSexGhV, newdata=subset(pred.df,antigen=="GhV"), type = "response", se.fit = T)$se
+# #GhV
+# pred.df$predicted_seroprevalence <- NA
+# pred.df$predicted_seroprevalence_lci <- NA
+# pred.df$predicted_seroprevalence_uci <- NA
+# #pred.df$predicted_seroprevalence <- predict.gam(gamEidSexGhV, newdata=pred.df, type = "response", se.fit = T)$fit
+# pred.df$predicted_seroprevalence[pred.df$antigen=="GhV"] <- predict.gam(gamEidSexGhV, newdata=subset(pred.df,antigen=="GhV"), type = "response", se.fit = T)$fit
+# pred.df$predicted_seroprevalence_lci[pred.df$antigen=="GhV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="GhV"] - 1.96*predict.gam(gamEidSexGhV, newdata=subset(pred.df,antigen=="GhV"), type = "response", se.fit = T)$se
+# pred.df$predicted_seroprevalence_uci[pred.df$antigen=="GhV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="GhV"] + 1.96*predict.gam(gamEidSexGhV, newdata=subset(pred.df,antigen=="GhV"), type = "response", se.fit = T)$se
+# 
+# 
+# #AngV
+# pred.df$predicted_seroprevalence[pred.df$antigen=="AngV"] <- predict.gam(gamEidSexAngV, newdata=subset(pred.df,antigen=="AngV"), type = "response", se.fit = T)$fit
+# pred.df$predicted_seroprevalence_lci[pred.df$antigen=="AngV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="AngV"] - 1.96*predict.gam(gamEidSexAngV, newdata=subset(pred.df,antigen=="AngV"), type = "response", se.fit = T)$se
+# pred.df$predicted_seroprevalence_uci[pred.df$antigen=="AngV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="AngV"] + 1.96*predict.gam(gamEidSexAngV, newdata=subset(pred.df,antigen=="AngV"), type = "response", se.fit = T)$se
+# 
+# 
+# 
+# 
+# pred.df$bat_species = "Eidolon dupreanum"
+# pred.df$predicted_seroprevalence_lci[pred.df$predicted_seroprevalence_lci <0] <- 0
+# pred.df$predicted_seroprevalence_uci[pred.df$predicted_seroprevalence_uci >1] <- 1
+# 
+# 
 
-
-#AngV
-pred.df$predicted_seroprevalence[pred.df$antigen=="AngV"] <- predict.gam(gamEidSexAngV, newdata=subset(pred.df,antigen=="AngV"), type = "response", se.fit = T)$fit
-pred.df$predicted_seroprevalence_lci[pred.df$antigen=="AngV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="AngV"] - 1.96*predict.gam(gamEidSexAngV, newdata=subset(pred.df,antigen=="AngV"), type = "response", se.fit = T)$se
-pred.df$predicted_seroprevalence_uci[pred.df$antigen=="AngV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="AngV"] + 1.96*predict.gam(gamEidSexAngV, newdata=subset(pred.df,antigen=="AngV"), type = "response", se.fit = T)$se
-
-
-
-
-pred.df$bat_species = "Eidolon dupreanum"
-pred.df$predicted_seroprevalence_lci[pred.df$predicted_seroprevalence_lci <0] <- 0
-pred.df$predicted_seroprevalence_uci[pred.df$predicted_seroprevalence_uci >1] <- 1
-
-
-filz <- c(colorz, 'gestation' = "yellow", 'lactation' = "lightpink", 'winter' = "skyblue")
-#alphaz = c('0' = 0, '1' = 1, '2' = 0.5)
-
-p5 <- ggplot(data=subset(seroprev.sum.sex, roost_site=="Moramanga")) +
-  geom_rect(data=cal.dat, aes(xmin=as.Date(start), xmax=as.Date(stop), ymin=0, ymax=1, fill=season), alpha=.3) +
-  geom_point(aes(x=mid_date, y=seroprev, size=N, color=antigen)) + scale_color_manual(values=colorz) + scale_fill_manual(values=filz) +
-  geom_linerange(aes(x=mid_date, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen), linetype=2, alpha=.3, show.legend = F) +
-  geom_ribbon(data=pred.df, aes(x=mid_date, ymin= predicted_seroprevalence_lci, ymax=predicted_seroprevalence_uci, fill=antigen), alpha=.3) +
-  geom_line(data=pred.df, aes(x=mid_date, y= predicted_seroprevalence, color=antigen)) +
-  facet_grid(bat_sex~bat_species) + theme_bw() #+ scale_alpha_discrete(values=alphaz)
-p5
-
-#look at lag between females and males
-head(pred.df)
+# #alphaz = c('0' = 0, '1' = 1, '2' = 0.5)
+# 
+# p5 <- ggplot(data=subset(seroprev.sum.sex, roost_site=="Moramanga")) +
+#   geom_rect(data=cal.dat, aes(xmin=as.Date(start), xmax=as.Date(stop), ymin=0, ymax=1, fill=season), alpha=.3) +
+#   geom_point(aes(x=mid_date, y=seroprev, size=N, color=antigen)) + scale_color_manual(values=colorz) + scale_fill_manual(values=filz) +
+#   geom_linerange(aes(x=mid_date, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen), linetype=2, alpha=.3, show.legend = F) +
+#   geom_ribbon(data=pred.df, aes(x=mid_date, ymin= predicted_seroprevalence_lci, ymax=predicted_seroprevalence_uci, fill=antigen), alpha=.3) +
+#   geom_line(data=pred.df, aes(x=mid_date, y= predicted_seroprevalence, color=antigen)) +
+#   facet_grid(bat_sex~bat_species) + theme_bw() #+ scale_alpha_discrete(values=alphaz)
+# p5
+# 
+# #look at lag between females and males
+# head(pred.df)
 
 #predict males and females all together here
 pred.df <- cbind.data.frame(mid_date = rep(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1), (length(unique(subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum")$antigen)))), antigen= rep(unique(subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum")$antigen), each = length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))))
@@ -647,9 +647,9 @@ pred.df$predicted_seroprevalence_uci[pred.df$antigen=="GhV"] <-pred.df$predicted
 
 
 #AngV
-pred.df$predicted_seroprevalence[pred.df$antigen=="AngV"] <- predict.gam(gamEidNoSexAngVPlot, newdata=subset(pred.df,antigen=="AngV"), type = "response", se.fit = T)$fit
-pred.df$predicted_seroprevalence_lci[pred.df$antigen=="AngV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="AngV"] - 1.96*predict.gam(gamEidNoSexAngVPlot, newdata=subset(pred.df,antigen=="AngV"), type = "response", se.fit = T)$se
-pred.df$predicted_seroprevalence_uci[pred.df$antigen=="AngV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="AngV"] + 1.96*predict.gam(gamEidNoSexAngVPlot, newdata=subset(pred.df,antigen=="AngV"), type = "response", se.fit = T)$se
+pred.df$predicted_seroprevalence[pred.df$antigen=="AngV"] <- predict.gam(gamEidNoSexAngV, newdata=subset(pred.df,antigen=="AngV"), type = "response", se.fit = T)$fit
+pred.df$predicted_seroprevalence_lci[pred.df$antigen=="AngV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="AngV"] - 1.96*predict.gam(gamEidNoSexAngV, newdata=subset(pred.df,antigen=="AngV"), type = "response", se.fit = T)$se
+pred.df$predicted_seroprevalence_uci[pred.df$antigen=="AngV"] <-pred.df$predicted_seroprevalence[pred.df$antigen=="AngV"] + 1.96*predict.gam(gamEidNoSexAngV, newdata=subset(pred.df,antigen=="AngV"), type = "response", se.fit = T)$se
 
 
 
@@ -662,6 +662,8 @@ pred.df$predicted_seroprevalence_uci[pred.df$predicted_seroprevalence_uci >1] <-
 
 #and plot with data:
 pred.df$group <- paste0(pred.df$bat_species, "-", pred.df$antigen, "-", pred.df$year)
+
+ filz <- c(colorz, 'gestation' = "yellow", 'lactation' = "lightpink", 'winter' = "skyblue")
 
 p6 <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga")) +
   geom_rect(data=cal.dat, aes(xmin=as.Date(start), xmax=as.Date(stop), ymin=0, ymax=1, fill=season), alpha=.3) +
@@ -696,9 +698,9 @@ Rou.sum.GhV$year_f <- as.factor(Rou.sum.GhV$year)
 
 
 
-gamRouNoSexGhV <- gam(cbind(seropos, seroneg) ~ roost_site +
-                        s(as.numeric(doy), k=10, bs="cc", by = roost_site) +
-                        s(year_f, k=3, bs="fs", by = roost_site), 
+gamRouNoSexGhV <- gam(cbind(seropos, seroneg) ~# roost_site +
+                        s(as.numeric(doy), bs = "cc", k =10, by = roost_site) +
+                        s(as.numeric(mid_date),  bs="tp", k=6, by= roost_site),
                       data=Rou.sum.GhV, 
                       family = "binomial", 
                       method = "REML", 
@@ -707,73 +709,73 @@ gamRouNoSexGhV <- gam(cbind(seropos, seroneg) ~ roost_site +
 summary(gamRouNoSexGhV)  
 # no sig
 
-#and with sex
-Rou.sex.GhV = subset(seroprev.sum.sex, bat_species=="Rousettus madagascariensis" & antigen=="GhV" )
-Rou.sex.GhV$antigen <- droplevels(Rou.sex.GhV$antigen)
-Rou.sex.GhV$roost_site <- droplevels(Rou.sex.GhV$roost_site)
-Rou.sex.GhV$bat_sex <- droplevels(Rou.sex.GhV$bat_sex)
-Rou.sex.GhV$year_f <- as.factor(Rou.sex.GhV$year)
-
-group4 <- interaction(Rou.sex.GhV$roost_site, Rou.sex.GhV$bat_sex)
-
-gamRouSexGhV <- gam(cbind(seropos, seroneg)~ roost_site + bat_sex +
-                      s(as.numeric(doy),  k=10, bs="cc", by = group4) +
-                      s(year_f, k=3, bs="fs", by = group4), 
-                    data=Rou.sex.GhV, 
-                    family = "binomial", 
-                    method = "REML", 
-                    gamma =1,
-                    select = TRUE) #this term allows non-impactful terms to essentially be removed from model - check edf in summary to see if this happened to any
-summary(gamRouSexGhV) 
-# no sig
-
-# compare model with and without sex
-AIC(gamRouNoSexGhV, gamRouSexGhV) # simpler model without sex is still more parsimonious
+# #and with sex
+# Rou.sex.GhV = subset(seroprev.sum.sex, bat_species=="Rousettus madagascariensis" & antigen=="GhV" )
+# Rou.sex.GhV$antigen <- droplevels(Rou.sex.GhV$antigen)
+# Rou.sex.GhV$roost_site <- droplevels(Rou.sex.GhV$roost_site)
+# Rou.sex.GhV$bat_sex <- droplevels(Rou.sex.GhV$bat_sex)
+# Rou.sex.GhV$year_f <- as.factor(Rou.sex.GhV$year)
+# 
+# group4 <- interaction(Rou.sex.GhV$roost_site, Rou.sex.GhV$bat_sex)
+# 
+# gamRouSexGhV <- gam(cbind(seropos, seroneg)~ roost_site + bat_sex +
+#                       s(as.numeric(doy),  k=10, bs="cc", by = group4) +
+#                       s(year_f, k=3, bs="fs", by = group4), 
+#                     data=Rou.sex.GhV, 
+#                     family = "binomial", 
+#                     method = "REML", 
+#                     gamma =1,
+#                     select = TRUE) #this term allows non-impactful terms to essentially be removed from model - check edf in summary to see if this happened to any
+# summary(gamRouSexGhV) 
+# # no sig
+# 
+# # compare model with and without sex
+# AIC(gamRouNoSexGhV, gamRouSexGhV) # simpler model without sex is still more parsimonious
 
 
 #use above to predict and overlay on the data
-#make dataset to capture predictions
-pred.df2 <- cbind.data.frame(mid_date = rep(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1), (2*length(unique(subset(seroprev.sum.sex, bat_species=="Rousettus madagascariensis")$antigen)))), bat_sex=rep(c("female", "male"), each=length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))*length(unique(subset(seroprev.sum.sex, bat_species=="Rousettus madagascariensis")$antigen))), antigen= rep(rep(unique(subset(seroprev.sum.sex, bat_species=="Rousettus madagascariensis")$antigen), each = length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))),2))
-head(pred.df2)
-pred.df2$doy <- yday(pred.df2$mid_date)
-pred.df2$year <- year(pred.df2$mid_date)
-pred.df2$year_f <- as.factor(pred.df2$year)
-pred.df2$antigen <- droplevels(pred.df2$antigen) 
-pred.df2$roost_site <- "Moramanga"
-pred.df2$group4 <- interaction(pred.df2$roost_site,  pred.df2$bat_sex)
+# #make dataset to capture predictions
+# pred.df2 <- cbind.data.frame(mid_date = rep(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1), (2*length(unique(subset(seroprev.sum.sex, bat_species=="Rousettus madagascariensis")$antigen)))), bat_sex=rep(c("female", "male"), each=length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))*length(unique(subset(seroprev.sum.sex, bat_species=="Rousettus madagascariensis")$antigen))), antigen= rep(rep(unique(subset(seroprev.sum.sex, bat_species=="Rousettus madagascariensis")$antigen), each = length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))),2))
+# head(pred.df2)
+# pred.df2$doy <- yday(pred.df2$mid_date)
+# pred.df2$year <- year(pred.df2$mid_date)
+# pred.df2$year_f <- as.factor(pred.df2$year)
+# pred.df2$antigen <- droplevels(pred.df2$antigen) 
+# pred.df2$roost_site <- "Moramanga"
+# pred.df2$group4 <- interaction(pred.df2$roost_site,  pred.df2$bat_sex)
+# 
+# 
+# 
+# #GhV
+# pred.df2$predicted_seroprevalence <- NA
+# pred.df2$predicted_seroprevalence_lci <- NA
+# pred.df2$predicted_seroprevalence_uci <- NA
+# pred.df2$predicted_seroprevalence[pred.df2$antigen=="GhV"] <- predict.gam(gamRouSexGhV, newdata=subset(pred.df2,antigen=="GhV"), type = "response", se.fit = T)$fit
+# pred.df2$predicted_seroprevalence_lci[pred.df2$antigen=="GhV"] <-pred.df2$predicted_seroprevalence[pred.df2$antigen=="GhV"] - 1.96*predict.gam(gamRouSexGhV, newdata=subset(pred.df2,antigen=="GhV"), type = "response", se.fit = T)$se
+# pred.df2$predicted_seroprevalence_uci[pred.df2$antigen=="GhV"] <-pred.df2$predicted_seroprevalence[pred.df2$antigen=="GhV"] + 1.96*predict.gam(gamRouSexGhV, newdata=subset(pred.df2,antigen=="GhV"), type = "response", se.fit = T)$se
+# 
+# 
+# 
+# 
+# pred.df2$bat_species = "Rousettus madagascariensis"
+# pred.df2$predicted_seroprevalence_lci[pred.df2$predicted_seroprevalence_lci <0] <- 0
+# pred.df2$predicted_seroprevalence_uci[pred.df2$predicted_seroprevalence_uci >1] <- 1
+# 
+# #then, mark those projections that were from significant model fits only for plotting
+# pred.df2$sig <- 0
+# pred.df2$sig[pred.df2$antigen=="RavV"] <- 1
+# pred.df2$sig[pred.df2$antigen=="BdbV"] <- 1 # not sig here but is for the intra-annual
+# #color significant those for which seroprevalence is estimated in Marana's paper
+# 
+# 
+# #correct any predictions < 0:
+# pred.df2$predicted_seroprevalence_lci[pred.df2$predicted_seroprevalence_lci<0] <- 0
+# 
 
-
-
-#GhV
-pred.df2$predicted_seroprevalence <- NA
-pred.df2$predicted_seroprevalence_lci <- NA
-pred.df2$predicted_seroprevalence_uci <- NA
-pred.df2$predicted_seroprevalence[pred.df2$antigen=="GhV"] <- predict.gam(gamRouSexGhV, newdata=subset(pred.df2,antigen=="GhV"), type = "response", se.fit = T)$fit
-pred.df2$predicted_seroprevalence_lci[pred.df2$antigen=="GhV"] <-pred.df2$predicted_seroprevalence[pred.df2$antigen=="GhV"] - 1.96*predict.gam(gamRouSexGhV, newdata=subset(pred.df2,antigen=="GhV"), type = "response", se.fit = T)$se
-pred.df2$predicted_seroprevalence_uci[pred.df2$antigen=="GhV"] <-pred.df2$predicted_seroprevalence[pred.df2$antigen=="GhV"] + 1.96*predict.gam(gamRouSexGhV, newdata=subset(pred.df2,antigen=="GhV"), type = "response", se.fit = T)$se
-
-
-
-
-pred.df2$bat_species = "Rousettus madagascariensis"
-pred.df2$predicted_seroprevalence_lci[pred.df2$predicted_seroprevalence_lci <0] <- 0
-pred.df2$predicted_seroprevalence_uci[pred.df2$predicted_seroprevalence_uci >1] <- 1
-
-#then, mark those projections that were from significant model fits only for plotting
-pred.df2$sig <- 0
-pred.df2$sig[pred.df2$antigen=="RavV"] <- 1
-pred.df2$sig[pred.df2$antigen=="BdbV"] <- 1 # not sig here but is for the intra-annual
-#color significant those for which seroprevalence is estimated in Marana's paper
-
-
-#correct any predictions < 0:
-pred.df2$predicted_seroprevalence_lci[pred.df2$predicted_seroprevalence_lci<0] <- 0
-
-
-#and plot with data:
-library(scales)
-setdiff(pred.df2$antigen, seroprev.sum.sex$antigen)
-setdiff(seroprev.sum.sex$antigen, pred.df2$antigen)
+# #and plot with data:
+# library(scales)
+# setdiff(pred.df2$antigen, seroprev.sum.sex$antigen)
+# setdiff(seroprev.sum.sex$antigen, pred.df2$antigen)
 
 filz1 <- filz[1:(length(filz)-3)]
 filz2 <- filz[(length(filz)-2):length(filz)]
@@ -880,7 +882,7 @@ filz.antigen <- filz[1:(length(filz)-2)]
 # )
 
 dat_text <- data.frame(
-  label = c("p = 0.05", "p = 0.03"),
+  label = c("p = 0.03", "p = 0.03"),
   viralcat   = c("AngV", "GhV"),
   x     = c(Inf, Inf),
   y     = c(1, 1)
