@@ -21,9 +21,10 @@ library(reshape2)
 
 #first record your wd for this repo (home) 
 #cara adds hers here too - just comment out whichever you are not using
-#homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
+#homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
+setwd(homewd)
 #now load in the merged luminex data from the "data" folder
 
 #make sure this is latest catching file
@@ -76,15 +77,19 @@ lumdat.long$antigen <- factor(lumdat.long$antigen, levels=c( "NiV", "HeV","CedV"
 lumdat.long$bat_species <- factor(lumdat.long$bat_species, levels=c("Eidolon dupreanum", "Rousettus madagascariensis", "Pteropus rufus"))
 
 
-# Now apply mixture models on these subsets of the data as selected in the "choose-antigens.R" script
-bat.slim = subset(lumdat.long, bat_species=="Eidolon dupreanum" & antigen =="HeV" |
-                               bat_species=="Eidolon dupreanum" & antigen =="NiV" |
-                               bat_species=="Eidolon dupreanum" & antigen =="GhV" |
-                               bat_species=="Eidolon dupreanum" & antigen =="AngV" |
-                               bat_species=="Rousettus madagascariensis" & antigen =="GhV" )
+# # Now apply mixture models on these subsets of the data as selected in the "choose-antigens.R" script
+# bat.slim = subset(lumdat.long, bat_species=="Eidolon dupreanum" & antigen =="HeV" |
+#                                bat_species=="Eidolon dupreanum" & antigen =="NiV" |
+#                                bat_species=="Eidolon dupreanum" & antigen =="GhV" |
+#                                bat_species=="Eidolon dupreanum" & antigen =="AngV" |
+#                                bat_species=="Rousettus madagascariensis" & antigen =="GhV" )
+
+# Now apply mixture models on these subsets of the data for which we have known molecular
+# evidence of actual viruses in this system: GhV and AngV
+bat.slim = subset(lumdat.long, antigen =="AngV" | antigen  =="GhV" )
 
 # plot the distribution of MFI by each species - antigen pair
-ggplot(data=bat.slim, aes(MFI)) + geom_histogram() + facet_wrap(bat_species~antigen) + scale_x_log10()
+ggplot(data=bat.slim, aes(MFI)) + geom_histogram() + facet_grid(bat_species~antigen) + scale_x_log10()
  
 #now, fit the mixture models to the data and calculate cutoffs 
 fit.mixtures <- function(df, return.dat,  mclust_thresh, mclust_thresh_lci, mclust_thresh_uci){
@@ -460,15 +465,86 @@ plot.dat.model.clust.lci.uci <- function(dat, mod.df, pEidfile, pPterfile, pRouf
     }
   }
 }
+plot.dat.model.clust.cumulative <- function(dat, mod.df, filename){
+  #first, generate simulated data for each distribution using the 
+  #estimated parameters
+  
+  #split the parameter estimates by species and antigen
+  par.split <- dlply(mod.df, .(bat_species, antigen))
+  
+  model.dat <- data.table::rbindlist(lapply(par.split, normal.sim))
+  #head(model.dat)
+  model.dat$id_clust <- as.factor(model.dat$id_clust)
+  
+  #and get density within each histogram
+  dat.split <- dlply(dat, .(bat_species, antigen))
+  dens.dat <- data.table::rbindlist(lapply(dat.split, density.dat))
+  
+  #get cutoff values
+  mod.df$cutoff_lMFI_clust <- round(mod.df$cutoff_lMFI_clust, 6)
+  cutoff.df <- ddply(mod.df, .(bat_species, antigen), summarise, cutoff_lMFI_clust, cutoff_MFI_clust)
+  cutoff.df<- cutoff.df[!duplicated(  cutoff.df),]
+  cutoff.df$cutoff_lMFI_clust <- round(  cutoff.df$cutoff_lMFI_clust, 2)
+  cutoff.df$cutoff_MFI_clust <- round(  cutoff.df$cutoff_MFI_clust, 0)
+  
+  cutoff.df$label= paste0("MFI seropositive\nthreshold = ", cutoff.df$cutoff_MFI_clust)
+  #and plot all together across the three species
+  
+  pall <- ggplot(data= subset(dens.dat))+
+    geom_line(aes(x= log10MFI, y=density)) + theme_bw()+
+    facet_grid(antigen~bat_species, scales = "free")    +       # Breaking up plots by species and antigen
+    theme_bw() +
+    scale_color_discrete(name="cluster id") +
+    theme(panel.grid = element_blank(),
+          axis.title  = element_text(size=16),
+          strip.background = element_rect(fill="white"),
+          strip.text.x  = element_text(size=16, face="italic"),
+          strip.text.y  = element_text(size=16),
+          legend.position = "bottom",
+          legend.direction = "horizontal",
+          axis.text = element_text(size=14)) +
+    geom_line(data= model.dat,
+              aes(x = log10MFI,
+                  y=density, color=id_clust)) +  # Using MFI on the X axis...
+    #geom_vline(data=subset(mod.df, bat_species=="Eidolon dupreanum"),
+    #          aes(xintercept = cutoff_lMFI), color= "red", linetype=2, size=.7) +
+    geom_vline(data=mod.df,
+               aes(xintercept = cutoff_lMFI_clust), color= "blue", linewidth = 1, linetype=2, size=.7) +
+    #geom_vline(data=mod.df,
+     #          aes(xintercept = cutoff_lMFI_clust_lci), color= "orange", linetype=2, size=.7) +
+    #geom_vline(data=mod.df,
+     #          aes(xintercept = cutoff_lMFI_clust_uci), color= "darkred", linetype=2, size=.7) +
+    
+    #labs(title = "E. dupreanum") +
+    geom_label(data=cutoff.df, aes(x=0.1, y=rep(c(1.8,2.4),3), label=label), label.size = 0, fontface = "italic", color="blue") +
+    xlab("log10 MFI") + guides(color= guide_legend(nrow = 1)); pall
+  
+  
+    
+      ggsave(file = filename,
+             plot=pall,
+             units="mm",  
+             width=90, 
+             height=60, 
+             scale=3)#, 
+   
+  
+}
 
 
 #now plot the data and the fitted mixture models, including the 3 different cutoffs
 plot.dat.model.clust.lci.uci(dat =lumdat.clust, mod.df=mixture.par, plot_save = T,
                          pEidfile= paste0(homewd, "/serology/figures/Eidolon_mixtures_85_90_95.png"),
-                         pPterfile= NA,
+                         pPterfile= paste0(homewd,"/serology/figures/Pteropus_mixtures_85_90_95.png"),
                          pRoufile= paste0(homewd, "/serology/figures/Rousettus_mixtures_85_90_95.png"))
 
-#and what is the prevalence at the 90 cutoff?
+#now make supplementary figure for the whole paper that highlights the 90% confidence threshold for the upper cluster assignment
+plot.dat.model.clust.cumulative(dat =lumdat.clust, mod.df=mixture.par,
+                             filename= paste0(homewd, "/final_figures_tables/tmp/FigS8-mixture-outputs.png"))
+
+
+
+#and what is the seroprevalence at the 90 cutoff?
 lumdat.sum <- ddply(lumdat.clust, .(bat_species, antigen), summarise, Ntot=length(seropos), Npos=sum(seropos), Npos_lci=sum(seropos_lci), Npos_uci=sum(seropos_uci))
 lumdat.sum$seroprevalence <- lumdat.sum$Npos/lumdat.sum$Ntot
 lumdat.sum$seroprevalence_lci <- lumdat.sum$Npos_lci/lumdat.sum$Ntot
