@@ -430,7 +430,7 @@ Eid.sum.GhV$year_f <- droplevels(Eid.sum.GhV$year_f)
 
 gamEidNoSexGhV <- gam(cbind(seropos, seroneg) ~ 
                         roost_site + 
-                        s(as.numeric(doy), bs = "cc", k =-1, by = roost_site) +
+                        s(as.numeric(doy), bs = "cc", k =10, by = roost_site) +
                         s(year_f,  bs="fs", k=3, by= roost_site),
                       data= Eid.sum.GhV, 
                       family = "binomial", 
@@ -474,7 +474,7 @@ Eid.sex.GhV$year <- as.numeric(as.character(Eid.sex.GhV$year))
 
 gamEidSexGhV <- gam(cbind(seropos, seroneg)~ 
                       roost_site + bat_sex +
-                      s(as.numeric(doy), bs = c("cc"), k = -1, by = group) +
+                      s(as.numeric(doy), bs = c("cc"), k = 10, by = group) +
                       s(year_f, bs="fs", k=3, by=group),
                     data=Eid.sex.GhV, 
                     family = "binomial", 
@@ -697,7 +697,7 @@ Rou.sum.GhV$year_f <- as.factor(Rou.sum.GhV$year)
 
 
 gamRouNoSexGhV <- gam(cbind(seropos, seroneg) ~ roost_site +
-                        s(as.numeric(doy), k=-1, bs="cc", by = roost_site) +
+                        s(as.numeric(doy), k=10, bs="cc", by = roost_site) +
                         s(year_f, k=3, bs="fs", by = roost_site), 
                       data=Rou.sum.GhV, 
                       family = "binomial", 
@@ -717,7 +717,7 @@ Rou.sex.GhV$year_f <- as.factor(Rou.sex.GhV$year)
 group4 <- interaction(Rou.sex.GhV$roost_site, Rou.sex.GhV$bat_sex)
 
 gamRouSexGhV <- gam(cbind(seropos, seroneg)~ roost_site + bat_sex +
-                      s(as.numeric(doy),  k=-1, bs="cc", by = group4) +
+                      s(as.numeric(doy),  k=10, bs="cc", by = group4) +
                       s(year_f, k=3, bs="fs", by = group4), 
                     data=Rou.sex.GhV, 
                     family = "binomial", 
