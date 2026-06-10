@@ -1239,76 +1239,125 @@ pIntra_noLeg <- ggplot(pred.df) +
 #Next, test predictors of MFI in seropositives  and plot that for GhV in Eid
 merge.dat$combo_class <- factor(merge.dat$combo_class, levels=c("female-NL", "female-P", "female-L", "male-A", "juvenile"))
 
-#Eidolon
-#GhV
-gamMFIGhV <- gam(MFI ~ combo_class + mass_forearm_residual:MFR_class +
-                s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
-                s(year, bs="re"),
-              method = "REML", 
-              gamma = 1,
-              select = TRUE,
-              data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & combo_class!="female-P"))
-
-summary(gamMFIGhV) # moramanga,  juveniles and lactating females associated with higher MFI as compared with female-NL
-
-
-gamMFIAngV <- gam(MFI ~ combo_class + mass_forearm_residual:MFR_class +
-                 s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
-                 s(year, bs="re"),
-               method = "REML", 
-               gamma = 1,
-               select = TRUE,
-               data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="AngV" & combo_class!="female-P"))
-
-summary(gamMFIAngV) # adult males associated with lower MFI as compared with female-NL
-
-#Rousettus 
-gamRMFIGhV <- gam(MFI ~ combo_class + mass_forearm_residual:MFR_class +
-                 s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
-                 s(year, bs="re"),
-               method = "REML", 
-               gamma = 1,
-               select = TRUE,
-               data= subset(merge.dat, bat_species =="Rousettus madagascariensis" & antigen=="GhV" & combo_class!="female-P"))
-
-summary(gamRMFIGhV) # nothing sig
-
-#and try the same analysis as with the shedding data
+#try the same structure as for Ct data
 merge.dat$mass_cat <- NA
-merge.dat$mass_cat[merge.dat$mass_forearm_residual<0 &!is.na(merge.dat$mass_forearm_residual) & merge.dat$combo_class!="juvenile"|merge.dat$mass_forearm_residual<0 &!is.na(merge.dat$mass_forearm_residual) & merge.dat$combo_class!="female-P"] <- "poor"
-merge.dat$mass_cat[merge.dat$mass_forearm_residual>0 &!is.na(merge.dat$mass_forearm_residual) & merge.dat$combo_class!="juvenile"|merge.dat$mass_forearm_residual>0 &!is.na(merge.dat$mass_forearm_residual) & merge.dat$combo_class!="female-P"] <- "good"
-merge.dat$mass_cat[ merge.dat$combo_class=="juvenile"] <- "juvenile"
-merge.dat$mass_cat[ merge.dat$combo_class=="female-P"] <- "female-P"
+merge.dat$mass_cat[merge.dat$mass_forearm_residual<0 & !is.na(merge.dat$mass_forearm_residual)] <- "poor"
+merge.dat$mass_cat[merge.dat$mass_forearm_residual>0 & !is.na(merge.dat$mass_forearm_residual)] <- "good"
+merge.dat$mass_cat[merge.dat$combo_class=="juvenile"] <- "juvenile"
+#merge.dat$mass_cat[merge.dat$combo_class=="subadult"] <- "subadult"
+merge.dat$mass_cat[merge.dat$combo_class=="female-P"] <- "pregnant"
 merge.dat$mass_cat <- as.factor(merge.dat$mass_cat)
 
-
-#and redo these with simler predictors
+library(lme4)
+library(lmerTest)
+#Eidolon
 #GhV
-gamMFIGhV <- lmer(MFI ~ mass_cat + (1|year), REML = T,
-                 data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & mass_cat!="female-P")) # singlular fit, remove random effect
 
-gamMFIGhV <- lm(MFI ~ mass_cat,
-                  data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & mass_cat!="female-P")) 
+lmGhV <- lmer(MFI ~ 
+                mass_cat + (1| year),
+              REML=T,
+              data=  subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1)) #singular fit, no need for random effect
 
-summary(gamMFIGhV) #juveniles and poor body condition associated with higher MFI vs good body condition
+lmGhV <- lm(MFI ~ mass_cat,
+              data=  subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1)) #singular fit, no need for random effect
+
+summary(lmGhV) #juveniles and poor body condition adults associated with high MFI values as compared with healthy adults
+# 
+
+#angv
+lmAngV <- lmer(MFI ~ 
+                mass_cat + (1| year),
+              REML=T,
+              data=  subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="AngV" & seropos==1)) #singular fit, no need for random effect
 
 
-gamMFIAngV <- lmer(MFI ~ mass_cat + (1|year), REML = T,
-                  data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="AngV" & mass_cat!="female-P"))# singlular fit, remove random effect
+summary(lmAngV) #juveniles associated with high MFI values as compared with healthy adults
 
-gamMFIAngV <- lm(MFI ~ mass_cat, 
-                   data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="AngV" & mass_cat!="female-P"))
+# Rousettus
+#GhV
 
-summary(gamMFIAngV) # nothing
+lmRGhV <- lmer(MFI ~ 
+                mass_cat + (1| year),
+              REML=T,
+              data=  subset(merge.dat, bat_species =="Rousettus madagascariensis" & antigen=="GhV" & seropos==1)) #singular fit, no need for random effect
 
-#Rousettus 
-gamRMFIGhV <- lmer(MFI ~ mass_cat + (1|year), REML = T,
-                  data= subset(merge.dat, bat_species =="Rousettus madagascariensis" & antigen=="GhV" & mass_cat!="female-P"))# singlular fit, remove random effect
+lmRGhV <- lm(MFI ~ mass_cat,
+            data=  subset(merge.dat, bat_species =="Rousettus madagascariensis" & antigen=="GhV" & seropos==1)) #singular fit, no need for random effect
 
-gamRMFIGhV <- lm(MFI ~ mass_cat,
-                   data= subset(merge.dat, bat_species =="Rousettus madagascariensis" & antigen=="GhV" & mass_cat!="female-P"))
+summary(lmRGhV) #not sig
+# 
 
-summary(gamRMFIGhV) # nothing sig
+# 
+# #Eidolon
+# #GhV
+# gamMFIGhV <- gam(MFI ~ combo_class + mass_forearm_residual:MFR_class +
+#                 s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
+#                 s(year, bs="re"),
+#               method = "REML", 
+#               gamma = 1,
+#               select = TRUE,
+#               data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & combo_class!="female-P"))
+# 
+# summary(gamMFIGhV) # moramanga,  juveniles and lactating females associated with higher MFI as compared with female-NL
+# 
+# 
+# gamMFIAngV <- gam(MFI ~ combo_class + mass_forearm_residual:MFR_class +
+#                  s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
+#                  s(year, bs="re"),
+#                method = "REML", 
+#                gamma = 1,
+#                select = TRUE,
+#                data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="AngV" & combo_class!="female-P"))
+# 
+# summary(gamMFIAngV) # adult males associated with lower MFI as compared with female-NL
+
+# #Rousettus 
+# gamRMFIGhV <- gam(MFI ~ combo_class + mass_forearm_residual:MFR_class +
+#                  s(as.numeric(doy), bs="cc", k=10, by=roost_site) +
+#                  s(year, bs="re"),
+#                method = "REML", 
+#                gamma = 1,
+#                select = TRUE,
+#                data= subset(merge.dat, bat_species =="Rousettus madagascariensis" & antigen=="GhV" & combo_class!="female-P"))
+# 
+# summary(gamRMFIGhV) # nothing sig
+# 
+# #and try the same analysis as with the shedding data
+# merge.dat$mass_cat <- NA
+# merge.dat$mass_cat[merge.dat$mass_forearm_residual<0 &!is.na(merge.dat$mass_forearm_residual) & merge.dat$combo_class!="juvenile"|merge.dat$mass_forearm_residual<0 &!is.na(merge.dat$mass_forearm_residual) & merge.dat$combo_class!="female-P"] <- "poor"
+# merge.dat$mass_cat[merge.dat$mass_forearm_residual>0 &!is.na(merge.dat$mass_forearm_residual) & merge.dat$combo_class!="juvenile"|merge.dat$mass_forearm_residual>0 &!is.na(merge.dat$mass_forearm_residual) & merge.dat$combo_class!="female-P"] <- "good"
+# merge.dat$mass_cat[ merge.dat$combo_class=="juvenile"] <- "juvenile"
+# merge.dat$mass_cat[ merge.dat$combo_class=="female-P"] <- "female-P"
+# merge.dat$mass_cat <- as.factor(merge.dat$mass_cat)
+# 
+# 
+# #and redo these with simler predictors
+# #GhV
+# gamMFIGhV <- lmer(MFI ~ mass_cat + (1|year), REML = T,
+#                  data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & mass_cat!="female-P")) # singlular fit, remove random effect
+# 
+# gamMFIGhV <- lm(MFI ~ mass_cat,
+#                   data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & mass_cat!="female-P")) 
+# 
+# summary(gamMFIGhV) #juveniles and poor body condition associated with higher MFI vs good body condition
+# 
+# 
+# gamMFIAngV <- lmer(MFI ~ mass_cat + (1|year), REML = T,
+#                   data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="AngV" & mass_cat!="female-P"))# singlular fit, remove random effect
+# 
+# gamMFIAngV <- lm(MFI ~ mass_cat, 
+#                    data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="AngV" & mass_cat!="female-P"))
+# 
+# summary(gamMFIAngV) # nothing
+# 
+# #Rousettus 
+# gamRMFIGhV <- lmer(MFI ~ mass_cat + (1|year), REML = T,
+#                   data= subset(merge.dat, bat_species =="Rousettus madagascariensis" & antigen=="GhV" & mass_cat!="female-P"))# singlular fit, remove random effect
+# 
+# gamRMFIGhV <- lm(MFI ~ mass_cat,
+#                    data= subset(merge.dat, bat_species =="Rousettus madagascariensis" & antigen=="GhV" & mass_cat!="female-P"))
+# 
+# summary(gamRMFIGhV) # nothing sig
 
 
 #and plot
