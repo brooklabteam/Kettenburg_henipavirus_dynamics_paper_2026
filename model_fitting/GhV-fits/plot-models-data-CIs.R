@@ -72,11 +72,11 @@ get.seroprev.dat = function(data, vis_split, cutoff){
   }
   
   if(cutoff=="mean"){
-    dat.sum2 <- ddply(data, .(age_year), summarize,  prevalence=sum(prev)/length(prev), count=length(prev))  
+    dat.sum2 <- ddply(data, .(age_year), summarise,  prevalence=sum(prev)/length(prev), count=length(prev))  
   }else if (cutoff=="uci"){
-    dat.sum2 <- ddply(data, .(age_year), summarize,  prevalence=sum(prev_uci)/length(prev_uci), count=length(prev_uci)) 
+    dat.sum2 <- ddply(data, .(age_year), summarise,  prevalence=sum(prev_uci)/length(prev_uci), count=length(prev_uci)) 
   }else if (cutoff=="lci"){
-    dat.sum2 <- ddply(data, .(age_year), summarize,  prevalence=sum(prev_lci)/length(prev_lci), count=length(prev_lci)) 
+    dat.sum2 <- ddply(data, .(age_year), summarise,  prevalence=sum(prev_lci)/length(prev_lci), count=length(prev_lci)) 
   }
   
   #you want the midpoint between either end of the age class now
@@ -337,7 +337,7 @@ plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.pr
   
   dat.sero = subset(dat.sero1, bat_species==species1 & antigen==antigen1)
   dat.sero$year<- year(dat.sero$processing_date)
-  dat.sero.sum <- ddply(dat.sero,.(year, biwk), summarize, Nseropos = sum(seropos), Ntot=length(seropos))
+  dat.sero.sum <- ddply(dat.sero,.(year, biwk), summarise, Nseropos = sum(seropos), Ntot=length(seropos))
   dat.sero.sum$seroprevalence <- dat.sero.sum$Nseropos/dat.sero.sum$Ntot
   dat.sero.sum$seroprev_lci <-dat.sero.sum$seroprev_uci <-NA
   for(i in 1:length(dat.sero.sum$year)){
@@ -347,7 +347,7 @@ plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.pr
   
   dat.prev = subset(dat.prev1, bat_species==species1 & antigen==antigen1)
   dat.prev$year<- year(dat.prev$processing_date)
-  dat.prev.sum <- ddply(dat.prev,.(year, biwk), summarize, Npos = sum(shed_pos), Ntot=length(shed_pos))
+  dat.prev.sum <- ddply(dat.prev,.(year, biwk), summarise, Npos = sum(shed_pos), Ntot=length(shed_pos))
   dat.prev.sum$prevalence <- dat.prev.sum$Npos/dat.prev.sum$Ntot
   dat.prev.sum$prev_lci <-dat.prev.sum$prev_uci <-NA
   for(i in 1:length(dat.prev.sum$year)){
@@ -369,9 +369,9 @@ plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.pr
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=mod.all, aes(x=age, y=seroprevalence), color="cornflowerblue") + 
-    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
-    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
+    geom_line(data=model.sum, aes(x=age_bin, y=seroprevalence), color="cornflowerblue") + 
+    geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
+    geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   
