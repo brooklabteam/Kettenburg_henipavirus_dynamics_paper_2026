@@ -42,6 +42,8 @@ setwd(homewd)
 dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/all_fits_round1.csv"), stringsAsFactors = F, header = T)
 
 dat = subset(dat, convergence == 0 & !is.na(model))
+
+write.csv(dat, paste0(homewd,"/model_fitting/GhV-fits/all_converged_fits_round1.csv"), row.names = F)
 head(dat)
 
 unique(dat$model)
