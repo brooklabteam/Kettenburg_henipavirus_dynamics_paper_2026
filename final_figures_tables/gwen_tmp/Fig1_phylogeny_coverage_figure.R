@@ -943,22 +943,22 @@ compare_plot
 
 #full comparison
 
-part1<-cowplot::plot_grid(NULL,fulltree2, compare_plot, 
-                          labels=c("A","","B"),
-                          rel_widths=c(1,1,1), rel_heights = c(0.01,2.3,1),
+part1<-cowplot::plot_grid(compare_plot,NULL,fulltree2, 
+                          labels=c("B","","C"),
+                          rel_widths=c(1,1,1), rel_heights = c(1,0.01,2.3),
                           ncol=1,nrow=3,align="hv", axis="l", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); part1
 part1<-as.ggplot(part1)
 
 part2<-cowplot::plot_grid(part1, polytree, 
-                            labels=c("","C"),
+                            labels=c("","D"),
                             rel_widths=c(1,1), rel_heights = c(1.2,1),
                             ncol=2,nrow=1,align="hv", axis="l", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); part2
 
 
 part3<-cowplot::plot_grid(coverageplot_ghvlike, genomeplot_andv,
-                        labels=c("D",""),
+                        labels=c("A",""),
                         rel_widths=c(1,1), rel_heights = c(1,1.4),
                         ncol=1,nrow=2,align="hv", axis="l", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); part3
@@ -983,10 +983,10 @@ part3<-cowplot::plot_grid(coverageplot_ghvlike, genomeplot_andv,
 # part6<-as.ggplot(part6)
 
 
-fig1<-cowplot::plot_grid(part2, part3, 
+fig1<-cowplot::plot_grid(part3, part2, 
                 labels=c("",""),
-                rel_widths=c(2,1), rel_heights = c(1,1),
-                ncol=2,nrow=1,align="hv", axis="r", label_size = 23)+
+                rel_widths=c(1,2), rel_heights = c(1,1),
+                ncol=2,nrow=1,align="hv", axis="lr", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); fig1
 
 #save
