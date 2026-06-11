@@ -268,14 +268,14 @@ fig<-(part1|ephrinmsa.plot)+ plot_layout(widths = c(2, 1))+plot_annotation(tag_l
 
 
 part1<-cowplot::plot_grid(mRNAmsa.plot, ephrinmsa.plot, 
-                          labels=c("A","B"),
+                          labels=c("A","C"),
                           rel_widths=c(1,1), rel_heights = c(1,1),
                           ncol=2,nrow=1,align="hv", axis="lr", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); part1
 part1<-as.ggplot(part1)
 
 fig<-cowplot::plot_grid(part1, pair, 
-                        labels=c("","C"),
+                        labels=c("","B"),
                         rel_widths=c(1,1), rel_heights = c(1,1),
                         ncol=1,nrow=2,align="hv", axis="lr", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); fig
