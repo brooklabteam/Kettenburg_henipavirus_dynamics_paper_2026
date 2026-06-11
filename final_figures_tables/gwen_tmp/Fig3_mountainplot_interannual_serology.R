@@ -1375,7 +1375,7 @@ merge.dat$cat_plot[merge.dat$cat_plot=="pregnant"] <- "pregnant\nfemale"
 merge.dat$cat_plot <- factor(merge.dat$cat_plot, levels = c("adult,\nMFR>0", "adult,\nMFR<0", "pregnant\nfemale", "juvenile"))
 
 #and plot MFI by condition/juvenile status - leave out pregnant females since there are so few
-pMFR_MFI_GhV <- ggplot(data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & mass_cat!="female-P")) +
+pMFR_MFI_GhV <- ggplot(data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & cat_plot!="pregnant\nfemale")) +
   geom_violin(aes(x=cat_plot, y=MFI), draw_quantiles = c(0,.25,.5,.75)) + 
   geom_jitter(aes(x=cat_plot, y=MFI, color=roost_site, shape=as.factor(year)), width = .2, size=3) +
   theme_bw() + ylab("MFI") + facet_grid(bat_species~antigen)+
