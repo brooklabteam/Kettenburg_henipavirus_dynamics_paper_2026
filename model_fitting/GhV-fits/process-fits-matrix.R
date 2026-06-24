@@ -336,22 +336,31 @@ plot.one <- function(df){
   return(p1)
 }
 
-plot.top.20.fits <- function(df, filename){
+plot.top.10.fits <- function(df, filename1, filename2){
   df.list <- dlply(df, .(model))
   
   plot.list  <- lapply(df.list, plot.one)
 
-  all.par <- cowplot::plot_grid(plotlist = plot.list, ncol = 4, nrow =5)
+  all.par1 <- cowplot::plot_grid(plotlist = plot.list[1:12], ncol = 4, nrow =3)
+  all.par2 <- cowplot::plot_grid(plotlist = plot.list[13:20], ncol = 4, nrow =2)
   
   #and save
-  ggsave(file = filename,
-              plot = all.par,
+  ggsave(file = filename1,
+              plot = all.par1,
               units="mm",  
               width=150, 
               height=150, 
               scale=3, 
               dpi=300)
+  
+  ggsave(file = filename2,
+         plot = all.par1,
+         units="mm",  
+         width=150, 
+         height=150, 
+         scale=3, 
+         dpi=300)
          
 }
 
-plot.top.20.fits(df = dat10, filename = paste0(homewd, "/model_fitting/GhV-fits/figures/best-fit-pars.png") )
+plot.top.10.fits(df = dat10, filename1 = paste0(homewd, "/model_fitting/GhV-fits/figures/best-fit-pars-1.png"), filename2 = paste0(homewd, "/model_fitting/GhV-fits/figures/best-fit-pars-2.png") )
