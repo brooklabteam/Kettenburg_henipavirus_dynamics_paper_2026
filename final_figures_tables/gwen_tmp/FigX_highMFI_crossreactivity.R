@@ -169,7 +169,7 @@ names(AngV_high.long)[names(AngV_high.long)=="value"] <- "MFI"
 
 bat.high.df.merge <- rbind(GhV_high.long, HeV_high.long, NiV_high.long, CedV_high.long, 
                            MojV_high.long, AngV_high.long)
-
+bat.high.df.merge$antigen<-factor(bat.high.df.merge$antigen, levels=c("HeV", "NiV", "GhV", "CedV", "MojV", "AngV"))
 
 cutoff.df <- cbind.data.frame(bat_species=c(rep("Eidolon dupreanum", 6), rep("Rousettus madagascariensis",6), rep("Pteropus rufus",6)), antigen=c("HeV", "NiV", "GhV", "CedV", "MojV", "AngV"))
 cutoff.df$MFI = c(2851,936,1141.25,777.5,676,1762.75,
@@ -202,13 +202,13 @@ cutoff.df <- rbind(cutoff.df, cutoff.df2, cutoff.df3)
 p3 <- ggplot(subset(bat.high.df.merge)) +
   facet_nested(bat_species~highest_antigen, scales = "free", space = "free") +
   geom_line(aes(x=antigen, y=MFI, color=sampleid, group=sampleid), size=.8) + 
+  #geom_jitter(aes(x=antigen, y=MFI, color=sampleid), width = .2,size=1) +
+  #geom_violin(aes(x=antigen, y=MFI), quantiles = c(0,.25,.5,.75)) + 
   theme_bw()+
   geom_point(aes(x=antigen, y=MFI, color=sampleid), size=2) + 
   #scale_color_manual(name="Individual Bat\nSample ID", values = c("tomato", "#00BFC4")) +
   #geom_hline(aes(yintercept = 1000), color="red", linetype=2, size=.8) +
-  geom_hline(data=subset(cutoff.df, antigen=="GhV" & bat_species=="Eidolon dupreanum" & era=="2018-2020" |
-                           antigen=="AngV" & bat_species=="Eidolon dupreanum" & era=="2018-2020"),
-             aes(yintercept = MFI,color=cutoff),  size=1, linetype=2)+
+  geom_hline(data=subset(cutoff.df, cutoff=="mean"), aes(yintercept = MFI),  size=1, linetype=2)+
   theme(axis.title.x = element_blank(), panel.grid = element_blank(),
         legend.position = "none",
         axis.text.x = element_text(size=16), axis.title.y = element_text(size=16), 
@@ -216,5 +216,13 @@ p3 <- ggplot(subset(bat.high.df.merge)) +
         strip.text.y = element_text(size=16, face="italic"), strip.text.x = element_text(size=16)) +
   guides(color=guide_legend(ncol=2)); p3 
 
+homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/FigX_highMFI_crossreactivity.png"),
+       plot=p3,
+       units="mm",  
+       width=170, 
+       height=80, 
+       scale=3, 
+       dpi=300)
 
 
