@@ -79,7 +79,6 @@ correct.negs <- function(df){
 
 lumdat.long <- data.table::rbindlist(lapply(lum.split, correct.negs))
 
-
 #add family
 lumdat.long$virus_family[lumdat.long$antigen== "NiV"| lumdat.long$antigen=="HeV"| lumdat.long$antigen=="CedV"| lumdat.long$antigen=="GhV"| lumdat.long$antigen=="AngV"| lumdat.long$antigen=="MojV"] <- "Paramyxovirus"
 unique(lumdat.long$virus_family)
@@ -92,7 +91,6 @@ unique(lumdat.long$virus_genus)
 lumdat.long$antigen <- factor(lumdat.long$antigen, levels=c( "NiV", "HeV","CedV", "GhV", "AngV", "MojV"))
 
 lumdat.long$bat_species <- factor(lumdat.long$bat_species, levels=c("Eidolon dupreanum", "Rousettus madagascariensis", "Pteropus rufus"))
-
 
 # First, make a data subset of all bats with any MFI > 1000
 dat.ind.split <- dlply(lumdat.long, .(sampleid, virus_family))
@@ -112,7 +110,21 @@ get.highMFI <- function(dat, cutoff){
 
 bat.df <- data.table::rbindlist(lapply(dat.ind.split, get.highMFI, cutoff=1000))
 head(bat.df)
-bat.high.df = subset(bat.df, MFI_high==1) #only 6 individual Pteropus with any MFI values >1000
+bat.high.df = subset(bat.df, MFI_high==1) 
+
+bat.high.df <- dplyr::select(bat.high.df, sampleid, bat_species, antigen, MFI)
+
+bat.high.df.wide <- bat.high.df |> 
+  pivot_wider(names_from = antigen, values_from = MFI)
+
+
+numeric_cols <- bat.high.df.wide[, 3:8]
+GhV_high <- bat.high.df.wide[max.col(numeric_cols, ties.method = "first") == 5, ]
+HeV_high <- bat.high.df.wide[max.col(numeric_cols, ties.method = "first") == 1, ]
+NiV_high <- bat.high.df.wide[max.col(numeric_cols, ties.method = "first") == 2, ]
+CeV_high <- bat.high.df.wide[max.col(numeric_cols, ties.method = "first") == 3, ]
+GhV_high <- bat.high.df.wide[max.col(numeric_cols, ties.method = "first") == 5, ]
+
 
 p3 <- ggplot(subset(bat.high.df)) + #coord_cartesian(ylim = c(0,10000)) +
   facet_nested(bat_species~virus_family, scales = "free", space = "free") +
