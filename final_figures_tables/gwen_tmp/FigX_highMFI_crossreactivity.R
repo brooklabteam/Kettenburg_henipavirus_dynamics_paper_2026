@@ -108,6 +108,15 @@ get.highMFI <- function(dat, cutoff){
   return(dat)
 }
 
+dat2 <- read.csv(paste0(homewd, "/serology/data/mix_sub_data_75_90_96_all_long.csv"), header = T, stringsAsFactors = F)
+head(dat2)
+
+dat2 <- dplyr::select(dat2, sampleid, seropos)
+
+
+
+
+
 bat.df <- data.table::rbindlist(lapply(dat.ind.split, get.highMFI, cutoff=1000))
 head(bat.df)
 bat.high.df = subset(bat.df, MFI_high==1) 
@@ -216,13 +225,22 @@ p3 <- ggplot(subset(bat.high.df.merge)) +
         strip.text.y = element_text(size=16, face="italic"), strip.text.x = element_text(size=16)) +
   guides(color=guide_legend(ncol=2)); p3 
 
-homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
-ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/FigX_highMFI_crossreactivity.png"),
-       plot=p3,
-       units="mm",  
-       width=170, 
-       height=80, 
-       scale=3, 
-       dpi=300)
+# homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+# ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/FigX_highMFI_crossreactivity.png"),
+#        plot=p3,
+#        units="mm",  
+#        width=170, 
+#        height=80, 
+#        scale=3, 
+#        dpi=300)
+
+#now look at proportion of other antigens sample is seropositive to
+dat <- read.csv(paste0(homewd, "/serology/data/mix_sub_data_75_90_96_all_long.csv"), header = T, stringsAsFactors = F)
+head(dat)
+
+
+
+
+
 
 

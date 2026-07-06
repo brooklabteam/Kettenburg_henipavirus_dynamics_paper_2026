@@ -311,12 +311,14 @@ write.csv(mixture.par, paste0(homewd, "/serology/data/mix_sub_parameters_75_90_9
 write.csv(lumdat.clust, paste0(homewd, "/serology/data/mix_sub_data_75_90_96.csv"), row.names = F)
 
 #make a data frame in wide format too to merge with the viral shedding data
-df_wide <- dcast(
-  lumdat.clust,
-  sampleid ~ antigen,
-  value.var = c("MFI", "log10MFI","seropos","seropos_lci","seropos_uci","bat_species","virus_family","virus_genus")
-)
-write.csv(df_wide, paste0(homewd, "/serology/data/mix_sub_data_75_90_96_wide.csv"), row.names = F)
+df_wide <- lumdat.clust %>%
+  pivot_wider(
+    id_cols = sampleid,
+    names_from = antigen,            
+    values_from = c(MFI, log10MFI, seropos, seropos_lci, seropos_uci) 
+  )
+
+write.csv(df_wide, paste0(homewd, "/serology/data/mix_sub_data_75_90_96_all_wide.csv"), row.names = F)
 
 
 #also run for 
