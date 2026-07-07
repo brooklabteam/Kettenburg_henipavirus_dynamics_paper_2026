@@ -1166,8 +1166,9 @@ wrap.fit.cov <- function(model, num_states, beta, sigma1, recru, epsilon, loss, 
   par.dist <- exp(par.dist.log)
   par.dist[ par.dist < 0] <- 0
   
+  ConfidenceInterval$name <- name.par
   
-  colnames(par.dist) <- unique(ConfidenceInterval$name)
+  colnames(par.dist) <- ConfidenceInterval$name
   
   #now have 500 guesses for each par, all calculated in tandem.
   
@@ -1212,7 +1213,7 @@ wrap.fit.cov <- function(model, num_states, beta, sigma1, recru, epsilon, loss, 
   
   
   
-  ConfidenceInterval$name <- name.par
+  
   par.df$weightPCR <- ConfidenceInterval$value[ConfidenceInterval$name=="wPCR"] 
   
    if(model == "MSIRS"){
