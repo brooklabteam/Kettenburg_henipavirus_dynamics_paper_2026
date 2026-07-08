@@ -17,8 +17,8 @@ library(ggpmisc)
 
 #use this script to shwo qPCR cutoffs
 
-homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
-batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
+homewd = "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026"
+batwd = "/Users/gwenddolenkettenburg/Desktop/developer/Madagascar-Bat-Data"
 
 #now load pcr data
 dat <- read.csv(file = paste0(homewd, "/virus_shedding/data/henipavirus_shedding_data.csv"))
@@ -94,27 +94,27 @@ shed.long.ct<-rbind(shed.long.ct.m, shed.long.ct.n, shed.long.ct.l)
 shed.long.ct$gene <- as.factor(shed.long.ct$gene)
 
 #simplify names
-shed.long.pos$virus[shed.long.pos$virus=="GhV_multi_M_ur"] <- "GhV_cov"
-shed.long.pos$virus[shed.long.pos$virus=="GhV_multi_N_ur"] <- "GhV_cov"
-shed.long.pos$virus[shed.long.pos$virus=="GhV_multi_L_ur"] <- "GhV_cov"
-shed.long.pos$virus[shed.long.pos$virus=="AndV_multi_M_ur"] <- "AndV_cov"
-shed.long.pos$virus[shed.long.pos$virus=="AndV_multi_N_ur"] <- "AndV_cov"
-shed.long.pos$virus[shed.long.pos$virus=="AndV_multi_L_ur"] <- "AndV_cov"
-shed.long.pos$virus[shed.long.pos$virus=="AngV_multi_M_ur"] <- "AngV_cov"
-shed.long.pos$virus[shed.long.pos$virus=="AngV_multi_N_ur"] <- "AngV_cov"
-shed.long.pos$virus[shed.long.pos$virus=="AngV_multi_L_ur"] <- "AngV_cov"
+shed.long.pos$virus[shed.long.pos$virus=="GhV_multi_M_ur"] <- "GhV"
+shed.long.pos$virus[shed.long.pos$virus=="GhV_multi_N_ur"] <- "GhV"
+shed.long.pos$virus[shed.long.pos$virus=="GhV_multi_L_ur"] <- "GhV"
+shed.long.pos$virus[shed.long.pos$virus=="AndV_multi_M_ur"] <- "AndV"
+shed.long.pos$virus[shed.long.pos$virus=="AndV_multi_N_ur"] <- "AndV"
+shed.long.pos$virus[shed.long.pos$virus=="AndV_multi_L_ur"] <- "AndV"
+shed.long.pos$virus[shed.long.pos$virus=="AngV_multi_M_ur"] <- "AngV"
+shed.long.pos$virus[shed.long.pos$virus=="AngV_multi_N_ur"] <- "AngV"
+shed.long.pos$virus[shed.long.pos$virus=="AngV_multi_L_ur"] <- "AngV"
 
 shed.long.pos$virus <- as.factor(shed.long.pos$virus)
 
-shed.long.ct$virus[shed.long.ct$virus=="GhV_multi_M_ct_ur"] <- "GhV_cov"
-shed.long.ct$virus[shed.long.ct$virus=="GhV_multi_N_ct_ur"] <- "GhV_cov"
-shed.long.ct$virus[shed.long.ct$virus=="GhV_multi_L_ct_ur"] <- "GhV_cov"
-shed.long.ct$virus[shed.long.ct$virus=="AndV_multi_M_ct_ur"] <- "AndV_cov"
-shed.long.ct$virus[shed.long.ct$virus=="AndV_multi_N_ct_ur"] <- "AndV_cov"
-shed.long.ct$virus[shed.long.ct$virus=="AndV_multi_L_ct_ur"] <- "AndV_cov"
-shed.long.ct$virus[shed.long.ct$virus=="AngV_multi_M_ct_ur"] <- "AngV_cov"
-shed.long.ct$virus[shed.long.ct$virus=="AngV_multi_N_ct_ur"] <- "AngV_cov"
-shed.long.ct$virus[shed.long.ct$virus=="AngV_multi_L_ct_ur"] <- "AngV_cov"
+shed.long.ct$virus[shed.long.ct$virus=="GhV_multi_M_ct_ur"] <- "GhV"
+shed.long.ct$virus[shed.long.ct$virus=="GhV_multi_N_ct_ur"] <- "GhV"
+shed.long.ct$virus[shed.long.ct$virus=="GhV_multi_L_ct_ur"] <- "GhV"
+shed.long.ct$virus[shed.long.ct$virus=="AndV_multi_M_ct_ur"] <- "AndV"
+shed.long.ct$virus[shed.long.ct$virus=="AndV_multi_N_ct_ur"] <- "AndV"
+shed.long.ct$virus[shed.long.ct$virus=="AndV_multi_L_ct_ur"] <- "AndV"
+shed.long.ct$virus[shed.long.ct$virus=="AngV_multi_M_ct_ur"] <- "AngV"
+shed.long.ct$virus[shed.long.ct$virus=="AngV_multi_N_ct_ur"] <- "AngV"
+shed.long.ct$virus[shed.long.ct$virus=="AngV_multi_L_ct_ur"] <- "AngV"
 
 shed.long.ct$virus <- as.factor(shed.long.ct$virus)
 
@@ -129,32 +129,33 @@ head(catch.dat)
 names(catch.dat)
 
 # drop most coshedns and name those you want
-catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, processing_date, sampleid, barcode_id, bat_sex, bat_age_class, young_of_year, pupmom_pair, sampleid_pupmom_pair, bat_weight_g, bat_forearm_mm, mass_forearm_residual, recap_new)
+#catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, processing_date, sampleid, barcode_id, bat_sex, bat_age_class, young_of_year, pupmom_pair, sampleid_pupmom_pair, bat_weight_g, bat_forearm_mm, mass_forearm_residual, recap_new)
+catch.dat <-dplyr::select(catch.dat, bat_species, sampleid)
 
 #and merge all three datasets
 merge.dat <- merge(shed.long, catch.dat, by="sampleid", all.x = T)
 
 #get the midpoint processing date per sampling session
-merge.dat$processing_date <- as.Date(merge.dat$processing_date)
-sampling.date <- ddply(merge.dat, .(bat_species, sampling_session), summarise, min_date = min(processing_date), max_date = max(processing_date))
-sampling.date$mid_date <- (sampling.date$max_date-sampling.date$min_date)/2 + sampling.date$min_date
-sampling.merge <- dplyr::select(sampling.date, bat_species, sampling_session, mid_date)
-merge.dat <- merge(merge.dat, sampling.merge, by = c("bat_species", "sampling_session"))
-merge.dat$year <- year(merge.dat$processing_date)
-merge.dat$month <- as.character(month(merge.dat$processing_date))
-merge.dat$month[merge.dat$month!="10"& merge.dat$month!="11" &merge.dat$month!="12"]<-paste0("0", merge.dat$month[merge.dat$month!="10"& merge.dat$month!="11" &merge.dat$month!="12"])
-#merge.dat$mid_date <- as.Date(paste0(merge.dat$year, "-", merge.dat$month, "-15"))
-head(merge.dat)
+# merge.dat$processing_date <- as.Date(merge.dat$processing_date)
+# sampling.date <- ddply(merge.dat, .(bat_species, sampling_session), summarise, min_date = min(processing_date), max_date = max(processing_date))
+# sampling.date$mid_date <- (sampling.date$max_date-sampling.date$min_date)/2 + sampling.date$min_date
+# sampling.merge <- dplyr::select(sampling.date, bat_species, sampling_session, mid_date)
+# merge.dat <- merge(merge.dat, sampling.merge, by = c("bat_species", "sampling_session"))
+# merge.dat$year <- year(merge.dat$processing_date)
+# merge.dat$month <- as.character(month(merge.dat$processing_date))
+# merge.dat$month[merge.dat$month!="10"& merge.dat$month!="11" &merge.dat$month!="12"]<-paste0("0", merge.dat$month[merge.dat$month!="10"& merge.dat$month!="11" &merge.dat$month!="12"])
+# #merge.dat$mid_date <- as.Date(paste0(merge.dat$year, "-", merge.dat$month, "-15"))
+# head(merge.dat)
 
 #also add in quantitative age data where available:
-age.dat <- read.csv(file = paste0(batwd, "/Age-Data/aged_bats.csv"), header = T, stringsAsFactors = F)
-age.dat <- dplyr::select(age.dat, sampleid, age)
-
-#and merge
-merge.dat <- merge(merge.dat, age.dat, by="sampleid", all.x = T)
+# age.dat <- read.csv(file = paste0(batwd, "/Age-Data/aged_bats.csv"), header = T, stringsAsFactors = F)
+# age.dat <- dplyr::select(age.dat, sampleid, age)
+# 
+# #and merge
+# merge.dat <- merge(merge.dat, age.dat, by="sampleid", all.x = T)
 
 #curate date once more
-merge.dat$mid_date <- as.Date(merge.dat$mid_date)
+#merge.dat$mid_date <- as.Date(merge.dat$mid_date)
 
 colorz = c(
            'Eidolon dupreanum'="goldenrod1",
@@ -166,6 +167,14 @@ merge.dat2<-subset(merge.dat, pos=="1")
 #and remove hipposideros samples
 merge.dat2<-subset(merge.dat2, bat_species=="Eidolon dupreanum" | bat_species=="Pteropus rufus" |bat_species=="Rousettus madagascariensis")
 
+#two weird samples in merge.dat2 that come up as pos but 0 ct, they are not in marge.dat, drop them for now
+remove_list <- c("AND6", "RAK32")
+merge.dat2 <- merge.dat2 %>% filter(!(sampleid %in% remove_list))
+
+#factor make ct continuous
+merge.dat2$ct <- as.numeric(as.character(merge.dat2$ct))
+
+
 #plot just those that are positive in each gene
 #title<-expression(paste("ED_cov sensitivity: L>E>N\nPR_cov sensitivity: L>E>N\nRM1_cov sensitivity: L>N>E\nRM2_cov sensitivity: L>E>N"))
 dat_text <- data.frame(
@@ -174,8 +183,8 @@ dat_text <- data.frame(
             "M: R^2 = 0.992\n L: R^2 = 0.998\n N: R^2 = 0.993", 
             "M: R^2 = 0.902\n L: R^2 = 0.885\n N: R^2 = 0.867"),
   virus   = c("GhV", "AngV", "AndV"),
-  x     = c(Inf, Inf, Inf, Inf),
-    y     = c(12, 12, 12, 12)
+  x     = c(Inf, Inf, Inf),
+    y     = c(12, 12, 12)
 )
 
 p1 <- ggplot(subset(merge.dat2)) + 
@@ -186,7 +195,7 @@ p1 <- ggplot(subset(merge.dat2)) +
   ylab("Ct") +
   xlab("Gene") +
   #scale_y_continuous(limits = c(10, 40))+
-  scale_y_reverse(limits=c(12,40))+
+  scale_y_reverse(limits=c(12,38))+
   theme(axis.title.x = element_text(size=14) , panel.grid = element_blank(),
         axis.text.x = element_text(size=14), 
         axis.title.y = element_text(size=14), 
@@ -197,30 +206,19 @@ p1 <- ggplot(subset(merge.dat2)) +
         strip.background = element_rect(fill="white"),
         strip.text.x = element_text(size=14, color = "black"), 
         strip.text.y = element_text(size=14, face="italic", color="black"),
-        plot.margin = unit(c(0.1,0.1,0,0), "cm")); p1
+        plot.margin = unit(c(0.1,0.1,0.1,0.1), "cm")); p1
 
 pcr<-p1+geom_text(data= dat_text, aes(x = x, y = y, label = label, hjust=1.2, vjust=1),
                  fontface="italic");pcr
 
-##put them together
-library(cowplot)
-
-pcr2<-cowplot::plot_grid(NULL,pcr,NULL, labels=c("","", ""),
-                          rel_widths=c(0.02,1,0), rel_heights = c(1,1),
-                          ncol=3,align="hv",  label_size = 23)+
-  theme(plot.background = element_rect(fill = "white", colour = NA)); pcr2
-
-plot2<-cowplot::plot_grid(a, pcr2, labels=c("", "C"),
-                rel_widths=c(1,1), rel_heights = c(1.3,1),
-                ncol=1,align="h",axis="lr",  label_size = 23)+
-  theme(plot.background = element_rect(fill = "white", colour = NA)); plot2
+##save
 
 homewd = "/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/gwen_tmp/"
 ggsave(file = paste0(homewd, "/FigX_qPCR_cutoffs.png"),
-       plot= plot2,
+       plot= pcr,
        units="mm",
        width=180,
-       height=200,
+       height=100,
        scale=2,
        dpi=500)
 
