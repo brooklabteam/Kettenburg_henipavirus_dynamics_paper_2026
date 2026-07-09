@@ -463,18 +463,18 @@ sero.prev$MojVpropMFI <- sero.prev$meanMojVMFI/sero.prev$sumMFI
 
 
 #subset and melt to make the sero.prev dataset long
-part1 <- sero.prev[, c("sampleid", "highest_antigen","bat_species","GhVprev", "AngVprev","HeVprev","NiVprev","CedVprev","MojVprev")]
-part1.long <- melt(part1)
-names(part1.long)[names(part1.long)=="variable"] <- "antigen"
-part1.long$antigen <- gsub(pattern="prev", replacement = "", x=part1.long$antigen, fixed = T)
-names(part1.long)[names(part1.long)=="value"] <- "prev"
-
-part2 <- sero.prev[, c("sampleid", "highest_antigen","bat_species","NGhVpos", "NAngVpos","NHeVpos","NNiVpos","NCedVpos","NMojVpos")]
-part2.long <- melt(part2)
-names(part2.long)[names(part2.long)=="variable"] <- "antigen"
-part2.long$antigen <- gsub(pattern="pos", replacement = "", x=part2.long$antigen, fixed = T)
-part2.long$antigen <- gsub(pattern="N", replacement = "", x=part2.long$antigen, fixed = T)
-names(part2.long)[names(part2.long)=="value"] <- "pos"
+# part1 <- sero.prev[, c("sampleid", "highest_antigen","bat_species","GhVprev", "AngVprev","HeVprev","NiVprev","CedVprev","MojVprev")]
+# part1.long <- melt(part1)
+# names(part1.long)[names(part1.long)=="variable"] <- "antigen"
+# part1.long$antigen <- gsub(pattern="prev", replacement = "", x=part1.long$antigen, fixed = T)
+# names(part1.long)[names(part1.long)=="value"] <- "prev"
+# 
+# part2 <- sero.prev[, c("sampleid", "highest_antigen","bat_species","NGhVpos", "NAngVpos","NHeVpos","NNiVpos","NCedVpos","NMojVpos")]
+# part2.long <- melt(part2)
+# names(part2.long)[names(part2.long)=="variable"] <- "antigen"
+# part2.long$antigen <- gsub(pattern="pos", replacement = "", x=part2.long$antigen, fixed = T)
+# part2.long$antigen <- gsub(pattern="N", replacement = "", x=part2.long$antigen, fixed = T)
+# names(part2.long)[names(part2.long)=="value"] <- "pos"
 
 part3 <- sero.prev[, c("sampleid", "highest_antigen","bat_species","meanGhVMFI", "meanAngVMFI","meanHeVMFI","meanNiVMFI","meanCedVMFI","meanMojVMFI")]
 part3.long <- melt(part3)
@@ -483,17 +483,17 @@ part3.long$antigen <- gsub(pattern="mean", replacement = "", x=part3.long$antige
 part3.long$antigen <- gsub(pattern="MFI", replacement = "", x=part3.long$antigen, fixed = T)
 names(part3.long)[names(part3.long)=="value"] <- "MFI"
 
-part4 <- sero.prev[, c("sampleid", "highest_antigen", "bat_species","GhVprevuci", "AngVprevuci","HeVprevuci","NiVprevuci","CedVprevuci","MojVprevuci")]
-part4.long <- melt(part4)
-names(part4.long)[names(part4.long)=="variable"] <- "antigen"
-part4.long$antigen <- gsub(pattern="prevuci", replacement = "", x=part4.long$antigen, fixed = T)
-names(part4.long)[names(part4.long)=="value"] <- "prevuci"
-
-part5 <- sero.prev[, c("sampleid", "highest_antigen","bat_species","GhVprevlci", "AngVprevlci","HeVprevlci","NiVprevlci","CedVprevlci","MojVprevlci")]
-part5.long <- melt(part5)
-names(part5.long)[names(part5.long)=="variable"] <- "antigen"
-part5.long$antigen <- gsub(pattern="prevlci", replacement = "", x=part5.long$antigen, fixed = T)
-names(part5.long)[names(part5.long)=="value"] <- "prevlci"
+# part4 <- sero.prev[, c("sampleid", "highest_antigen", "bat_species","GhVprevuci", "AngVprevuci","HeVprevuci","NiVprevuci","CedVprevuci","MojVprevuci")]
+# part4.long <- melt(part4)
+# names(part4.long)[names(part4.long)=="variable"] <- "antigen"
+# part4.long$antigen <- gsub(pattern="prevuci", replacement = "", x=part4.long$antigen, fixed = T)
+# names(part4.long)[names(part4.long)=="value"] <- "prevuci"
+# 
+# part5 <- sero.prev[, c("sampleid", "highest_antigen","bat_species","GhVprevlci", "AngVprevlci","HeVprevlci","NiVprevlci","CedVprevlci","MojVprevlci")]
+# part5.long <- melt(part5)
+# names(part5.long)[names(part5.long)=="variable"] <- "antigen"
+# part5.long$antigen <- gsub(pattern="prevlci", replacement = "", x=part5.long$antigen, fixed = T)
+# names(part5.long)[names(part5.long)=="value"] <- "prevlci"
 
 part6 <- sero.prev[, c("sampleid", "highest_antigen","bat_species","GhVpropMFI", "AngVpropMFI","HeVpropMFI","NiVpropMFI","CedVpropMFI","MojVpropMFI")]
 part6.long <- melt(part6)
@@ -502,11 +502,11 @@ part6.long$antigen <- gsub(pattern="propMFI", replacement = "", x=part6.long$ant
 names(part6.long)[names(part6.long)=="value"] <- "propMFI"
 
 
-sero.prev.long <- merge(part1.long, part2.long)
-sero.prev.long <- merge(sero.prev.long, part3.long)
-sero.prev.long <- merge(sero.prev.long, part4.long)
-sero.prev.long <- merge(sero.prev.long, part5.long)
-sero.prev.long <- merge(sero.prev.long, part6.long)
+sero.prev.long <- merge(part3.long, part6.long)
+# sero.prev.long <- merge(sero.prev.long, part3.long)
+# sero.prev.long <- merge(sero.prev.long, part4.long)
+# sero.prev.long <- merge(sero.prev.long, part5.long)
+# sero.prev.long <- merge(sero.prev.long, part6.long)
 
 
 colorz = c('AngV' = "#F8766D", 'HeV' ="#A58AFF", 
@@ -514,11 +514,25 @@ colorz = c('AngV' = "#F8766D", 'HeV' ="#A58AFF",
            'CedV'= "#53B400", "MojV" = "#619CFF")
 
 
-pMFIprev <- ggplot(data= subset(sero.prev.long)) + 
+sero.prev.long.ghv<-subset(sero.prev.long, highest_antigen=="GhV")
+sero.prev.long.ghv <- sero.prev.long.ghv %>% filter(antigen != "GhV")
+sero.prev.long.hev<-subset(sero.prev.long, highest_antigen=="HeV")
+sero.prev.long.hev <- sero.prev.long.hev %>% filter(antigen != "HeV")
+sero.prev.long.niv<-subset(sero.prev.long, highest_antigen=="NiV")
+sero.prev.long.niv <- sero.prev.long.niv %>% filter(antigen != "NiV")
+sero.prev.long.cedv<-subset(sero.prev.long, highest_antigen=="CedV")
+sero.prev.long.cedv <- sero.prev.long.cedv %>% filter(antigen != "CedV")
+sero.prev.long.mojv<-subset(sero.prev.long, highest_antigen=="MojV")
+sero.prev.long.mojv <- sero.prev.long.mojv %>% filter(antigen != "MojV")
+sero.prev.long.angv<-subset(sero.prev.long, highest_antigen=="AngV")
+sero.prev.long.angv <- sero.prev.long.angv %>% filter(antigen != "AngV")
+
+sero.prev.long2 <- rbind(sero.prev.long.ghv, sero.prev.long.hev, sero.prev.long.niv, sero.prev.long.cedv,
+                         sero.prev.long.mojv, sero.prev.long.angv)
+
+pMFIprev <- ggplot(data= subset(sero.prev.long2)) + 
   geom_point(aes(x=MFI, y=propMFI, color=antigen), show.legend = T) + theme_bw() +
-  #geom_linerange(aes(x=MFI, ymin=prevlci, ymax=prevuci, color=antigen), linetype=3, alpha=.5, show.legend = F) +
-  #geom_line(data=pred.df, aes(x=meanGhVMFI, y=prevalence)) +
-  facet_grid(.~highest_antigen, scales="free")+
+  facet_grid(bat_species~highest_antigen, scales="free")+
   xlab("MFI of highest antigen") + theme_bw()+
   ylab("Proportion of MFI to antigen") +
   scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
@@ -528,7 +542,17 @@ pMFIprev <- ggplot(data= subset(sero.prev.long)) +
         axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
         legend.text = element_text(size=12),
+        strip.background = element_rect(fill="white"),
+        strip.text.y = element_text(size=16, face="italic"), 
+        strip.text.x = element_text(size=16),
         legend.position = "right",
         legend.title = element_text(size=14));pMFIprev
 
-
+homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+ggsave(file = paste0(homewd,"/final_figures_tables/gwen_tmp/FigX_highMFI_crossreactivity_correlation.png"),
+       plot=pMFIprev,
+       units="mm",
+       width=180,
+       height=90,
+       scale=3,
+       dpi=300)
