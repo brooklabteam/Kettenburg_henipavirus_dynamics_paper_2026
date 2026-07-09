@@ -317,60 +317,60 @@ lumdat.wide <- lumdat.wide %>%
 
 GhV_high <- lumdat.wide[max.col(numeric_cols, ties.method = "first") == 5, ]
 GhV_high$highest_antigen="GhV"
-#GhV_high <- GhV_high %>% select(-GhV)
-# GhV_high.long <- melt(GhV_high)
-# head(GhV_high.long)
-# names(GhV_high.long)[names(GhV_high.long)=="variable"] <- "antigen"
-# names(GhV_high.long)[names(GhV_high.long)=="value"] <- "MFI"
+GhV_high <- GhV_high %>% select(-GhV)
+GhV_high.long <- melt(GhV_high)
+head(GhV_high.long)
+names(GhV_high.long)[names(GhV_high.long)=="variable"] <- "antigen"
+names(GhV_high.long)[names(GhV_high.long)=="value"] <- "MFI"
 
 HeV_high <- lumdat.wide[max.col(numeric_cols, ties.method = "first") == 1, ]
 HeV_high$highest_antigen="HeV"
-#HeV_high <- HeV_high %>% select(-HeV)
-# HeV_high.long <- melt(HeV_high)
-# head(HeV_high.long)
-# names(HeV_high.long)[names(HeV_high.long)=="variable"] <- "antigen"
-# names(HeV_high.long)[names(HeV_high.long)=="value"] <- "MFI"
+HeV_high <- HeV_high %>% select(-HeV)
+HeV_high.long <- melt(HeV_high)
+head(HeV_high.long)
+names(HeV_high.long)[names(HeV_high.long)=="variable"] <- "antigen"
+names(HeV_high.long)[names(HeV_high.long)=="value"] <- "MFI"
 
 NiV_high <- lumdat.wide[max.col(numeric_cols, ties.method = "first") == 2, ]
 NiV_high$highest_antigen="NiV"
-#NiV_high <- NiV_high %>% select(-NiV)
-# NiV_high.long <- melt(NiV_high)
-# head(NiV_high.long)
-# names(NiV_high.long)[names(NiV_high.long)=="variable"] <- "antigen"
-# names(NiV_high.long)[names(NiV_high.long)=="value"] <- "MFI"
+NiV_high <- NiV_high %>% select(-NiV)
+NiV_high.long <- melt(NiV_high)
+head(NiV_high.long)
+names(NiV_high.long)[names(NiV_high.long)=="variable"] <- "antigen"
+names(NiV_high.long)[names(NiV_high.long)=="value"] <- "MFI"
 
 CedV_high <- lumdat.wide[max.col(numeric_cols, ties.method = "first") == 3, ]
 CedV_high$highest_antigen="CedV"
-#CedV_high <- CedV_high %>% select(-CedV)
-# CedV_high.long <- melt(CedV_high)
-# head(CedV_high.long)
-# names(CedV_high.long)[names(CedV_high.long)=="variable"] <- "antigen"
-# names(CedV_high.long)[names(CedV_high.long)=="value"] <- "MFI"
+CedV_high <- CedV_high %>% select(-CedV)
+CedV_high.long <- melt(CedV_high)
+head(CedV_high.long)
+names(CedV_high.long)[names(CedV_high.long)=="variable"] <- "antigen"
+names(CedV_high.long)[names(CedV_high.long)=="value"] <- "MFI"
 
 MojV_high <- lumdat.wide[max.col(numeric_cols, ties.method = "first") == 4, ]
 MojV_high$highest_antigen="MojV"
-#MojV_high <- MojV_high %>% select(-MojV)
-# MojV_high.long <- melt(MojV_high)
-# head(MojV_high.long)
-# names(MojV_high.long)[names(MojV_high.long)=="variable"] <- "antigen"
-# names(MojV_high.long)[names(MojV_high.long)=="value"] <- "MFI"
+MojV_high <- MojV_high %>% select(-MojV)
+MojV_high.long <- melt(MojV_high)
+head(MojV_high.long)
+names(MojV_high.long)[names(MojV_high.long)=="variable"] <- "antigen"
+names(MojV_high.long)[names(MojV_high.long)=="value"] <- "MFI"
 
 AngV_high <- lumdat.wide[max.col(numeric_cols, ties.method = "first") == 6, ]
 AngV_high$highest_antigen="AngV"
-#AngV_high <- AngV_high %>% select(-AngV)
-# AngV_high.long <- melt(AngV_high)
-# head(AngV_high.long)
-# names(AngV_high.long)[names(AngV_high.long)=="variable"] <- "antigen"
-# names(AngV_high.long)[names(AngV_high.long)=="value"] <- "MFI"
+AngV_high <- AngV_high %>% select(-AngV)
+AngV_high.long <- melt(AngV_high)
+head(AngV_high.long)
+names(AngV_high.long)[names(AngV_high.long)=="variable"] <- "antigen"
+names(AngV_high.long)[names(AngV_high.long)=="value"] <- "MFI"
 
 
 
 lumdat.wide.merge <- rbind(GhV_high, HeV_high, NiV_high, CedV_high, 
                            MojV_high, AngV_high)
 
-# lumdat.wide.merge <- rbind(GhV_high.long, HeV_high.long, NiV_high.long, CedV_high.long, 
-#                            MojV_high.long, AngV_high.long)
-# lumdat.wide.merge$antigen<-factor(lumdat.wide.merge$antigen, levels=c("HeV", "NiV", "GhV", "CedV", "MojV", "AngV"))
+lumdat.long.merge <- rbind(GhV_high.long, HeV_high.long, NiV_high.long, CedV_high.long,
+                           MojV_high.long, AngV_high.long)
+lumdat.wide.merge$antigen<-factor(lumdat.wide.merge$antigen, levels=c("HeV", "NiV", "GhV", "CedV", "MojV", "AngV"))
 
 #make the seropos data long
 # dat2.long <- melt(dat2)
@@ -382,17 +382,20 @@ lumdat.wide.merge <- rbind(GhV_high, HeV_high, NiV_high, CedV_high,
 
 #merge matching sampleids and antigens
 lumdat.wide.merge <- merge(lumdat.wide.merge, dat2)
+lumdat.wide.merge <- merge(lumdat.wide.merge, lumdat.long.merge)
+
+lumdat.wide.merge <- lumdat.wide.merge[lumdat.wide.merge$antigen != "sumMFI", ]
 
 merge.dat<-lumdat.wide.merge
 
 #now get shedding prevalence
-sero.prev <- ddply(merge.dat,.(bat_species, sampleid, highest_antigen, sumMFI), summarise, 
-                   NGhVpos = sum(seropos_GhV, na.rm=T), 
-                   NAngVpos = sum(seropos_AngV, na.rm=T), 
-                   NHeVpos = sum(seropos_HeV, na.rm=T), 
-                   NNiVpos = sum(seropos_NiV, na.rm=T), 
-                   NCedVpos = sum(seropos_CedV, na.rm=T), 
-                   NMojVpos = sum(seropos_MojV, na.rm=T), 
+sero.prev <- ddply(merge.dat,.(bat_species, sampleid, highest_antigen, antigen,sumMFI), summarise, 
+                   # NGhVpos = sum(seropos_GhV, na.rm=T), 
+                   # NAngVpos = sum(seropos_AngV, na.rm=T), 
+                   # NHeVpos = sum(seropos_HeV, na.rm=T), 
+                   # NNiVpos = sum(seropos_NiV, na.rm=T), 
+                   # NCedVpos = sum(seropos_CedV, na.rm=T), 
+                   # NMojVpos = sum(seropos_MojV, na.rm=T), 
                    Ntot=6,
                    meanGhVMFI=mean(GhV, na.rm=T), 
                    meanAngVMFI=mean(AngV, na.rm=T),  
@@ -412,12 +415,12 @@ head(sero.prev)
 #   value.name = c("Npos", "meanMFI", "sdMFI")
 # )
 
-sero.prev$GhVprev <- sero.prev$NGhVpos/sero.prev$Ntot
-sero.prev$AngVprev <- sero.prev$NAngVpos/sero.prev$Ntot
-sero.prev$HeVprev <- sero.prev$NHeVpos/sero.prev$Ntot
-sero.prev$NiVprev <- sero.prev$NNiVpos/sero.prev$Ntot
-sero.prev$CedVprev <- sero.prev$NCedVpos/sero.prev$Ntot
-sero.prev$MojVprev <- sero.prev$NMojVpos/sero.prev$Ntot
+# sero.prev$GhVprev <- sero.prev$NGhVpos/sero.prev$Ntot
+# sero.prev$AngVprev <- sero.prev$NAngVpos/sero.prev$Ntot
+# sero.prev$HeVprev <- sero.prev$NHeVpos/sero.prev$Ntot
+# sero.prev$NiVprev <- sero.prev$NNiVpos/sero.prev$Ntot
+# sero.prev$CedVprev <- sero.prev$NCedVpos/sero.prev$Ntot
+# sero.prev$MojVprev <- sero.prev$NMojVpos/sero.prev$Ntot
 
 sero.prev$GhVpropMFI <- sero.prev$meanGhVMFI/sero.prev$sumMFI
 sero.prev$AngVpropMFI <- sero.prev$meanAngVMFI/sero.prev$sumMFI
@@ -426,37 +429,37 @@ sero.prev$NiVpropMFI <- sero.prev$meanNiVMFI/sero.prev$sumMFI
 sero.prev$CedVpropMFI <- sero.prev$meanCedVMFI/sero.prev$sumMFI
 sero.prev$MojVpropMFI <- sero.prev$meanMojVMFI/sero.prev$sumMFI
 
-sero.prev$NGhVneg <- sero.prev$Ntot - sero.prev$NGhVpos
-sero.prev$NAngVneg <- sero.prev$Ntot - sero.prev$NAngVpos
-sero.prev$NHeVneg <- sero.prev$Ntot - sero.prev$NHeVpos
-sero.prev$NNiVneg <- sero.prev$Ntot - sero.prev$NNiVpos
-sero.prev$NCedVneg <- sero.prev$Ntot - sero.prev$NCedVpos
-sero.prev$NMojVneg <- sero.prev$Ntot - sero.prev$NMojVpos
+# sero.prev$NGhVneg <- sero.prev$Ntot - sero.prev$NGhVpos
+# sero.prev$NAngVneg <- sero.prev$Ntot - sero.prev$NAngVpos
+# sero.prev$NHeVneg <- sero.prev$Ntot - sero.prev$NHeVpos
+# sero.prev$NNiVneg <- sero.prev$Ntot - sero.prev$NNiVpos
+# sero.prev$NCedVneg <- sero.prev$Ntot - sero.prev$NCedVpos
+# sero.prev$NMojVneg <- sero.prev$Ntot - sero.prev$NMojVpos
 
-sero.prev$GhVprevlci <- sero.prev$GhVprevuci <- sero.prev$AngVprevlci <- sero.prev$AngVprevuci <- 
-  sero.prev$HeVprevlci <- sero.prev$HeVprevuci <- sero.prev$NiVprevlci <- sero.prev$NiVprevuci <- 
-  sero.prev$CedVprevlci <- sero.prev$CedVprevuci <- sero.prev$MojVprevlci <- sero.prev$MojVprevuci <-NA
+# sero.prev$GhVprevlci <- sero.prev$GhVprevuci <- sero.prev$AngVprevlci <- sero.prev$AngVprevuci <- 
+#   sero.prev$HeVprevlci <- sero.prev$HeVprevuci <- sero.prev$NiVprevlci <- sero.prev$NiVprevuci <- 
+#   sero.prev$CedVprevlci <- sero.prev$CedVprevuci <- sero.prev$MojVprevlci <- sero.prev$MojVprevuci <-NA
 
-for(i in 1:nrow(sero.prev)){
-  tmp <- binom.test(x=c(sero.prev$NGhVpos[i], sero.prev$NGhVneg[i]))$conf.int  
-  tmp2 <- binom.test(x=c(sero.prev$NAngVpos[i], sero.prev$NAngVneg[i]))$conf.int  
-  tmp3 <- binom.test(x=c(sero.prev$NHeVpos[i], sero.prev$NHeVneg[i]))$conf.int  
-  tmp4 <- binom.test(x=c(sero.prev$NNiVpos[i], sero.prev$NNiVneg[i]))$conf.int  
-  tmp5 <- binom.test(x=c(sero.prev$NCedVpos[i], sero.prev$NCedVneg[i]))$conf.int  
-  tmp6 <- binom.test(x=c(sero.prev$NMojVpos[i], sero.prev$NMojVneg[i]))$conf.int  
-  sero.prev$GhVprevlci[i] <- tmp[1]
-  sero.prev$GhVprevuci[i] <- tmp[2]
-  sero.prev$AngVprevlci[i] <- tmp2[1]
-  sero.prev$AngVprevuci[i] <- tmp2[2]
-  sero.prev$HeVprevlci[i] <- tmp3[1]
-  sero.prev$HeVprevuci[i] <- tmp3[2]
-  sero.prev$NiVprevlci[i] <- tmp4[1]
-  sero.prev$NiVprevuci[i] <- tmp4[2]
-  sero.prev$CedVprevlci[i] <- tmp5[1]
-  sero.prev$CedVprevuci[i] <- tmp5[2]
-  sero.prev$MojVprevlci[i] <- tmp6[1]
-  sero.prev$MojVprevuci[i] <- tmp6[2]
-}
+# for(i in 1:nrow(sero.prev)){
+#   tmp <- binom.test(x=c(sero.prev$NGhVpos[i], sero.prev$NGhVneg[i]))$conf.int  
+#   tmp2 <- binom.test(x=c(sero.prev$NAngVpos[i], sero.prev$NAngVneg[i]))$conf.int  
+#   tmp3 <- binom.test(x=c(sero.prev$NHeVpos[i], sero.prev$NHeVneg[i]))$conf.int  
+#   tmp4 <- binom.test(x=c(sero.prev$NNiVpos[i], sero.prev$NNiVneg[i]))$conf.int  
+#   tmp5 <- binom.test(x=c(sero.prev$NCedVpos[i], sero.prev$NCedVneg[i]))$conf.int  
+#   tmp6 <- binom.test(x=c(sero.prev$NMojVpos[i], sero.prev$NMojVneg[i]))$conf.int  
+#   sero.prev$GhVprevlci[i] <- tmp[1]
+#   sero.prev$GhVprevuci[i] <- tmp[2]
+#   sero.prev$AngVprevlci[i] <- tmp2[1]
+#   sero.prev$AngVprevuci[i] <- tmp2[2]
+#   sero.prev$HeVprevlci[i] <- tmp3[1]
+#   sero.prev$HeVprevuci[i] <- tmp3[2]
+#   sero.prev$NiVprevlci[i] <- tmp4[1]
+#   sero.prev$NiVprevuci[i] <- tmp4[2]
+#   sero.prev$CedVprevlci[i] <- tmp5[1]
+#   sero.prev$CedVprevuci[i] <- tmp5[2]
+#   sero.prev$MojVprevlci[i] <- tmp6[1]
+#   sero.prev$MojVprevuci[i] <- tmp6[2]
+# }
 
 
 #subset and melt to make the sero.prev dataset long
@@ -511,11 +514,13 @@ colorz = c('AngV' = "#F8766D", 'HeV' ="#A58AFF",
            'CedV'= "#53B400", "MojV" = "#619CFF")
 
 
-pMFIprev <- ggplot(data= subset(sero.prev.long, highest_antigen=="NiV")) + 
-  geom_point(aes(x=MFI, y=prev, color=antigen), show.legend = F) + theme_bw() +
+pMFIprev <- ggplot(data= subset(sero.prev.long)) + 
+  geom_point(aes(x=MFI, y=propMFI, color=antigen), show.legend = T) + theme_bw() +
   #geom_linerange(aes(x=MFI, ymin=prevlci, ymax=prevuci, color=antigen), linetype=3, alpha=.5, show.legend = F) +
   #geom_line(data=pred.df, aes(x=meanGhVMFI, y=prevalence)) +
-  xlab("MFI") + ylab("Proportion of sample seropos to antigen") +
+  facet_grid(.~highest_antigen, scales="free")+
+  xlab("MFI of highest antigen") + theme_bw()+
+  ylab("Proportion of MFI to antigen") +
   scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
   scale_color_manual(name="Antigen", values = colorz) +
   theme(panel.grid = element_blank(),
@@ -523,8 +528,7 @@ pMFIprev <- ggplot(data= subset(sero.prev.long, highest_antigen=="NiV")) +
         axis.title.x = element_text(size=16),
         axis.title.y = element_text(size=16),
         legend.text = element_text(size=12),
-        legend.position = "inside",
-        legend.position.inside = c(.15,.73),
+        legend.position = "right",
         legend.title = element_text(size=14));pMFIprev
 
 
