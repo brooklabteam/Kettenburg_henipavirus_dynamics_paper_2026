@@ -533,10 +533,11 @@ sero.prev.long2 <- rbind(sero.prev.long.ghv, sero.prev.long.hev, sero.prev.long.
                          sero.prev.long.mojv, sero.prev.long.angv)
 
 pMFIprev <- ggplot(data= subset(sero.prev.long2)) + 
-  geom_point(aes(x=MFI, y=propMFI, color=antigen), show.legend = T) + theme_bw() +
+  #geom_point(aes(x=MFI, y=Npos), show.legend = T) + theme_bw() +
+  geom_jitter(aes(x=MFI, y=Npos), size=1) +
   facet_grid(bat_species~highest_antigen, scales="free")+
   xlab("MFI of highest antigen") + theme_bw()+
-  ylab("Proportion of MFI to antigen") +
+  ylab("# antigens seropos (excluding highest antigen)") +
   scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
   scale_color_manual(name="Antigen", values = colorz) +
   theme(panel.grid = element_blank(),
