@@ -18,6 +18,7 @@ library(mvtnorm)
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #load the completed models with age-seroprevalence and time series
+all.par <- age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/final_par_fits_GhV_matrix.csv"), header = T, stringsAsFactors = F)
 age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/final_age_sero_df_GhV_matrix.csv"), header = T, stringsAsFactors = F)
 biwk.ts.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/final_biweekly_ts_GhV_matrix.csv"), header = T, stringsAsFactors = F)
 
@@ -718,9 +719,9 @@ plot.models.data.CI.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, da
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=model.sum, aes(x=age, y=seroprevalence), color="cornflowerblue") + 
-    geom_ribbon(data=model.sum, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
-    geom_ribbon(data=model.sum, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
+    geom_line(data=model.sum, aes(x=age_bin, y=seroprevalence), color="cornflowerblue") + 
+    geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
+    geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   

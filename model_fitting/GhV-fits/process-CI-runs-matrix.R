@@ -27,10 +27,35 @@ for (i in 1:20){
   if(skip_to_next) { next }    
 }
 
+#tmp until we sort these
+names(dat.fit[[5]][[1]])[names(dat.fit[[5]][[1]])=="sigma"] <- "sigma1"
+names(dat.fit[[5]][[1]])[names(dat.fit[[5]][[1]])=="sigma_lci"] <- "sigma1_lci"
+names(dat.fit[[5]][[1]])[names(dat.fit[[5]][[1]])=="sigma_uci"] <- "sigma1_uci"
+
+names(dat.fit[[7]][[1]])[names(dat.fit[[7]][[1]])=="sigma"] <- "sigma1"
+names(dat.fit[[7]][[1]])[names(dat.fit[[7]][[1]])=="sigma_lci"] <- "sigma1_lci"
+names(dat.fit[[7]][[1]])[names(dat.fit[[7]][[1]])=="sigma_uci"] <- "sigma1_uci"
+
+names(dat.fit[[11]][[1]])[names(dat.fit[[11]][[1]])=="sigma"] <- "sigma1"
+names(dat.fit[[11]][[1]])[names(dat.fit[[11]][[1]])=="sigma_lci"] <- "sigma1_lci"
+names(dat.fit[[11]][[1]])[names(dat.fit[[11]][[1]])=="sigma_uci"] <- "sigma1_uci"
+
+names(dat.fit[[16]][[1]])[names(dat.fit[[16]][[1]])=="sigma"] <- "sigma1"
+names(dat.fit[[16]][[1]])[names(dat.fit[[16]][[1]])=="sigma_lci"] <- "sigma1_lci"
+names(dat.fit[[16]][[1]])[names(dat.fit[[16]][[1]])=="sigma_uci"] <- "sigma1_uci"
+
+dat.fit[[5]][[1]] <- dplyr::select(dat.fit[[5]][[1]], names(dat.fit[[1]][[1]]))
+dat.fit[[7]][[1]] <- dplyr::select(dat.fit[[7]][[1]], names(dat.fit[[1]][[1]]))
+dat.fit[[11]][[1]] <- dplyr::select(dat.fit[[11]][[1]], names(dat.fit[[1]][[1]]))
+dat.fit[[16]][[1]] <- dplyr::select(dat.fit[[16]][[1]], names(dat.fit[[1]][[1]]))
+
+
 #extract first, second, third, item in list
 dat.par <- data.table::rbindlist(sapply(dat.fit, '[', 1))
 dat.age.sero <- data.table::rbindlist(sapply(dat.fit, '[', 2))
 dat.biweekly.ts <- data.table::rbindlist(sapply(dat.fit, '[', 3))
+
+
 
 head(dat.par)
 head(dat.age.sero)
