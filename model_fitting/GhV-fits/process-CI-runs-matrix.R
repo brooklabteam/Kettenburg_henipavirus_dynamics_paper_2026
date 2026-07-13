@@ -7,7 +7,7 @@ library(ggplot2)
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #set wd
-setwd(paste0(homewd,"/model_fitting/GhV-fits/out-CIs-matrix/"))
+setwd(paste0(homewd,"/model_fitting/GhV-fits/out-matrix-CIs/"))
 #load all the data and add to a list
 
 
