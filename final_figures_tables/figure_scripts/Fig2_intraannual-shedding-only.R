@@ -83,7 +83,7 @@ sum(merge.dat$AndV_pos[merge.dat$bat_species=="Rousettus madagascariensis"])/len
 #AngV
 sum(merge.dat$AngV_pos[merge.dat$bat_species=="Pteropus rufus"])/length(merge.dat$AngV_pos[merge.dat$bat_species=="Pteropus rufus"]) # 10/213 = 4.6%
 sum(merge.dat$AngV_pos[merge.dat$bat_species=="Eidolon dupreanum"])/length(merge.dat$AngV_pos[merge.dat$bat_species=="Eidolon dupreanum"]) #22/447= 4.9%
-sum(merge.dat$AngV_pos[merge.dat$bat_species=="Rousettus madagascariensis"])/length(merge.dat$AngV_pos[merge.dat$bat_species=="Rousettus madagascariensis"]) # 13/338 = 3.8%
+sum(merge.dat$AngV_pos[merge.dat$bat_species=="Rousettus madagascariensis"])/length(merge.dat$AngV_pos[merge.dat$bat_species=="Rousettus madagascariensis"]) # 13/338 = 3.2%
 
 
 #change roost site to just Moramanga region or Ankarana
@@ -126,7 +126,7 @@ merge.dat$mid_date <- as.Date(merge.dat$mid_date)
 merge.dat$doy <- yday(merge.dat$processing_date)
 
 
-#tot.merge = subset(merge.dat, year<2022 & year>2016)
+
 tot.merge= merge.dat
 
 head(tot.merge)
@@ -151,7 +151,7 @@ length(tot.merge$bat_age_class[is.na(tot.merge$bat_age_class)])#46
 
 #verify juvenile status
 unique(tot.merge$young_of_year)
-unique(tot.merge$bat_age_class[tot.merge$young_of_year=="yes"]) #lots of NL and A in young of year
+unique(tot.merge$bat_age_class[tot.merge$young_of_year=="yes"]) 
 tot.merge$bat_age_class[tot.merge$young_of_year=="yes"]<- "J" #all yoy are juveniles
 
 # 
@@ -179,7 +179,7 @@ gamGhV <- gam(GhV_pos ~ combo_class + mass_forearm_residual:MFR_class +
                    gamma = 1,
                    select = TRUE,
                    data= subset(tot.merge, bat_species =="Eidolon dupreanum" ))
-summary(gamGhV) #year and doy ankarana only -- this leads us to explore the seasonal data more
+summary(gamGhV) #year and doy ankarana only and weak sig for Moramanga -- this leads us to explore the seasonal data more
 #plot(gamGhV)
 
 
@@ -191,7 +191,7 @@ gamAngV <- gam(AngV_pos ~ combo_class + mass_forearm_residual:MFR_class +
               gamma = 1,
               select = TRUE,
               data= subset(tot.merge, bat_species =="Eidolon dupreanum" ))
-summary(gamAngV) #year and MFR adult (adult MFR slope is positive - could just be coincidence)
+summary(gamAngV) #year and MFR adult (adult MFR slope is weakly positive - could just be coincidence)
 #plot(gamAngV)
 
 gamAndV <- gam(AndV_pos ~  combo_class + mass_forearm_residual:MFR_class +
@@ -202,7 +202,7 @@ gamAndV <- gam(AndV_pos ~  combo_class + mass_forearm_residual:MFR_class +
                gamma = 1,
                select = TRUE,
                data= subset(tot.merge, bat_species =="Eidolon dupreanum" ))
-summary(gamAndV) #nothing
+summary(gamAndV) #year only
 
 ### then Pteropus
 
@@ -214,7 +214,7 @@ gamPGhV <- gam(GhV_pos ~  combo_class + mass_forearm_residual:MFR_class +
               gamma = 1,
               select = TRUE,
               data= subset(tot.merge, bat_species =="Pteropus rufus" ))
-summary(gamPGhV) #year,  doy Moramanga, NL females borderline positively associated 
+summary(gamPGhV) #year,  doy Moramanga, NL females borderline positively associated, MFR adult weakly positive
 #plot(gamPGhV)
 
 
@@ -226,7 +226,7 @@ gamPAngV <- gam(AngV_pos ~  combo_class + mass_forearm_residual:MFR_class +
                gamma = 1,
                select = TRUE,
                data= subset(tot.merge, bat_species =="Pteropus rufus" ))
-summary(gamPAngV) #year
+summary(gamPAngV) #year 
 #plot(gamPAngV)
 
 gamPAndV <- gam(AndV_pos ~  combo_class + mass_forearm_residual:MFR_class +
@@ -262,7 +262,7 @@ gamRAngV <- gam(AngV_pos ~  combo_class + mass_forearm_residual:MFR_class +
                 gamma = 1,
                 select = TRUE,
                 data= subset(tot.merge, bat_species =="Rousettus madagascariensis" ))
-summary(gamRAngV) #year and marginal for moramanga doy
+summary(gamRAngV) #year and moramanga doy
 #plot(gamRAngV)
 
 gamRAndV <- gam(AndV_pos ~  combo_class + mass_forearm_residual:MFR_class +
@@ -299,7 +299,7 @@ gamSessionGhV <- gam(cbind(GhVpos, GhVneg) ~
                    gamma = 1,
                    select = TRUE,
                    data= subset(session.sum, bat_species =="Eidolon dupreanum" ))
-summary(gamSessionGhV) #year and ankarana and moramanga (latter borderline but there)
+summary(gamSessionGhV) #year and ankarana and moramanga 
 #plot(gamSessionGhV)
 
 
@@ -636,35 +636,35 @@ tot.merge$MFR_cat[tot.merge$MFR_class!="adult"] <- NA
 
 #Eidolon 
 t.test(x= tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$GhV_pos==1 & tot.merge$bat_species=="Eidolon dupreanum"], y=tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$GhV_pos==0 & tot.merge$bat_species=="Eidolon dupreanum"])
-#GhV - no diff.  p-value = 0.2105
+#GhV - no diff.  p-value = 0.8491
 
 t.test(x= tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$AngV_pos==1 & tot.merge$bat_species=="Eidolon dupreanum"], y=tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$AngV_pos==0 & tot.merge$bat_species=="Eidolon dupreanum"])
-#AngV - no diff. p-value = 0.2105
+#AngV - no diff. p-value = 0.1978
 
 t.test(x= tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$AndV_pos==1 & tot.merge$bat_species=="Eidolon dupreanum"], y=tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$AndV_pos==0 & tot.merge$bat_species=="Eidolon dupreanum"])
-#AndV - no diff. p-value = 0.7297
+#AndV - no diff. p-value = 0.581
 
 
 #Pteropus
 t.test(x= tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$GhV_pos==1 & tot.merge$bat_species=="Pteropus rufus"], y=tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$GhV_pos==0 & tot.merge$bat_species=="Pteropus rufus"])
-#GhV - no diff. p-value = 0.1489. 
+#GhV - no diff. p-value = 0.05132
 
 t.test(x= tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$AngV_pos==1 & tot.merge$bat_species=="Pteropus rufus"], y=tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$AngV_pos==0 & tot.merge$bat_species=="Pteropus rufus"])
-#AngV - no diff. p-value = 0.938
+#AngV - no diff. p-value = 0.9132
 
 t.test(x= tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$AndV_pos==1 & tot.merge$bat_species=="Pteropus rufus"], y=tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$AndV_pos==0 & tot.merge$bat_species=="Pteropus rufus"])
-#AndV - no diff. p-value = 0.9766
+#AndV - no diff. p-value = 0.8816
 
 
 #Rousettus
 t.test(x= tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$GhV_pos==1 & tot.merge$bat_species=="Rousettus madagascariensis"], y=tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$GhV_pos==0 & tot.merge$bat_species=="Rousettus madagascariensis"])
-#GhV -  no diff. p-value = 0.4831
+#GhV -  no diff. p-value = 0.1012
 
 t.test(x= tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$AngV_pos==1 & tot.merge$bat_species=="Rousettus madagascariensis"], y=tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$AngV_pos==0 & tot.merge$bat_species=="Rousettus madagascariensis"])
-#AngV - no diff. p-value = 0.4831
+#AngV - no diff. p-value = 0.2436
 
 t.test(x= tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$AndV_pos==1 & tot.merge$bat_species=="Rousettus madagascariensis"], y=tot.merge$mass_forearm_residual[!is.na(tot.merge$MFR_cat) & tot.merge$AndV_pos==0 & tot.merge$bat_species=="Rousettus madagascariensis"])
-#AndV - no diff. p-value = 0.5462
+#AndV - no diff.p-value = 0.4961
 
 tot.merge$GhV_plot <- tot.merge$GhV_pos
 tot.merge$GhV_plot[tot.merge$GhV_plot==0] <- "GhV-neg"
@@ -962,7 +962,7 @@ summary(glmCoInfR) #nothing
 glmCoInfCatR <- glm(sum_infections ~ mass_cat,
                     family = "poisson",
                     data= subset(tot.merge,  bat_species=="Rousettus madagascariensis"))
-summary(glmCoInfCatR) #nothing
+summary(glmCoInfCatR) #poor body condition marginally associated with more HNVs
 
 
 #and the Ct-prevalence plot
@@ -985,7 +985,7 @@ names(shed.dat)[names(shed.dat) == "AndV_shedding_ct_ur"] <- "AndV_ct"
 
 
 # link this to the catching data to plot by sampling session
-catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/catching_data_clean.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
+catch.dat <- read.csv(file = paste0(homewd, "/master_data_files/catching_data.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
 
 head(catch.dat)
 #names(catch.dat)
@@ -998,7 +998,7 @@ catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, 
 
 #and merge all three datasets
 setdiff(shed.dat$sampleid, catch.dat$sampleid)
-
+shed.dat= subset(shed.dat, sampleid!="MIZ305" & sampleid!="MIZ546")
 
 merge.dat <- merge(shed.dat, catch.dat, by="sampleid")
 head(merge.dat)
@@ -1063,13 +1063,13 @@ Eid.shed.prev <- glm(cbind(NGhVpos, NGhVneg) ~ meanGhVCt:roost_site,
                 family = "binomial",
                 data = subset(shed.prev, bat_species=="Eidolon dupreanum"))
 
-summary(Eid.shed.prev) #moramanga site sig association with low Ct and high prev
+summary(Eid.shed.prev) #not sig. but all sites trending towards association with low Ct and high prev
 
 Pter.shed.prev <- glm(cbind(NGhVpos, NGhVneg) ~ meanGhVCt:roost_site,
                      family = "binomial",
                      data = subset(shed.prev, bat_species=="Pteropus rufus"))
 
-summary(Pter.shed.prev) #moramanga sig but opposite
+summary(Pter.shed.prev) #moramanga sig but opposite pattern
 
 Rou.shed.prev <- glm(cbind(NGhVpos, NGhVneg) ~ meanGhVCt:roost_site,
                       family = "binomial",
@@ -1352,26 +1352,26 @@ perm_cor_unweighted <- function(df, virus, n_perm = 10000, seed = NULL) {
 
 #Eidolon
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo" & bat_species=="Eidolon dupreanum"), virus="GhV",n_perm = 10000)
-#$observed: -0.3563853; $p_value= 0.1089. almost significant
+#$observed: -0.1049615; $p_value=  0.797. not significant
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo" & bat_species=="Eidolon dupreanum"), virus="AngV",n_perm = 10000)
-#$observed: -0.3293304; $p_value= 0.6766. not significant
+#$observed: -0.3293304; $p_value= 0.6646. not significant
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo" & bat_species=="Eidolon dupreanum"), virus="AndV",n_perm = 10000)
-#$observed: -0.9470351 $p_value = 0.0394, sig!
+#$observed: -0.9470351 $p_value = 0.0426, sig!
 
 #Pteropus
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo" & roost_site!="Makira" & bat_species=="Pteropus rufus"), virus="GhV",n_perm = 10000)
-#$observed: 0.5576712; $p_value= 0.063.  significant but positively correlated again
+#$observed: 0.5576712; $p_value= 0.0569.  significant but positively correlated again
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo" & roost_site!="Makira" & bat_species=="Pteropus rufus"), virus="AngV",n_perm = 10000)
-#$observed: -0.6721783; $p_value= 0.1324. almost significant
+#$observed: -0.6721783; $p_value= 0.1337. almost significant
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo" & roost_site!="Makira" & bat_species=="Pteropus rufus"), virus="AndV",n_perm = 10000)
-#$observed: 0.1026462 $p_value = 0.7731, not sig
+#$observed: 0.1026462 $p_value = 0.7694, not sig
 
 
 #Rousettus
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo" & roost_site!="Makira" & bat_species=="Rousettus madagascariensis"), virus="GhV",n_perm = 10000)
-#$observed: 0.5241467; $p_value= 0.0498.  significant but positively correlated again
+#$observed: 0.5177231; $p_value= 0.0583.  significant but positively correlated again
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo" & roost_site!="Makira" & bat_species=="Rousettus madagascariensis"), virus="AngV",n_perm = 10000)
-#$observed: -0.608751; $p_value= 0.1994. almost significant
+#$observed: -0.6035035; $p_value= 0.1985. almost significant
 perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo" & roost_site!="Makira" & bat_species=="Rousettus madagascariensis"), virus="AndV",n_perm = 10000)
 #NA
 
@@ -1380,26 +1380,26 @@ perm_cor_weighted(df = subset(shed.prev, roost_site!="Mahabo" & roost_site!="Mak
 #and unweighted
 #Eidolon
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo" & bat_species=="Eidolon dupreanum"), virus="GhV",n_perm = 10000)
-#$observed: -0.2262418; $p_value= 0.2912. not sig
+#$observed: -0.1561635; $p_value= 0.4863. not sig
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo" & bat_species=="Eidolon dupreanum"), virus="AngV",n_perm = 10000)
-#$observed: -0.318404; $p_value= 0.7107. not significant
+#$observed: -0.318404; $p_value= 0.7147. not significant
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo" & bat_species=="Eidolon dupreanum"), virus="AndV",n_perm = 10000)
-#$observed: -0.9470351 $p_value = 0.0432, sig!
+#$observed: -0.9470351 $p_value = 0.0431, sig!
 
 #Pteropus
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo" & roost_site!="Makira" & bat_species=="Pteropus rufus"), virus="GhV",n_perm = 10000)
-#$observed: 0.4132313; $p_value= 0.1885.  not significant 
+#$observed: 0.4132313; $p_value= 0.186.  not significant 
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo" & roost_site!="Makira" & bat_species=="Pteropus rufus"), virus="AngV",n_perm = 10000)
-#$observed: -0.5273378; $p_value= 0.2365. almost significant
+#$observed: -0.5273378; $p_value= 0.2253. almost significant
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo" & roost_site!="Makira" & bat_species=="Pteropus rufus"), virus="AndV",n_perm = 10000)
-#$observed: 0.1182298 $p_value = 0.7584, not sig
+#$observed: 0.1182298 $p_value = 0.7483, not sig
 
 
 #Rousettus
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo" & roost_site!="Makira" & bat_species=="Rousettus madagascariensis"), virus="GhV",n_perm = 10000)
-#$observed: 0.4674389; $p_value= 0.0776.  significant but positively correlated again
+#$observed: 0.4500231; $p_value= 0.1133.  significant but positively correlated again
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo" & roost_site!="Makira" & bat_species=="Rousettus madagascariensis"), virus="AngV",n_perm = 10000)
-#$observed: -0.672902; $p_value= 0.1099. almost significant
+#$observed: -0.6673865; $p_value= 0.1152. almost significant
 perm_cor_unweighted(df = subset(shed.prev, roost_site!="Mahabo" & roost_site!="Makira" & bat_species=="Rousettus madagascariensis"), virus="AndV",n_perm = 10000)
 #NA
 
