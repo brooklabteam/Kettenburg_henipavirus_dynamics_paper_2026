@@ -28,11 +28,11 @@ head(catch.dat)
 names(catch.dat)
 
 # drop most columns and name those you want
-catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, processing_date, sampleid, barcode_id, bat_sex, bat_age_class, young_of_year, pupmom_pair, sampleid_pupmom_pair, bat_weight_g, bat_forearm_mm, recap_new)
+catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, processing_date, sampleid, barcode_id, bat_sex, bat_age_class, young_of_year, pupmom_pair, pup_or_mom, sampleid_pupmom_pair, bat_weight_g, bat_forearm_mm, recap_new)
 
 #sub to timeframe of interest
 catch.dat$processing_date <- as.Date(catch.dat$processing_date)
-catch.dat <- subset(catch.dat, processing_date < "2021-01-01")
+catch.dat <- subset(catch.dat, processing_date < "2023-08-01")
 unique(catch.dat$young_of_year)
 catch.dat$bat_age_class[catch.dat$young_of_year=="yes" & !is.na(catch.dat$bat_age_class)] <- "J"
 unique(catch.dat$bat_species)

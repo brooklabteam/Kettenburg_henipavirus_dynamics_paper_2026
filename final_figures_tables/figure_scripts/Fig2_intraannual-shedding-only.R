@@ -18,7 +18,7 @@ library(lmerTest)
 ################################################################################
 ################################################################################
  homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/"
- batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
+
 
 # 
 #homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
@@ -51,10 +51,9 @@ sum(shed.dat$AngV_pos)#45
 sum(shed.dat$GhV_pos)#127
 
 # link this to the catching data to plot by sampling session
-catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/catching_data_clean.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
-#catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/Historic-Catching-Data-Through2020/catching_data_historic.csv"))
+catch.dat <- read.csv(file = paste0(homewd, "/master_data_files/catching_data.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
 
-unique(catch.dat$mass_forearm_residual[catch.dat$young_of_year=="yes"])
+unique(catch.dat$mass_forearm_residual[catch.dat$young_of_year=="yes"]) #NA - as it should be
 # drop most columns and name those you want
 catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, processing_date, sampleid, barcode_id, bat_sex, bat_age_class, young_of_year, pupmom_pair, sampleid_pupmom_pair, pup_or_mom, bat_weight_g, bat_forearm_mm, mass_forearm_residual, recap_new)
 

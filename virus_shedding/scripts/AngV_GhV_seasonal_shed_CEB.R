@@ -32,7 +32,7 @@ sum(shed.dat$AngV_pos)#45
 sum(shed.dat$GhV_pos)#127
 
 # link this to the catching data to plot by sampling session
-catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/catching_data_clean.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
+catch.dat <- read.csv(file = paste0(homewd, "/master_data_files/catching_data.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
 #catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/Historic-Catching-Data-Through2020/catching_data_historic.csv"))
 
 head(catch.dat)
@@ -151,21 +151,9 @@ gamGhVnoSex <- gam(cbind(GhVpos, GhVneg) ~
               gamma = 1,
               select = TRUE,
               data= subset(prev.dat, bat_species =="Eidolon dupreanum" ))
-summary(gamGhVnoSex) #moramanga 
-#plot(gamGhVnoSex)
+summary(gamGhVnoSex) #moramanga and ankarana sig
 
-gamGhVSex <- gam(cbind(GhVpos, GhVneg) ~ bat_sex +
-                     s(as.numeric(doy), bs="cc", k=10, by = interaction(roost_site, bat_sex)) +
-                   s(year, bs="re"),
-                     #s(as.numeric(mid_date), bs="tp", k=6, by = interaction(roost_site, bat_sex, era)),
-                   family = "binomial",
-                   method = "REML", 
-                   gamma = 1,
-                   select = TRUE,
-                   data= subset(prev.dat.sex, bat_species =="Eidolon dupreanum" ))
-summary(gamGhVSex) #moramanga female, ankarana female, and year
-
-AIC(gamGhVnoSex, gamGhVSex) #better with no sex
+AIC(gamGhVnoSex) 
 
 #and AngV
 prev.dat$AngVneg <- prev.dat$Ntot-prev.dat$AngVpos
@@ -181,20 +169,8 @@ gamAngVnoSex <- gam(cbind(AngVpos, AngVneg) ~
                    gamma = 1,
                    select = TRUE,
                    data= subset(prev.dat, bat_species =="Eidolon dupreanum" ))
-summary(gamAngVnoSex) #just year
-#plot(gamAngVnoSex)
+summary(gamAngVnoSex) #just year sign
 
-gamAngVSex <- gam(cbind(AngVpos, AngVneg) ~  bat_sex +
-                   s(as.numeric(doy), bs="cc", k=10, by = interaction(roost_site, bat_sex)) +
-                   #s(as.numeric(mid_date), bs="tp", k=6, by = interaction(roost_site, bat_sex, era)),
-                    s(year, bs="re"),# +
-                 family = "binomial",
-                 method = "REML", 
-                 gamma = 1,
-                 select = TRUE,
-                 data= subset(prev.dat.sex, bat_species =="Eidolon dupreanum" ))
-summary(gamAngVSex) #Anakarana female and year
-AIC(gamAngVnoSex, gamAngVSex) #better with no sex
 
 pred.df <- cbind.data.frame(mid_date = seq(from= as.Date("2015-01-01"), to = as.Date("2015-12-31"), by=1), doy=1:365)
 pred.df$bat_species <- "Eidolon dupreanum"
@@ -305,20 +281,7 @@ gamGhVnoSexRou <- gam(cbind(GhVpos, GhVneg) ~
                    select = TRUE,
                    data= subset(prev.dat, bat_species =="Rousettus madagascariensis" ))
 summary(gamGhVnoSexRou) #just year
-#plot(gamGhVnoSex)
 
-gamGhVSexRou <- gam(cbind(GhVpos, GhVneg) ~ 
-                   s(as.numeric(doy), bs="cc", k=10, by = interaction(roost_site, bat_sex)) +
-                   #s(as.numeric(mid_date), bs="tp", k=6, by = interaction(roost_site, bat_sex)),
-                     s(year, bs="re"),
-                 family = "binomial",
-                 method = "REML", 
-                 gamma = 1,
-                 select = TRUE,
-                 data= subset(prev.dat.sex, bat_species =="Rousettus madagascariensis"))
-summary(gamGhVSexRou) #moramanga male interannual and female borderline
-
-AIC(gamGhVnoSexRou, gamGhVSexRou) #better with no sex
 
 #and AngV
 
@@ -331,21 +294,8 @@ gamAngVnoSexRou <- gam(cbind(AngVpos, AngVneg) ~ roost_site +
                     gamma = 1,
                     select = TRUE,
                     data= subset(prev.dat, bat_species =="Rousettus madagascariensis"))
-summary(gamAngVnoSexRou) #year
-#plot(gamAngVnoSex)
+summary(gamAngVnoSexRou) #year borderline sig
 
-gamAngVSexRou <- gam(cbind(AngVpos, AngVneg) ~ roost_site + bat_sex +
-                       s(as.numeric(doy), bs="cc", k=10, by = interaction(roost_site, bat_sex)) +
-                       #s(as.numeric(mid_date), bs="tp", k=6, by = interaction(roost_site, bat_sex)),
-                       s(year, bs="re"),
-                  family = "binomial",
-                  method = "REML", 
-                  gamma = 1,
-                  select = TRUE,
-                  data= subset(prev.dat.sex, bat_species =="Rousettus madagascariensis"))
-summary(gamAngVSexRou) #nothing
-
-AIC(gamAngVnoSexRou, gamAngVSexRou) #better with no sex
 
 pred.df.Rou <- cbind.data.frame(mid_date = seq(from= as.Date("2015-01-01"), to = as.Date("2015-12-31"), by=1), doy=1:365)
 pred.df.Rou$bat_species <- "Rousettus madagascariensis"
@@ -439,7 +389,7 @@ pIntrannualShed.All
 #Intraannual shedding
 ###Now add the shedding: 
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
-batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
+
 
 # homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 # batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
@@ -458,8 +408,7 @@ names(shed.dat.long)[names(shed.dat.long)=="variable"] <- "virus"
 names(shed.dat.long)[names(shed.dat.long)=="value"] <- "pos"
 
 # link this to the catching data to plot by sampling session
-catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/catching_data_clean.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
-#catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/Historic-Catching-Data-Through2020/catching_data_historic.csv"))
+catch.dat <- read.csv(file = paste0(homewd, "/master_data_files/catching_data.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
 
 head(catch.dat)
 names(catch.dat)
@@ -471,6 +420,7 @@ catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, 
 merge.dat <- merge(shed.dat.long, catch.dat, by="sampleid", all.x = T)
 head(merge.dat)
 
+merge.dat = subset(merge.dat, !is.na(roost_site))
 #get the midpoint processing date per sampling session
 merge.dat$processing_date <- as.Date(merge.dat$processing_date)
 sampling.date <- ddply(merge.dat, .(bat_species, sampling_session), summarise, min_date = min(processing_date), max_date = max(processing_date))
@@ -494,15 +444,15 @@ merge.dat$roost_site[merge.dat$roost_site=="Angavobe_Edup" |merge.dat$roost_site
 merge.dat$roost_site[merge.dat$roost_site!="Moramanga"] <- "Ankarana"
 
 
-#also add in quantitative age data where available:
-age.dat <- read.csv(file = paste0(batwd, "/Age-Data/aged_bats.csv"), header = T, stringsAsFactors = F)
-head(age.dat)
-#slim to just the coshedns you want to add
-age.dat <- dplyr::select(age.dat, sampleid, age)
-
-#and merge
-merge.dat <- merge(merge.dat, age.dat, by="sampleid", all.x = T)
-head(merge.dat)
+# # #also add in quantitative age data where available:
+# # age.dat <- read.csv(file = paste0(batwd, "/Age-Data/aged_bats.csv"), header = T, stringsAsFactors = F)
+# # head(age.dat)
+# # #slim to just the coshedns you want to add
+# # age.dat <- dplyr::select(age.dat, sampleid, age)
+# 
+# #and merge
+# merge.dat <- merge(merge.dat, age.dat, by="sampleid", all.x = T)
+# head(merge.dat)
 
 # #write over those that are super close
 merge.dat$mid_date <- as.character(merge.dat$mid_date)
@@ -525,10 +475,11 @@ merge.dat$year <- as.factor(merge.dat$year)
 merge.dat$bat_sex <- as.factor(merge.dat$bat_sex)
 merge.dat$roost_site <- as.factor(merge.dat$roost_site)
 
-# remove two confusing bats from the dataset (duplicate sample id: MIZ540, MIZ 598)
-merge.dat = subset(merge.dat, !is.na(bat_age_class))
+# remove confusing bat from the dataset (duplicate sample id: MIZ540)
+merge.dat = subset(merge.dat, sampleid!="MIZ598")
 
-# and remove that one juvenile for which sex is unknown
+
+# and remove that one juvenile for which sex is unknown (already gone)
 merge.dat = subset(merge.dat, bat_sex!="unknown")
 
 # make a variable for repro class 
@@ -538,7 +489,7 @@ unique(merge.dat$repro_class)
 
 #now also add an age class
 merge.dat$age_class <- merge.dat$repro_class
-merge.dat$age_class[merge.dat$age_class!="J"] <- "A"
+merge.dat$age_class[merge.dat$age_class!="J" & !is.na(merge.dat$age_class)] <- "A"
 
 #make into factors
 merge.dat$repro_class <- as.factor(merge.dat$repro_class)
@@ -568,7 +519,7 @@ merge.dat$mass_forearm_residual[is.na(merge.dat$mass_forearm_residual)] <- 0
 merge.dat$bat_sex <- droplevels(merge.dat$bat_sex)
 
 merge.dat$repro_class <- as.character(merge.dat$repro_class)
-merge.dat$repro_class[!is.na(merge.dat$age) & merge.dat$age<1] <- "J"
+#merge.dat$repro_class[!is.na(merge.dat$age) & merge.dat$age!=""] <- "J"
 merge.dat$repro_class <- as.factor(merge.dat$repro_class )
 
 
@@ -625,7 +576,7 @@ m1AngVnoSeX <- gam(pos ~
                    gamma = 1,
                    method = "REML",
                    family = "binomial") 
-summary(m1AngVnoSeX) #sig in everything but male MFR and combo class
+summary(m1AngVnoSeX) #sig in roost_site and yisear
 plot(m1AngVnoSeX, pages = 1)
 
 m1AngVSeX <- gam(pos ~
@@ -690,7 +641,7 @@ AIC(m2GhVnoSeX, m2GhVSeX)
 
 
 # now plot some of these effects
-#### STOPPED HERE
+
 
 pred.df.Eid <- cbind.data.frame(doy=rep(1:365,3*2), year=rep(c(2018,2019,2020), each=(365*2)), virus = rep(rep(c("GhV", "AngV"), each = 365), 3) )
 pred.df.Eid$bat_sex = "female"
