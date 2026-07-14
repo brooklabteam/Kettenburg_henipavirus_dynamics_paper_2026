@@ -172,7 +172,7 @@ hist(adult.dat$mass_forearm_residual) #histogram centers around 0. perfect.
 
 # Now attach these mass:forearm residuals to the original dataset
 
-merge.mass_resid <- dplyr::select(adult.dat, sampleid, predicted_mass_g, mass_forearm_residual)
+merge.mass_resid <- dplyr::select(adult.dat, sampleid, mass_forearm_residual)
 
 
 catch.dat <- merge(catch.dat, merge.mass_resid, by="sampleid", all.x = T)
