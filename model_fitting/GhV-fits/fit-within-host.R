@@ -22,7 +22,7 @@ library(ggplot2)
 ################################################################################
 ################################################################################
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
-batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
+
 ################################################################################
 ################################################################################
 
@@ -255,7 +255,276 @@ min(pred.dat$age[pred.dat$pred<cutoff.df$log10MFI[cutoff.df$type=="mean"]])*365/
 
 #now  fit adult Ab trajectory to data
 #this functions does it all and saves the data for plotting
-run.adultAB <- function(catch.dat, lum.dat, homewd, 
+run.adultAB.deterministic <- function(catch.dat, lum.dat, homewd, 
+                        filename_fitted_bats,  filename_deterministic_df){
+  
+  #load the recaptures
+  recap = subset(catch.dat, recap_new=="yes")
+  # head(recap)
+  # names(recap)
+  #slim to columns of interest
+  recap <- dplyr::select(recap, barcode_id, sampleid, roost_site, processing_date, bat_species, bat_age_class, bat_sex, mass_forearm_residual)
+  # head(recap)
+  
+  
+  #just take  eidolon
+  recap=subset(recap, bat_species=="Eidolon dupreanum")
+  recap$processing_date <- as.Date(recap$processing_date)
+  # min(recap$processing_date)#"2013-11-24"
+  # max(recap$processing_date)#"2026-01-24"
+  
+  
+  
+  #and now load the new luminex data 
+  
+  #slim
+  lum.dat <- dplyr::select(lum.dat, sampleid,bat_species, antigen, MFI, seropos, seropos_lci, seropos_uci)
+  
+  #head(lum.dat)
+  #length(unique(lum.dat$sampleid)) #1055
+  #head(recap)
+  
+  lum.dat = subset(lum.dat, bat_species=="Eidolon dupreanum" & antigen=="GhV")
+  
+  
+  recap <- merge(recap, lum.dat, by=c("bat_species", "sampleid"), all.x = T)
+  #head(recap)
+  # min(recap$processing_date)#"2013-11-24"
+  # max(recap$processing_date)#"2026-01-22"
+  # 
+  
+  recap = subset(recap, antigen=="GhV")
+  
+  # split by antigen and barcode and make sure there are multiple timepoints. 
+  # color as bats that stay neg, seroconvert, serorevert or do both
+  id.recap <- function(df){
+    if(nrow(df)>1){
+      df <- arrange(df, processing_date)
+      #df.new <- dplyr::select(df, -(keep))
+      df.new <- df
+      df.new$class <- NA
+      if(sum(as.numeric(as.character(df$seropos)))==0){
+        df.new$class <- "always seronegative" # all seroneg
+      }else if(sum(as.numeric(as.character(df$seropos)))==length(df$seropos)){
+        df.new$class <- "always seropositive" #all seropos
+      }else{
+        vec.sero <- unique(diff(as.numeric(as.character(df$seropos))))
+        if(sum(unique(vec.sero))==0){
+          df.new$class <- "seroconversion-seroreversion" #both
+        }else if((sum(unique(match(vec.sero,-1)),na.rm=T)==0) & (sum(unique(match(vec.sero,1)),na.rm=T)==1)){
+          df.new$class <- "seroconversion" #both
+        }else if((sum(unique(match(vec.sero,1)),na.rm=T)==0) & (sum(unique(match(vec.sero,-1)),na.rm=T)==1)){
+          df.new$class <- "seroreversion" #both
+        }
+      }
+      df.new$N_cap<- nrow(df.new)
+      return(df.new)
+    }
+    
+  }
+  recap.list <- dlply(recap, .(antigen, barcode_id))
+  
+  recap.sum <- data.table::rbindlist(lapply(recap.list, id.recap))
+  
+  recap.sum$seropos <- as.factor(recap.sum$seropos)
+  
+  #and plot
+  recap.sum$is_seroneg <- 1
+  recap.sum$is_seroneg[recap.sum$class!="always seronegative"] <- 0
+  recap.sum$is_seroneg <- as.factor(recap.sum$is_seroneg)
+  
+  #unique(recap.sum$class)
+  recap.sum$seropos <- as.character(recap.sum$seropos)
+  recap.sum$seropos[recap.sum$seropos==0] <- "seronegative"
+  recap.sum$seropos[recap.sum$seropos==1] <- "seropositive"
+  recap.sum$seropos <- factor(recap.sum$seropos, levels=c("seronegative", "seropositive"))
+  
+  
+  #get those with < 1 year bewteen sampling dates
+  recap.list <- dlply(recap.sum, .(barcode_id))
+  
+  count_spacing <- function(df, time_days){
+    df <- arrange(df, processing_date)
+    diff= c(diff(df$processing_date))
+    
+    df$days_diff <- c(NA, diff)
+    
+    df$time_series <- cumsum(c(1,diff))
+    if(sum(df$days_diff[!is.na(df$days_diff)]<time_days)){
+      return(df)
+    }
+    
+  }
+  
+  recap.short <-  data.table::rbindlist(lapply(recap.list, count_spacing, time_days=6*31))
+  
+  #recap.short <- subset(recap.short, N_cap>2)
+  
+  
+  recap.short$simple_class <- recap.short$class
+  recap.short$simple_class <- as.character(recap.short$simple_class)
+  recap.short$simple_class[recap.short$simple_class!="always seronegative"] <- "dynamic"
+  recap.short = subset(recap.short, simple_class=="dynamic")
+  #alphaz2 = c("always seronegative" = .3, "dynamic" = 1 )
+  
+  recap.short$era <- "2014-2016"
+  recap.short$era[recap.short$processing_date>as.Date("2018-01-01")] <- "2018-2020"
+  
+  
+  
+  #now try restricting to only triptics that go "low-high-low". center on the peak
+  #also need the first and second point to be within 6 months of each other
+  recap.list <- dlply(recap.short, .(barcode_id))
+  find.tryptic <- function(df){
+    if(nrow(df)>=3){
+      
+      if(df$MFI[1]<df$MFI[2]){
+        df.out = df[1:3,]
+        
+        
+        df.out$new_ts <- NA
+        df.out$new_ts[df.out$MFI==max(df.out$MFI)] <- 0
+        
+        df.out$new_ts[is.na(df.out$new_ts)] <- df.out$time_series[is.na(df.out$new_ts)] + -df.out$time_series[df.out$MFI==max(df.out$MFI)]
+        
+        return(df.out)
+      }else if(df$MFI[2]<df$MFI[3] & nrow(df)>3){
+        df.out = df[2:nrow(df),]
+        
+        #remove anything separated by >6 months and recompute diff
+        df.out =subset(df.out, days_diff<(6*31))
+        df.out$days_diff <- c(NA, diff(df.out$processing_date))
+        
+        if(sum(df.out$days_diff[!is.na(df.out$days_diff)]<(6*31))>1){ #otherwise you lose it
+          
+          
+          
+          df.out$new_ts <- NA
+          df.out$new_ts[df.out$MFI==max(df.out$MFI)] <- 0
+          
+          df.out$new_ts[is.na(df.out$new_ts)] <- df.out$time_series[is.na(df.out$new_ts)] + -df.out$time_series[df.out$MFI==max(df.out$MFI)]
+          
+          return(df.out)
+        }     }
+      
+      
+    }
+    
+    
+  }
+  
+  
+  triptic_df <- data.table::rbindlist(lapply(recap.list, find.tryptic))
+  
+  triptic_df$seropos <- as.character(triptic_df$seropos)
+  
+  
+  pre.MFI <- lm(MFI~new_ts, data = subset(triptic_df, barcode_id=="956000006105427" & new_ts<1))
+  post.MFI <- lm(MFI~new_ts, data = subset(triptic_df, barcode_id=="956000006105427" & new_ts>-1))
+  # 
+  #MFI = 1141 is the cutoff for seropositivity
+  add.pseudo <- triptic_df[triptic_df$barcode_id=="956000006105427",]
+  add.pseudo <- add.pseudo[1:2,]
+  add.pseudo$MFI <- c(predict(pre.MFI, newdata = data.frame(new_ts = -90)), predict(post.MFI, newdata = data.frame(new_ts = 100)))
+  add.pseudo$new_ts <- c(-90, 100)
+  add.pseudo$seropos <- "seronegative"
+  
+  triptic_df <- rbind(triptic_df, add.pseudo)
+  
+  
+  #names(triptic_df)
+  triptic.list <- dlply(triptic_df,.(barcode_id))
+  
+  prep.data.stan <- function(df){
+    df$t_obs <- df$new_ts + abs(min(df$new_ts))+1
+    df$last_neg <- max(df$t_obs[df$new_ts<0 & df$seropos=="seronegative"])
+    df$first_pos <- min(df$t_obs[df$seropos=="seropositive"])
+    
+    return(df)
+  }
+  
+  triptic_df <- data.table::rbindlist(lapply(triptic.list, prep.data.stan))
+  
+  #now run stan
+  # Map barcode_id to consecutive integers for Stan
+  bat_levels <- unique(triptic_df$barcode_id)
+  triptic_df <- triptic_df %>%
+    mutate(bat_idx = as.numeric(factor(barcode_id, levels = bat_levels)))
+  
+  # Prepare Stan data
+  stan_data <- list(
+    N = nrow(triptic_df),
+    N_bats = length(bat_levels),
+    bat_id = triptic_df$bat_idx,
+    t_obs = triptic_df$t_obs,
+    MFI = triptic_df$MFI,
+    t_exp_min = triptic_df$last_neg,
+    t_exp_max = triptic_df$first_pos
+  )
+  
+  # Fit Stan model to tryptic data get trajectory of antibody dynamics
+  # in exposed adults
+  fit <- stan(file = paste0(homewd,"/model_fitting/GhV-fits/latent_exposure_model.stan"),
+              data = stan_data,
+              iter = 10000, chains = 4, cores = 4, warmup = 2000,
+              control = list(adapt_delta = 0.99))
+  #print(fit, pars = c("A", "B", "sigma", "t_exp"), probs = c(0.05, 0.5, 0.95))
+  
+  # here is the model that is fit: y(τ)=A⋅τ⋅exp(−B⋅τ)
+  #A = amplitude factor (A=PeakValue⋅B⋅e)
+  #B = rate modifier (time_to_peak = 1/B) but also plays a role in the decay on the other end...
+  
+  posterior <- as.data.frame(fit)
+  
+  #now get the deterministic trajectory
+  
+  #and the deterministic
+  simulate_new_bat_deterministic_df <- function(Adist, Bdist, t_seq, t_exp = 0) {
+    
+    A <- mean(Adist)
+    B <- mean(Bdist)
+    t_exp <- 0   # or mean(posterior$t_exp[bat_id]) if you want average exposure
+    
+    
+    tau <- pmax(t_seq - t_exp, 0)
+    
+    # simulate raw MFI
+    MFI <- A * tau * exp(-B * tau) 
+    
+    #and the lci and uci
+    ci_A <- quantile(Adist, probs = c(0.025, 0.975))
+    ci_B <- quantile(Bdist, probs = c(0.025, 0.975))
+    
+    MFI_uci <- ci_A['97.5%'] * tau * exp(-ci_B['2.5%'] * tau)
+    MFI_lci <- ci_A['2.5%'] * tau * exp(-ci_B['97.5%'] * tau)
+    
+    df.MFI <- cbind.data.frame(t=t_seq,
+                               MFI = MFI,
+                               MFI_lci = MFI_lci,
+                               MFI_uci = MFI_uci)
+    
+    ggplot(df.MFI) + geom_line(aes(x=t_seq, y=MFI)) + geom_ribbon(aes(x=t_seq, ymin=MFI_lci, ymax=MFI_uci), alpha=.3) + theme_bw() +
+    
+    return(df.MFI)
+  }
+  
+  det.MFI <- simulate_new_bat_deterministic_df(Adist=posterior$mu_A, Bdist=posterior$mu_B, t_seq=0:150)
+  
+  peak.det <- det.MFI$t[det.MFI$MFI==max(det.MFI$MFI)]
+  
+  #and the individual bats
+  stan_df <- as.data.frame(stan_data)
+  
+  #align stan_df bats around the peak
+  stan_df$t_exp_max[stan_df$bat_id==2] <- 91
+  stan_df$new_ts <- stan_df$t_obs- stan_df$t_exp_max + peak.det
+  
+  #and save 
+  write.csv(stan_df, file = filename_fitted_bats, row.names = F)
+  write.csv(det.MFI, file = filename_deterministic_df, row.names = F)
+}
+
+run.adultAB.stochastic <- function(catch.dat, lum.dat, homewd, 
                         filename_fitted_bats, filename_stochastic_sims, filename_deterministic_sim){
   
   #load the recaptures
@@ -626,7 +895,14 @@ run.adultAB <- function(catch.dat, lum.dat, homewd,
 }
 
 
-run.adultAB(catch.dat <- read.csv(paste0(batwd,"/Catching-Data/catching_data_clean.csv"), header = T, stringsAsFactors = F),
+run.adultAB.deterministic(catch.dat <- read.csv(file = paste0(homewd, "/master_data_files/catching_data.csv"), header = T, stringsAsFactors = F),
+                       lum.dat <- read.csv(file = paste0(homewd, "/serology/data/mix_sub_data_75_90_96_long.csv")),
+                       homewd = homewd,
+                       filename_fitted_bats = paste0(homewd, "/serology/data/stan_fitted_bats.csv"), 
+                       filename_deterministic_df= paste0(homewd, "/serology/data/stan_fit_deterministic_df_adultAB.csv"))
+
+
+run.adultAB.stochastic(catch.dat <- catch.dat <- read.csv(file = paste0(homewd, "/master_data_files/catching_data.csv"), header = T, stringsAsFactors = F),
             lum.dat <- read.csv(file = paste0(homewd, "/serology/data/mix_sub_data_75_90_96_long.csv")),
             homewd = homewd,
             filename_fitted_bats = paste0(homewd, "/serology/data/stan_fitted_bats.csv"), 
