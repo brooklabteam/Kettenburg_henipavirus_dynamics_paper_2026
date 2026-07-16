@@ -32,7 +32,8 @@ catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, 
 
 #sub to timeframe of interest
 catch.dat$processing_date <- as.Date(catch.dat$processing_date)
-catch.dat <- subset(catch.dat, processing_date < "2023-08-01")
+catch.dat <- subset(catch.dat, processing_date < "2021-01-01")
+#catch.dat <- subset(catch.dat, processing_date < "2023-08-01")
 unique(catch.dat$young_of_year)
 catch.dat$bat_age_class[catch.dat$young_of_year=="yes" & !is.na(catch.dat$bat_age_class)] <- "J"
 unique(catch.dat$bat_species)

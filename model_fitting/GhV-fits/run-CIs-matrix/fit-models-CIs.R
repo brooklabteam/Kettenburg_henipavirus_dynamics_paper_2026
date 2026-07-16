@@ -459,7 +459,7 @@ buildFMatrix_all <- function(c,  age.classes, adult_fec, surv.biwk, biwk, N_stat
   #but these total to the annual fec rate
   
   if(biwk==1){ #peak births
-    new.fec = adult_fec*surv.biwk*.3
+    new.fec = adult_fec*surv.biwk*.3 #using adult survival rate here assumes a post-breeding census: mom must survive to the end of the previous timestep, then give birth
   }else if (biwk==2|biwk==26){
     new.fec = adult_fec*surv.biwk*.25
   }else if (biwk==3 | biwk==25){
@@ -483,11 +483,11 @@ buildFMatrix_all <- function(c,  age.classes, adult_fec, surv.biwk, biwk, N_stat
       if(N_stat=="matAB"){
         #try it assuming N moms produce maternally immune pups
         Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(c-4))) #the mat immune offspring (so mom = I, R, and N)
-        Fmat[2,((j-1)*c+1):(j*c)]<-  c(rep(fert.biwk[j],4),rep(0,c-4)) #the susceptible offspring (mom = M (there are none in this class b/c too young) and S)
+        Fmat[4,((j-1)*c+1):(j*c)]<-  c(rep(fert.biwk[j],4),rep(0,c-4)) #the susceptible offspring (mom = M (there are none in this class b/c too young) and S)
         
       }else if (N_stat=="matSus"){
         Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],4), rep(0,2))  #the mat immune offpring (so mom = I and R but not N)
-        Fmat[2,((j-1)*c+1):(j*c)]<- c(rep(fert.biwk[j],4),rep(0,4), rep(fert.biwk[j],2)) #the susceptible offspring (so mom= M, S, and N)
+        Fmat[4,((j-1)*c+1):(j*c)]<- c(rep(fert.biwk[j],4),rep(0,4), rep(fert.biwk[j],2)) #the susceptible offspring (so mom= M, S, and N)
       }
     } 
     
