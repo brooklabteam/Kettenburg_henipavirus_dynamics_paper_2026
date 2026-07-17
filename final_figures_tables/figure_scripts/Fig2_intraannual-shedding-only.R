@@ -47,8 +47,8 @@ names(shed.dat)[names(shed.dat) == "AngV_shedding_ct_ur"] <- "AngV_ct"
 names(shed.dat)[names(shed.dat) == "AndV_shedding_ct_ur"] <- "AndV_ct"
 
 
-sum(shed.dat$AngV_pos)#45
-sum(shed.dat$GhV_pos)#127
+sum(shed.dat$AngV_pos)#31
+sum(shed.dat$GhV_pos)#119
 
 # link this to the catching data to plot by sampling session
 catch.dat <- read.csv(file = paste0(homewd, "/master_data_files/catching_data.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
