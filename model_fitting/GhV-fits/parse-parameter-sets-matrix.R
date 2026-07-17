@@ -13,11 +13,6 @@ par.dat <- read.csv(file= paste0(homewd,"/model_fitting/GhV-fits/matrix-pars.csv
 
 par.dat <- arrange(par.dat, antigen, cutoff, model, mu_sick, mu_rec)
 
-par.dat = subset(par.dat,  model == "MSIRNS" |model == "MSIRNS-mu-sick" |model == "MSIRNS-mu-rec" |model == "MSIRNS-mu-sick-mu-rec" |
-                           model == "MSIRS" |model == "MSIRS-mu-sick" |model == "MSIRS-mu-rec" |model == "MSIRS-mu-sick-mu-rec" |
-                           model == "MSIRNNI" |model == "MSIRNNI-mu-sick" |model == "MSIRNNI-mu-rec" |model == "MSIRNNI-mu-sick-mu-rec" |
-                           model == "MSIRNI" |model == "MSIRNI-mu-sick" |model == "MSIRNI-mu-rec" |model == "MSIRNI-mu-sick-mu-rec" |
-                           model == "MSIRNNS" |model == "MSIRNNS-mu-sick" |model == "MSIRNNS-mu-rec" |model == "MSIRNNS-mu-sick-mu-rec" )
 #and split by row, as each of these is a model
 par.dat.list <- split(par.dat, as.numeric(rownames(par.dat)))
 
@@ -89,10 +84,16 @@ rep.starts <- function(df, n.times){
   
 }
 
-rep.par.df <- data.table::rbindlist(lapply(par.dat.list, rep.starts, n.times=62)) #20 models, each repeated 62 times for 1240 sims total
+rep.par.df <- data.table::rbindlist(lapply(par.dat.list, rep.starts, n.times=50)) #20 models, each repeated 50 times for 1000 sims total
 rep.list <- split(rep.par.df, as.numeric(rownames(rep.par.df)))
 
 #now save each line as its own csv for fitting
 #for 1
-mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/model_fitting/GhV-fits/matrix-fit")))
+mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1")))
 
+
+rep.par.df <- data.table::rbindlist(lapply(par.dat.list, rep.starts, n.times=50)) #20 models, each repeated 50 times for 1000 sims total
+rep.list <- split(rep.par.df, as.numeric(rownames(rep.par.df)))
+
+
+mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-2")))
