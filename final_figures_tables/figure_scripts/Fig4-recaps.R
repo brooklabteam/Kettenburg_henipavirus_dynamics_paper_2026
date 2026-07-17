@@ -30,7 +30,7 @@ recap <- dplyr::select(recap, barcode_id, sampleid, roost_site, processing_date,
 head(recap)
 
 #and merge with shedding data too
-shed.dat <- read.csv(file = paste0(homewd, "/virus_shedding/data/henipavirus_shedding_data.csv"),header = T, stringsAsFactors = F)
+shed.dat <- read.csv(file = paste0(homewd, "/master_data_files/henipavirus_shedding_data.csv"),header = T, stringsAsFactors = F)
 head(shed.dat)
 names(shed.dat)
 
@@ -147,11 +147,11 @@ max(recap$processing_date)#"2023-07-29"
 recap <- subset(recap, processing_date < "2021-01-01")
 
 #and merge with shedding data too
-shed.dat <- read.csv(file = paste0(homewd, "/virus_shedding/data/henipavirus_shedding_data.csv"),header = T, stringsAsFactors = F)
+shed.dat <- read.csv(file = paste0(homewd, "/master_data_files/henipavirus_shedding_data.csv"),header = T, stringsAsFactors = F)
 head(shed.dat)
 names(shed.dat)
 
-intersect(unique(recap$sampleid), unique(shed.dat$sampleid)) #161 shedding records for recaps
+intersect(unique(recap$sampleid), unique(shed.dat$sampleid)) #129 shedding records for recaps
 
 #let's juts use the shedding status (not Ct) for now
 shed.dat <- dplyr::select(shed.dat, sampleid, qPCR_AngV_multi_any_pos_ur, qPCR_GhV_multi_any_pos_ur)
@@ -161,8 +161,8 @@ head(shed.dat)
 recap.shed <- merge(recap, shed.dat, by="sampleid")
 recap.shed$qPCR_AngV_multi_any_pos_ur[is.na(recap.shed$qPCR_AngV_multi_any_pos_ur)] <- 2
 recap.shed$qPCR_GhV_multi_any_pos_ur[is.na(recap.shed$qPCR_GhV_multi_any_pos_ur)] <- 2
-length(unique(recap.shed$sampleid)) #133
-length(unique(recap.shed$barcode_id)) #105
+length(unique(recap.shed$sampleid)) #129
+length(unique(recap.shed$barcode_id)) #100
 
 #and merge recaps with luminex data 
 lum.dat <- read.csv(file = paste0(homewd, "/serology/data/mix_sub_data_75_90_96_long.csv"))
@@ -173,11 +173,11 @@ lum.dat <- dplyr::select(lum.dat, sampleid, antigen, MFI, log10MFI, seropos, ser
 recap.lum <- merge(recap, lum.dat, by="sampleid")
 head(recap.lum)
 recap.lum$processing_date <- as.Date(recap.lum$processing_date)
-unique(recap.lum$barcode_id) #117
+unique(recap.lum$barcode_id) #119
 
 intersect(unique(recap.lum$barcode_id), unique(recap.shed$barcode_id)) #85 shedding bats records for recaps that also have serology
 setdiff(unique(recap.lum$barcode_id), unique(recap.shed$barcode_id)) #34 bats with serology but no PCR
-setdiff(unique(recap.shed$barcode_id), unique(recap.lum$barcode_id)) #20 bats with PCR but no serology 
+setdiff(unique(recap.shed$barcode_id), unique(recap.lum$barcode_id)) #15 bats with PCR but no serology 
 
 #check dates
 min(recap.shed$processing_date)#"2013-11-24"
@@ -188,8 +188,8 @@ head(recap.shed)
 #we only want to compare with serology so just take after 2017
 recap.shed <- subset(recap.shed, processing_date>"2017-01-01")
 setdiff(unique(recap.shed$barcode_id), unique(recap.lum$barcode_id)) 
-#now 6 bats with PCR but no serology 
-setdiff(unique(recap.shed$sampleid), unique(recap.lum$sampleid)) #6 sampling events
+#now 4 bats with PCR but no serology 
+setdiff(unique(recap.shed$sampleid), unique(recap.lum$sampleid)) #4 sampling events
 
 head(recap.lum)
 
