@@ -41,6 +41,10 @@ homewd= "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/"
 #make sure this is latest catching file
 dat <- read.csv(paste0(homewd, "serology/data/lum_catch_merge.csv"), header = T, stringsAsFactors = F)
 head(dat)
+dat$processing_date <- as.Date(dat$processing_date)
+
+#there is one funky serological datapoint from 2014 that should not be in this dataset-- remove
+dat <- subset(dat, processing_date>"2018-01-01")
 
 length(unique(dat$sampleid))
 dat$sampleid[duplicated(dat$sampleid)]
@@ -210,6 +214,7 @@ library(epitools)
 # seronegative in the other scripts
 lum.dat <- read.csv(file = paste0(homewd, "/serology/data/mix_sub_data_75_90_96_long.csv"))
 head(lum.dat)
+
 # Pteropus plots are all cross-reactivity and only two seropositives so no point examining them statistically
 # For Eid and Rou, the only antigens with known viruses from sequence data are GhV and AngV
 # Rou has no seropositives for AngV, so we focus exclusively on GhV in Rou and ghV/AngV in Eid
@@ -235,6 +240,10 @@ head(merge.dat)
 
 #get the midpoint processing date per sampling session
 merge.dat$processing_date <- as.Date(merge.dat$processing_date)
+
+#there is one funky serological datapoint from 2014 that should not be in this dataset-- remove
+merge.dat <- subset(merge.dat, processing_date>"2018-01-01")
+
 sampling.date <- ddply(merge.dat, .(bat_species, sampling_session), summarise, min_date = min(processing_date), max_date = max(processing_date))
 sampling.date$mid_date <- (sampling.date$max_date-sampling.date$min_date)/2 + sampling.date$min_date
 
@@ -248,9 +257,6 @@ merge.dat$month[merge.dat$month!="10"& merge.dat$month!="11" &merge.dat$month!="
 #merge.dat$mid_date <- as.Date(paste0(merge.dat$year, "-", merge.dat$month, "-15"))
 head(merge.dat)
 
-#focusing just on 2018-2020 window
-#merge.dat <- subset(merge.dat, mid_date>"2018-01-01")
-merge.dat <- subset(merge.dat, mid_date>"2018-01-15")
 
 #change roost site to just Moramanga region or Ankarana
 unique(merge.dat$roost_site)
@@ -405,34 +411,34 @@ gamEidNoSexAngV <- gam(cbind(seropos, seroneg) ~
 summary(gamEidNoSexAngV) #Moramanga interannual sig
 # #plot(gamEidNoSexAngV)
 
-
-#use above to predict and overlay on the data
-#make dataset to capture predictions
-pred.df <- cbind.data.frame(mid_date = rep(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1), (2*length(unique(subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum")$antigen)))), bat_sex=rep(c("female", "male"), each=length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))*length(unique(subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum")$antigen))), antigen= rep(rep(unique(subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum")$antigen), each = length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))),2))
-head(pred.df)
-pred.df$antigen <- as.factor(pred.df$antigen)
-pred.df$antigen <- droplevels(pred.df$antigen)
-pred.df$doy <- yday(pred.df$mid_date)
-pred.df$year <- year(pred.df$mid_date)
-pred.df$year_f <- as.factor(pred.df$year)
-pred.df$roost_site <- "Moramanga"
-
-pred.df$bat_sex <- as.factor(pred.df$bat_sex)
-pred.df$roost_site <- as.factor(pred.df$roost_site)
-
-group.pred <- interaction(pred.df$bat_sex,pred.df$roost_site,  drop=TRUE)
-
-pred.df$group <- group.pred
-
-
-levels(pred.df$group)
-#levels(Eid.sex.GhV$group)
-
+# 
+# #use above to predict and overlay on the data
+# #make dataset to capture predictions
+# pred.df <- cbind.data.frame(mid_date = rep(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1), (2*length(unique(subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum")$antigen)))), bat_sex=rep(c("female", "male"), each=length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))*length(unique(subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum")$antigen))), antigen= rep(rep(unique(subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum")$antigen), each = length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))),2))
+# head(pred.df)
+# pred.df$antigen <- as.factor(pred.df$antigen)
+# pred.df$antigen <- droplevels(pred.df$antigen)
+# pred.df$doy <- yday(pred.df$mid_date)
+# pred.df$year <- year(pred.df$mid_date)
+# pred.df$year_f <- as.factor(pred.df$year)
+# pred.df$roost_site <- "Moramanga"
+# 
+# pred.df$bat_sex <- as.factor(pred.df$bat_sex)
+# pred.df$roost_site <- as.factor(pred.df$roost_site)
+# 
+# group.pred <- interaction(pred.df$bat_sex,pred.df$roost_site,  drop=TRUE)
+# 
+# pred.df$group <- group.pred
+# 
+# 
+# levels(pred.df$group)
+# #levels(Eid.sex.GhV$group)
+# 
 
 
 
 #predict males and females all together here
-pred.df <- cbind.data.frame(mid_date = rep(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1), (length(unique(subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum")$antigen)))), antigen= rep(unique(subset(seroprev.sum.sex, bat_species=="Eidolon dupreanum")$antigen), each = length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))))
+pred.df <- cbind.data.frame(mid_date = rep(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1), (length(unique(subset(seroprev.sum, bat_species=="Eidolon dupreanum")$antigen)))), antigen= rep(unique(subset(seroprev.sum, bat_species=="Eidolon dupreanum")$antigen), each = length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))))
 head(pred.df)
 pred.df$antigen <- as.factor(pred.df$antigen)
 pred.df$antigen <- droplevels(pred.df$antigen)
@@ -528,7 +534,7 @@ filz2 <- filz[(length(filz)-2):length(filz)]
 
 #or, as a collective
 #predict males and females all together here
-pred.df2 <- cbind.data.frame(mid_date = rep(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1), (length(unique(subset(seroprev.sum.sex, bat_species=="Rousettus madagascariensis")$antigen)))), antigen= rep(unique(subset(seroprev.sum.sex, bat_species=="Rousettus madagascariensis")$antigen), each = length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))))
+pred.df2 <- cbind.data.frame(mid_date = rep(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1), (length(unique(subset(seroprev.sum, bat_species=="Rousettus madagascariensis")$antigen)))), antigen= rep(unique(subset(seroprev.sum, bat_species=="Rousettus madagascariensis")$antigen), each = length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))))
 head(pred.df2)
 pred.df2$antigen <- as.factor(pred.df2$antigen)
 pred.df2$antigen <- droplevels(pred.df2$antigen)

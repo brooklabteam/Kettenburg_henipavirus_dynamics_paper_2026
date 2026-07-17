@@ -25,10 +25,10 @@ age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/final_age_
 biwk.ts.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/final_biweekly_ts_GhV.csv"), header = T, stringsAsFactors = F)
 
 #and load the data
-dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/fit-1/age-seroprevalence-data.csv"), stringsAsFactors = F, header = T)
+dat <- read.csv(file = paste0(homewd,"/master_data_files/age-seroprevalence-data.csv"), stringsAsFactors = F, header = T)
 head(dat)
-sero.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/fit-1/biweekly-serology-data.csv"), stringsAsFactors = F, header = T)
-shed.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/fit-1/biweekly-shedding-data.csv"), stringsAsFactors = F, header = T)
+sero.dat <- read.csv(file = paste0(homewd,"/master_data_files/biweekly-serology-data.csv"), stringsAsFactors = F, header = T)
+shed.dat <- read.csv(file = paste0(homewd,"/master_data_files/biweekly-shedding-data.csv"), stringsAsFactors = F, header = T)
 head(dat)
 head(sero.dat)
 head(shed.dat)
