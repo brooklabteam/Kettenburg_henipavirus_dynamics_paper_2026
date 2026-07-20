@@ -435,6 +435,11 @@ summary(gamEidNoSexAngV) #Moramanga interannual sig
 # #levels(Eid.sex.GhV$group)
 # 
 
+#Save csv output of gams
+library(broom)
+model_list<-list(gamEidNoSexGhV=gamEidNoSexGhV, gamEidNoSexAngV= gamEidNoSexAngV)
+all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
+write.csv(all_summaries, "intraannual_sero_gam_model_summaries.csv", row.names = FALSE)
 
 
 #predict males and females all together here
