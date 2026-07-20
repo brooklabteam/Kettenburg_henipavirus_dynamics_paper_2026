@@ -435,13 +435,6 @@ summary(gamEidNoSexAngV) #Moramanga interannual sig
 # #levels(Eid.sex.GhV$group)
 # 
 
-#Save csv output of gams
-library(broom)
-model_list<-list(gamEidNoSexGhV=gamEidNoSexGhV, gamEidNoSexAngV= gamEidNoSexAngV)
-all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
-write.csv(all_summaries, "intraannual_sero_gam_model_summaries.csv", row.names = FALSE)
-
-
 #predict males and females all together here
 pred.df <- cbind.data.frame(mid_date = rep(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1), (length(unique(subset(seroprev.sum, bat_species=="Eidolon dupreanum")$antigen)))), antigen= rep(unique(subset(seroprev.sum, bat_species=="Eidolon dupreanum")$antigen), each = length(seq(as.Date("2018-01-01"), as.Date("2020-04-01"), by = 1))))
 head(pred.df)
@@ -602,9 +595,7 @@ pInterannual_new_Rou <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga"
   scale_x_continuous(breaks=c(as.Date("2018-01-01"),as.Date("2019-01-01"), as.Date("2020-01-01")), labels=c("2018", "2019", "2020")) +
   coord_cartesian(expand = F) + ylab("seroprevalence") + guides(alpha="none")
 pInterannual_new_Rou
-pInterannual_new_Rou2<-pInterannual_new_Rou+geom_text(data= dat_text, aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5),
-                                              fontface="italic");pInterannual_new_Rou2
-
+#
 #save for supplement
 
 
@@ -631,12 +622,12 @@ filz.season <- filz[(length(filz)-2):length(filz)]
 filz.antigen <- filz[1:(length(filz)-2)]
 
 
-dat_text <- data.frame(
-  label = c("p = 0.03", "p = 0.03"),
-  viralcat   = c("AngV", "GhV"),
-  x     = c(Inf, Inf),
-  y     = c(1, 1)
-)
+# dat_text <- data.frame(
+#   label = c("p = 0.03", "p = 0.03"),
+#   viralcat   = c("AngV", "GhV"),
+#   x     = c(Inf, Inf),
+#   y     = c(1, 1)
+# )
 
 seroprev.sum$viralcat <- NA
 #seroprev.sum$viralcat[seroprev.sum$antigen == "HeV"] <- "HeV and NiV"
@@ -676,10 +667,18 @@ pInterannual_new
 
 #legend<-get_legend(pInterannual_new)
 
-pInterannual_new2<-pInterannual_new+geom_text(data= dat_text, aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5),
-                                              fontface="italic");pInterannual_new2
+# pInterannual_new2<-pInterannual_new+geom_text(data= dat_text, aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5),
+#                                               fontface="italic");pInterannual_new2
 
  
+#Save csv output of gams
+library(broom)
+model_list<-list(gamEidNoSexGhV=gamEidNoSexGhV, gamEidNoSexAngV= gamEidNoSexAngV,
+                 gamRouNoSexGhV=gamRouNoSexGhV)
+all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
+write.csv(all_summaries, "interannual_sero_gam_model_summaries.csv", row.names = FALSE)
+
+
 # now test the predictors of seropositivity from the raw data
 # reload the serology and catching
 
@@ -848,6 +847,11 @@ gamRGhV <- gam(cbind(Nseropos, seroneg) ~
               data= subset(merge.sum, bat_species =="Rousettus madagascariensis" & antigen=="GhV"))
 
 summary(gamRGhV) # nothing
+
+#again save gam output to csv file
+model_list<-list(gamGhV=gamGhV, gamAngV= gamAngV, gamRGhV= gamRGhV)
+all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
+write.csv(all_summaries, "intraannual_sero_gam_model_summaries.csv", row.names = FALSE)
 
 
 #only significant seasonality for GhV in Eidolon in Moramanga
@@ -1032,6 +1036,12 @@ lmRGhV <- lm(MFI ~ mass_cat,
 
 summary(lmRGhV) #not sig
 
+#save lmer model output to csv
+model_list<-list(lmGhV=lmGhV, lmAngV= lmAngV, lmRGhV= lmRGhV)
+all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
+write.csv(all_summaries, "bodycondition_mfi_lmer_model_summaries.csv", row.names = FALSE)
+
+
 #and plot
 merge.dat$cat_plot <- as.character(merge.dat$mass_cat)
 merge.dat$cat_plot[merge.dat$cat_plot=="good"] <- "adult,\nMFR>0"
@@ -1068,7 +1078,7 @@ pCD <- cowplot::plot_grid(pIntra_noLeg, pMFR_MFI_GhV, nrow = 1, ncol = 2, labels
 #                             rel_widths = c(1,1), rel_heights = c(1,0.2), labels = c("B"), label_size = 22);inter
 # as.ggplot(inter)
 
-inter <- cowplot::plot_grid(pInterannual_new2, 
+inter <- cowplot::plot_grid(pInterannual_new, 
                              labels = c("B"), label_size = 22);inter
 as.ggplot(inter)
 
