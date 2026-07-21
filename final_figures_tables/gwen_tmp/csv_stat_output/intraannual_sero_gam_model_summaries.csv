@@ -1,0 +1,11 @@
+Model_Name,term,edf,ref.df,statistic,p.value,formula
+gamGhV,s(as.numeric(doy)):roost_siteAnkarana,3.21E-05,4,6.39E-06,0.829123737,"cbind(Nseropos, seroneg) ~ s(as.numeric(doy), bs = ""cc"", k = 10, 
+    by = roost_site) + s(year, bs = ""re"")"
+gamGhV,s(as.numeric(doy)):roost_siteMoramanga,2.014400387,8,9.697512483,0.00538263,
+gamGhV,s(year),0.949089898,2,2.179837142,0.09292384,
+gamAngV,s(as.numeric(doy)):roost_siteAnkarana,9.52E-05,4,7.06E-05,0.467616996,
+gamAngV,s(as.numeric(doy)):roost_siteMoramanga,0.123550419,8,0.131389546,0.342174089,
+gamAngV,s(year),6.35E-06,2,5.84E-06,0.374034568,
+gamRGhV,s(as.numeric(doy)):roost_siteAnkarana,1.55E-05,4,1.27E-05,0.443228199,
+gamRGhV,s(as.numeric(doy)):roost_siteMoramanga,2.16E-05,8,3.93E-06,0.879260489,
+gamRGhV,s(year),3.93E-06,2,2.00E-07,0.943151992,

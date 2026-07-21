@@ -1,0 +1,73 @@
+Model_Name,term,estimate,std.error,statistic,p.value,effect,group,df,formula
+lmGhV,(Intercept),33.89658401,0.561086477,60.41240587,4.54E-54,NA,NA,NA,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"
+lmGhV,mass_catjuvenile,-3.660519664,1.090556086,-3.356562501,0.001397558,NA,NA,NA,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"
+lmGhV,mass_catpoor,-1.811967337,0.778663095,-2.32702352,0.023476983,NA,NA,NA,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"
+lmGhV,mass_catpregnant,2.819566344,2.860990897,0.985520907,0.328461743,NA,NA,NA,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"
+lmAngV,(Intercept),31.59188946,0.993886228,31.78622319,2.88E-17,fixed,NA,18,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"
+lmAngV,mass_catjuvenile,2.552581914,1.987772456,1.284141908,0.215375569,fixed,NA,18,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"
+lmAngV,mass_catpoor,-1.300296723,1.832635653,-0.709522769,0.487090187,fixed,NA,18,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"
+lmAngV,sd__(Intercept),0,NA,NA,NA,ran_pars,year,NA,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"
+lmAngV,sd__Observation,3.442922887,NA,NA,NA,ran_pars,Residual,NA,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"
+lmAndV,(Intercept),32.82928674,3.419869693,9.599572408,0.056879027,fixed,NA,1.073044538,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmAndV,mass_catjuvenile,-0.609191568,0.790297614,-0.770838171,0.581606514,fixed,NA,1.003093712,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmAndV,mass_catpoor,-7.501087752,5.861831841,-1.279649085,0.417542905,fixed,NA,1.030530735,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmAndV,sd__(Intercept),4.716835937,NA,NA,NA,ran_pars,year,NA,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmAndV,sd__Observation,0.645772844,NA,NA,NA,ran_pars,Residual,NA,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmPGhV,(Intercept),34.8702613,0.608128228,57.3403103,8.89E-12,fixed,NA,8.025922185,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmPGhV,mass_catjuvenile,-1.781443228,1.162762863,-1.532077851,0.146546096,fixed,NA,14.83644539,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmPGhV,mass_catpoor,-0.21729023,0.960821804,-0.226150394,0.824253412,fixed,NA,14.44409283,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmPGhV,mass_catpregnant,0.876857676,1.853392655,0.473109502,0.64348795,fixed,NA,13.88234651,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmPGhV,sd__(Intercept),0.714200461,NA,NA,NA,ran_pars,year,NA,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmPGhV,sd__Observation,1.726468259,NA,NA,NA,ran_pars,Residual,NA,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmPAndV,(Intercept),33.45502479,0.910643188,36.73779724,1.06E-13,NA,NA,NA,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"
+lmPAndV,mass_catjuvenile,2.620977658,1.821286376,1.439080473,0.175697858,NA,NA,NA,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"
+lmPAndV,mass_catpoor,1.436422458,1.240997479,1.157474115,0.269598953,NA,NA,NA,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"
+lmRGhV,(Intercept),32.93076298,1.184923614,27.79146485,3.57E-05,fixed,NA,3.442379247,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmRGhV,mass_catjuvenile,1.117848672,1.58561123,0.704995431,0.487003599,fixed,NA,26.32846555,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmRGhV,mass_catpoor,0.616777981,0.537033254,1.148491227,0.261133916,fixed,NA,26.22544223,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmRGhV,mass_catpregnant,-4.994684761,1.58561123,-3.15000592,0.004039075,fixed,NA,26.32846555,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmRGhV,sd__(Intercept),2.224678926,NA,NA,NA,ran_pars,year,NA,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmRGhV,sd__Observation,1.464739513,NA,NA,NA,ran_pars,Residual,NA,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmRAngV,(Intercept),31.80602652,3.126602726,10.17271118,0.005757194,fixed,NA,2.307749712,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmRAngV,mass_catjuvenile,1.490090523,4.439365903,0.33565391,0.768403616,fixed,NA,2.048324854,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmRAngV,mass_catpoor,0.971154977,3.446182061,0.281806057,0.797002416,fixed,NA,2.899465469,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmRAngV,sd__(Intercept),1.222144214,NA,NA,NA,ran_pars,year,NA,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmRAngV,sd__Observation,2.904942087,NA,NA,NA,ran_pars,Residual,NA,"Virus_ct ~ mass_cat + (1 | year)
+   Data: subset(tot.merge, bat_species == ""Bat species"" & Virus_ct >      0)"
+lmRAndV,(Intercept),33.30963118,NA,NA,NA,NA,NA,NA,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"
+lmRAndV,mass_catpoor,-0.8816928,NA,NA,NA,NA,NA,NA,"lm(formula = Virus_ct ~ mass_cat, data = subset(tot.merge, bat_species == 
+    ""Bat species"" & Virus_ct > 0))"

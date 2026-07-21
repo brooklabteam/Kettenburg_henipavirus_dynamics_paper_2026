@@ -1,0 +1,53 @@
+﻿#weighted
+#Eidolon
+"perm_cor_weighted(df = subset(shed.prev, roost_site!=""Mahabo"" & bat_species==""Eidolon dupreanum""), virus=""GhV"",n_perm = 10000)"
+#$observed: -0.4468665; $p_value=  0.0402  significant
+"perm_cor_weighted(df = subset(shed.prev, roost_site!=""Mahabo"" & bat_species==""Eidolon dupreanum""), virus=""AngV"",n_perm = 10000)"
+#$observed: -0.3431113; $p_value= 0.6783. not significant
+"perm_cor_weighted(df = subset(shed.prev, roost_site!=""Mahabo"" & bat_species==""Eidolon dupreanum""), virus=""AndV"",n_perm = 10000)"
+"#$observed: -0.9470351 $p_value = 0.0417, sig!"
+
+#Pteropus
+"perm_cor_weighted(df = subset(shed.prev, roost_site!=""Mahabo"" & roost_site!=""Makira"" & bat_species==""Pteropus rufus""), virus=""GhV"",n_perm = 10000)"
+#$observed: 0.408861; $p_value=  0.2261.  not significant 
+"perm_cor_weighted(df = subset(shed.prev, roost_site!=""Mahabo"" & roost_site!=""Makira"" & bat_species==""Pteropus rufus""), virus=""AngV"",n_perm = 10000)"
+#$observed: -0.9959159; $p_value= 0.3369. almost significant
+"perm_cor_weighted(df = subset(shed.prev, roost_site!=""Mahabo"" & roost_site!=""Makira"" & bat_species==""Pteropus rufus""), virus=""AndV"",n_perm = 10000)"
+"#$observed: 0.08487054 $p_value = 0.8459, not sig"
+
+
+#Rousettus
+"perm_cor_weighted(df = subset(shed.prev, roost_site!=""Mahabo"" & roost_site!=""Makira"" & bat_species==""Rousettus madagascariensis""), virus=""GhV"",n_perm = 10000)"
+#$observed: 0.5521216; $p_value= 0.0292.  significant but positively correlated again
+"perm_cor_weighted(df = subset(shed.prev, roost_site!=""Mahabo"" & roost_site!=""Makira"" & bat_species==""Rousettus madagascariensis""), virus=""AngV"",n_perm = 10000)"
+#$observed: -0.8819563; $p_value= 0.1691. almost significant
+"perm_cor_weighted(df = subset(shed.prev, roost_site!=""Mahabo"" & roost_site!=""Makira"" & bat_species==""Rousettus madagascariensis""), virus=""AndV"",n_perm = 10000)"
+#NA
+
+
+
+#and unweighted
+#Eidolon
+"perm_cor_unweighted(df = subset(shed.prev, roost_site!=""Mahabo"" & bat_species==""Eidolon dupreanum""), virus=""GhV"",n_perm = 10000)"
+#$observed: -0.2951848; $p_value= 0.1552. not sig
+"perm_cor_unweighted(df = subset(shed.prev, roost_site!=""Mahabo"" & bat_species==""Eidolon dupreanum""), virus=""AngV"",n_perm = 10000)"
+#$observed: -0.3294097; $p_value=0.7137. not significant
+"perm_cor_unweighted(df = subset(shed.prev, roost_site!=""Mahabo"" & bat_species==""Eidolon dupreanum""), virus=""AndV"",n_perm = 10000)"
+"#$observed: -0.94703511 $p_value = 0.044, sig!"
+
+#Pteropus
+"perm_cor_unweighted(df = subset(shed.prev, roost_site!=""Mahabo"" & roost_site!=""Makira"" & bat_species==""Pteropus rufus""), virus=""GhV"",n_perm = 10000)"
+#$observed: 0.4132313; $p_value= 0.186.  not significant 
+"perm_cor_unweighted(df = subset(shed.prev, roost_site!=""Mahabo"" & roost_site!=""Makira"" & bat_species==""Pteropus rufus""), virus=""AngV"",n_perm = 10000)"
+#$observed: -0.5273378; $p_value= 0.2253. almost significant
+"perm_cor_unweighted(df = subset(shed.prev, roost_site!=""Mahabo"" & roost_site!=""Makira"" & bat_species==""Pteropus rufus""), virus=""AndV"",n_perm = 10000)"
+"#$observed: 0.1182298 $p_value = 0.7483, not sig"
+
+
+#Rousettus
+"perm_cor_unweighted(df = subset(shed.prev, roost_site!=""Mahabo"" & roost_site!=""Makira"" & bat_species==""Rousettus madagascariensis""), virus=""GhV"",n_perm = 10000)"
+#$observed: 0.4500231; $p_value= 0.1133.  significant but positively correlated again
+"perm_cor_unweighted(df = subset(shed.prev, roost_site!=""Mahabo"" & roost_site!=""Makira"" & bat_species==""Rousettus madagascariensis""), virus=""AngV"",n_perm = 10000)"
+#$observed: -0.6673865; $p_value= 0.1152. almost significant
+"perm_cor_unweighted(df = subset(shed.prev, roost_site!=""Mahabo"" & roost_site!=""Makira"" & bat_species==""Rousettus madagascariensis""), virus=""AndV"",n_perm = 10000)"
+#NA

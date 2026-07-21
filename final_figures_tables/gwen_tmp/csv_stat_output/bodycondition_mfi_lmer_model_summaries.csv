@@ -1,0 +1,37 @@
+Model_Name,term,estimate,std.error,statistic,p.value,effect,group,df,formula
+lmGhV,(Intercept),4482.701667,609.7959082,7.351150781,7.76E-12,NA,NA,NA,"lm(formula = MFI ~ mass_cat, data = subset(merge.dat, bat_species == 
+    ""Bat species"" & antigen == ""Virus"" & seropos == 1))"
+lmGhV,mass_catjuvenile,5234.828333,1219.591816,4.292278993,2.96E-05,NA,NA,NA,"lm(formula = MFI ~ mass_cat, data = subset(merge.dat, bat_species == 
+    ""Bat species"" & antigen == ""Virus"" & seropos == 1))"
+lmGhV,mass_catpoor,1002.103514,865.2901904,1.158112648,0.248432997,NA,NA,NA,"lm(formula = MFI ~ mass_cat, data = subset(merge.dat, bat_species == 
+    ""Bat species"" & antigen == ""Virus"" & seropos == 1))"
+lmGhV,mass_catpregnant,-2267.201667,5316.07748,-0.426480177,0.670294392,NA,NA,NA,"lm(formula = MFI ~ mass_cat, data = subset(merge.dat, bat_species == 
+    ""Bat species"" & antigen == ""Virus"" & seropos == 1))"
+lmAngV,(Intercept),2687.775,533.0749214,5.042021097,0.069164714,fixed,NA,1.443403036,"MFI ~ mass_cat + (1 | year)
+   Data: 
+subset(merge.dat, bat_species == ""Bat species"" & antigen ==  
+    ""Virus"" & seropos == 1)"
+lmAngV,mass_catjuvenile,2688.204445,1208.249549,2.224875191,0.041335157,fixed,NA,15.48899986,"MFI ~ mass_cat + (1 | year)
+   Data: 
+subset(merge.dat, bat_species == ""Bat species"" & antigen ==  
+    ""Virus"" & seropos == 1)"
+lmAngV,mass_catpoor,-44.56652765,548.6465749,-0.081229939,0.936293819,fixed,NA,15.57410285,"MFI ~ mass_cat + (1 | year)
+   Data: 
+subset(merge.dat, bat_species == ""Bat species"" & antigen ==  
+    ""Virus"" & seropos == 1)"
+lmAngV,mass_catpregnant,-1241.045555,1208.249549,-1.027143405,0.320127312,fixed,NA,15.48899986,"MFI ~ mass_cat + (1 | year)
+   Data: 
+subset(merge.dat, bat_species == ""Bat species"" & antigen ==  
+    ""Virus"" & seropos == 1)"
+lmAngV,sd__(Intercept),559.0375914,NA,NA,NA,ran_pars,year,NA,"MFI ~ mass_cat + (1 | year)
+   Data: 
+subset(merge.dat, bat_species == ""Bat species"" & antigen ==  
+    ""Virus"" & seropos == 1)"
+lmAngV,sd__Observation,1130.96135,NA,NA,NA,ran_pars,Residual,NA,"MFI ~ mass_cat + (1 | year)
+   Data: 
+subset(merge.dat, bat_species == ""Bat species"" & antigen ==  
+    ""Virus"" & seropos == 1)"
+lmRGhV,(Intercept),6288.659091,786.3759184,7.997013825,1.38E-06,NA,NA,NA,"lm(formula = MFI ~ mass_cat, data = subset(merge.dat, bat_species == 
+    ""Bat species"" & antigen == ""Virus"" & seropos == 1))"
+lmRGhV,mass_catpoor,-657.2090909,1406.712007,-0.467195195,0.647548542,NA,NA,NA,"lm(formula = MFI ~ mass_cat, data = subset(merge.dat, bat_species == 
+    ""Bat species"" & antigen == ""Virus"" & seropos == 1))"

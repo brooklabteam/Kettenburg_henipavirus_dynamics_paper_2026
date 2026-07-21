@@ -1,0 +1,150 @@
+Model_Name,term,estimate,std.error,statistic,p.value,type,
+Eid.shed.prev,(Intercept),1.339446148,1.521567651,0.880306667,0.378693202,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Eid.shed.prev,meanGhVCt:roost_siteAnkarana,-0.077794323,0.046855376,-1.660307312,0.096852646,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Eid.shed.prev,meanGhVCt:roost_siteMahabo,-0.099733688,0.055849989,-1.785742298,0.074140993,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Eid.shed.prev,meanGhVCt:roost_siteMoramanga,-0.090556411,0.045906334,-1.972634368,0.048537234,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Eid.shed.prev.a,(Intercept),2.521438995,0.775239095,3.252466254,0.001144082,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Eid.shed.prev.a,meanGhVCt:roost_siteAnkarana,-0.109153296,0.024116956,-4.525998019,6.01E-06,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Eid.shed.prev.a,meanGhVCt:roost_siteMahabo,-0.138458059,0.031019344,-4.463603758,8.06E-06,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Eid.shed.prev.a,meanGhVCt:roost_siteMoramanga,-0.113424555,0.023667416,-4.792435104,1.65E-06,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Rou.shed.prev,(Intercept),-3.397666115,2.637932856,-1.288003259,0.197744829,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Rou.shed.prev,meanGhVCt:roost_siteAnkarana,0.030289712,0.082566658,0.366851612,0.713729707,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Rou.shed.prev,meanGhVCt:roost_siteMakira,0.052508256,0.085222369,0.61613232,0.537807193,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Rou.shed.prev,meanGhVCt:roost_siteMoramanga,0.087567602,0.078850183,1.110556734,0.266759195,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Rou.shed.prev.a,(Intercept),-4.743716281,1.898803769,-2.498265675,0.012480262,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Rou.shed.prev.a,meanGhVCt:roost_siteAnkarana,0.071158485,0.060434842,1.1774414,0.239019374,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Rou.shed.prev.a,meanGhVCt:roost_siteMakira,0.094257913,0.061259669,1.538661801,0.123886882,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Rou.shed.prev.a,meanGhVCt:roost_siteMoramanga,0.132879483,0.056082051,2.369376309,0.017818114,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Pter.shed.prev,(Intercept),-10.86617278,6.705025313,-1.620601306,0.105103172,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = ""binomial"", 
+    data = subset(shed.prev, bat_species == ""Bat species""))"
+Pter.shed.prev,meanGhVCt:roost_siteMahabo,0.22247715,0.183464741,1.212642544,0.225266516,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = ""binomial"", 
+    data = subset(shed.prev, bat_species == ""Bat species""))"
+Pter.shed.prev,meanGhVCt:roost_siteMoramanga,0.291262537,0.194781939,1.495326205,0.134829329,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = ""binomial"", 
+    data = subset(shed.prev, bat_species == ""Bat species""))"
+Pter.shed.prev.a,(Intercept),-13.45857645,4.788029336,-2.810880115,0.004940619,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = binomial, 
+    data = subset(shed.prev, bat_species == ""Bat species""), 
+    weights = NViruspos)"
+Pter.shed.prev.a,meanGhVCt:roost_siteMahabo,0.292580771,0.132468664,2.208679108,0.027196969,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = binomial, 
+    data = subset(shed.prev, bat_species == ""Bat species""), 
+    weights = NViruspos)"
+Pter.shed.prev.a,meanGhVCt:roost_siteMoramanga,0.377266197,0.139511418,2.704195848,0.006846992,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = binomial, 
+    data = subset(shed.prev, bat_species == ""Bat species""), 
+    weights = NViruspos)"
+Eid.shed.prev.AngV,(Intercept),-4.165734673,6.272376011,-0.66413982,0.506600826,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Eid.shed.prev.AngV,meanAngVCt:roost_siteAnkarana,0.113467388,0.208585583,0.543984807,0.586451928,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Eid.shed.prev.AngV,meanAngVCt:roost_siteMoramanga,0.065226739,0.187334659,0.348182973,0.727702775,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Eid.shed.prev.a.AngV,(Intercept),-6.245104363,5.050641221,-1.236497326,0.216273759,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Eid.shed.prev.a.AngV,meanAngVCt:roost_siteAnkarana,0.18671321,0.168092637,1.110775659,0.266664926,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Eid.shed.prev.a.AngV,meanAngVCt:roost_siteMoramanga,0.13571756,0.150652692,0.900863827,0.367660726,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Rou.shed.prev.AngV,(Intercept),3.90188977,7.479822326,0.521655408,0.601910277,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Rou.shed.prev.AngV,meanAngVCt:roost_siteAnkarana,-0.167057747,0.234586253,-0.712137839,0.476379425,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Rou.shed.prev.AngV,meanAngVCt:roost_siteMoramanga,-0.182571831,0.222673295,-0.819908966,0.412268005,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Rou.shed.prev.a.AngV,(Intercept),3.934157694,6.795620258,0.578925476,0.562639459,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Rou.shed.prev.a.AngV,meanAngVCt:roost_siteAnkarana,-0.167951813,0.218003923,-0.770407299,0.441058325,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Rou.shed.prev.a.AngV,meanAngVCt:roost_siteMoramanga,-0.183529302,0.20245478,-0.906519971,0.364660699,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Pter.shed.prev.AngV,(Intercept),20.98352134,30.24374763,0.693813531,0.487799156,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = ""binomial"", 
+    data = subset(shed.prev, bat_species == ""Bat species""))"
+Pter.shed.prev.AngV,meanAngVCt,-0.626309305,0.830011755,-0.754578837,0.450501726,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = ""binomial"", 
+    data = subset(shed.prev, bat_species == ""Bat species""))"
+Pter.shed.prev.a.AngV,(Intercept),20.98352134,30.24374763,0.693813531,0.487799156,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = binomial, 
+    data = subset(shed.prev, bat_species == ""Bat species""), 
+    weights = NViruspos)"
+Pter.shed.prev.a.AngV,meanAngVCt,-0.626309305,0.830011755,-0.754578837,0.450501726,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = binomial, 
+    data = subset(shed.prev, bat_species == ""Bat species""), 
+    weights = NViruspos)"
+Eid.shed.prev.AndV,(Intercept),2.051504874,3.633851798,0.564553809,0.572377291,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Eid.shed.prev.AndV,meanAndVCt,-0.135349862,0.110630531,-1.223440411,0.221163398,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Eid.shed.prev.a.AndV,(Intercept),2.051504874,3.633851798,0.564553809,0.572377291,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Eid.shed.prev.a.AndV,meanAndVCt,-0.135349862,0.110630531,-1.223440411,0.221163398,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Rou.shed.prev.AndV,(Intercept),-2.48490665,1.040832819,-2.387421501,0.016967026,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Rou.shed.prev.AndV,meanAndVCt:roost_siteAnkarana,0.016181401,0.044793118,0.361247483,0.717914449,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Rou.shed.prev.AndV,meanAndVCt:roost_siteMakira,NA,NA,NA,NA,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = ""binomial"", data = subset(shed.prev, bat_species == 
+        ""Bat species""))"
+Rou.shed.prev.a.AndV,(Intercept),-2.48490665,1.040832819,-2.387421501,0.016967026,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Rou.shed.prev.a.AndV,meanAndVCt:roost_siteAnkarana,0.016181401,0.044793118,0.361247483,0.717914449,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Rou.shed.prev.a.AndV,meanAndVCt:roost_siteMakira,NA,NA,NA,NA,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt:roost_site, 
+    family = binomial, data = subset(shed.prev, bat_species == 
+        ""Bat species""), weights = NViruspos)"
+Pter.shed.prev.AndV,(Intercept),-2.045060608,4.304381583,-0.475111365,0.634707599,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = ""binomial"", 
+    data = subset(shed.prev, bat_species == ""Bat species""))"
+Pter.shed.prev.AndV,meanAndVCt,0.013433621,0.124626647,0.107790922,0.914161544,unweighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = ""binomial"", 
+    data = subset(shed.prev, bat_species == ""Bat species""))"
+Pter.shed.prev.a.AndV,(Intercept),-1.85552422,3.817643833,-0.486039112,0.626939435,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = binomial, 
+    data = subset(shed.prev, bat_species == ""Bat species""), 
+    weights = NViruspos)"
+Pter.shed.prev.a.AndV,meanAndVCt,0.009793389,0.110322579,0.088770483,0.929264316,weighted,"glm(formula = cbind(NViruspos, NVirusneg) ~ meanVirusCt, family = binomial, 
+    data = subset(shed.prev, bat_species == ""Bat species""), 
+    weights = NViruspos)"
