@@ -957,7 +957,7 @@ log.lik.age <- function(par, name.par, c, data, sero.dat, shed.dat, cutoff, sim_
   #print the guess par
   #print(exp(par))
   
-  if(length(sum(is.na(unique(age.seroprev$seroprevalence))))>0){
+  if(sum(is.na(unique(age.seroprev$seroprevalence)))>0){
     ll=-1*10^9#write over with real number that is huge
     #print(-ll)
     return(-ll)

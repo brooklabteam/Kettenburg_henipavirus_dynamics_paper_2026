@@ -3,11 +3,13 @@ rm(list=ls())
 library(plyr)
 library(dplyr)
 library(ggplot2)
+library(purrr)
+library(data.table)
 
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #set wd
-setwd(paste0(homewd,"/model_fitting/GhV-fits/out-matrix/"))
+setwd(paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-out/"))
 #load all the data and add to a list
 
 
@@ -21,16 +23,20 @@ function.load <- function(prefix, list, i){
 
 dat.fit <- list()
 
-for (i in 1:1240){
+for (i in 1:2000){
   skip_to_next <- FALSE
   tryCatch({dat.fit <- function.load(prefix = "mean", list=dat.fit, i=i)}, error = function(i) {skip_to_next <<- TRUE})
   if(skip_to_next) { next }    
 }
-dat.fit.df <- data.table::rbindlist(dat.fit, fill = TRUE)
+dat.fit.df <- data.table:: rbindlist(map(dat.fit, 1))
+age.sero.df <- data.table:: rbindlist(map(dat.fit, 2))
+biwk.df <- data.table:: rbindlist(map(dat.fit, 3))
 
+#for now, skip the data that came with (elements 2 and 3 of each big list)
 
-
-write.csv(dat.fit.df, file=paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix_round1.csv"), row.names = F)
+write.csv(dat.fit.df, file=paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix.csv"), row.names = F)
+write.csv(age.sero.df, file=paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix_age_sero_df.csv"), row.names = F)
+write.csv(biwk.df, file=paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix_biwk_df.csv"), row.names = F)
 
 rm(list=ls())
 
@@ -39,26 +45,27 @@ homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 setwd(homewd)
 
-#1010
-dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix_round1.csv"), stringsAsFactors = F, header = T)
-
-#876
-dat = subset(dat, convergence == 0 & !is.na(df$model))
-
-write.csv(dat, paste0(homewd,"/model_fitting/GhV-fits/all_converged_fits_matrix_round1.csv"), row.names = F)
+#1999
+dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix.csv"), stringsAsFactors = F, header = T)
 head(dat)
+unique(dat$llik)
+#1999
+dat = subset(dat, convergence == 0 & !is.na(model))
+# 
+# write.csv(dat, paste0(homewd,"/model_fitting/GhV-fits/all_converged_fits_matrix_round1.csv"), row.names = F)
+# head(dat)
 
 unique(dat$model)
 length(unique(dat$model)) #20 - that is every model represented
 
 #plot the number that completed per model - 62 possible
-dat.sum <- ddply(dat,.(df$model), summarise, N=length(df$model)) #22 - 57 for each
+dat.sum <- ddply(dat,.(model), summarise, N=length(model)) #98-100 for each
 
 
-ggplot(dat.sum) + geom_point(aes(df$model, y=N))
+ggplot(dat.sum) + geom_point(aes(model, y=N))
 
 arrange(dat.sum, N) 
-# all models had > 20 completions
+# all models had > 98 completions
 
 
 #rank by delta AIC within a species/antigen/model combination
@@ -111,7 +118,7 @@ head(dat)
 
 dat.split.mod <- dlply(dat,.(species, antigen, model))
 dat.top <- data.table::rbindlist(lapply(dat.split.mod,get.top.mod))
-dat.top <- subset(dat.top,!is.na(df$model))
+dat.top <- subset(dat.top,!is.na(model))
 write.csv(dat.top, paste0(homewd,"/model_fitting/GhV-fits/top_fits_per_model_matrix_round1.csv"), row.names = F)
 
 #delta llik:
