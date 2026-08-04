@@ -9,7 +9,7 @@ library(data.table)
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #set wd
-setwd(paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-out/"))
+setwd(paste0(homewd,"/model_fitting/GhV-fits/out-matrix-fit/"))
 #load all the data and add to a list
 
 
@@ -45,13 +45,13 @@ homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 setwd(homewd)
 
-#1999
+#1898
 dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix.csv"), stringsAsFactors = F, header = T)
 head(dat)
 unique(dat$llik)
-#1999
+
 dat = subset(dat, convergence == 0 & !is.na(model))
-# 
+# 1424 
 # write.csv(dat, paste0(homewd,"/model_fitting/GhV-fits/all_converged_fits_matrix_round1.csv"), row.names = F)
 # head(dat)
 
@@ -65,6 +65,7 @@ dat.sum <- ddply(dat,.(model), summarise, N=length(model)) #98-100 for each
 ggplot(dat.sum) + geom_point(aes(model, y=N))
 
 arrange(dat.sum, N) 
+#MSIRNNS-mu-sick-mu-rec had only 7 completion, others had ~20-40 but most had >50
 # all models had > 98 completions
 
 
@@ -150,7 +151,7 @@ pC<- ggplot(data=subset(dat, mu_rec==1 & mu_sick>1& antigen=="GhV") ) + theme_bw
   #geom_violin(aes(x=model, y=delta_llik, group=model),  
   #           draw_quantiles = c(0,.25,.5,.75), show.legend=F, fill=NA) #+
   geom_jitter(aes(x=model, y=delta_llik, color=mu_sick),width=.09, size=1, alpha=.4);pC
-#MSIRS, MSIRNS,  MSIRNNS, MSIRNNI,  MSIRNI
+#MSIRS,  MSIRNNI,  MSIRNI
 
 #both mu
 pD<- ggplot(data=subset(dat, mu_rec>1 & mu_sick>1& antigen=="GhV") ) + theme_bw() +
@@ -259,11 +260,11 @@ homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 setwd(homewd)
 
-#1010
-dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix_round1.csv"), stringsAsFactors = F, header = T)
+#1898
+dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix.csv"), stringsAsFactors = F, header = T)
 
-#876
-dat = subset(dat, convergence == 0 & !is.na(df$model))
+#1424
+dat = subset(dat, convergence == 0 & !is.na(model))
 
 unique(dat$model)
 length(unique(dat$model)) #20 - that is every model represented

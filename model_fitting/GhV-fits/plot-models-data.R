@@ -12,13 +12,14 @@ library(lubridate)
 library(matrixcalc)
 library(Matrix)
 library(ggplot2)
+library(tidyr)
 library(mvtnorm)
 
 #load data
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #top fits per model
-GhV.fits <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/top_refits_per_modeltype.csv"), header = T, stringsAsFactors = F)
+GhV.fits <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/top-fits-matrix-round1.csv"), header = T, stringsAsFactors = F)
 head(GhV.fits)
 
 #recompute deltaAIC and deltallik within this dataset
@@ -38,17 +39,18 @@ get.deltallik <- function(df){
 GhV.fits <- get.deltaAIC(GhV.fits)
 GhV.fits <- get.deltallik(GhV.fits)
 head(GhV.fits)
-top.fits <- GhV.fits[1:2,]
+#top.fits <- GhV.fits[1:2,]
 
-dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/fit-1/age-seroprevalence-data.csv"), stringsAsFactors = F, header = T)
+dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1/age-seroprevalence-data.csv"), stringsAsFactors = F, header = T)
 head(dat)
-sero.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/fit-1/biweekly-serology-data.csv"), stringsAsFactors = F, header = T)
-shed.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/fit-1/biweekly-shedding-data.csv"), stringsAsFactors = F, header = T)
+sero.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1/biweekly-serology-data.csv"), stringsAsFactors = F, header = T)
+shed.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1/biweekly-shedding-data.csv"), stringsAsFactors = F, header = T)
 head(dat)
 head(sero.dat)
 head(shed.dat)
 
 #functions to run models
+
 transform.vect <- function(vec, s, c){
   vec2 <- t(commutation.matrix(r=s,c=c))%*%vec
   return(vec2)
@@ -299,36 +301,9 @@ make.prop <- function(df){
   df[,2:(ncol(df)-1)] <- df[,2:(ncol(df)-1)]/tot
   return(df)
 }
-add.age <- function(df){
-  df <- arrange(df, age)
-  bins = c(c(0,.5,1,2), c(3:20))
-  
-  df$age_bin <- NA
-  for (i in 1:length(df$age)){
-    df$age_bin[i] <- max(bins[df$age[i]>=bins], na.rm = T)
-  }
-  
-  
-  
-  #you want the midpoint between either end of the age class now
-  vect.age.yr = sort(unique(df$age_bin))
-  vect.age.plot =   rep(NA, (length(vect.age.yr)-1))
-  for (i in 1:length(vect.age.plot)){
-    vect.age.plot[i] <- ((vect.age.yr[i+1] - vect.age.yr[i])/2) + vect.age.yr[i]
-  }
-  
-  for (i in 1:length(df$age_bin)){
-    df$age_bin[i] <- min(vect.age.plot[df$age_bin[i]<= vect.age.plot], na.rm = T)
-  }
-  
-  
-  df$age_bin[df$age_bin == Inf] =  (ceiling(max(df$age)) - vect.age.yr[length(vect.age.yr)])/2  + vect.age.yr[length(vect.age.yr)]
-  
-  return(df)
-  
-}
+
 #build functions
-buildTMat_all_age <- function(c, model, Npop, age.classes, surv.biwk, age.brk, surv.juv.biwk, surv.biwk.sick, surv.juv.biwk.sick,surv.biwk.rec, surv.juv.biwk.rec,	beta, beta2, recru, recov, sigma, sigma2, loss, loss2, wane,wane.fix,sigma.fix,epsilon, add.inf.mort, add.rec.mort, age.rate, slope.wane){
+buildTMat_all_age <- function(c, Npop, age.classes, surv.biwk, age.brk, surv.juv.biwk, surv.biwk.sick, surv.juv.biwk.sick,surv.biwk.rec, surv.juv.biwk.rec,	beta, recru, recov, sigma1, sigma2, loss, wane,wane.fix,sigma.fix,epsilon, add.inf.mort, add.rec.mort, age.rate, slope.wane){
   
   s <- nage <- length(age.classes)
   
@@ -348,19 +323,20 @@ buildTMat_all_age <- function(c, model, Npop, age.classes, surv.biwk, age.brk, s
     beta = c(unlist(beta.list))
   } 
   
-  if (length(beta2)==1) beta2 <- rep(beta2,nage) # 
-  if (length(beta2)==s) beta2 <- beta2
-  if (length(beta2) > 1 & length(beta2)<s){
-    beta2.list <- list()
-    for (i in 1:length(beta2)){
-      beta2.list[[i]] = rep(beta2[i], age.brk[i])
-    }
-    beta2 = c(unlist(beta2.list))
-  } 
-  
+  # if (length(beta2)==1) beta2 <- rep(beta2,nage) # 
+  # if (length(beta2)==s) beta2 <- beta2
+  # if (length(beta2) > 1 & length(beta2)<s){
+  #   beta2.list <- list()
+  #   for (i in 1:length(beta2)){
+  #     beta2.list[[i]] = rep(beta2[i], age.brk[i])
+  #   }
+  #   beta2 = c(unlist(beta2.list))
+  # } 
+  # 
   #if (length(sero)==1) sero <- rep(sero,nage) # we assume the pop is perfectly mixed so this is irrelevant
   #if (length(boost)==1) boost <- rep(boost,nage) # we assume the pop is perfectly mixed so this is irrelevant
-  if (length(sigma)==1) sigma <- rep(sigma,nage)
+  if (length(sigma1)==1) sigma1 <- rep(sigma1,nage)
+  if (length(sigma2)==1) sigma2 <- rep(sigma2,nage)
   if (length(recru)==1) recru <- rep(recru,nage)
   #if (length(mu.sick)==1) mu.sick <- rep(mu.sick, nage)
   #if (length(mu.rec)==1) mu.rec <- rep(mu.rec, nage)
@@ -368,8 +344,6 @@ buildTMat_all_age <- function(c, model, Npop, age.classes, surv.biwk, age.brk, s
   if (length(wane)==1) wane <- rep(wane,nage)
   waning.maternal = wane
   if (length(wane.fix)==1) wane.fix <- rep(wane.fix,nage)
-  if (length(sigma2)==1) sigma2 <- rep(sigma2,nage)
-  if (length(loss2)==1) loss2 <- rep(loss2,nage)
   if (length(loss)==1) loss <- rep(loss,nage)
   if (length(epsilon)==1) epsilon <- rep(epsilon,nage)
   
@@ -393,301 +367,40 @@ buildTMat_all_age <- function(c, model, Npop, age.classes, surv.biwk, age.brk, s
   Npop_epi <- transform.vect(vec=Npop, s=s, c=c)
   
   #I1 is in the 5th place on all
-  #I2 is in 10 or 11 depending on the model
   
   I_m = mat_split(matrix(Npop_epi, ncol=1), r=s, c=1)[,,5] #always. for all model forms, I1 comes #5
-  if(model=="MSIRSIR"){
-    I_m2 = mat_split(matrix(Npop_epi, ncol=1), r=s, c=1)[,,10] #I2 at #10
-  }else if (model == "MSIRNSIRN" | model == "MSIRNSIRN-LT" | model == "MSIRNSIRNS"){
-    I_m2 = mat_split(matrix(Npop_epi, ncol=1), r=s, c=1)[,,11] #I2 at #11
-  }else{
-    I_m2 = 0
-  }
-  
-  foi = 1-exp(-beta*((sum(I_m) + sum(I_m2))/sum(Npop_epi))) #will produce a vector. if there was structure in the age-contacts we would feed it a contact matrix too, but here we assume age classes are evenly mixed
-  foi2 = 1-exp(-beta2*((sum(I_m) + sum(I_m2))/sum(Npop_epi))) #uses different beta because susceptibles in the second class might be less suscetible
+  foi = 1-exp(-beta*((sum(I_m))/sum(Npop_epi))) #will produce a vector. if there was structure in the age-contacts we would feed it a contact matrix too, but here we assume age classes are evenly mixed
   
   mat1 <- matrix(0,c,c) # 
   
-  Tmat <- matrix(0,c*nage,c*nage) #MSIRN for every age cohort
+  Tmat <- matrix(0,c*nage,c*nage) #
   
   for (j in 1:nage) { 
     
-    if(model =="MSIRS"){
-      
-      #fill in epi matrix for each age class. this gives probability of transmission per biweek for a MSIR/MSIRS/MSRIR model
-      mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1 to R2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R2 to R3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[4,8] <- sigma[j] #R3 to S   
-      
-      
-    }else if(model =="MSIRN" | model=="MSIRNI"){
-      
-      #fill in epi matrix for each age class. this gives probability of transmission per biweek for a MSIR/MSIRS/MSRIR model
-      mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1 to R2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R2 to R3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R3 to N   
-      mat1[9,9] <- 1- recru[j] #once in N, stay there, unless you recrudesce   
-      mat1[5,9] <- recru[j] #recrudescence. moving from N back to I
-      
-    } else if (model=="MSIRNS"){
-      
-      mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1 to R2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R2 to R3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R3 to N   
-      mat1[9,9] <- 1- loss[j] #once in N, stay there, unless you lose immunity
-      mat1[4,9] <- loss[j] #loss of immunity. moving from N back to S
-      
-    } else if (model=="MSIRNNI"){
-      
-      mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1 to R2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R2 to R3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R3 to N   
-      mat1[9,9] <- 1- recru[j] - epsilon[j] #once in N, stay there, unless you recrudesce to I or advance to N2  
-      mat1[10,9] <- epsilon[j] #N1 to N2
-      mat1[10,10] <- 1 #once in N2 you stay there
-      mat1[5,9] <- recru[j] #recrudescence. moving from N1 back to I
-      
-      
-    } else if(model == "MSIRNNS"){
-      
-      mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1 to R2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R2 to R3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R3 to N   
-      mat1[9,9] <- 1- loss[j] - epsilon[j] #once in N, stay there, unless you lose immunity or advance to N2
-      mat1[10,9] <- epsilon[j] #N1 to N2
-      mat1[10,10] <- 1 #once in N2 you stay
-      mat1[4,9] <- loss[j] #loss of immunity. moving from N1 back to S
-      
-    } else if(model =="MSIRSIR"){ #11 classes 
-      
-      mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S1
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S1 to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1.1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1.1 to R1.2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R1.2 to R1.3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R1.3 to S2   
-      mat1[9,9] <- 1- foi2[j] #S2
-      mat1[10,9] <- foi2[j] #S2 to I2
-      mat1[10,10] <- 1-recov #I2
-      mat1[11,10] <- recov #I2 to R2.1
-      mat1[11,11] <- 1 #R2.1 stay here, don't lose titers
-      
-      
-    }else if(model=="MSIRNIR"){ #13 classes
-      
-      mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1.1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1.1 to R1.2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R1.2 to R1.3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R1.3 to N   
-      mat1[9,9] <- 1- recru[j] #once in N, stay there, unless you recrudesce to I2  
-      mat1[10,9] <- recru[j] #recrudescence. moving from N to I2
-      mat1[10,10] <- 1-recov #stay in I2
-      mat1[11,10] <- recov# I2 to R2.1
-      mat1[11,11] <- 1-sigma.fix # stay in R2.1
-      mat1[12,11] <- sigma.fix # R2.1 to R2.2
-      mat1[12,12] <- 1-sigma.fix # stay in R2.2
-      mat1[13,12] <- sigma.fix # R2.2 to R2.3
-      mat1[13,13] <- 1-sigma2[j] #stay in R2.3
-      mat1[9,13] <- sigma2[j]# R2.3 to N
-      
-      
-    } else if (model=="MSIRNIRN" | model=="MSIRNIRN-LT"){ 
-      
-      mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1.1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1.1 to R1.2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R1.2 to R1.3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R1.3 to N1   
-      mat1[9,9] <- 1- recru[j] - epsilon[j] #once in N1, stay there, unless you recrudesce to I2 or advance to N2
-      mat1[10,9] <- recru[j] #recrudescence. moving from N1 to I2
-      mat1[10,10] <- 1-recov #stay in I2
-      mat1[11,10] <- recov# I2 to R2.1
-      mat1[11,11] <- 1-sigma.fix # stay in R2.1
-      mat1[12,11] <- sigma.fix # R2.1 to R2.2
-      mat1[12,12] <- 1-sigma.fix # stay in R2.2
-      mat1[13,12] <- sigma.fix # R2.2 to R2.3
-      mat1[13,13] <- 1-sigma2[j] #stay in R2.3
-      mat1[14,13] <- sigma2[j]# R2.3 to N2 where you stay
-      mat1[14,14] <- 1# N2 where you stay
-      mat1[14,9] <- epsilon[j]# moving from N1 direct to N2
-      
-    } else if (model=="MSIRNSIRN" | model=="MSIRNSIRN-LT" ){ 
-      
-      mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1.1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1.1 to R1.2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R1.2 to R1.3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R1.3 to N1   
-      mat1[9,9] <- 1- loss[j] - epsilon[j] #once in N1, stay there, unless you lose immunity to S2 or advance to N2
-      mat1[10,9] <- loss[j] #loss of immunity. moving from N1 to S2
-      mat1[10,10] <- 1- foi2[j] #staying in S2
-      mat1[11,10] <- foi2[j] #from S2 to I2
-      mat1[11,11] <- 1-recov #stay in I2
-      mat1[12,11] <- recov# I2 to R2.1
-      mat1[12,12] <- 1-sigma.fix # stay in R2.1
-      mat1[13,12] <- sigma.fix # R2.1 to R2.2
-      mat1[13,13] <- 1-sigma.fix # stay in R2.2
-      mat1[14,13] <- sigma.fix # R2.2 to R2.3
-      mat1[14,14] <- 1-sigma2[j] #stay in R2.3
-      mat1[15,14] <- sigma2[j]# R2.3 to N2 where you stay
-      mat1[15,15] <- 1# N2 where you stay
-      mat1[15,9] <- epsilon[j]# moving from N1 direct to N2 (LT)
-      
-    }else if (model=="MSIRNSIRNS" ){
-      
-      mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1.1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1.1 to R1.2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R1.2 to R1.3
-      mat1[8,8] <- 1-sigma[j]
-      mat1[9,8] <- sigma[j] #R1.3 to N1   
-      mat1[9,9] <- 1- loss[j]  #once in N1, stay there, unless you lose immunity to S2 
-      mat1[10,9] <- loss[j] #loss of immunity. moving from N1 to S2
-      mat1[10,10] <- 1- foi2[j] #staying in S2
-      mat1[11,10] <- foi2[j] #from S2 to I2
-      mat1[11,11] <- 1-recov #stay in I2
-      mat1[12,11] <- recov# I2 to R2.1
-      mat1[12,12] <- 1-sigma.fix # stay in R2.1
-      mat1[13,12] <- sigma.fix # R2.1 to R2.2
-      mat1[13,13] <- 1-sigma.fix # stay in R2.2
-      mat1[14,13] <- sigma.fix # R2.2 to R2.3
-      mat1[14,14] <- 1-sigma2[j] #stay in R2.3
-      mat1[15,14] <- sigma2[j]# R2.3 to N2 where you stay
-      mat1[15,15] <- 1-loss2[j]# N2 where you stay unless you lose immunity back to S2
-      mat1[10,15] <- loss2[j] # loss of immunity. moving from from N2 to S2
-      
-      
-    }
+    
+    mat1[] <- 0
+    mat1[1,1] <- 1- wane.fix[j] 
+    mat1[2,1] <- wane.fix[j] #M1 to M2
+    mat1[2,2] <- 1- wane.fix[j]  
+    mat1[3,2] <- wane.fix[j] #M2 to M3
+    mat1[3,3] <- 1 - waning.maternal[j]
+    mat1[4,3] <- waning.maternal[j] #M3 to S
+    mat1[4,4] <- 1-foi[j]
+    mat1[5,4] <- foi[j] #S to I
+    mat1[5,5] <- 1-recov
+    mat1[6,5] <- recov #I to R1
+    mat1[6,6] <- 1-sigma.fix   
+    mat1[7,6] <- sigma.fix #R1 to R2     
+    mat1[7,7] <- 1-sigma.fix   
+    mat1[8,7] <- sigma.fix #R2 to R3
+    mat1[8,8] <- 1-sigma1[j] -sigma2[j] #R3 stays R3
+    mat1[9,8] <- sigma2[j] #R3 to N1
+    mat1[4,8] <-  sigma1[j]#R3 to S in MSIRS
+    mat1[9,9] <- 1- recru[j] - loss[j] - epsilon[j] #once in N1, stay there, unless you recrudesce to I or lose immunity (loss) to S or advance (epsilon) to N2  
+    mat1[4,9] <- loss[j] #N1 to S
+    mat1[10,9] <- epsilon[j] #N1 to N2
+    mat1[10,10] <- 1 #once in N2 you stay there
+    mat1[5,9] <- recru[j] #recrudescence. moving from N1 back to I
     
     
     #put in surv. we first say it is equal across all epidemiological classes
@@ -702,13 +415,13 @@ buildTMat_all_age <- function(c, model, Npop, age.classes, surv.biwk, age.brk, s
       surv[5] <- 1-mort.vect.sick[j]
       
       #but the second infected class will vary
-      
-      if(model=="MSIRSIR"){
-        surv[10] <- 1-mort.vect.sick[j] #I2 at #10
-        
-      }else if (model == "MSIRNSIRN" | model == "MSIRNSIRN-LT" | model == "MSIRNSIRNS"){
-        surv[11] <- 1-mort.vect.sick[j] #I2 at #11
-      }
+      # 
+      # if(model=="MSIRSIR"){
+      #   surv[10] <- 1-mort.vect.sick[j] #I2 at #10
+      #   
+      # }else if (model == "MSIRNSIRN" | model == "MSIRNSIRN-LT" | model == "MSIRNSIRNS"){
+      #   surv[11] <- 1-mort.vect.sick[j] #I2 at #11
+      # }
       
     }
     if (add.rec.mort==TRUE){ #we'll let seropositives die more too - location will vary for all models
@@ -718,15 +431,15 @@ buildTMat_all_age <- function(c, model, Npop, age.classes, surv.biwk, age.brk, s
       surv[7] <- 1-mort.vect.rec[j]
       surv[8] <- 1-mort.vect.rec[j]
       
-      if ((model == "MSIRNIR") | (model=="MSIRSIR" ) | (model=="MSIRNIRN") | (model=="MSIRNIRN-LT") ){
-        surv[11] <-  1-mort.vect.rec[j]
-        surv[12] <-  1-mort.vect.rec[j]
-        surv[13] <-  1-mort.vect.rec[j]
-      } else if ((model=="MSIRNSIRNS") | (model=="MSIRNSIRN") | (model=="MSIRNSIRN-LT")){
-        surv[12] <-  1-mort.vect.rec[j]
-        surv[13] <-  1-mort.vect.rec[j]
-        surv[14] <-  1-mort.vect.rec[j]
-      }
+      # if ((model == "MSIRNIR") | (model=="MSIRSIR" ) | (model=="MSIRNIRN") | (model=="MSIRNIRN-LT") ){
+      #   surv[11] <-  1-mort.vect.rec[j]
+      #   surv[12] <-  1-mort.vect.rec[j]
+      #   surv[13] <-  1-mort.vect.rec[j]
+      # } else if ((model=="MSIRNSIRNS") | (model=="MSIRNSIRN") | (model=="MSIRNSIRN-LT")){
+      #   surv[12] <-  1-mort.vect.rec[j]
+      #   surv[13] <-  1-mort.vect.rec[j]
+      #   surv[14] <-  1-mort.vect.rec[j]
+      # }
       
     } 
     #print(c(j,surv[3]))
@@ -764,13 +477,13 @@ buildTMat_all_age <- function(c, model, Npop, age.classes, surv.biwk, age.brk, s
   return(Tmat)
   
 }
-buildFMatrix_all <- function(c, model, age.classes, adult_fec, surv.biwk, biwk, N_stat){ 	#one for every age class
+buildFMatrix_all <- function(c,  age.classes, adult_fec, surv.biwk, biwk, N_stat){ 	#one for every age class
   #base your fertility on the biweek of the year
   #pop will grow a bit because higher chance of surviving to birth when births come earlier
   #but these total to the annual fec rate
   
   if(biwk==1){ #peak births
-    new.fec = adult_fec*surv.biwk*.3
+    new.fec = adult_fec*surv.biwk*.3 #using adult survival rate here assumes a post-breeding census: mom must survive to the end of the previous timestep, then give birth
   }else if (biwk==2|biwk==26){
     new.fec = adult_fec*surv.biwk*.25
   }else if (biwk==3 | biwk==25){
@@ -790,75 +503,17 @@ buildFMatrix_all <- function(c, model, age.classes, adult_fec, surv.biwk, biwk, 
   Fmat <- matrix(0,c*nage,c*nage)
   
   for (j in 1:nage) { #no fertility in first age class (mat immune)
-    if(model=="MSIRS"){
-      Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],4))  #the mat immune offpring (so mom = I and R)
-      Fmat[2,((j-1)*c+1):(j*c)]<- c(rep(fert.biwk[j],4),rep(0,4)) #the susceptible offspring (so mom= M and S)
+    
+    if(N_stat=="matAB"){
+      #try it assuming N moms produce maternally immune pups
+      Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(c-4))) #the mat immune offspring (so mom = I, R, and N)
+      Fmat[4,((j-1)*c+1):(j*c)]<-  c(rep(fert.biwk[j],4),rep(0,c-4)) #the susceptible offspring (mom = M (there are none in this class b/c too young) and S)
       
-    }else if(model=="MSIRN"|model=="MSIRNI"| model=="MSIRNS"){
-      if(N_stat=="matAB"){
-        #try it assuming N moms produce maternally immune pups
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(c-4))) #the mat immune offspring (so mom = I, R, and N)
-        Fmat[2,((j-1)*c+1):(j*c)]<-  c(rep(fert.biwk[j],4),rep(0,c-4)) #the susceptible offspring (mom = M (there are none in this class b/c too young) and S)
-        
-      }else if (N_stat=="matSus"){
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(c-5)), 0)  #the mat immune offpring (so mom = I and R but not N)
-        Fmat[2,((j-1)*c+1):(j*c)]<- c(rep(fert.biwk[j],4),rep(0,(c-5)), fert.biwk[j]) #the susceptible offspring (so mom= M, S, and N)
-      }
-    }else if(model=="MSIRNNI"|model=="MSIRNNS"){
-      if(N_stat=="matAB"){
-        #try it assuming N moms produce maternally immune pups
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(c-4))) #the mat immune offspring (so mom = I, R, and N)
-        Fmat[2,((j-1)*c+1):(j*c)]<-  c(rep(fert.biwk[j],4),rep(0,c-4)) #the susceptible offspring (mom = M (there are none in this class b/c too young) and S)
-        
-      }else if (N_stat=="matSus"){
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(c-6)), rep(0,2))  #the mat immune offpring (so mom = I and R but not N)
-        Fmat[2,((j-1)*c+1):(j*c)]<- c(rep(fert.biwk[j],4),rep(0,(c-6)), rep(fert.biwk[j],2)) #the susceptible offspring (so mom= M, S, and N)
-      }
-    } else  if(model=="MSIRSIR"){
-      if(N_stat=="matAB"){
-        #try it assuming N moms produce maternally immune pups
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(c-4))) #the mat immune offspring (so mom = I, R, and N and S2)
-        Fmat[2,((j-1)*c+1):(j*c)]<-  c(rep(fert.biwk[j],4),rep(0,c-4)) #the susceptible offspring (mom = M (there are none in this class b/c too young) and S)
-        
-      }else if (N_stat=="matSus"){
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(c-7)), rep(0,3))  #the mat immune offpring (so mom = I and R but not N or S2)
-        Fmat[2,((j-1)*c+1):(j*c)]<- c(rep(fert.biwk[j],4),rep(0,(c-7)), rep(fert.biwk[j],3)) #the susceptible offspring (so mom= M, S, and N)
-      }
-    }else if (model=="MSIRNIR"){
-      
-      if(N_stat=="matAB"){
-        #try it assuming N moms produce maternally immune pups
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(c-4))) #the mat immune offspring (so mom = I, R, and N and S2)
-        Fmat[2,((j-1)*c+1):(j*c)]<-  c(rep(fert.biwk[j],4),rep(0,c-4)) #the susceptible offspring (mom = M (there are none in this class b/c too young) and S)
-        
-      }else if (N_stat=="matSus"){
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(4)), 0,0, rep(fert.biwk[j],3))  #the mat immune offpring (so mom = I and R but not N or S2)
-        Fmat[2,((j-1)*c+1):(j*c)]<- c(rep(fert.biwk[j],4),rep(0,(4)), rep(fert.biwk[j],5)) #the susceptible offspring (so mom= M, S, and N)
-      } 
-    }else if (model=="MSIRNIRN" | model=="MSIRNIRN-LT"){
-      if(N_stat=="matAB"){
-        #try it assuming N moms produce maternally immune pups
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(c-4))) #the mat immune offspring (so mom = I, R, and N and S2)
-        Fmat[2,((j-1)*c+1):(j*c)]<-  c(rep(fert.biwk[j],4),rep(0,c-4)) #the susceptible offspring (mom = M (there are none in this class b/c too young) and S)
-        
-      }else if (N_stat=="matSus"){
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(4)), 0,0, rep(fert.biwk[j],3),0)  #the mat immune offpring (so mom = I and R but not N or S2)
-        Fmat[2,((j-1)*c+1):(j*c)]<- c(rep(fert.biwk[j],4),rep(0,(4)), rep(fert.biwk[j],2), rep(0,3), fert.biwk[j]) #the susceptible offspring (so mom= M, S, and N)
-      } 
-    }else if (model=="MSIRNSIRN" | model=="MSIRNSIRN-LT"|model=="MSIRNSIRNS"){
-      if(N_stat=="matAB"){
-        #try it assuming N moms produce maternally immune pups
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(c-4))) #the mat immune offspring (so mom = I, R, and N and S2)
-        Fmat[2,((j-1)*c+1):(j*c)]<-  c(rep(fert.biwk[j],4),rep(0,c-4)) #the susceptible offspring (mom = M (there are none in this class b/c too young) and S)
-        
-      }else if (N_stat=="matSus"){
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(4)), 0,0, rep(fert.biwk[j],4),0)  #the mat immune offpring (so mom = I and R but not N or S2)
-        Fmat[2,((j-1)*c+1):(j*c)]<- c(rep(fert.biwk[j],4),rep(0,(4)), rep(fert.biwk[j],2), rep(0,4), fert.biwk[j]) #the susceptible offspring (so mom= M, S, and N)
-      } 
-      
+    }else if (N_stat=="matSus"){
+      Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],4), rep(0,2))  #the mat immune offpring (so mom = I and R but not N)
+      Fmat[4,((j-1)*c+1):(j*c)]<- c(rep(fert.biwk[j],4),rep(0,4), rep(fert.biwk[j],2)) #the susceptible offspring (so mom= M, S, and N)
     }
-  }
-  
+  } 
   
   
   
@@ -867,9 +522,7 @@ buildFMatrix_all <- function(c, model, age.classes, adult_fec, surv.biwk, biwk, 
 
 
 #and sim models
-sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,beta2, recov, mort, mort_juv, adult_fec, wane,wane.fix,loss, loss2, epsilon, sigma, sigma2, recru, slope.wane,mu.sick, mu.rec, sigma.fix, add.inf.mort,add.rec.mort, model, N_stat){
-  
-  
+sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,recov, mort, mort_juv, adult_fec, wane,wane.fix,loss,  epsilon, sigma1, sigma2, recru, slope.wane,mu.sick, mu.rec, sigma.fix, add.inf.mort,add.rec.mort, model, N_stat){
   mu.sick.juv = mu.sick
   mu.rec.juv = mu.rec
   if(mu.sick.juv>2){
@@ -918,62 +571,11 @@ sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,beta2, reco
   
   S_init = bat.mat - I_init 
   
-  if(model =="MSIRS"){
-    
-    N_tot = cbind(M1_init, M2_init, M3_init, S_init, I_init, R1_init, R2_init, R3_init)
-    
-  }else if(model =="MSIRN" | model =="MSIRNI" | model =="MSIRNS"){
-    N_init = rep(0, s)
-    
-    N_tot = cbind(M1_init, M2_init, M3_init, S_init, I_init, R1_init, R2_init, R3_init, N_init)
-    
-  }else if(model =="MSIRNNI"| model == "MSIRNNS"){
-    N1_init = rep(0, s)
-    N2_init = rep(0, s)
-    
-    N_tot = cbind(M1_init, M2_init, M3_init, S_init, I_init, R1_init, R2_init, R3_init, N1_init, N2_init)
-    
-  }else if (model == "MSIRSIR"){
-    S2_init = rep(0, s)
-    I2_init = rep(0, s)
-    R2_1_init = rep(0, s) #just stays in here
-    
-    
-    N_tot = cbind(M1_init, M2_init, M3_init, S_init, I_init, R1_init, R2_init, R3_init, S2_init, I2_init,  R2_1_init)
-    
-  }else if (model =="MSIRNIR"){
-    N_init = rep(0, s)
-    I2_init = rep(0, s)
-    R2_1_init = rep(0, s)
-    R2_2_init = rep(0, s)
-    R2_3_init = rep(0, s)
-    
-    N_tot = cbind(M1_init, M2_init, M3_init, S_init, I_init, R1_init, R2_init, R3_init, N_init, I2_init,  R2_1_init,  R2_2_init,  R2_3_init)
-    
-  }else if (model == "MSIRNIRN" | model == "MSIRNIRN-LT"){
-    
-    N1_init = rep(0, s)
-    N2_init = rep(0, s)
-    I2_init = rep(0, s)
-    R2_1_init = rep(0, s)
-    R2_2_init = rep(0, s)
-    R2_3_init = rep(0, s)
-    
-    N_tot = cbind(M1_init, M2_init, M3_init, S_init, I_init, R1_init, R2_init, R3_init, N1_init, I2_init,  R2_1_init,  R2_2_init,  R2_3_init, N2_init)
-    
-  }else if (model == "MSIRNSIRN" | model == "MSIRNSIRN-LT"| model == "MSIRNSIRNS"){
-    
-    N1_init = rep(0, s)
-    N2_init = rep(0, s)
-    I2_init = rep(0, s)
-    S2_init = rep(0, s)
-    R2_1_init = rep(0, s)
-    R2_2_init = rep(0, s)
-    R2_3_init = rep(0, s)
-    
-    N_tot = cbind(M1_init, M2_init, M3_init, S_init, I_init, R1_init, R2_init, R3_init, N1_init, S2_init, I2_init,  R2_1_init,  R2_2_init,  R2_3_init, N2_init)
-    
-  }
+  N1_init = rep(0, s)
+  N2_init = rep(0, s)
+  
+  N_tot = cbind(M1_init, M2_init, M3_init, S_init, I_init, R1_init, R2_init, R3_init, N1_init, N2_init)
+  
   
   
   
@@ -997,11 +599,11 @@ sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,beta2, reco
   for (i in 1:(length(times)-1)){
     #build matrices anew each time because foi depends on # infected
     #print(i)
-    Tmat <- buildTMat_all_age(c=c, model = model, Npop= N_pop_ts[,i], age.classes=1:s, age.brk=age.brk, surv.biwk = (1-mort)^(1/ntyr), 
+    Tmat <- buildTMat_all_age(c=c, Npop= N_pop_ts[,i], age.classes=1:s, age.brk=age.brk, surv.biwk = (1-mort)^(1/ntyr), 
                               surv.juv.biwk = (1-mort_juv)^(1/ntyr), surv.juv.biwk.sick=(1-(mort_juv*mu.sick.juv))^(1/ntyr),
                               surv.biwk.sick=(1-(mort*mu.sick))^(1/ntyr), surv.juv.biwk.rec=(1-(mort_juv*mu.rec.juv))^(1/ntyr),
-                              surv.biwk.rec=(1-(mort*mu.rec))^(1/ntyr),	beta=beta, beta2=beta2, sigma=(1-exp(-(sigma*(1/ntyr)))),
-                              sigma2=(1-exp(-(sigma2*(1/ntyr)))), loss=(1-exp(-(loss*(1/ntyr)))), loss2=(1-exp(-(loss2*(1/ntyr)))), 
+                              surv.biwk.rec=(1-(mort*mu.rec))^(1/ntyr),	beta=beta,  sigma1=(1-exp(-(sigma1*(1/ntyr)))),
+                              sigma2=(1-exp(-(sigma2*(1/ntyr)))), loss=(1-exp(-(loss*(1/ntyr)))),
                               recov=recov, wane.fix=wane.fix, sigma.fix=sigma.fix, epsilon = (1-exp(-(epsilon*(1/ntyr)))),  recru=(1-exp(-(recru*(1/ntyr)))),
                               wane=(1-exp(-(wane*(1/ntyr)))), add.rec.mort=add.rec.mort,  add.inf.mort=add.inf.mort, 
                               age.rate=(1/ntyr), slope.wane=slope.wane)
@@ -1013,7 +615,7 @@ sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,beta2, reco
     #print(biwk1)
     
     #feed into fertility matrix:
-    Fmat <- buildFMatrix_all(c=c, model = model, age.classes=1:s, adult_fec =adult_fec, surv.biwk = (1-mort)^(1/ntyr), biwk = biwk1, N_stat = N_stat)
+    Fmat <- buildFMatrix_all(c=c, age.classes=1:s, adult_fec =adult_fec, surv.biwk = (1-mort)^(1/ntyr), biwk = biwk1, N_stat = N_stat)
     
     #make trans mat
     transMat <- Tmat + Fmat 
@@ -1048,22 +650,7 @@ sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,beta2, reco
   #times=seq(0,yrs,by =1/ntyr)
   dat.tot = cbind.data.frame(times,N_total)
   
-  #this will depend on the model
-  if(model == "MSIRS"){
-    names(dat.tot) = c("time", "M1", "M2", "M3", "S1", "I1", "R1.1", "R1.2", "R1.3")  
-  }else if(model =="MSIRN" | model =="MSIRNI" | model =="MSIRNS"){
-    names(dat.tot) = c("time", "M1", "M2", "M3", "S1", "I1",  "R1.1", "R1.2", "R1.3", "N1")  
-  }else if(model =="MSIRNNI"| model == "MSIRNNS"){
-    names(dat.tot) = c("time", "M1", "M2", "M3", "S1", "I1",  "R1.1", "R1.2", "R1.3", "N1", "N2")  
-  }else if(model == "MSIRSIR"){
-    names(dat.tot) = c("time", "M1", "M2", "M3", "S1", "I1",  "R1.1", "R1.2", "R1.3", "S2", "I2", "R2.1")  
-  }else if(model =="MSIRNIR"){
-    names(dat.tot) = c("time", "M1", "M2", "M3", "S1", "I1",  "R1.1", "R1.2", "R1.3", "N1", "I2", "R2.1", "R2.2", "R2.3")  
-  }else if (model == "MSIRNIRN" | model == "MSIRNIRN-LT"){
-    names(dat.tot) = c("time", "M1", "M2", "M3", "S1", "I1",  "R1.1", "R1.2", "R1.3", "N1", "I2", "R2.1", "R2.2", "R2.3", "N2")  
-  }else if (model == "MSIRNSIRN" | model == "MSIRNSIRN-LT"| model == "MSIRNSIRNS"){
-    names(dat.tot) = c("time", "M1", "M2", "M3", "S1", "I1",  "R1.1", "R1.2", "R1.3", "N1", "S2", "I2", "R2.1", "R2.2", "R2.3", "N2")  
-  }
+  names(dat.tot) = c("time", "M1", "M2", "M3", "S1", "I1",  "R1.1", "R1.2", "R1.3", "N1", "N2")  
   
   
   
@@ -1126,11 +713,11 @@ sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,beta2, reco
   ####STABLE AGE STRUCTURE
   #check that the age-freq distribution is stable and same as beginning
   #age.struc = eq.dat[eq.dat$times==5,]
-  # age.struc = eq.dat[eq.dat$times==yrs,]
-  # age.struc = ddply(age.struc, .(age), summarize, tot = sum(count))
-  # age.struc$n = sum(age.struc$tot)
-  # age.struc$proportion = age.struc$tot/age.struc$n 
-  # age.struc$age= as.numeric(as.character(age.struc$age))
+  age.struc = eq.dat[eq.dat$times==yrs,]
+  age.struc = ddply(age.struc, .(age), summarize, tot = sum(count))
+  age.struc$n = sum(age.struc$tot)
+  age.struc$proportion = age.struc$tot/age.struc$n 
+  age.struc$age= as.numeric(as.character(age.struc$age))
   #with(age.struc, plot(age,proportion))
   
   
@@ -1256,9 +843,10 @@ run.sim <- function(par.df, s, sim_pop, yrs, ntyr,  N_stat, age.brk, slope.wane)
   }
   
 
+  
   out = sim.met.age.all(c=par.df$num_states,  sim_pop=sim_pop, yrs=yrs, ntyr=ntyr, age.brk=age.brk, s=s, 
-                        beta=par.df$beta, loss=par.df$loss, loss2 = par.df$loss2,epsilon=par.df$epsilon,
-                        beta2=par.df$beta2, recru=par.df$recru,sigma=par.df$sigma, sigma2=par.df$sigma2, 
+                        beta=par.df$beta, loss=par.df$loss, epsilon=par.df$epsilon,
+                         recru=par.df$recru,sigma1=par.df$sigma1, sigma2=par.df$sigma2, 
                         recov=par.df$recov, mort=par.df$mort, mort_juv=par.df$mort_juv, 
                         adult_fec=par.df$adult_fec, wane=par.df$wane,
                         wane.fix = par.df$wane_fix, slope.wane=1, 
@@ -1530,6 +1118,8 @@ plot.one.model.dat <- function(dat1, sero.dat1, shed.dat1, species1, antigen1, c
   
 }
   
+top.fits <- arrange(GhV.fits, llik)
+
 plot.one.model.dat(par.df = top.fits[1,],
                     s=20,
                     sim_pop=10000,
