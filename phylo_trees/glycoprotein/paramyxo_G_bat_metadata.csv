@@ -1,0 +1,228 @@
+Accession,Organism_Name,Species,Genus,Family,Isolate,Country,source,Collection_Date,Host2,novel,Host
+AAM13406.1,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,Paramyxoviridae,,Malaysia,Pteropus hypomelanus,2001,1,0,3
+ADN51995.1,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,Paramyxoviridae,,Malaysia,Pteropus vampyrus,2008,1,0,3
+AEQ38026.1,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,Paramyxoviridae,,Australia,Chiroptera,2009,1,0,3
+AET87354.1,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,Paramyxoviridae,,India,Pteropus vampyrus,2010,1,0,3
+AGT63305.1,Orthorubulavirus suis,Orthorubulavirus suis,Orthorubulavirus,Paramyxoviridae,PorPV/INIFAP/5/bat/Mx/Mor/2011,Mexico,Pteronotus parnellii,2011,1,0,3
+AGT63307.1,Orthorubulavirus suis,Orthorubulavirus suis,Orthorubulavirus,Paramyxoviridae,PorPV/INIFAP/6/bat/Mx/Mor/2011PorPV/INIFAP/6/bat/Mx/Mor/2011,Mexico,Artibeus jamaicensis,2011,1,0,3
+AGT63314.1,Orthorubulavirus suis,Orthorubulavirus suis,Orthorubulavirus,Paramyxoviridae,PorPV/INIFAP/V11CC/bat/Mx/Mor/2011,Mexico,Desmodus rotundus,2011,1,0,3
+AIF74182.1,Bat paramyxovirus,Parajeilongvirus hainanense,Parajeilongvirus,Paramyxoviridae,BtHa-ParaV/GD2012,China,Hipposideros armiger,2012,1,0,3
+AJP33327.1,Teviot virus,Pararubulavirus teviotense,Pararubulavirus,Paramyxoviridae,Geelong,Australia,Pteropus poliocephalus,2011,1,0,3
+AVH78248.1,Tioman virus,Pararubulavirus tiomanense,Pararubulavirus,Paramyxoviridae,,India,Pteropus medius,2015,1,0,3
+AXR70619.1,Shaan virus,Parajeilongvirus miniopteri,Parajeilongvirus,Paramyxoviridae,Bat-ParaV/B16-40,South Korea,Miniopterus sp.,2016,1,0,3
+AYM47523.1,Bat paramyxovirus,Parajeilongvirus hainanense,Parajeilongvirus,Paramyxoviridae,,Comoros,Miniopterus griveaudi,2011,1,0,3
+AYM47526.1,Bat paramyxovirus,Parajeilongvirus hainanense,Parajeilongvirus,Paramyxoviridae,,Comoros,Miniopterus griveaudi,2011,1,0,3
+AYM47529.1,bat paramyxovirus 16797,Parajeilongvirus comorosense,Parajeilongvirus,Paramyxoviridae,,Comoros,Miniopterus griveaudi,2011,1,0,3
+AYM47539.1,bat paramyxovirus 17770,Parajeilongvirus madagascarense,Parajeilongvirus,Paramyxoviridae,,Madagascar,Miniopterus griveaudi,2012,1,0,3
+AZK16200.1,Teviot virus,Pararubulavirus teviotense,Pararubulavirus,Paramyxoviridae,Alstonville,Australia,Pteropus sp.,2011,1,0,3
+DBA64461.1,Molossid bat morbillivirus,Molossid bat morbillivirus,Morbillivirus,Paramyxoviridae,mol_bd_4,,Molossus molossus,2025,1,0,3
+NP_037645.1,Respirovirus bovis,Respirovirus bovis,Respirovirus,Paramyxoviridae,,Lab strain,Bos taurus,1999,0,0,0
+NP_047112.2,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,Paramyxoviridae,,Australia,Equus caballus,1994,0,0,0
+NP_047206.1,canine distemper virus,Morbillivirus canis,Morbillivirus,Paramyxoviridae,Onderstpoort,USA,Canis,1997,0,0,0
+NP_054696.1,Tupaia paramyxovirus,Tupaivirus tupaiae,Tupaivirus,Paramyxoviridae,,Thailand,Tupaia belangeri,1999,0,0,0
+NP_054713.1,Mumps orthorubulavirus,Orthorubulavirus parotitidis,Orthorubulavirus,Paramyxoviridae,,Japan,Homo sapiens,2000,0,0,0
+NP_056878.1,Respirovirus muris,Respirovirus muris,Respirovirus,Paramyxoviridae,M1,Lab strain,Lab strain,1997,0,0,0
+NP_056923.1,Measles morbillivirus,Morbillivirus hominis,Morbillivirus,Paramyxoviridae,,Lab strain,Homo sapiens,1998,0,0,0
+NP_067152.1,Human respirovirus 3,Respirovirus pneumoniae,Respirovirus,Paramyxoviridae,,Lab strain,Homo sapiens,1998,0,0,0
+NP_112027.1,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,Paramyxoviridae,,Malaysia,Sus scrofa,1998,0,0,0
+NP_598405.1,Human orthorubulavirus 2,Orthorubulavirus laryngotracheitidis,Orthorubulavirus,Paramyxoviridae,,Lab strain,Homo sapiens,1991,0,0,0
+NP_604441.1,Human respirovirus 1,Respirovirus laryngotracheitidis,Respirovirus,Paramyxoviridae,,Lab strain,Homo sapiens,2001,0,0,0
+NP_665870.1,Tioman virus,Pararubulavirus tiomanense,Pararubulavirus,Paramyxoviridae,,Malaysia,Pteropus hypomelanus,2002,1,0,3
+NP_872277.1,Goose paramyxovirus SF02,Goose paramyxovirus SF02,,Paramyxoviridae,SF02,China,Anser,2002,0,0,0
+NP_899660.1,Fer-de-lance virus,Ferlavirus reptilis,Ferlavirus,Paramyxoviridae,,Switzerland,Bothrops asper,1972,0,0,0
+NP_945029.1,Dolphin morbillivirus,Morbillivirus ceti,Morbillivirus,Paramyxoviridae,,United Kingdom,Delphinidae,2003,0,0,0
+NP_958054.1,Mossman virus,Narmovirus mossmanense,Narmovirus,Paramyxoviridae,,Australia,Rattus,2003,0,0,0
+QCY59033.1,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,Paramyxoviridae,PGB-1401B,Bangladesh,Pteropus medius,2013,1,0,3
+QDJ04463.1,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,Paramyxoviridae,CSUR381,Cambodia,Pteropus lylei,2003,1,0,3
+QDP14192.1,Avian orthoavulavirus 1,Orthoavulavirus javaense,Orthoavulavirus,Paramyxoviridae,,China,Chiroptera,2014,1,0,3
+QZU27220.1,Kanhgag paramyxovirus,Kanhgag paramyxovirus,Unclassified,Paramyxoviridae,,Brazil,Desmodus rotundus,2007,1,0,3
+QZU27234.1,Guato paramyxovirus,Guato paramyxovirus,Unclassified,Paramyxoviridae,,Brazil,Carollia perspicillata,2007,1,0,3
+UBB42378.1,Jingmen Miniopterus schreibersii paramyxovirus 2,Jingmen Miniopterus schreibersii paramyxovirus 2,Unclassified,Paramyxoviridae,JSB_Msch,China,Miniopterus schreibersii,2016,1,0,3
+UBB97712.1,Myotis bat morbillivirus,Morbillivirus myotis,Morbillivirus,Paramyxoviridae,PREDICT/PDF-3137,Brazil,Myotis riparius,2013,1,0,3
+UCY33670.1,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,Paramyxoviridae,HeV-G2/Australia/Pteropus poliocephalus/2020-01,Australia,Pteropus poliocephalus,2020,1,0,3
+UCZ51390.1,Eptesicus fuscus orthorubulavirus,Eptesicus fuscus orthorubulavirus,Orthorubulavirus,Paramyxoviridae,6931,USA,Eptesicus fuscus,2021,1,0,3
+UDF54475.1,Dawn bat paramyxovirus,Dawn bat paramyxovirus,Unclassified,Paramyxoviridae,DbV_05212020,Singapore,Eonycteris spelaea,2016,1,0,3
+UED37244.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,BA5,USA,Myotis velifer,2017,1,0,3
+UED37252.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,BC5,USA,Tadarida brasiliensis,2017,1,0,3
+UEK26006.1,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,Paramyxoviridae,NiV/TH/P.lylei/2017/B17640.GUL,Thailand,Pteropus lylei,2017,1,0,3
+UOL48962.1,Wufeng Murina leucogaster paramyxovirus 1,Wufeng Murina leucogaster paramyxovirus 1,Unclassified,Paramyxoviridae,WFB_BaiGuan,China,Murina leucogaster,2016,1,0,3
+UZM28503.1,Myotis bat morbillivirus,Morbillivirus myotis,Morbillivirus,Paramyxoviridae,CCZ215,Brazil,Myotis cf. nigricans,2015,1,0,3
+UZM28511.1,Molossid bat morbillivirus,Molossid bat morbillivirus,Morbillivirus,Paramyxoviridae,A446,Brazil,Molossus rufus,2015,1,0,3
+UZM28519.1,Vampire bat morbillivirus 1,Vampire bat morbillivirus 1,Morbillivirus,Paramyxoviridae,CR128,Costa Rica,Desmodus rotundus,2015,1,0,3
+WWU04050.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,ASYGS1517/77,China,Aselliscus stoliczkanus,2015,1,0,3
+WWU04071.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,HAXWS22/24349,China,Hipposideros armiger,2022,1,0,3
+WWU04085.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,HAZYS22/1432,China,Hipposideros armiger,2022,1,0,3
+WWU04113.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,HPGXS15/25,China,Hipposideros pomona,2015,1,0,3
+WWU04116.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,HPGXS15/36,China,Hipposideros pomona,2015,1,0,3
+WWU04134.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,HPGXS1517/43582,China,Hipposideros pomona,2015,1,0,3
+WWU04138.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,HPHCS15/1115,China,Hipposideros pomona,2015,1,0,3
+WWU04181.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,MSWZS17/260,China,Miniopterus schreibersii,2017,1,0,3
+WWU04186.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,MSWZS17/44,China,Miniopterus schreibersii,2017,1,0,3
+WWU04211.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,RLRLG16_3/2254,China,Rousettus leschenaultii,2016,1,0,3
+WWU04222.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,RLRLS19-1/1,China,Rousettus leschenaultii,2019,1,0,3
+WWU04237.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,RPGXF15-17/975,China,Rhinolophus pearsonii,2015,1,0,3
+WWU04280.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,TMGXS17/2474,China,Taphozous melanopogon,2017,1,0,3
+WWU04297.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,TMGXS17/54,China,Taphozous melanopogon,2017,1,0,3
+WWU04319.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,MSWZS17/95,China,Miniopterus schreibersii,2017,1,0,3
+WWU04321.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,RPGXF15-17/2377,China,Rhinolophus pearsonii,2015,1,0,3
+WWU04325.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,TMPES18/151285,China,Taphozous melanopogon,2018,1,0,3
+WWU04327.1,Paramyxoviridae sp.,Paramyxoviridae sp.,Unclassified,Paramyxoviridae,TMPES18/75780,China,Taphozous melanopogon,2018,1,0,3
+WWU04330.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,HAZYS22/1433,China,Hipposideros armiger,2022,1,0,3
+WWU04331.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,HAZYS22/152,China,Hipposideros armiger,2022,1,0,3
+WWU04334.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,HPGXS1517/85646,China,Hipposideros pomona,2015,1,0,3
+WWU04336.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,SKYHS15/26269,China,Scotophilus kuhlii,2015,1,0,3
+WWU04347.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,JTJXS22/12720,China,Rhinolophus sp.,2022,1,0,3
+WWU04352.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,VSYSS20/4675,China,Vespertilio sinensis,2020,1,0,3
+WWU04354.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,HPGXS1517/26537,China,Hipposideros pomona,2015,1,0,3
+WWU04357.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,PPYXS16/19339,China,Pipistrellus pipistrellus,2016,1,0,3
+WWU04368.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,RFYGS15-17/1,China,Rhinolophus pusillus,2015,1,0,3
+WWU04373.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,TMGXS17/8503,China,Taphozous melanopogon,2017,1,0,3
+WWU04390.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,HPHCS15/78257,China,Hipposideros pomona,2015,1,0,3
+WWU04394.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,RFYGS15-17/58,China,Rhinolophus pusillus,2015,1,0,3
+WWU04405.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,HAZYS22/608,China,Hipposideros armiger,2022,1,0,3
+WWU04412.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,JTJXS22/2449,China,Rhinolophus sp.,2022,1,0,3
+WWU04414.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,PPYXS16/15052,China,Pipistrellus pipistrellus,2016,1,0,3
+WWU04419.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,MSWZS17/88,China,Miniopterus schreibersii,2017,1,0,3
+WWU04429.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,TMGXS17/23,China,Taphozous melanopogon,2017,1,0,3
+WWU04492.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,TMGXS17/9,China,Taphozous melanopogon,2017,1,0,3
+WWU04507.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,PPXS/17597,China,Pipistrellus pipistrellus,2017,1,0,3
+WWU04514.1,Paramyxovirus sp.,Paramyxovirus sp.,Unclassified,Paramyxoviridae,VSYS/105726,China,Vespertilio sinensis,2022,1,0,3
+WXG28580.1,Bat jeilongvirus,Bat jeilongvirus,Jeilongvirus,Paramyxoviridae,HB2020,China,Myotis altarium,2020,1,0,3
+XAF84000.1,Sosuga virus,Pararubulavirus sosugaense,Pararubulavirus,Paramyxoviridae,Bat-1021,Sierra Leone,Rousettus aegyptiacus,2018,1,0,3
+XAI72412.1,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,Paramyxoviridae,MCL-23-Bat-247/5_RNA_11996,India,Pteropus medius,2023,1,0,3
+XBH24212.1,Rousettus bat paramyxovirus,Rousettus bat paramyxovirus,Unclassified,Paramyxoviridae,10A/Kenya/BAT1838/2015,Kenya,Rousettus aegyptiacus,2015,1,0,3
+XBH24254.1,Otomops bat paramyxovirus,Otomops bat paramyxovirus,Unclassified,Paramyxoviridae,7A/Kenya/BAT0812/2015,Kenya,Otomops martiensseni,2015,1,0,3
+XCO51595.1,Bat paramyxovirus,Parajeilongvirus hainanense,Parajeilongvirus,Paramyxoviridae,PMV/Bat35,Japan,Miniopterus fuliginosus,2022,1,0,3
+XCO51603.1,Bat paramyxovirus,Parajeilongvirus hainanense,Parajeilongvirus,Paramyxoviridae,PMV/Bat111,Japan,Myotis bombinus,2022,1,0,3
+XNL98229.1,Bat paramyxovirus,Parajeilongvirus hainanense,Parajeilongvirus,Paramyxoviridae,B78,China,Rhinolophus sinicus,2020,1,0,3
+XOT37587.1,Hipposideros jonesi jeilongvirus 1,Hipposideros jonesi jeilongvirus 1,Jeilongvirus,Paramyxoviridae,Hi. jonesi_para_1,Sierra Leone,Hipposideros jonesi,2022,1,0,3
+XOT37589.1,Hipposideros jonesi jeilongvirus 2,Hipposideros jonesi jeilongvirus 2,Jeilongvirus,Paramyxoviridae,Hi. jonesi_para_3,Sierra Leone,Hipposideros jonesi,2022,1,0,3
+XOT37601.1,Hipposideros jonesi jeilongvirus 3,Hipposideros jonesi jeilongvirus 3,Jeilongvirus,Paramyxoviridae,Hi. jonesi_para_4,Sierra Leone,Hipposideros jonesi,2022,1,0,3
+XQM46514.1,Salt gully virus,Salt gully virus,Henipavirus,Paramyxoviridae,Boonah,Australia,Pteropus,2011,1,0,3
+XRL22894.1,Sosuga virus,Pararubulavirus sosugaense,Pararubulavirus,Paramyxoviridae,814466,South Sudan,Rousettus aegyptiacus,2021,1,0,3
+XRT74647.1,Yunnan bat henipavirus 1,Yunnan bat henipavirus 1,Henipavirus,Paramyxoviridae,WDBS1745,China,Rousettus leschenaultii,2017,1,0,3
+XRT74653.1,Yunnan bat henipavirus 2,Yunnan bat henipavirus 2,Henipavirus,Paramyxoviridae,WDBS1733,China,Rousettus leschenaultii,2017,1,0,3
+XRT74660.1,Yunnan bat jeilongvirus,Yunnan bat jeilongvirus,Jeilongvirus,Paramyxoviridae,YNBS08,China,Rhinolophus pearsonii,2017,1,0,3
+XRT74668.1,Yunnan bat jeilongvirus,Yunnan bat jeilongvirus,Jeilongvirus,Paramyxoviridae,YNBS09,China,Rhinolophus thomasi,2017,1,0,3
+XRT74676.1,Yunnan bat jeilongvirus,Yunnan bat jeilongvirus,Jeilongvirus,Paramyxoviridae,YNBS16,China,Hipposideros pomona,2021,1,0,3
+XRT74684.1,Yunnan bat jeilongvirus,Yunnan bat jeilongvirus,Jeilongvirus,Paramyxoviridae,YNBS17,China,Hipposideros pomona,2021,1,0,3
+XSD85621.1,Vampire bat morbillivirus 2,Vampire bat morbillivirus 2,Morbillivirus,Paramyxoviridae,,Brazil,Desmodus rotundus,2008,1,0,3
+XWJ59196.1,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,Paramyxoviridae,HeV/ARCLU003_AVL_U_1_1/Bat/NSW/Clunes/2017-09-04,Australia,Chiroptera,2017,1,0,3
+YP_001249277.1,Orthorubulavirus mapueraense,Orthorubulavirus mapueraense,Orthorubulavirus,Paramyxoviridae,BeAnn 370284,Brazil,Sturnira lilium,2000,1,0,3
+YP_001331034.1,Orthorubulavirus suis,Orthorubulavirus suis,Orthorubulavirus,Paramyxoviridae,,Chile,Sus scrofa,2006,0,0,0
+YP_006347588.1,Nariva virus,Narmovirus narivaense,Narmovirus,Paramyxoviridae,,Trinidad and Tobago,Zygodontomys brevicauda,1962,0,0,0
+YP_007008151.1,Avian paramyxovirus 4,Paraavulavirus hongkongense,Paraavulavirus,Paramyxoviridae,Delaware-4,USA,Anas rubripes,2010,0,0,0
+YP_008378664.1,Human parainfluenza virus 4a,Orthorubulavirus hominis,Orthorubulavirus,Paramyxoviridae,,Japan,Homo sapiens,2010,0,0,0
+YP_009091838.1,Ghana virus,Henipavirus ghanaense,Henipavirus,Paramyxoviridae,BatPV/Eid_hel/GH-M74a/GHA/2009,Ghana,Eidolon helvum,2009,1,0,3
+YP_009094033.1,Sosuga virus,Pararubulavirus sosugaense,Pararubulavirus,Paramyxoviridae,2012,Uganda,Homo sapiens,2012,0,0,0
+YP_009094050.1,Sunshine Coast virus,Sunshinevirus reptilis,Sunshinevirus,Sunviridae,,Australia,Aspidites melanocephalus,2008,0,0,0
+YP_009094059.1,Avian metaavulavirus 7,Metaavulavirus tennessense,Metaavulavirus,Paramyxoviridae,,USA,Columbidae,1975,0,0,0
+YP_009094066.1,Tuhoko virus 2,Pararubulavirus cantonense,Pararubulavirus,Paramyxoviridae,,China,Pteropodidae,2009,1,0,3
+YP_009094072.3,Avian paramyxovirus penguin/Falkland Islands/324/2007,Metaavulavirus falklandense,Metaavulavirus,Paramyxoviridae,penguin/Falkland Islands/324/2007,Arctic Ocean,Spheniscidae,2007,0,0,0
+YP_009094079.1,Tuhoko virus 3,Pararubulavirus hongkongi,Pararubulavirus,Paramyxoviridae,,China,Pteropodidae,2009,1,0,3
+YP_009094086.1,Cedar virus,Henipavirus cedarense,Henipavirus,Paramyxoviridae,CG1a,Australia,Pteropus sp.,2009,1,0,3
+YP_009094095.1,Mojiang virus,Parahenipavirus mojiangense,Parahenipavirus,Paramyxoviridae,Tongguan1,China,Rattus tanezumi sladeni,2012,0,0,0
+YP_009094119.1,Tailam virus,Jeilongvirus tailamense,Jeilongvirus,Paramyxoviridae,,Hong Kong,Rattus andamanensis,2009,0,0,0
+YP_009094151.1,Salmon aquaparamyxovirus,Aquaparamyxovirus salmonis,Aquaparamyxovirus,Paramyxoviridae,ASPV/Yrkje371/95,Norway,Salmo salar,2007,0,0,0
+YP_009094159.1,Avian metaavulavirus 5,Metaavulavirus kunitachiense,Metaavulavirus,Paramyxoviridae,,Japan,Melopsittacus undulatus,1974,0,0,0
+YP_009094172.1,Avian orthoavulavirus 12,Orthoavulavirus italiense,Orthoavulavirus,Paramyxoviridae,Wigeon/Italy/3920_1/2005,Italy,Mareca,2005,0,0,0
+YP_009094216.1,Paraavulavirus wisconsinense,Paraavulavirus wisconsinense,Paraavulavirus,Paramyxoviridae,,USA,Meleagris gallopavo,1968,0,0,0
+YP_009094338.1,Salem virus,Salemvirus salemense,Salemvirus,Paramyxoviridae,,USA,Equus caballus,1992,0,0,0
+YP_009094363.1,Avian orthoavulavirus 9,Orthoavulavirus newyorkense,Orthoavulavirus,Paramyxoviridae,,USA,Anas platyrhynchos,1978,0,0,0
+YP_009094449.1,Respirovirus suis,Respirovirus suis,Respirovirus,Paramyxoviridae,,Hong Kong,Sus scrofa domesticus,2010,0,0,0
+YP_009094457.1,Achimota virus 1,Pararubulavirus achimotaense,Pararubulavirus,Paramyxoviridae,,Ghana,Eidolon helvum,2010,1,0,3
+YP_009094465.1,Achimota virus 2,Pararubulavirus accraense,Pararubulavirus,Paramyxoviridae,,Ghana,Eidolon helvum,2010,1,0,3
+YP_009094482.1,Avian metaavulavirus 11,Metaavulavirus galliense,Metaavulavirus,Paramyxoviridae,common_snipe/France/100212/2010,France,Gallinago gallinago,2010,0,0,0
+YP_009094497.1,Tuhoko virus 1,Pararubulavirus guangdongense,Pararubulavirus,Paramyxoviridae,,China,Pteropodidae,2009,1,0,3
+YP_009177603.1,Phocine morbillivirus,Morbillivirus phocae,Morbillivirus,Paramyxoviridae,,Netherlands,Phoca vitulina,1988,0,0,0
+YP_009179211.1,Caprine parainfluenza virus 3,Respirovirus caprae,Respirovirus,Paramyxoviridae,,China,Capra hircus,2013,0,0,0
+YP_009255225.1,avian paramyxovirus 13,Orthoavulavirus japanense,Orthoavulavirus,Paramyxoviridae,,Japan,Anser sp.,2000,0,0,0
+YP_009380508.1,Avian paramyxovirus 15,Metaavulavirus peixense,Metaavulavirus,Paramyxoviridae,APMV-15/calidris_fuscicollis/Brazil/RS-1177/2012,Brazil,Calidris fuscicollis,2012,0,0,0
+YP_009505440.1,Simian Agent 10,Respirovirus pneumoniae,Respirovirus,Paramyxoviridae,,South Africa,Cercopithecus mitis,1963,0,0,0
+YP_009505446.1,Bat Paramyxovirus Epo_spe/AR1/DRC/2009,Bat mumps orthorubulavirus,Orthorubulavirus,Paramyxoviridae,BatPV/Epo_spe/AR1/DRC/2009,Democratic Republic of the Congo,Epomophorus,2009,1,0,3
+YP_009508497.1,Avian paramyxovirus 14,Metaavulavirus japanense,Metaavulavirus,Paramyxoviridae,APMV14/duck/Japan/11OG0352/2011,Japan,Anatidae,2011,0,0,0
+YP_009508503.1,avian paramyxovirus 16,Orthoavulavirus upoense,Orthoavulavirus,Paramyxoviridae,APMV-15/WB/Kr/UPO216/2014,South Korea,Anas platyrhynchos,2014,0,0,0
+YP_009508509.1,Antarctic penguin virus A,Orthoavulavirus borisense,Orthoavulavirus,Paramyxoviridae,1,Antarctica,Pygoscelis papua,2014,0,0,0
+YP_009508515.1,Antarctic penguin virus B,Orthoavulavirus kopaiticense,Orthoavulavirus,Paramyxoviridae,2,Antarctica,Pygoscelis papua,2014,0,0,0
+YP_009508521.1,Antarctic penguin virus C,Orthoavulavirus oneillense,Orthoavulavirus,Paramyxoviridae,3,Antarctica,Pygoscelis papua,2014,0,0,0
+YP_009512949.1,Avian metaavulavirus 6,Metaavulavirus hongkongense,Metaavulavirus,Paramyxoviridae,,Russia,Anser,2003,0,0,0
+YP_009512955.1,Avian metaavulavirus 8,Metaavulavirus delawarense,Metaavulavirus,Paramyxoviridae,,USA,Branta canadensis,1976,0,0,0
+YP_009512963.1,Feline morbillivirus,Morbillivirus felis,Morbillivirus,Paramyxoviridae,,Hong Kong,Felis catus,2009,0,0,0
+YP_009512970.1,Menangle virus,Pararubulavirus menangleense,Pararubulavirus,Paramyxoviridae,Australia/bat/2009/Cedar Grove,Australia,Pteropus,2009,1,0,3
+YP_009512977.1,Teviot virus,Pararubulavirus teviotense,Pararubulavirus,Paramyxoviridae,Cedar Grove,Australia,Pteropus sp.,2009,1,0,3
+YP_009513198.1,Avian orthoavulavirus 1,Orthoavulavirus javaense,Orthoavulavirus,Paramyxoviridae,JSD0812,China,Anas platyrhynchos,2008,0,0,0
+YP_009513218.1,Avian metaavulavirus 2,Metaavulavirus yucaipaense,Metaavulavirus,Paramyxoviridae,,USA,Gallus gallus,1956,0,0,0
+YP_009553494.1,Avian metaavulavirus 20,Metaavulavirus kazakhstanense,Metaavulavirus,Paramyxoviridae,APMV-20/gull/Kazakhstan/5976/2014,Kazakhstan,Laridae,2014,0,0,0
+YP_009666846.1,Mount Mabu Lophuromys virus 1,Jeilongvirus lophuromysis,Jeilongvirus,Paramyxoviridae,MOZ135_1,Mozambique,Lophuromys machangui,2011,0,0,0
+YP_009666854.1,Mount Mabu Lophuromys virus 2,Jeilongvirus mabuense,Jeilongvirus,Paramyxoviridae,MOZ135_2,Mozambique,Lophuromys machangui,2011,0,0,0
+YP_010085014.1,bank vole virus 1,Narmovirus myodesis,Narmovirus,Paramyxoviridae,,Russia,Myodes glareolus,1973,0,0,0
+YP_010085023.1,Pohorje myodes paramyxovirus 1,Jeilongvirus myodesis,Jeilongvirus,Paramyxoviridae,TT02/05,Slovenia,Myodes glareolus,2016,0,0,0
+YP_010087174.1,Alston virus,Orthorubulavirus sp. 'alstonvillense',Orthorubulavirus,Paramyxoviridae,Alstonville,Australia,Pteropus sp.,2011,1,0,3
+YP_010774626.1,Avian paramyxovirus 4,Paraavulavirus hongkongense,Paraavulavirus,Paramyxoviridae,APMV-4/KR/YJ/06,South Korea,Anas platyrhynchos,2006,0,0,0
+YP_010790274.1,Respirovirus muris,Respirovirus muris,Respirovirus,Paramyxoviridae,,Lab strain,Lab strain,2004,0,0,0
+YP_010790290.1,Avian orthoavulavirus 1,Orthoavulavirus javaense,Orthoavulavirus,Paramyxoviridae,chicken/N. Ireland/Ulster/67,United Kingdom,Gallus gallus,2023,0,0,0
+YP_010790478.1,Wenzhou pacific spadenose shark paramyxovirus,Scoliodonvirus scoliodontis,Scoliodonvirus,Paramyxoviridae,,China,Scoliodon macrorhynchos,2017,0,0,0
+YP_010790485.1,Wenling triplecross lizardfish paramyxovirus,Synodonvirus synodi,Synodonvirus,Paramyxoviridae,,China,Synodus macrops,2017,0,0,0
+YP_010790503.1,Wenling hoplichthys paramyxovirus,Hoplichthysvirus hoplichthysis,Hoplichthysvirus,Paramyxoviridae,,China,Hoplichthys,2017,0,0,0
+YP_010790513.1,Human respirovirus 3,Respirovirus pneumoniae,Respirovirus,Paramyxoviridae,Guangzhou,China,Homo sapiens,2007,0,0,0
+YP_010796324.1,Bat paramyxovirus,Parajeilongvirus hainanense,Parajeilongvirus,Paramyxoviridae,Bat-ParaV/B16-40,South Korea,Miniopterus sp.,2016,1,0,3
+YP_010796381.1,Avian paramyxovirus 17,Orthoavulavirus koreaense,Orthoavulavirus,Paramyxoviridae,Cheonsu1510,South Korea,Aves,2015,0,0,0
+YP_010797980.1,Salmon aquaparamyxovirus,Aquaparamyxovirus salmonis,Aquaparamyxovirus,Paramyxoviridae,,USA,Oncorhynchus tshawytscha,1983,0,0,0
+YP_010798267.1,Avian metaavulavirus 21,Avian metaavulavirus 21,Metaavulavirus,Paramyxoviridae,APMV/dove/Taiwan/AHRI33/2009,Taiwan,Columbidae,2009,0,0,0
+YP_010799129.1,Miniopterus schreibersii paramyxovirus,Jeilongvirus sp. 'anhuiense',Jeilongvirus,Paramyxoviridae,Bat Ms-ParaV/Anhui2011,China,Miniopterus schreibersii,2011,1,0,3
+YP_010799182.1,Bat paramyxovirus,Parajeilongvirus hainanense,Parajeilongvirus,Paramyxoviridae,BtMl-ParaV/QH2013,China,Murina leucogaster,2013,1,0,3
+YP_010799240.1,Rodent paramyxovirus,Jeilongvirus apodemi,Jeilongvirus,Paramyxoviridae,RtAp-ParaV/NX2015,China,Apodemus peninsulae,2015,0,0,0
+YP_010799261.1,Feline paramyxovirus 163,Feline paramyxovirus 163,Unclassified,Paramyxoviridae,,Japan,Felis catus,2018,0,0,0
+YP_010799323.1,Bat paramyxovirus,Parajeilongvirus hainanense,Parajeilongvirus,Paramyxoviridae,,Comoros,Miniopterus griveaudi,2011,1,0,3
+YP_010799332.1,Bat paramyxovirus,Parajeilongvirus hainanense,Parajeilongvirus,Paramyxoviridae,,Madagascar,Miniopterus griveaudi,2012,1,0,3
+YP_010801061.1,Ruloma virus,Jeilongvirus rungweense,Jeilongvirus,Paramyxoviridae,TA502,Tanzania,Lophuromys machangui,2013,0,0,0
+YP_010806262.1,Giant squirrel virus,Respirovirus ratufae,Respirovirus,Paramyxoviridae,GSqRV/LKA/2009,Sri Lanka,Ratufa macroura,2018,0,0,0
+YP_013020913.1,Jeilongvirus pajuense,Jeilongvirus pajuense,Jeilongvirus,Paramyxoviridae,Aa-17-179,South Korea,Apodemus agrarius,2017,0,0,0
+YP_013023290.1,Respirovirus rupicaprae,Respirovirus rupicaprae,Respirovirus,Paramyxoviridae,ChamoisRV/IT2014,Italy,Rupicapra rupicapra,2014,0,0,0
+YP_013025784.1,Achimota pararubulavirus 3,Pararubulavirus eidoli,Pararubulavirus,Paramyxoviridae,U72,Ghana,Eidolon helvum,2010,1,0,3
+YP_013025921.1,Parahenipavirus daeryongense,Parahenipavirus daeryongense,Parahenipavirus,Paramyxoviridae,Cs17-65,South Korea,Crocidura shantungensis,2017,0,0,0
+YP_013029450.1,Porcine morbillivirus,Morbillivirus suis,Morbillivirus,Paramyxoviridae,PMV/MX/ISU7758/2020,Mexico,Sus scrofa,2020,0,0,0
+YP_013029480.1,Myotis bat morbillivirus,Morbillivirus myotis,Morbillivirus,Paramyxoviridae,PREDICT/PDF-3137,Brazil,Myotis riparius,2013,1,0,3
+YP_013031050.1,Longquan Niviventer fulvescens jeilongvirus 1,Jeilongvirus longquanense,Jeilongvirus,Paramyxoviridae,LQS_zhenmao,China,Niviventer fulvescens,2016,0,0,0
+YP_013031058.1,Longquan Niviventer fulvescens jeilongvirus 2,Jeilongvirus lishuiense,Jeilongvirus,Paramyxoviridae,LQS_zhenmao,China,Niviventer fulvescens,2016,0,0,0
+YP_013031065.1,Longquan Niviventer niviventer jeilongvirus 1,Jeilongvirus niviventris,Jeilongvirus,Paramyxoviridae,LQS_she,China,Niviventer niviventer,2016,0,0,0
+YP_013031081.1,Wenzhou Rattus norvegicus jeilongvirus 1,Jeilongvirus oujiangense,Jeilongvirus,Paramyxoviridae,LCS_hejia,China,Rattus norvegicus,2016,0,0,0
+YP_013031090.1,Jingmen Miniopterus schreibersii paramyxovirus 1,Parajeilongvirus hubeiense,Parajeilongvirus,Paramyxoviridae,JSB_Msch,China,Miniopterus schreibersii,2016,1,0,3
+YP_013031104.1,Wufeng Rattus nitidus jeilongvirus 1,Jeilongvirus taichungense,Jeilongvirus,Paramyxoviridae,WFS_dazu,China,Rattus nitidus,2016,0,0,0
+YP_013031111.1,Longquan Berylmys bowersi morbillivirus 1,Paramorbillivirus berylmysis,Paramorbillivirus,Paramyxoviridae,LQS_qingmao,China,Berylmys bowersi,2016,0,0,0
+YP_013031118.1,Wufeng Niviventer fulvescens morbillivirus 1,Paramorbillivirus niviventris,Paramorbillivirus,Paramyxoviridae,WFS_zhenmao,China,Niviventer fulvescens,2016,0,0,0
+YP_013031136.1,Wenzhou Apodemus agrarius henipavirus 1,Parahenipavirus wenzhouense,Parahenipavirus,Paramyxoviridae,LCS_heixian,China,Apodemus agrarius,2016,0,0,0
+YP_013031143.1,Wufeng Rhinolophus sinicus rubulavirus 1,Orthorubulavirus rhinolophi,Orthorubulavirus,Paramyxoviridae,WFB_Rsin,China,Rhinolophus sinicus,2016,1,0,3
+YP_013032875.1,Jingmen Crocidura shantungensis henipavirus 1,Parahenipavirus jingmenense,Parahenipavirus,Paramyxoviridae,SYS_SheQu,China,Crocidura shantungensis,2016,0,0,0
+YP_013032889.1,Wufeng Chodsigoa smithii henipavirus 1,Parahenipavirus chodsigoae,Parahenipavirus,Paramyxoviridae,WFS_ChangWei,China,Chodsigoa smithii,2016,0,0,0
+YP_013032906.1,Wenzhou Myotis davidii paramyxovirus 1,Parajeilongvirus wenzhouense,Parajeilongvirus,Paramyxoviridae,YJB_DaWei,China,Myotis davidii,2016,1,0,3
+YP_013032913.1,Wenzhou Myotis laniger paramyxovirus 2,Parajeilongvirus zhejiangense,Parajeilongvirus,Paramyxoviridae,YJB_DaWei,China,Myotis laniger,2016,1,0,3
+YP_013032921.1,Wufeng Myotis altarium paramyxovirus 1,Parajeilongvirus myotis,Parajeilongvirus,Paramyxoviridae,WFB_YunShu,China,Myotis altarium,2016,1,0,3
+YP_013032929.1,Jingmen Myotis davidii paramyxovirus 1,Parajeilongvirus jingmenense,Parajeilongvirus,Paramyxoviridae,JSB_DaWei,China,Myotis davidii,2016,1,0,3
+YP_013032937.1,Wufeng Apodemus chevrieri jeilongvirus 1,Jeilongvirus wufengense,Jeilongvirus,Paramyxoviridae,WFS_GaoShan,China,Apodemus chevrieri,2016,0,0,0
+YP_013032944.1,Wenzhou Rattus losea jeilongvirus 2,Jeilongvirus ratti,Jeilongvirus,Paramyxoviridae,WZS_HuMao,China,Rattus losea,2016,0,0,0
+YP_013032951.1,Wufeng Typhlomys cinereus jeilongvirus 1,Jeilongvirus typhlomysis,Jeilongvirus,Paramyxoviridae,WFS_ZhuWei,China,Typhlomys cinereus,2016,0,0,0
+YP_013032959.1,Wufeng Eothenomys melanogaster jeilongvirus 1,Jeilongvirus eothenomysis,Jeilongvirus,Paramyxoviridae,WFS_RongShu,China,Eothenomys melanogaster,2016,0,0,0
+YP_013034397.1,Langya virus,Parahenipavirus langyaense,Parahenipavirus,Paramyxoviridae,SDQD_H1801,China,Homo sapiens,2018,0,0,0
+YP_013553624.1,Wufeng Rhinolophus pearsonii paramyxovirus 1,Parajeilongvirus rhinolophi,Parajeilongvirus,Paramyxoviridae,WFB_Rpear,China,Rhinolophus pearsonii,2016,1,0,3
+YP_013610072.1,Raton olivaceo morbillivirus,Paramorbillivirus pueyrredonense,Paramorbillivirus,Paramyxoviridae,,Argentina,Abrothrix olivaceus,2022,0,0,0
+YP_013613135.1,Porcine respirovirus 2,Respirovirus henanense,Respirovirus,Paramyxoviridae,ZJ14,China,Sus scrofa,2019,0,0,0
+YP_013613147.1,Bovine narmovirus 1,Bovinavirus bovis,Bovinavirus,Paramyxoviridae,Australia/bovine/L11/2019,Australia,Bos taurus,2019,0,0,0
+YP_013613156.1,Angavokely henipavirus,Henipavirus angavokelyense,Henipavirus,Paramyxoviridae,,Madagascar,Eidolon dupreanum,2019,1,0,1
+YP_013613174.1,Gerbil paramyxovirus,Jeilongvirus merionis,Jeilongvirus,Paramyxoviridae,DB04S/SX/2018,China,Meriones unguiculatus,2018,0,0,0
+YP_013613195.1,Eothenomys eva jeilongvirus,Jeilongvirus sichuanense,Jeilongvirus,Paramyxoviridae,PMV/SC/C3-28.4/2021,China,Eothenomys eva,2021,0,0,0
+YP_013613299.1,Phyllostomus bat morbillivirus,Morbillivirus phyllostomi,Morbillivirus,Paramyxoviridae,PREDICT/PBZ-1381,Brazil,Phyllostomus hastatus,2013,1,0,3
+YP_013613307.1,Piparella virus,Parajeilongvirus pipistrelli,Parajeilongvirus,Paramyxoviridae,BE/Aalst/Pp/1/2020,Belgium,Pipistrellus pipistrellus,2020,1,0,3
+YP_013613315.1,Plecomyxo virus,Parajeilongvirus plecoti,Parajeilongvirus,Paramyxoviridae,BE/Oudenaarde/Pa/1/2020,Belgium,Plecotus auritus,2020,1,0,3
+YP_013613333.1,Parajeilongvirus brazilense,Parajeilongvirus brazilense,Parajeilongvirus,Paramyxoviridae,PREDICT/PBZ-2282,Brazil,Diaemus youngi,2013,1,0,3
+YP_013613342.1,Carollia bat paramyxovirus,Parajeilongvirus carolliae,Parajeilongvirus,Paramyxoviridae,PREDICT-PmV-13/PDF-3308,Brazil,Carollia perspicillata,2014,1,0,3
+YP_013613349.1,Boe paramyxovirus,Parajeilongvirus desmodi,Parajeilongvirus,Paramyxoviridae,ara25B,Brazil,Desmodus rotundus,2007,1,0,3
+YP_013613358.1,Parajeilongvirus diaemi,Parajeilongvirus diaemi,Parajeilongvirus,Paramyxoviridae,PREDICT/PBZ-3205,Brazil,Diaemus youngi,2013,1,0,3
+YP_013613367.1,Bat paramyxovirus,Parajeilongvirus hainanense,Parajeilongvirus,Paramyxoviridae,,China,Hipposideros armiger,2021,1,0,3
+YP_013613377.1,Hipposideros bat paramyxovirus,Parajeilongvirus hipposideri,Parajeilongvirus,Paramyxoviridae,PREDICT-PmV-74/PDF-0699,Malaysia,Hipposideros galeritus,2012,1,0,3
+YP_087125.2,Rinderpest virus (strain Kabete O),Morbillivirus pecoris,Morbillivirus,Paramyxoviridae,,Kenya,Bos,1996,0,0,0
+YP_133827.2,Peste des petits ruminants virus,Morbillivirus caprinae,Morbillivirus,Paramyxoviridae,Turkey 2000,Turkey,Ovis aries,2004,0,0,0
+YP_138509.1,Orthorubulavirus simiae,Orthorubulavirus simiae,Orthorubulavirus,Paramyxoviridae,Toshiba/Chanock,Japan,Lab strain,1992,0,0,0
+YP_138517.1,Parainfluenza virus 5,Orthorubulavirus mammalis,Orthorubulavirus,Paramyxoviridae,,Lab strain,Lab strain,1998,0,0,0
+YP_338084.1,J-virus,Jeilongvirus queenslandense,Jeilongvirus,Paramyxoviridae,,Australia,Mus musculus,2005,0,0,0
+YP_512253.1,Beilong virus,Jeilongvirus beilongi,Jeilongvirus,Paramyxoviridae,,Lab strain,Rodentia,2003,0,0,0
