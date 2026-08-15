@@ -339,15 +339,15 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
         legend.text = element_text(size=7), 
         legend.key.size = unit(0.2, "cm"),
         plot.margin = unit(c(0,0,0,0), "cm")) +
-  geom_cladelabel(node=185, label='HeV/NiV sister clade', offset=3.6, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=176, label='AndV clade', offset=3.6, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=343, label='AndV-2 clade', offset=3.6, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=344, label='AndV-3 clade', offset=3.6, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=190, label='AngV clade', offset=3.6, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=191, label='AngV-2 clade', offset=3.6, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=182, label='GhV clade', offset=3.6, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=26, label='AchPV2-like virus', offset=3.6, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=205, label='ThkPV1-like viruses', offset=3.6, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=185, label='HeV/NiV sister clade', offset=4.6, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=176, label='AndV clade', offset=4.6, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=343, label='AndV-2 clade', offset=4.6, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=344, label='AndV-3 clade', offset=4.6, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=190, label='AngV clade', offset=4.6, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=191, label='AngV-2 clade', offset=4.6, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=182, label='GhV clade', offset=4.6, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=26, label='AchPV2-like virus', offset=4.6, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=205, label='ThkPV1-like viruses', offset=4.6, fontsize=4, color="black", align=TRUE)+
   # 
   #geom_cladelabel(node = , label = "Hendra/Nipah virus clade (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   #geom_cladelabel(node = , label = "Pararubulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
@@ -384,15 +384,15 @@ p1.1<-ggtree::collapse(p1.18, 247)+geom_point2(aes(subset=(node==247)), size=4, 
 p1.1
 
 p1.1<- p1.1 +  
-  geom_hilight(node=185, fill="#A58AFF", alpha=0.3, extendto=8)+ #HeV/NiV sister
-  geom_hilight(node=176, fill="darkslategray1", alpha=0.3, extendto=8)+ #AndV
-  geom_hilight(node=343, fill="dodgerblue1", alpha=0.3, extendto=8)+ #AndV2
-  geom_hilight(node=344, fill="dodgerblue4", alpha=0.3, extendto=8)+ #AndV3
-  geom_hilight(node=190, fill="#F8766D", alpha=0.3, extendto=8)+ #AngV
-  geom_hilight(node=191, fill="darkorange1", alpha=0.3, extendto=8)+ #AngV2
-  geom_hilight(node=182, fill="#00C094", alpha=0.3, extendto=8)+ #GhVlike
-  geom_hilight(node=26, fill="grey40", alpha=0.3, extendto=8)+ #AchPV2
-  geom_hilight(node=205, fill="grey40", alpha=0.3, extendto=8) #ThkPV1
+  geom_hilight(node=185, fill="#A58AFF", alpha=0.3, extendto=9)+ #HeV/NiV sister
+  geom_hilight(node=176, fill="darkslategray1", alpha=0.3, extendto=9)+ #AndV
+  geom_hilight(node=343, fill="dodgerblue1", alpha=0.3, extendto=9)+ #AndV2
+  geom_hilight(node=344, fill="dodgerblue4", alpha=0.3, extendto=9)+ #AndV3
+  geom_hilight(node=190, fill="#F8766D", alpha=0.3, extendto=9)+ #AngV
+  geom_hilight(node=191, fill="darkorange1", alpha=0.3, extendto=9)+ #AngV2
+  geom_hilight(node=182, fill="#00C094", alpha=0.3, extendto=9)+ #GhVlike
+  geom_hilight(node=26, fill="grey40", alpha=0.3, extendto=9)+ #AchPV2
+  geom_hilight(node=205, fill="grey40", alpha=0.3, extendto=9) #ThkPV1
 p1.1
 
 #add node shapes to represent bootstrap values
