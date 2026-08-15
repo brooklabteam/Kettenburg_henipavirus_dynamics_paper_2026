@@ -367,6 +367,7 @@ p1 <- ggtree(rooted.tree1) %<+% tree.dat1 + geom_tippoint(aes(color=Genus, shape
 p1
 
 p1<-flip(p1, 194, 261)
+p1<-flip(p1, 178, 180)
 
 #p1.2<-ggtree::collapse(p1, 236)+geom_point2(aes(subset=(node==236)), size=4, shape=25, fill="deepskyblue2")
 #p1.3<-ggtree::collapse(p1.2, 344)+geom_point2(aes(subset=(node==344)), size=4, shape=25, fill="firebrick4")
