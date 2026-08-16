@@ -210,10 +210,10 @@ colz2 = c("A" = "goldenrod1", "C"="white","D"="white","E"="goldenrod1","F"="whit
 
 #and control the order
 
-ephrinmsa$name <- factor(ephrinmsa$name, levels = rev(c("HeV", "NiV", "CedV", "GhV","PX127395 GhV-like", "YuV1",
-                                                        "PX127342 AndV","PX127343 AndV", "YuV2",
-                                                        "PX127399 AndV-3", "PX127401 AndV-2", "PX127400 AngV", "AngV", 
-                                                        "PX127396 AngV-2","PX127397 AngV-2", "SGV",                           
+ephrinmsa$name <- factor(ephrinmsa$name, levels = rev(c("HeV", "NiV", "YuV1","CedV", "GhV","PX127395 GhV-like",
+                                                        "YuV2","PX127342 AndV","PX127343 AndV",
+                                                        "PX127399 AndV-3", "PX127401 AndV-2", "SGV","AngV", "PX127400 AngV", 
+                                                        "PX127396 AngV-2","PX127397 AngV-2",                         
                                                         "MojV","GAKV","DARV","LayV")))
 
 ephrinmsa.plot <- ggplot(data=ephrinmsa) + 
@@ -230,8 +230,8 @@ ephrinmsa.plot <- ggplot(data=ephrinmsa) +
         title = element_text(size=16),
         axis.title.x = element_blank(),
         axis.text.y = element_text(colour=c("black","black","black","black","darkorange1","darkorange1",
-                                            "#F8766D","#F8766D","dodgerblue1","dodgerblue4", "cyan4","cyan4","cyan4","black",
-                                            "#00C094","black","black","black", "black"), face="bold"),
+                                            "#F8766D","#F8766D","#F8766D","dodgerblue1","dodgerblue4", "cyan4","cyan4","cyan4",
+                                            "#00C094","#00C094","black","black", "black","black"), face="bold"),
         #axis.text.x = element_blank(),
         #axis.ticks.x = element_blank(),
         legend.text = element_text(size=10),
