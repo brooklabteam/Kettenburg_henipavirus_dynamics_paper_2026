@@ -185,11 +185,11 @@ unique(ephrinmsa$name)
 ephrinmsa$name[ephrinmsa$name=="KEL86spleen"] <- "PX127395 GhV-like"
 ephrinmsa$name[ephrinmsa$name=="CAT017_Plate_42_A10_NODE_34_czid2023"] <- "PX127396 AngV-2"
 ephrinmsa$name[ephrinmsa$name=="KEL234_NODE_79_czid2019"] <- "PX127397 AngV-2"
-ephrinmsa$name[ephrinmsa$name=="KEL281B_NODE_113_czid2019"] <- "PX127399 AndV-3"
+ephrinmsa$name[ephrinmsa$name=="KEL281B_NODE_113_czid2019"] <- "PX127399 AndV-2"
 ephrinmsa$name[ephrinmsa$name=="KEL380_Plate_42_B8_NODE_44_czid2023"] <- "PX127400 AngV"
 ephrinmsa$name[ephrinmsa$name=="ROU125_NODE_1_czid2023"] <- "PX127342 AndV"
 ephrinmsa$name[ephrinmsa$name=="ROU148_manual_assembly"] <- "PX127343 AndV"
-ephrinmsa$name[ephrinmsa$name=="ROU143_NODE_287_czid2023"] <- "PX127401 AndV-2"
+ephrinmsa$name[ephrinmsa$name=="ROU143_NODE_287_czid2023"] <- "PX127401 AndV-3"
 
 unique(ephrinmsa$name)
 names(ephrinmsa)[names(ephrinmsa)=="character"] <- "aa"
@@ -212,7 +212,7 @@ colz2 = c("A" = "goldenrod1", "C"="white","D"="white","E"="goldenrod1","F"="whit
 
 ephrinmsa$name <- factor(ephrinmsa$name, levels = rev(c("HeV", "NiV", "YuV1","CedV", "GhV","PX127395 GhV-like",
                                                         "YuV2","PX127342 AndV","PX127343 AndV",
-                                                        "PX127399 AndV-3", "PX127401 AndV-2", "SGV","AngV", "PX127400 AngV", 
+                                                        "PX127399 AndV-2", "PX127401 AndV-3", "SGV","AngV", "PX127400 AngV", 
                                                         "PX127396 AngV-2","PX127397 AngV-2",                         
                                                         "MojV","GAKV","DARV","LayV")))
 
@@ -230,7 +230,7 @@ ephrinmsa.plot <- ggplot(data=ephrinmsa) +
         title = element_text(size=16),
         axis.title.x = element_blank(),
         axis.text.y = element_text(colour=c("black","black","black","black","darkorange1","darkorange1",
-                                            "#F8766D","#F8766D","#F8766D","dodgerblue1","dodgerblue4", "cyan4","cyan4","cyan4",
+                                            "#F8766D","#F8766D","#F8766D","dodgerblue4","dodgerblue1", "cyan4","cyan4","cyan4",
                                             "#00C094","#00C094","black","black", "black","black"), face="bold"),
         #axis.text.x = element_blank(),
         #axis.ticks.x = element_blank(),
