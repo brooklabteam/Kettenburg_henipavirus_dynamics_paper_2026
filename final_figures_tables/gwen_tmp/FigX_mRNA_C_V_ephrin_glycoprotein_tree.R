@@ -402,11 +402,11 @@ p1.1<-ggtree::collapse(p1.17, 154)+geom_point2(aes(subset=(node==154)), size=4, 
 p1.1
 
 p1.1<- p1.1 +  
-  geom_hilight(node=142, fill="darkslategray1", alpha=0.3, extendto=9)+ #AndV
-  geom_hilight(node=138, fill="dodgerblue1", alpha=0.3, extendto=9)+ #AndV3
-  geom_hilight(node=139, fill="dodgerblue4", alpha=0.3, extendto=9)+ #AndV2
-  geom_hilight(node=150, fill="#F8766D", alpha=0.3, extendto=9)+ #AngV
-  geom_hilight(node=149, fill="darkorange1", alpha=0.3, extendto=9) #AngV2
+  geom_hilight(node=142, fill="darkslategray1", alpha=0.3, extendto=10.2)+ #AndV
+  geom_hilight(node=138, fill="dodgerblue1", alpha=0.3, extendto=10.2)+ #AndV3
+  geom_hilight(node=139, fill="dodgerblue4", alpha=0.3, extendto=10.2)+ #AndV2
+  geom_hilight(node=150, fill="#F8766D", alpha=0.3, extendto=10.2)+ #AngV
+  geom_hilight(node=149, fill="darkorange1", alpha=0.3, extendto=10.2) #AngV2
 p1.1
 
 #add node shapes to represent bootstrap values
@@ -416,73 +416,43 @@ p0.dat1$Bootstrap <- NA
 Bootstrap<-p0.dat1$Bootstrap[(length(tree.dat1$tip_label)+1):length(p0.dat1$label)] <- as.numeric(p0.dat1$label[(length(tree.dat1$tip_label)+1):length(p0.dat1$label)])#fill with label
 
 #add bootstrap values to original plot
-polytree <- p1.1  %<+% p0.dat1 + 
+glyco <- p1.1  %<+% p0.dat1 + 
   ggnewscale::new_scale_fill() + 
   geom_nodepoint(aes(fill=Bootstrap, show.legend = T), shape=21, stroke=0, size=2)+
   scale_fill_continuous(low="yellow", high="red", limits=c(0,100))+
-  theme(legend.position = "none",
+  theme(legend.position = "bottom",
         legend.direction = "vertical",
         legend.text = element_text(size=8),
         legend.title = element_text(size=8),
         legend.key.size = unit(0.3, "cm"),
         plot.title = element_text(hjust = -0.1),
         plot.margin = unit(c(0.5,0,0,0.5), "cm"))
-polytree
+glyco
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# leg<-get_legend(glyco)
+# 
+# glyco2<-cowplot::plot_grid(leg,NULL, glyco, 
+#                               labels=c("","",""),
+#                               rel_widths=c(1,1,1), rel_heights = c(0.4,0.001,1),
+#                               ncol=1,nrow=3,align="hv", axis="l", label_size = 23)+
+#   theme(plot.background = element_rect(fill = "white", colour = NA)); fulltree2
+# glyco2<-as.ggplot(glyco2)
 
 
 #put everything together
 library(patchwork)
 
 
-
-
-part1<-cowplot::plot_grid(mRNAmsa.plot, pair, 
-                         labels=c("A","B"),
-                         rel_widths=c(1,4), rel_heights = c(1,2),
-                         ncol=1,nrow=2,align="hv", axis="lr", label_size = 23)+
-  theme(plot.background = element_rect(fill = "white", colour = NA)); part1
-part1<-as.ggplot(part1)
-
-fig<-(part1|ephrinmsa.plot)+ plot_layout(widths = c(2, 1))+plot_annotation(tag_levels = list(c('','C'))) &
-  theme(plot.tag = element_text(size = 23, face="bold"), 
-        plot.background = element_rect(fill = "white", colour = NA));fig
-
-
-
-
-
-part1<-cowplot::plot_grid(mRNAmsa.plot, ephrinmsa.plot, 
-                          labels=c("A","C"),
-                          rel_widths=c(1,1), rel_heights = c(1,1),
-                          ncol=2,nrow=1,align="hv", axis="lr", label_size = 23)+
+part1<-cowplot::plot_grid(mRNAmsa.plot, ephrinmsa.plot, glyco,
+                          labels=c("A","C","D"),
+                          rel_widths=c(1,1.4,2), rel_heights = c(1,1,1),
+                          ncol=3,nrow=1,align="hv", axis="lr", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); part1
 part1<-as.ggplot(part1)
 
 fig<-cowplot::plot_grid(part1, pair, 
                         labels=c("","B"),
-                        rel_widths=c(1,1), rel_heights = c(1,1),
+                        rel_widths=c(1,1), rel_heights = c(1.5,1),
                         ncol=1,nrow=2,align="hv", axis="lr", label_size = 23)+
   theme(plot.background = element_rect(fill = "white", colour = NA)); fig
 
@@ -490,11 +460,11 @@ fig<-cowplot::plot_grid(part1, pair,
 
 #save trees
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/gwen_tmp/"
-ggsave(file = paste0(homewd, "FigX_mRNA_C_V_ephrin.png"),
+ggsave(file = paste0(homewd, "FigX_mRNA_C_V_ephrin_glyco_tree.png"),
        plot= fig,
        units="mm",
-       width=200,
-       height=100,
+       width=300,
+       height=150,
        scale=2,
        dpi=500)
 
