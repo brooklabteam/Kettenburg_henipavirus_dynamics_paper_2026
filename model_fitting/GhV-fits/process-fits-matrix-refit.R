@@ -3,11 +3,13 @@ rm(list=ls())
 library(plyr)
 library(dplyr)
 library(ggplot2)
+library(purrr)
+library(data.table)
 
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #set wd
-setwd(paste0(homewd,"/model_fitting/GhV-fits/out-matrix-refit/"))
+setwd(paste0(homewd,"/model_fitting/GhV-fits/matrix-refit-out/"))
 #load all the data and add to a list
 
 
@@ -26,11 +28,15 @@ for (i in 1:1000){
   tryCatch({dat.fit <- function.load(prefix = "mean", list=dat.fit, i=i)}, error = function(i) {skip_to_next <<- TRUE})
   if(skip_to_next) { next }    
 }
-dat.fit.df <- data.table::rbindlist(dat.fit, fill = TRUE)
-
+dat.fit.df <- data.table:: rbindlist(map(dat.fit, 1))
+age.sero.df <- data.table:: rbindlist(map(dat.fit, 2))
+biwk.df <- data.table:: rbindlist(map(dat.fit, 3))
 
 
 write.csv(dat.fit.df, file=paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix_refit.csv"), row.names = F)
+write.csv(age.sero.df, file=paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix_age_sero_df_refit.csv"), row.names = F)
+write.csv(biwk.df, file=paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix_biwk_df_refit.csv"), row.names = F)
+
 
 rm(list=ls())
 
@@ -44,7 +50,7 @@ dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix_re
 head(dat)
 
 
-#904
+#852
 dat = subset(dat, convergence == 0 & !is.na(dat$model))
 
 write.csv(dat, paste0(homewd,"/model_fitting/GhV-fits/all_converged_fits_matrix_refits.csv"), row.names = F)
@@ -53,14 +59,14 @@ head(dat)
 unique(dat$model)
 length(unique(dat$model)) #20 - that is every model represented
 
-#plot the number that completed per model - 62 possible
-dat.sum <- ddply(dat,.(model), summarise, N=length(model)) #22 - 57 for each
+#plot the number that completed per model - 50 possible
+dat.sum <- ddply(dat,.(model), summarise, N=length(model)) #18 - 50 for each
 
 
 ggplot(dat.sum) + geom_point(aes(model, y=N))
 
 arrange(dat.sum, N) 
-# all models had > 20 completions. all but 2 most complex had > 40 completions
+
 
 
 #rank by delta AIC within a species/antigen/model combination
@@ -255,10 +261,10 @@ homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 setwd(homewd)
 
-#1010
+#1000
 dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/all_fits_matrix_refit.csv"), stringsAsFactors = F, header = T)
 
-#876
+#852
 dat = subset(dat, convergence == 0 & !is.na(model))
 
 unique(dat$model)
@@ -395,3 +401,5 @@ plot.top.10.fits <- function(df, filename1, filename2, filename3, filename4, fil
 }
 
 plot.top.10.fits(df = dat10, filename1 = paste0(homewd, "/model_fitting/GhV-fits/figures/best-fit-pars-refit-1.png"), filename2 = paste0(homewd, "/model_fitting/GhV-fits/figures/best-fit-pars-refit-2.png"), filename3 = paste0(homewd, "/model_fitting/GhV-fits/figures/best-fit-pars-refit-3.png"), filename4 = paste0(homewd, "/model_fitting/GhV-fits/figures/best-fit-pars-refit-4.png"), filename5 = paste0(homewd, "/model_fitting/GhV-fits/figures/best-fit-pars-refit-5.png"))
+#top fit MSIRS model has really tight estimates for beta and mu-rec across the top 10... but sigma1 is a bit all over the map (just very, very high)
+

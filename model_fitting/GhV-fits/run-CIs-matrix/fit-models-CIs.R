@@ -25,7 +25,6 @@ head(dat)
 head(sero.dat)
 head(shed.dat)
 
- #helper functions
 
 transform.vect <- function(vec, s, c){
   vec2 <- t(commutation.matrix(r=s,c=c))%*%vec
@@ -353,30 +352,30 @@ buildTMat_all_age <- function(c, Npop, age.classes, surv.biwk, age.brk, surv.juv
   
   for (j in 1:nage) { 
     
-  
-      mat1[] <- 0
-      mat1[1,1] <- 1- wane.fix[j] 
-      mat1[2,1] <- wane.fix[j] #M1 to M2
-      mat1[2,2] <- 1- wane.fix[j]  
-      mat1[3,2] <- wane.fix[j] #M2 to M3
-      mat1[3,3] <- 1 - waning.maternal[j]
-      mat1[4,3] <- waning.maternal[j] #M3 to S
-      mat1[4,4] <- 1-foi[j]
-      mat1[5,4] <- foi[j] #S to I
-      mat1[5,5] <- 1-recov
-      mat1[6,5] <- recov #I to R1
-      mat1[6,6] <- 1-sigma.fix   
-      mat1[7,6] <- sigma.fix #R1 to R2     
-      mat1[7,7] <- 1-sigma.fix   
-      mat1[8,7] <- sigma.fix #R2 to R3
-      mat1[8,8] <- 1-sigma1[j] -sigma2[j] #R3 stays R3
-      mat1[9,8] <- sigma2[j] #R3 to N1
-      mat1[4,8] <-  sigma1[j]#R3 to S in MSIRS
-      mat1[9,9] <- 1- recru[j] - loss[j] - epsilon[j] #once in N1, stay there, unless you recrudesce to I or lose immunity (loss) to S or advance (epsilon) to N2  
-      mat1[4,9] <- loss[j] #N1 to S
-      mat1[10,9] <- epsilon[j] #N1 to N2
-      mat1[10,10] <- 1 #once in N2 you stay there
-      mat1[5,9] <- recru[j] #recrudescence. moving from N1 back to I
+    
+    mat1[] <- 0
+    mat1[1,1] <- 1- wane.fix[j] 
+    mat1[2,1] <- wane.fix[j] #M1 to M2
+    mat1[2,2] <- 1- wane.fix[j]  
+    mat1[3,2] <- wane.fix[j] #M2 to M3
+    mat1[3,3] <- 1 - waning.maternal[j]
+    mat1[4,3] <- waning.maternal[j] #M3 to S
+    mat1[4,4] <- 1-foi[j]
+    mat1[5,4] <- foi[j] #S to I
+    mat1[5,5] <- 1-recov
+    mat1[6,5] <- recov #I to R1
+    mat1[6,6] <- 1-sigma.fix   
+    mat1[7,6] <- sigma.fix #R1 to R2     
+    mat1[7,7] <- 1-sigma.fix   
+    mat1[8,7] <- sigma.fix #R2 to R3
+    mat1[8,8] <- 1-sigma1[j] -sigma2[j] #R3 stays R3
+    mat1[9,8] <- sigma2[j] #R3 to N1
+    mat1[4,8] <-  sigma1[j]#R3 to S in MSIRS
+    mat1[9,9] <- 1- recru[j] - loss[j] - epsilon[j] #once in N1, stay there, unless you recrudesce to I or lose immunity (loss) to S or advance (epsilon) to N2  
+    mat1[4,9] <- loss[j] #N1 to S
+    mat1[10,9] <- epsilon[j] #N1 to N2
+    mat1[10,10] <- 1 #once in N2 you stay there
+    mat1[5,9] <- recru[j] #recrudescence. moving from N1 back to I
     
     
     #put in surv. we first say it is equal across all epidemiological classes
@@ -417,7 +416,7 @@ buildTMat_all_age <- function(c, Npop, age.classes, surv.biwk, age.brk, surv.juv
       #   surv[14] <-  1-mort.vect.rec[j]
       # }
       
-   } 
+    } 
     #print(c(j,surv[3]))
     #fill in Tmatrix
     if (j!=nage) { 
@@ -480,22 +479,21 @@ buildFMatrix_all <- function(c,  age.classes, adult_fec, surv.biwk, biwk, N_stat
   
   for (j in 1:nage) { #no fertility in first age class (mat immune)
     
-      if(N_stat=="matAB"){
-        #try it assuming N moms produce maternally immune pups
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(c-4))) #the mat immune offspring (so mom = I, R, and N)
-        Fmat[4,((j-1)*c+1):(j*c)]<-  c(rep(fert.biwk[j],4),rep(0,c-4)) #the susceptible offspring (mom = M (there are none in this class b/c too young) and S)
-        
-      }else if (N_stat=="matSus"){
-        Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],4), rep(0,2))  #the mat immune offpring (so mom = I and R but not N)
-        Fmat[4,((j-1)*c+1):(j*c)]<- c(rep(fert.biwk[j],4),rep(0,4), rep(fert.biwk[j],2)) #the susceptible offspring (so mom= M, S, and N)
-      }
-    } 
-    
+    if(N_stat=="matAB"){
+      #try it assuming N moms produce maternally immune pups
+      Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],(c-4))) #the mat immune offspring (so mom = I, R, and N)
+      Fmat[4,((j-1)*c+1):(j*c)]<-  c(rep(fert.biwk[j],4),rep(0,c-4)) #the susceptible offspring (mom = M (there are none in this class b/c too young) and S)
+      
+    }else if (N_stat=="matSus"){
+      Fmat[1,((j-1)*c+1):(j*c)] <- c(rep(0, 4),rep(fert.biwk[j],4), rep(0,2))  #the mat immune offpring (so mom = I and R but not N)
+      Fmat[4,((j-1)*c+1):(j*c)]<- c(rep(fert.biwk[j],4),rep(0,4), rep(fert.biwk[j],2)) #the susceptible offspring (so mom= M, S, and N)
+    }
+  } 
+  
   
   
   return(Fmat)
 }
-
 
 #and sim models
 sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,recov, mort, mort_juv, adult_fec, wane,wane.fix,loss,  epsilon, sigma1, sigma2, recru, slope.wane,mu.sick, mu.rec, sigma.fix, add.inf.mort,add.rec.mort, model, N_stat){
@@ -549,9 +547,9 @@ sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,recov, mort
   
   N1_init = rep(0, s)
   N2_init = rep(0, s)
-    
+  
   N_tot = cbind(M1_init, M2_init, M3_init, S_init, I_init, R1_init, R2_init, R3_init, N1_init, N2_init)
-    
+  
   
   
   
@@ -627,7 +625,7 @@ sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,recov, mort
   dat.tot = cbind.data.frame(times,N_total)
   
   names(dat.tot) = c("time", "M1", "M2", "M3", "S1", "I1",  "R1.1", "R1.2", "R1.3", "N1", "N2")  
- 
+  
   
   
   dat.tot$N = rowSums((dat.tot[,2:ncol(dat.tot)]))
@@ -799,8 +797,6 @@ sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,recov, mort
   return(list(out.mat, prop.sum))#, seas.prev))
 }
 
-
-
 #likelihood function
 #this for a biweekly observation process
 log.lik.age <- function(par, name.par, c, data, sero.dat, shed.dat, cutoff, sim_pop, yrs, ntyr, age.brk, s, par.df1, model, N_stat){
@@ -874,7 +870,7 @@ log.lik.age <- function(par, name.par, c, data, sero.dat, shed.dat, cutoff, sim_
     sigma2 = par.df1$sigma2
     loss = par.df1$loss
     epsilon = par.df1$epsilon
-     
+    
   }else if (model=="MSIRNI"){
     beta = exp(par["beta"])
     sigma2 = exp(par["sigma2"])
@@ -931,138 +927,137 @@ log.lik.age <- function(par, name.par, c, data, sero.dat, shed.dat, cutoff, sim_
     return(-ll)
     
   }else{
-  
-  
-  out = sim.met.age.all(c=c,  sim_pop=sim_pop, yrs=yrs, ntyr=ntyr, age.brk=age.brk, s=s, 
-                        beta=beta, loss=loss, epsilon=epsilon,
-                        recru=recru,sigma1=sigma1, sigma2=sigma2, 
-                        recov=par.df1$recov, mort=par.df1$mort, mort_juv=par.df1$mort_juv, 
-                        adult_fec=par.df1$adult_fec, wane=par.df1$wane,
-                        wane.fix = par.df1$wane_fix, slope.wane=1, 
-                        mu.sick=mu.sick, mu.rec=mu.rec,sigma.fix = par.df1$sigma_fix,
-                        add.inf.mort=add.inf.mort,add.rec.mort=add.rec.mort, model=par.df1$model, N_stat = N_stat)
-  age.seroprev <- out[[1]]
-  prev.ts <- out[[2]]
-  
-  #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=prevalence))
-  #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=seroprevalence))
-  prev.ts$prevalence <- prev.ts$prevalence*wPCR
-  
-  
-  
- 
-  #first, run your model at the desired parameters for estimation (par)
-  #sometimes, they don't produce anything at all - in which case, just return a giant ll here and move on
-  
-  #print the guess par
-  #print(exp(par))
-  
-  if(length(sum(is.na(unique(age.seroprev$seroprevalence))))>0){
-    ll=-1*10^9#write over with real number that is huge
-    #print(-ll)
-    return(-ll)
-  }else{
-    
-    #your data should have ages by biweek
-    #ggplot(age.seroprev) + geom_point(aes(x=age, y=seroprevalence, color=biwk))
-    # 
-    # #fit a line  to these data to get the hazard by age:
-    pred.fit <- with(age.seroprev,smooth.spline(x=age, y=seroprevalence))
-    #separate age data
-    
-    #data = subset(data, !is.na(age)) #already done
-    #these were also done by biweek
-    data = arrange(data, age) #one data source gives you age seroprevalence
-    sero.dat = arrange(sero.dat, biwk)
-    shed.dat = arrange(shed.dat, biwk)
-    
-    #length(unique(sort(out$age)))#520
-    #sort data by age and make a prediction for each age by biweek
-    ages.new = sort(unique(data$age))
-    
-    out.comp <- cbind.data.frame(age=ages.new, seroprev=predict(pred.fit,x=ages.new)$y)
-    #ggplot(age.seroprev) + geom_point(aes(x=age, y=seroprevalence, color=biwk)) + geom_line(data=out.comp, aes(x=age, y=seroprev))
-    out.comp$seroprev[out.comp$seroprev<0] =0
-    out.comp$seroprev[out.comp$seroprev>1] =1
     
     
-    #now, compare model and data
+    out = sim.met.age.all(c=c,  sim_pop=sim_pop, yrs=yrs, ntyr=ntyr, age.brk=age.brk, s=s, 
+                          beta=beta, loss=loss, epsilon=epsilon,
+                          recru=recru,sigma1=sigma1, sigma2=sigma2, 
+                          recov=par.df1$recov, mort=par.df1$mort, mort_juv=par.df1$mort_juv, 
+                          adult_fec=par.df1$adult_fec, wane=par.df1$wane,
+                          wane.fix = par.df1$wane_fix, slope.wane=1, 
+                          mu.sick=mu.sick, mu.rec=mu.rec,sigma.fix = par.df1$sigma_fix,
+                          add.inf.mort=add.inf.mort,add.rec.mort=add.rec.mort, model=par.df1$model, N_stat = N_stat)
+    age.seroprev <- out[[1]]
+    prev.ts <- out[[2]]
     
-    ll=0 #sets initial log-likelihood to 0
-    ll_age = 0
-    ll_sero = 0
-    ll_shed = 0
-    #then, compare with data by age and biweek
-    for(a in 1:length(data$age)){ 
-      #now run through data and compare with model
-      #for-loops over every individual in the dataset, starting above the lower bound - 
+    #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=prevalence))
+    #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=seroprevalence))
+    prev.ts$prevalence <- prev.ts$prevalence*wPCR
+    
+    
+    
+    
+    #first, run your model at the desired parameters for estimation (par)
+    #sometimes, they don't produce anything at all - in which case, just return a giant ll here and move on
+    
+    #print the guess par
+    #print(exp(par))
+    
+    if(sum(is.na(unique(age.seroprev$seroprevalence)))>0){
+      ll=-1*10^9#write over with real number that is huge
+      #print(-ll)
+      return(-ll)
+    }else{
+      
+      #your data should have ages by biweek
+      #ggplot(age.seroprev) + geom_point(aes(x=age, y=seroprevalence, color=biwk))
+      # 
+      # #fit a line  to these data to get the hazard by age:
+      pred.fit <- with(age.seroprev,smooth.spline(x=age, y=seroprevalence))
+      #separate age data
+      
+      #data = subset(data, !is.na(age)) #already done
+      #these were also done by biweek
+      data = arrange(data, age) #one data source gives you age seroprevalence
+      sero.dat = arrange(sero.dat, biwk)
+      shed.dat = arrange(shed.dat, biwk)
+      
+      #length(unique(sort(out$age)))#520
+      #sort data by age and make a prediction for each age by biweek
+      ages.new = sort(unique(data$age))
+      
+      out.comp <- cbind.data.frame(age=ages.new, seroprev=predict(pred.fit,x=ages.new)$y)
+      #ggplot(age.seroprev) + geom_point(aes(x=age, y=seroprevalence, color=biwk)) + geom_line(data=out.comp, aes(x=age, y=seroprev))
+      out.comp$seroprev[out.comp$seroprev<0] =0
+      out.comp$seroprev[out.comp$seroprev>1] =1
       
       
-      pprev <- out.comp$seroprev[out.comp$age==data$age[a]]  
+      #now, compare model and data
       
-      
-      #evaluate age-seroprevalence 
-      if(cutoff=="mean"){
-        ll_age=ll_age+dbinom(data$prev[a],1,pprev,log=T)    
-       # print(ll_age)
-      }else if (cutoff=="lci"){
-        ll_age=ll_age+dbinom(data$prev_lci[a],1,pprev,log=T)    
-      }else if(cutoff=="uci"){
-        ll_age=ll_age+dbinom(data$prev_uci[a],1,pprev,log=T)    
+      ll=0 #sets initial log-likelihood to 0
+      ll_age = 0
+      ll_sero = 0
+      ll_shed = 0
+      #then, compare with data by age and biweek
+      for(a in 1:length(data$age)){ 
+        #now run through data and compare with model
+        #for-loops over every individual in the dataset, starting above the lower bound - 
+        
+        
+        pprev <- out.comp$seroprev[out.comp$age==data$age[a]]  
+        
+        
+        #evaluate age-seroprevalence 
+        if(cutoff=="mean"){
+          ll_age=ll_age+dbinom(data$prev[a],1,pprev,log=T)    
+          # print(ll_age)
+        }else if (cutoff=="lci"){
+          ll_age=ll_age+dbinom(data$prev_lci[a],1,pprev,log=T)    
+        }else if(cutoff=="uci"){
+          ll_age=ll_age+dbinom(data$prev_uci[a],1,pprev,log=T)    
+        }
+        
       }
       
-    }
-    
-    #evaluate seasonal seroprevalence within a year
-    for(a in 1:nrow(sero.dat)){ 
-      #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=seroprevalence))
-      seroprev <-prev.ts$seroprevalence[prev.ts$biwk==sero.dat$biwk[a]]  
-      
-      if(cutoff=="mean"){
-        ll_sero=ll_sero+dbinom(sero.dat$seropos[a],1,seroprev,log=T)    
-        #print(ll_sero)
-      }else if (cutoff=="lci"){
-        ll_sero=ll_sero+dbinom(sero.dat$seropos_lci[a],1,seroprev,log=T)    
-      }else if(cutoff=="uci"){
-        ll_sero=ll_sero+dbinom(sero.dat$seropos_uci[a],1,seroprev,log=T)    
+      #evaluate seasonal seroprevalence within a year
+      for(a in 1:nrow(sero.dat)){ 
+        #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=seroprevalence))
+        seroprev <-prev.ts$seroprevalence[prev.ts$biwk==sero.dat$biwk[a]]  
+        
+        if(cutoff=="mean"){
+          ll_sero=ll_sero+dbinom(sero.dat$seropos[a],1,seroprev,log=T)    
+          #print(ll_sero)
+        }else if (cutoff=="lci"){
+          ll_sero=ll_sero+dbinom(sero.dat$seropos_lci[a],1,seroprev,log=T)    
+        }else if(cutoff=="uci"){
+          ll_sero=ll_sero+dbinom(sero.dat$seropos_uci[a],1,seroprev,log=T)    
+        }
       }
-    }
-    
-    #evaluate shedding prevalence within a year
-    for(a in 1:nrow(shed.dat)){ 
-      #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=prevalence))
-      #ggplot(shed.dat) + geom_jitter(aes(x=as.numeric(biwk), y=shed_pos), height=0.1, width =0.1)
-      prevseas <-prev.ts$prevalence[prev.ts$biwk==shed.dat$biwk[a]]  
+      
+      #evaluate shedding prevalence within a year
+      for(a in 1:nrow(shed.dat)){ 
+        #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=prevalence))
+        #ggplot(shed.dat) + geom_jitter(aes(x=as.numeric(biwk), y=shed_pos), height=0.1, width =0.1)
+        prevseas <-prev.ts$prevalence[prev.ts$biwk==shed.dat$biwk[a]]  
+        
+        
+        #now run through data and compare with model
+        #for-loops over every individual in the dataset, starting above the lower bound - 
+        ll_shed=ll_shed+dbinom(shed.dat$shed_pos[a],1,prevseas,log=T)    
+        #print(ll_shed)
+        
+      }
+      
+      if(-ll_age==Inf){
+        ll_age=-1*10^9#write over with real number that is huge
+        
+      }
+      if (-ll_sero == Inf){
+        ll_sero=-1*10^9#write over with real number that is huge
+      }
+      if(-ll_shed==Inf){
+        ll_shed=-1*10^9#write over with real number that is huge
+      }
       
       
-      #now run through data and compare with model
-      #for-loops over every individual in the dataset, starting above the lower bound - 
-      ll_shed=ll_shed+dbinom(shed.dat$shed_pos[a],1,prevseas,log=T)    
-      #print(ll_shed)
-     
-    }
-   
-    if(-ll_age==Inf){
-      ll_age=-1*10^9#write over with real number that is huge
+      ll = ll_age + ll_sero + ll_shed
       
-    }
-    if (-ll_sero == Inf){
-      ll_sero=-1*10^9#write over with real number that is huge
-    }
-    if(-ll_shed==Inf){
-      ll_shed=-1*10^9#write over with real number that is huge
-    }
-    
-    
-    ll = ll_age + ll_sero + ll_shed
-    
-    #print(-ll)
-    #calculate and return the negative log-likelihood 
-    #force mu.sick to be 1 or more
-    
-    return(-ll)
-  }}}
-
+      #print(-ll)
+      #calculate and return the negative log-likelihood 
+      #force mu.sick to be 1 or more
+      
+      return(-ll)
+    }}}
 
 #will need to restructure below
 wrap.fit.cov <- function(model, num_states, beta, sigma1, recru, epsilon, loss,  sigma2,  mu.sick, mu.rec, dat1, sero.dat1, shed.dat1, par.df, cutoff1, species1, antigen1, s, sim_pop, yrs, ntyr,  N_stat, weight.PCR,

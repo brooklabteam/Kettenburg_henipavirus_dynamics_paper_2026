@@ -19,7 +19,7 @@ library(mvtnorm)
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #top fits per model
-GhV.fits <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/top-fits-matrix-round1.csv"), header = T, stringsAsFactors = F)
+GhV.fits <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/top-fits-matrix-refit.csv"), header = T, stringsAsFactors = F)
 head(GhV.fits)
 
 #recompute deltaAIC and deltallik within this dataset
