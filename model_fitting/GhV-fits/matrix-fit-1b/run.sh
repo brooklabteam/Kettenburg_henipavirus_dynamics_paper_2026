@@ -2,7 +2,7 @@
 #SBATCH --job-name=matrixfit1b
 #SBATCH --account=ac_brooklab2
 #SBATCH --partition=savio3_htc
-#SBATCH --array=1001-2000%200
+#SBATCH --array=1-1000%200
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=1G
 #SBATCH --time=48:00:00
