@@ -9,7 +9,7 @@ library(data.table)
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #set wd
-setwd(paste0(homewd,"/model_fitting/GhV-fits/out-matrix-fit/"))
+setwd(paste0(homewd,"/model_fitting/GhV-fits/out-matrix-fit-all/"))
 #load all the data and add to a list
 
 
@@ -23,7 +23,7 @@ function.load <- function(prefix, list, i){
 
 dat.fit <- list()
 
-for (i in 1:2000){
+for (i in 1:4000){
   skip_to_next <- FALSE
   tryCatch({dat.fit <- function.load(prefix = "mean", list=dat.fit, i=i)}, error = function(i) {skip_to_next <<- TRUE})
   if(skip_to_next) { next }    

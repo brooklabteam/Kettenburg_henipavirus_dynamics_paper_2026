@@ -1155,7 +1155,7 @@ wrap.fit <- function(model, num_states, beta, sigma1, recru, recru2, epsilon, lo
   }else if (model=="MSIRNS"){
     par = c(beta, sigma2, loss)
     name.par <- c("beta", "sigma2", "loss")
-  }else if (model=="MSIRNIS"){
+  }else if (model=="MSIRNSI"){
     par = c(beta, sigma2, loss, recru)
     name.par <- c("beta", "sigma2", "loss", "recru")
   }else if(model == "MSIRNNS"){
@@ -1164,7 +1164,7 @@ wrap.fit <- function(model, num_states, beta, sigma1, recru, recru2, epsilon, lo
   }else if(model == "MSIRNNI"){
     par = c(beta, sigma2, recru, epsilon)
     name.par <- c("beta", "sigma2", "recru", "epsilon")
-  }else if(model == "MSIRNNIS"){
+  }else if(model == "MSIRNNSI"){
     par = c(beta, sigma2, recru, loss, epsilon)
     name.par <- c("beta", "sigma2", "recru", "loss", "epsilon")
   }
@@ -1947,7 +1947,7 @@ wrap.fit <- function(model, num_states, beta, sigma1, recru, recru2, epsilon, lo
           par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
           
           
-        }}  else if (model == "MSIRNNIS"){
+        }}  else if (model == "MSIRNNSI"){
           
           if(mu.sick >1 & mu.rec==1){
             par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 

@@ -75,12 +75,12 @@ rep.starts <- function(df, n.times){
   }else if (df$model=="MSIRN"){
     big.df$beta <- sample(x=seq(.01,26, length.out=100000), size=n.times, replace = TRUE)
     big.df$sigma2 <- sample(x=seq(1,26, length.out=100000), size=n.times, replace = TRUE)
-  }else if (df$model=="MSIRNIS"){
+  }else if (df$model=="MSIRNSI"){
     big.df$beta <- sample(x=seq(.01,26, length.out=100000), size=n.times, replace = TRUE)
     big.df$sigma2 <- sample(x=seq(1,26, length.out=100000), size=n.times, replace = TRUE)
     big.df$recru <- sample(x=seq(.01,26, length.out=100000), size=n.times, replace = TRUE)
     big.df$loss <- sample(x=seq(.01,26, length.out=100000), size=n.times, replace = TRUE)
-  }else if (df$model=="MSIRNNIS"){
+  }else if (df$model=="MSIRNNSI"){
     big.df$beta <- sample(x=seq(.01,26, length.out=100000), size=n.times, replace = TRUE)
     big.df$sigma2 <- sample(x=seq(1,26, length.out=100000), size=n.times, replace = TRUE)
     big.df$recru <- sample(x=seq(.01,26, length.out=100000), size=n.times, replace = TRUE)
@@ -111,13 +111,13 @@ rep.list <- split(rep.par.df, as.numeric(rownames(rep.par.df)))
 
 #now save each line as its own csv for fitting
 #for 1
-mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1a")))
+mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1-tmp")))
 
 
 rep.par.df <- data.table::rbindlist(lapply(par.dat.list, rep.starts, n.times=50)) #40 models, each repeated 50 times for 2000 sims total
 rep.list <- split(rep.par.df, as.numeric(rownames(rep.par.df)))
 
 
-mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-2")))
+mapply(df1=rep.list,rownum=as.list(1:length(rep.list)), FUN=save.par.list, MoreArgs = list(folder_prefix= paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-2-tmp")))
 
 # then split each into a and b with 1000 pars in each
