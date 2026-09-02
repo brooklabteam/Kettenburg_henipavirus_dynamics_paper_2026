@@ -19,8 +19,8 @@ library(mvtnorm)
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #top fits per model
-GhV.fits <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/top-fits-matrix-refit.csv"), header = T, stringsAsFactors = F)
-head(GhV.fits)
+GhV.fits <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/top_fits_per_model_matrix_round1.csv"), header = T, stringsAsFactors = F)
+head(GhV.fits) #32 (8 models with 4 types each)
 
 #recompute deltaAIC and deltallik within this dataset
 
@@ -41,10 +41,10 @@ GhV.fits <- get.deltallik(GhV.fits)
 head(GhV.fits)
 #top.fits <- GhV.fits[1:2,]
 
-dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1/age-seroprevalence-data.csv"), stringsAsFactors = F, header = T)
+dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1a/age-seroprevalence-data.csv"), stringsAsFactors = F, header = T)
 head(dat)
-sero.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1/biweekly-serology-data.csv"), stringsAsFactors = F, header = T)
-shed.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1/biweekly-shedding-data.csv"), stringsAsFactors = F, header = T)
+sero.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1a/biweekly-serology-data.csv"), stringsAsFactors = F, header = T)
+shed.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1a/biweekly-shedding-data.csv"), stringsAsFactors = F, header = T)
 head(dat)
 head(sero.dat)
 head(shed.dat)
@@ -302,8 +302,8 @@ make.prop <- function(df){
   return(df)
 }
 
-#build functions
-buildTMat_all_age <- function(c, Npop, age.classes, surv.biwk, age.brk, surv.juv.biwk, surv.biwk.sick, surv.juv.biwk.sick,surv.biwk.rec, surv.juv.biwk.rec,	beta, recru, recov, sigma1, sigma2, loss, wane,wane.fix,sigma.fix,epsilon, add.inf.mort, add.rec.mort, age.rate, slope.wane){
+#build functions - here this is for one matrix structure only and applicable only to MSIRS/MSIRNS/MSIRNNS/MSIRNI/MSIRNNI models
+buildTMat_all_age <- function(c, Npop, age.classes, surv.biwk, age.brk, surv.juv.biwk, surv.biwk.sick, surv.juv.biwk.sick,surv.biwk.rec, surv.juv.biwk.rec,	beta, recru, recru2, recov, sigma1, sigma2, loss, wane,wane.fix,sigma.fix,epsilon, add.inf.mort, add.rec.mort, age.rate, slope.wane){
   
   s <- nage <- length(age.classes)
   
@@ -338,6 +338,7 @@ buildTMat_all_age <- function(c, Npop, age.classes, surv.biwk, age.brk, surv.juv
   if (length(sigma1)==1) sigma1 <- rep(sigma1,nage)
   if (length(sigma2)==1) sigma2 <- rep(sigma2,nage)
   if (length(recru)==1) recru <- rep(recru,nage)
+  if (length(recru2)==1) recru2 <- rep(recru2,nage)
   #if (length(mu.sick)==1) mu.sick <- rep(mu.sick, nage)
   #if (length(mu.rec)==1) mu.rec <- rep(mu.rec, nage)
   if (length(age.rate)==1) age.rate <- rep(age.rate,nage)
@@ -393,9 +394,10 @@ buildTMat_all_age <- function(c, Npop, age.classes, surv.biwk, age.brk, surv.juv
     mat1[7,6] <- sigma.fix #R1 to R2     
     mat1[7,7] <- 1-sigma.fix   
     mat1[8,7] <- sigma.fix #R2 to R3
-    mat1[8,8] <- 1-sigma1[j] -sigma2[j] #R3 stays R3
+    mat1[8,8] <- 1-sigma1[j] -sigma2[j] - recru2[j] #R3 stays R3
     mat1[9,8] <- sigma2[j] #R3 to N1
     mat1[4,8] <-  sigma1[j]#R3 to S in MSIRS
+    mat1[5,8] <-  recru2[j]#R3 to I in MSIRI
     mat1[9,9] <- 1- recru[j] - loss[j] - epsilon[j] #once in N1, stay there, unless you recrudesce to I or lose immunity (loss) to S or advance (epsilon) to N2  
     mat1[4,9] <- loss[j] #N1 to S
     mat1[10,9] <- epsilon[j] #N1 to N2
@@ -522,7 +524,7 @@ buildFMatrix_all <- function(c,  age.classes, adult_fec, surv.biwk, biwk, N_stat
 
 
 #and sim models
-sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,recov, mort, mort_juv, adult_fec, wane,wane.fix,loss,  epsilon, sigma1, sigma2, recru, slope.wane,mu.sick, mu.rec, sigma.fix, add.inf.mort,add.rec.mort, model, N_stat){
+sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,recov, mort, mort_juv, adult_fec, wane,wane.fix,loss,  epsilon, sigma1, sigma2, recru, recru2, slope.wane,mu.sick, mu.rec, sigma.fix, add.inf.mort,add.rec.mort, model, N_stat){
   mu.sick.juv = mu.sick
   mu.rec.juv = mu.rec
   if(mu.sick.juv>2){
@@ -603,7 +605,7 @@ sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,recov, mort
                               surv.juv.biwk = (1-mort_juv)^(1/ntyr), surv.juv.biwk.sick=(1-(mort_juv*mu.sick.juv))^(1/ntyr),
                               surv.biwk.sick=(1-(mort*mu.sick))^(1/ntyr), surv.juv.biwk.rec=(1-(mort_juv*mu.rec.juv))^(1/ntyr),
                               surv.biwk.rec=(1-(mort*mu.rec))^(1/ntyr),	beta=beta,  sigma1=(1-exp(-(sigma1*(1/ntyr)))),
-                              sigma2=(1-exp(-(sigma2*(1/ntyr)))), loss=(1-exp(-(loss*(1/ntyr)))),
+                              sigma2=(1-exp(-(sigma2*(1/ntyr)))), loss=(1-exp(-(loss*(1/ntyr)))), recru2=(1-exp(-(recru2*(1/ntyr)))),
                               recov=recov, wane.fix=wane.fix, sigma.fix=sigma.fix, epsilon = (1-exp(-(epsilon*(1/ntyr)))),  recru=(1-exp(-(recru*(1/ntyr)))),
                               wane=(1-exp(-(wane*(1/ntyr)))), add.rec.mort=add.rec.mort,  add.inf.mort=add.inf.mort, 
                               age.rate=(1/ntyr), slope.wane=slope.wane)
@@ -823,6 +825,7 @@ sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,recov, mort
   return(list(out.mat, prop.sum))#, seas.prev))
 }
 
+
 run.sim <- function(par.df, s, sim_pop, yrs, ntyr,  N_stat, age.brk, slope.wane){
   
   
@@ -845,7 +848,7 @@ run.sim <- function(par.df, s, sim_pop, yrs, ntyr,  N_stat, age.brk, slope.wane)
 
   
   out = sim.met.age.all(c=par.df$num_states,  sim_pop=sim_pop, yrs=yrs, ntyr=ntyr, age.brk=age.brk, s=s, 
-                        beta=par.df$beta, loss=par.df$loss, epsilon=par.df$epsilon,
+                        beta=par.df$beta, loss=par.df$loss, epsilon=par.df$epsilon, recru2 = par.df$recru2,
                          recru=par.df$recru,sigma1=par.df$sigma1, sigma2=par.df$sigma2, 
                         recov=par.df$recov, mort=par.df$mort, mort_juv=par.df$mort_juv, 
                         adult_fec=par.df$adult_fec, wane=par.df$wane,
@@ -887,6 +890,7 @@ plot.all.w.dat <- function(dat1, sero.dat1, shed.dat1, species1, antigen1, cutof
   
   model.df.age$model <- factor(model.df.age$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
                                                   "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
+                                                  "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
                                                   "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
                                                   "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
                                                   "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
@@ -903,6 +907,7 @@ plot.all.w.dat <- function(dat1, sero.dat1, shed.dat1, species1, antigen1, cutof
   
   model.df.ts$model <- factor(model.df.ts$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
                                                             "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
+                                                          "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
                                                             "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
                                                             "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
                                                             "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
