@@ -9,7 +9,7 @@ setwd(homewd)
 
 #load all the parameter inits -- these are the top hits from the first round of matrix fitting
 
-par.dat <- read.csv(file= paste0(homewd,"/model_fitting/GhV-fits/top-fits-matrix-refit.csv"), header = T, stringsAsFactors = F)
+par.dat <- read.csv(file= paste0(homewd,"/model_fitting/GhV-fits/top_fits_per_model_matrix_round1.csv"), header = T, stringsAsFactors = F)
 
 par.dat <- arrange(par.dat, antigen, cutoff, model, mu_sick, mu_rec)
 

@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --job-name=matrixfitGhV
-#SBATCH --account=fc_brooklab
+#SBATCH --job-name=matrixrefit
+#SBATCH --account=ac_brooklab2
 #SBATCH --partition=savio3_htc
 #SBATCH --array=1-1000%200
 #SBATCH --cpus-per-task=1

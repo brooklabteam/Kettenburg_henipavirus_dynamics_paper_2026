@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --job-name=matrixfitGhV
+#SBATCH --job-name=CIsmatrixGhV
 #SBATCH --account=ac_brooklab2
 #SBATCH --partition=savio3_htc
-#SBATCH --array=1-20
+#SBATCH --array=1-40
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=1G
 #SBATCH --time=72:00:00

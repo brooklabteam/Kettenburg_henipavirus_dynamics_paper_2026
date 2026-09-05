@@ -101,5 +101,3 @@ write.csv(dat.fit.df.2b, file=paste0(homewd,"/model_fitting/GhV-fits/fits_matrix
 write.csv(age.sero.df.2b, file=paste0(homewd,"/model_fitting/GhV-fits/fits_matrix_age_sero_df_2b.csv"), row.names = F)
 write.csv(biwk.df.2b, file=paste0(homewd,"/model_fitting/GhV-fits/fits_matrix_biwk_df_2b.csv"), row.names = F)
 
-
- 
