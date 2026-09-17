@@ -9,7 +9,7 @@ library(data.table)
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #set wd
-setwd(paste0(homewd,"/model_fitting/GhV-fits/matrix-refit-out/"))
+setwd(paste0(homewd,"/model_fitting/GhV-fits/out-matrix-refit/"))
 #load all the data and add to a list
 
 
