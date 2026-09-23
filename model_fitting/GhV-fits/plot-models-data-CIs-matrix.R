@@ -13,20 +13,21 @@ library(matrixcalc)
 library(Matrix)
 library(ggplot2)
 library(mvtnorm)
+library(ggforce)
 
 #load data
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #load the completed models with age-seroprevalence and time series
-all.par <- age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/final_par_fits_GhV_matrix.csv"), header = T, stringsAsFactors = F)
-age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/final_age_sero_df_GhV_matrix.csv"), header = T, stringsAsFactors = F)
-biwk.ts.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/final_biweekly_ts_GhV_matrix.csv"), header = T, stringsAsFactors = F)
+all.par <- age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/par_fits_GhV_CI_round1.csv"), header = T, stringsAsFactors = F)
+age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/age_sero_df_CI_round1.csv"), header = T, stringsAsFactors = F)
+biwk.ts.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/biweekly_ts_GhV_CI_round1.csv"), header = T, stringsAsFactors = F)
 
 #and load the data
-dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/fit-1/age-seroprevalence-data.csv"), stringsAsFactors = F, header = T)
+dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1a/age-seroprevalence-data.csv"), stringsAsFactors = F, header = T)
 head(dat)
-sero.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/fit-1/biweekly-serology-data.csv"), stringsAsFactors = F, header = T)
-shed.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/fit-1/biweekly-shedding-data.csv"), stringsAsFactors = F, header = T)
+sero.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1a/biweekly-serology-data.csv"), stringsAsFactors = F, header = T)
+shed.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1a/biweekly-shedding-data.csv"), stringsAsFactors = F, header = T)
 head(dat)
 head(sero.dat)
 head(shed.dat)
@@ -100,40 +101,32 @@ get.seroprev.dat = function(data, vis_split, cutoff){
   return(dat.sum3)
   
 }
-plot.models.data.CI.squiggle <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split,  do.plot, do.save, filename1, filename2, filename3){
+plot.models.data.CI.squiggle <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split,  do.plot, do.save, filename1a, filename1b, filename2a, filename2b, filename3a, filename3b){
   
   mod.all = subset(CI.age.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
   CI.ts.fits1 = subset(CI.ts.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
   
-  mod.all$model <- factor(mod.all$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
+  mod.all$model <- factor(mod.all$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
                                                   "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                  "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                  "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
+                                                  "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
                                                   "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                  "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
                                                   "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                  "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
-                                                  "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
-                                                  "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
-                                                  "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
-                                                  "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
-                                                  "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
-                                                  "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                  "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
   
-  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
-                                                  "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                  "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
-                                                  "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
-                                                  "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                  "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
-                                                  "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
-                                                  "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
-                                                  "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
-                                                  "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
-                                                  "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
-                                                  "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
+                                                          "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
+                                                          "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
+                                                          "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
+                                                          "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
+                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                          "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
+                                                          "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
+                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                          "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
   
   
   #first pull out your data...
@@ -193,6 +186,16 @@ plot.models.data.CI.squiggle <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero
   
   print(p1)
   
+  # Calculate page parameters (adjust rows/cols as needed)
+  models <- unique(CI.ts.fits1$model)
+  total_models <- length(models)
+  
+  
+  # Save Page 1
+  p1a <- p1 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
+  
+  # Save Page 2
+  p1b <- p1 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 2)
   
   
   #and plot the others
@@ -215,6 +218,14 @@ plot.models.data.CI.squiggle <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero
     geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
+  # Save Page 1
+  p2a <- p2 + facet_wrap_paginate(model ~ ., ncol = 2, nrow = ceiling(total_models / 4/ 2), page = 1)
+  
+  # Save Page 2
+  p2b <- p2 + facet_wrap_paginate(model ~ ., ncol = 2, nrow = ceiling(total_models / 4/ 2), page = 2)
+  
+  
+  
   #prev
   p3 <- ggplot() +  theme_bw() +
     geom_linerange(data=dat.prev.sum, aes(x=biwk, ymin=prev_lci, ymax=prev_uci, color = as.factor(year)), linetype=3, alpha=.5)+ 
@@ -233,28 +244,61 @@ plot.models.data.CI.squiggle <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero
     geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
+  # Save Page 1
+  p3a <- p3 + facet_wrap_paginate(model ~ ., ncol = 2, nrow = ceiling(total_models / 4/ 2), page = 1)
+  
+  # Save Page 2
+  p3b <- p3 + facet_wrap_paginate(model ~ ., ncol = 2, nrow = ceiling(total_models / 4/ 2), page = 2)
+  
+  
+  
+  
   if(do.save==TRUE){
-    ggsave(file = filename1,
-           plot = p1,
+    ggsave(file = filename1a,
+           plot = p1a,
            units="mm",  
            width=100, 
-           height=130, 
+           height=150, 
            scale=3, 
            dpi=300)
     
-    ggsave(file = filename2,
-           plot = p2,
+    ggsave(file = filename1b,
+           plot = p1b,
            units="mm",  
            width=100, 
-           height=130, 
+           height=150, 
            scale=3, 
            dpi=300)
     
-    ggsave(file = filename3,
-           plot = p3,
+    ggsave(file = filename2a,
+           plot = p2a,
            units="mm",  
            width=100, 
-           height=130, 
+           height=150, 
+           scale=3, 
+           dpi=300)
+    
+    ggsave(file = filename2b,
+           plot = p2b,
+           units="mm",  
+           width=100, 
+           height=150, 
+           scale=3, 
+           dpi=300)
+    
+    ggsave(file = filename3a,
+           plot = p3a,
+           units="mm",  
+           width=100, 
+           height=150, 
+           scale=3, 
+           dpi=300)
+    
+    ggsave(file = filename3b,
+           plot = p3b,
+           units="mm",  
+           width=100, 
+           height=150, 
            scale=3, 
            dpi=300)
   }
@@ -264,41 +308,33 @@ plot.models.data.CI.squiggle <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero
   
 }
 #this version does not include the squiggles
-plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split,  do.plot, do.save, filename1, filename2, filename3){
+plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split,  do.plot, do.save, filename1a, filename1b, filename2a, filename2b, filename3a, filename3b){
   
   mod.all = subset(CI.age.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
   
   CI.ts.fits1 = subset(CI.ts.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
   
-  mod.all$model <- factor(mod.all$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
+  mod.all$model <- factor(mod.all$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
                                                   "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                  "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                  "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
+                                                  "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
                                                   "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                  "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
                                                   "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                  "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
-                                                  "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
-                                                  "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
-                                                  "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
-                                                  "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
-                                                  "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
-                                                  "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                  "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
   
-  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
+  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
                                                           "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                          "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                          "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
+                                                          "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
                                                           "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                          "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
                                                           "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                          "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
-                                                          "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
-                                                          "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
-                                                          "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
-                                                          "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
-                                                          "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
-                                                          "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                          "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
   
   
   #now summarize across age bins
@@ -379,6 +415,17 @@ plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.pr
   
   print(p1)
   
+  # Calculate page parameters (adjust rows/cols as needed)
+  models <- unique(CI.ts.fits1$model)
+  total_models <- length(models)
+  
+  
+  # Save Page 1
+  p1a <- p1 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
+  
+  # Save Page 2
+  p1b <- p1 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 2)
+  
   
   
   #and plot the others
@@ -401,6 +448,13 @@ plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.pr
     geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
+  # Save Page 1
+  p2a <- p2 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
+  
+  # Save Page 2
+  p2b <- p2 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 2)
+  
+  
   #prev
   p3 <- ggplot() +  theme_bw() +
     geom_linerange(data=dat.prev.sum, aes(x=biwk, ymin=prev_lci, ymax=prev_uci, color = as.factor(year)), linetype=3, alpha=.5)+ 
@@ -419,31 +473,63 @@ plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.pr
     geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
+  # Save Page 1
+  p3a <- p3 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
+  
+  # Save Page 2
+  p3b <- p3 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 2)
+  
+  
   if(do.save==TRUE){
-    ggsave(file = filename1,
-           plot = p1,
+    ggsave(file = filename1a,
+           plot = p1a,
            units="mm",  
            width=100, 
-           height=130, 
+           height=150, 
            scale=3, 
            dpi=300)
     
-    ggsave(file = filename2,
-           plot = p2,
+    ggsave(file = filename1b,
+           plot = p1b,
            units="mm",  
            width=100, 
-           height=130, 
+           height=150, 
            scale=3, 
            dpi=300)
     
-    ggsave(file = filename3,
-           plot = p3,
+    ggsave(file = filename2a,
+           plot = p2a,
            units="mm",  
            width=100, 
-           height=130, 
+           height=150, 
+           scale=3, 
+           dpi=300)
+    
+    ggsave(file = filename2b,
+           plot = p2b,
+           units="mm",  
+           width=100, 
+           height=150, 
+           scale=3, 
+           dpi=300)
+    
+    ggsave(file = filename3a,
+           plot = p3a,
+           units="mm",  
+           width=100, 
+           height=150, 
+           scale=3, 
+           dpi=300)
+    
+    ggsave(file = filename3b,
+           plot = p3b,
+           units="mm",  
+           width=100, 
+           height=150, 
            scale=3, 
            dpi=300)
   }
+  
   
   
   
@@ -454,35 +540,27 @@ plot.models.data.CI.squiggle.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.
   mod.all = subset(CI.age.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
   CI.ts.fits1 = subset(CI.ts.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
   
-  mod.all$model <- factor(mod.all$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
+  mod.all$model <- factor(mod.all$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
                                                   "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                  "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                  "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
+                                                  "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
                                                   "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                  "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
                                                   "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                  "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
-                                                  "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
-                                                  "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
-                                                  "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
-                                                  "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
-                                                  "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
-                                                  "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                  "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
   
-  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
+  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
                                                           "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                          "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                          "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
+                                                          "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
                                                           "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                          "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
                                                           "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                          "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
-                                                          "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
-                                                          "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
-                                                          "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
-                                                          "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
-                                                          "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
-                                                          "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                          "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
   
   
   #first pull out your data...
@@ -619,35 +697,27 @@ plot.models.data.CI.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, da
   
   CI.ts.fits1 = subset(CI.ts.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
   
-  mod.all$model <- factor(mod.all$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
+  mod.all$model <- factor(mod.all$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
                                                   "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                  "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                  "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
+                                                  "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
                                                   "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                  "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
                                                   "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                  "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
-                                                  "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
-                                                  "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
-                                                  "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
-                                                  "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
-                                                  "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
-                                                  "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                  "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
   
-  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
+  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
                                                           "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                          "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                          "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
+                                                          "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
                                                           "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                          "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
                                                           "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                          "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
-                                                          "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
-                                                          "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
-                                                          "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
-                                                          "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
-                                                          "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
-                                                          "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                          "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
   
   
   #now summarize across age bins
@@ -811,9 +881,12 @@ plot.models.data.CI.squiggle(CI.age.fits = age.sero.df,
                              vis_split = 3, 
                              do.plot=TRUE, 
                              do.save=TRUE, 
-                             filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev_matrix.png"),
-                             filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology_matrix.png"),
-                             filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence_matrix.png"))
+                             filename1a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev_matrix-9-18-A.png"),
+                             filename1b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev_matrix-9-18-B.png"),
+                             filename2a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology_matrix-9-18-A.png"),
+                             filename2b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology_matrix-9-18-B.png"),
+                             filename3a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence_matrix-9-18-A.png"),
+                             filename3b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence_matrix-9-18-B.png"))
 
 
 
@@ -829,16 +902,21 @@ plot.models.data.CI(CI.age.fits = age.sero.df,
                              vis_split = 3, 
                              do.plot=TRUE, 
                              do.save=TRUE, 
-                             filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-no-squiggle_matrix.png"),
-                             filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-no-squiggle_matrix.png"),
-                             filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-no-squiggle_matrix.png"))
+                             filename1a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-no-squiggle_matrix-9-18-A.png"),
+                             filename1b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-no-squiggle_matrix-9-18-B.png"),
+                             filename2a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-no-squiggle_matrix-9-18-A.png"),
+                             filename2b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-no-squiggle_matrix-9-18-B.png"),
+                             filename3a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-no-squiggle_matrix-9-18-A.png"),
+                             filename3b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-no-squiggle_matrix-9-18-B.png"))
 
 
 
-#and just the best fit
+#and just the best fit 
+all.par[all.par$llik==min(all.par$llik),] #MSIRSI-mu-sick-mu-rec  
+all.par[all.par$AIC==min(all.par$AIC),] #MSIRSI 
 
-plot.models.data.CI.squiggle.one(CI.age.fits = subset(age.sero.df, model=="MSIRNS-mu-rec"),
-                             CI.ts.fits = subset(biwk.ts.df, model=="MSIRNS-mu-rec"),
+plot.models.data.CI.squiggle.one(CI.age.fits = subset(age.sero.df, model=="MSIRSI-mu-sick-mu-rec"),
+                             CI.ts.fits = subset(biwk.ts.df, model=="MSIRSI-mu-sick-mu-rec"),
                              dat1=dat, 
                              dat.sero1 = sero.dat,
                              dat.prev1 = shed.dat,
@@ -848,15 +926,15 @@ plot.models.data.CI.squiggle.one(CI.age.fits = subset(age.sero.df, model=="MSIRN
                              vis_split = 3, 
                              do.plot=TRUE, 
                              do.save=TRUE, 
-                             filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-best-fit.png"),
-                             filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-best-fit.png"),
-                             filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-best-fit.png"))
+                             filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-best-fit-9-18.png"),
+                             filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-best-fit-9-18.png"),
+                             filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-best-fit-9-18.png"))
 
 
 
 #and if you want no squiggles
-plot.models.data.CI.one(CI.age.fits = subset(age.sero.df, model=="MSIRNS-mu-rec"),
-                    CI.ts.fits = subset(biwk.ts.df, model=="MSIRNS-mu-rec"),
+plot.models.data.CI.one(CI.age.fits = subset(age.sero.df, model=="MSIRSI-mu-sick-mu-rec"),
+                    CI.ts.fits = subset(biwk.ts.df, model=="MSIRSI-mu-sick-mu-rec"),
                     dat1=dat, 
                     dat.sero1 = sero.dat,
                     dat.prev1 = shed.dat,
@@ -866,6 +944,6 @@ plot.models.data.CI.one(CI.age.fits = subset(age.sero.df, model=="MSIRNS-mu-rec"
                     vis_split = 3, 
                     do.plot=TRUE, 
                     do.save=TRUE, 
-                    filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-no-squiggle-best-fit.png"),
-                    filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-no-squiggle-best-fit.png"),
-                    filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-no-squiggle-best-fit.png"))
+                    filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-no-squiggle-best-fit-9-18.png"),
+                    filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-no-squiggle-best-fit-9-18.png"),
+                    filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-no-squiggle-best-fit-9-18.png"))

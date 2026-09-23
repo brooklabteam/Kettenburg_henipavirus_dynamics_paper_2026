@@ -7,7 +7,7 @@ library(ggplot2)
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #set wd
-setwd(paste0(homewd,"/model_fitting/GhV-fits/out-matrix-CIs/"))
+setwd(paste0(homewd,"/model_fitting/GhV-fits/out-CIs-matrix/"))
 #load all the data and add to a list
 
 
@@ -21,33 +21,21 @@ function.load <- function(prefix, list, i){
 
 dat.fit <- list()
 
-for (i in 1:20){
+for (i in 1:40){
   skip_to_next <- FALSE
   tryCatch({dat.fit <- function.load(prefix = "mean", list=dat.fit, i=i)}, error = function(i) {skip_to_next <<- TRUE})
   if(skip_to_next) { next }    
 }
 
-#tmp until we sort these
-names(dat.fit[[5]][[1]])[names(dat.fit[[5]][[1]])=="sigma"] <- "sigma1"
-names(dat.fit[[5]][[1]])[names(dat.fit[[5]][[1]])=="sigma_lci"] <- "sigma1_lci"
-names(dat.fit[[5]][[1]])[names(dat.fit[[5]][[1]])=="sigma_uci"] <- "sigma1_uci"
+# #now remove any that are blank
+# 
+# for(i in length(dat.fit):1){
+#   if(is.null(dat.fit[[i]])){
+#     dat.fit[[i]] <- c()
+#   }
+# }
 
-names(dat.fit[[7]][[1]])[names(dat.fit[[7]][[1]])=="sigma"] <- "sigma1"
-names(dat.fit[[7]][[1]])[names(dat.fit[[7]][[1]])=="sigma_lci"] <- "sigma1_lci"
-names(dat.fit[[7]][[1]])[names(dat.fit[[7]][[1]])=="sigma_uci"] <- "sigma1_uci"
 
-names(dat.fit[[11]][[1]])[names(dat.fit[[11]][[1]])=="sigma"] <- "sigma1"
-names(dat.fit[[11]][[1]])[names(dat.fit[[11]][[1]])=="sigma_lci"] <- "sigma1_lci"
-names(dat.fit[[11]][[1]])[names(dat.fit[[11]][[1]])=="sigma_uci"] <- "sigma1_uci"
-
-names(dat.fit[[16]][[1]])[names(dat.fit[[16]][[1]])=="sigma"] <- "sigma1"
-names(dat.fit[[16]][[1]])[names(dat.fit[[16]][[1]])=="sigma_lci"] <- "sigma1_lci"
-names(dat.fit[[16]][[1]])[names(dat.fit[[16]][[1]])=="sigma_uci"] <- "sigma1_uci"
-
-dat.fit[[5]][[1]] <- dplyr::select(dat.fit[[5]][[1]], names(dat.fit[[1]][[1]]))
-dat.fit[[7]][[1]] <- dplyr::select(dat.fit[[7]][[1]], names(dat.fit[[1]][[1]]))
-dat.fit[[11]][[1]] <- dplyr::select(dat.fit[[11]][[1]], names(dat.fit[[1]][[1]]))
-dat.fit[[16]][[1]] <- dplyr::select(dat.fit[[16]][[1]], names(dat.fit[[1]][[1]]))
 
 
 #extract first, second, third, item in list
@@ -55,15 +43,12 @@ dat.par <- data.table::rbindlist(sapply(dat.fit, '[', 1))
 dat.age.sero <- data.table::rbindlist(sapply(dat.fit, '[', 2))
 dat.biweekly.ts <- data.table::rbindlist(sapply(dat.fit, '[', 3))
 
-
-
 head(dat.par)
 head(dat.age.sero)
 head(dat.biweekly.ts)
 
 #and save these 
-
-write.csv(dat.par, file=paste0(homewd,"/model_fitting/GhV-fits/final_par_fits_GhV_matrix.csv"), row.names = F)
-write.csv(dat.age.sero, file=paste0(homewd,"/model_fitting/GhV-fits/final_age_sero_df_GhV_matrix.csv"), row.names = F)
-write.csv(dat.biweekly.ts, file=paste0(homewd,"/model_fitting/GhV-fits/final_biweekly_ts_GhV_matrix.csv"), row.names = F)
+write.csv(dat.par, file=paste0(homewd,"/model_fitting/GhV-fits/par_fits_GhV_CI_round1.csv"), row.names = F)
+write.csv(dat.age.sero, file=paste0(homewd,"/model_fitting/GhV-fits/age_sero_df_CI_round1.csv"), row.names = F)
+write.csv(dat.biweekly.ts, file=paste0(homewd,"/model_fitting/GhV-fits/biweekly_ts_GhV_CI_round1.csv"), row.names = F)
 

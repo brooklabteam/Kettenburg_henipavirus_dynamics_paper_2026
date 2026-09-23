@@ -12,6 +12,7 @@ library(Matrix)
 library(mvtnorm)
 library(tidyr)
 library(scales)
+library(numDeriv)
 
 #this is the version that builds a comparable matrix to fit the top five model structures
 #load data
@@ -1010,7 +1011,7 @@ log.lik.age <- function(par, name.par, c, data, sero.dat, shed.dat, cutoff, sim_
     #print the guess par
     #print(exp(par))
     
-    if(sum(is.na(unique(age.seroprev$seroprevalence)))>0){
+    if(sum(is.finite(unique(age.seroprev$seroprevalence)))>0 | sum(is.finite(unique(age.seroprev$age)))>0){
       ll=-1*10^9#write over with real number that is huge
       #print(-ll)
       return(-ll)
@@ -1117,7 +1118,7 @@ log.lik.age <- function(par, name.par, c, data, sero.dat, shed.dat, cutoff, sim_
     }}}
 
 #will need to restructure below
-wrap.fit.cov <- function(model, num_states, beta, sigma1, recru, epsilon, loss,  sigma2,  mu.sick, mu.rec, dat1, sero.dat1, shed.dat1, par.df, cutoff1, species1, antigen1, s, sim_pop, yrs, ntyr,  N_stat, weight.PCR,
+wrap.fit.cov <- function(model, num_states, beta, sigma1, recru, recru2, epsilon, loss,  sigma2,  mu.sick, mu.rec, dat1, sero.dat1, shed.dat1, par.df, cutoff1, species1, antigen1, s, sim_pop, yrs, ntyr,  N_stat, weight.PCR,
                      age.brk, slope.wane, do.plot, do.save, filename){
   
   #first pull out your data...
@@ -1184,60 +1185,46 @@ wrap.fit.cov <- function(model, num_states, beta, sigma1, recru, epsilon, loss, 
   par <- c(par, weight.PCR)
   name.par <- c(name.par, "wPCR")
   #print(par)
-  #estimate parameters
   
-  out.lik <- optim(par=log(par),fn=log.lik.age, method="Nelder-Mead", 
-                   name.par = name.par, c = num_states, data=dat.tmp,
-                   model=model, par.df1 =par.df, sero.dat = sero.dat2, shed.dat=shed.dat2,
-                   cutoff=cutoff1, s=s, sim_pop=sim_pop, ntyr=ntyr, yrs=yrs, age.brk=age.brk, 
-                   N_stat=N_stat, control=list(maxit=1000), hessian = TRUE)
+  #no need to estimate parameters since code brings in parameters that
+  #are already best fit and then functions to estimate the CIs on
+  #seroprevalence and prevalence
   
+  # Vector 'par' contains your saved optimized point estimates on the natural scale
+  log_par_hat <- log(par)
   
-  # 1. Symmetrize Hessian
-  H <- (out.lik$hessian + t(out.lik$hessian)) / 2
+  # Calculate high-precision Hessian at your saved point estimates
+  # using hessian function from numDeriv package
   
-  # 2. Eigen decomposition
-  eig <- eigen(H)
-  
-  # 3. Invert only well-identified directions
-  tol <- 1e-8
-  inv_vals <- ifelse(eig$values > tol, 1 / eig$values, 0)
-  
-  # 4. Reconstruct covariance matrix
-  cov_mat <- eig$vectors %*% diag(inv_vals) %*% t(eig$vectors)
-  
-  # 5. Standard errors (safe)
-  prop_sigma <- sqrt(pmax(diag(cov_mat), 0))
-  
-  # 6. Confidence intervals (on natural scale)
-  upper <- exp(out.lik$par + 1.96 * prop_sigma)
-  lower <- exp(out.lik$par - 1.96 * prop_sigma)
-  
-  ConfidenceInterval <- data.frame(
-    value = exp(out.lik$par),
-    upper = upper,
-    lower = lower
+  H_accurate <- hessian(
+    func = log.lik.age, 
+    x = log_par_hat, 
+    # Pass all extra arguments required by log.lik.age:
+    name.par = name.par, c = num_states, data = dat.tmp,
+    model = model, par.df1 = par.df, sero.dat = sero.dat2, shed.dat = shed.dat2,
+    cutoff = cutoff1, s = s, sim_pop = sim_pop, ntyr = ntyr, yrs = yrs, age.brk = age.brk, 
+    N_stat = N_stat
   )
   
-  # Optional: truncate negatives (though exp() should already prevent this)
-  ConfidenceInterval[ConfidenceInterval < 0] <- 0
+  # Symmetrize
+  H_sym <- (H_accurate + t(H_accurate)) / 2
   
-  # Diagnostics (IMPORTANT)
-  cat("Dropped eigenvalues:", sum(eig$values <= tol), "\n")
-  cat("Min eigenvalue:", min(eig$values), "\n")
+  # Invert to get the covariance matrix
+  # If solve() throws an error due to singularity, fall back to Matrix::nearPD
+  cov_mat <- tryCatch({
+    solve(H_sym)
+  }, error = function(e) {
+    message("Hessian still singular/non-PD. Applying nearPD fallback...")
+    as.matrix(solve(Matrix::nearPD(H_sym)$mat))
+  })
   
-  
-  #solve the hessian to get CIs using mvnorm
-  #sigma is the covariance matrix which is the inverse of the hessian 
-  #when you are minimizing the neg log liklihood in your function
-  par.dist.log <- rmvnorm(n = 500, mean = out.lik$par, sigma = cov_mat)
+  # Sample parameters and proceed with prevalence/seroprevalence predictions
+  # sigma is the covariance matrix which is the inverse of the hessian 
+  # when you are minimizing the neg log liklihood in your function
+  par.dist.log <- rmvnorm(n = 500, mean = log_par_hat, sigma = cov_mat)
   par.dist <- exp(par.dist.log)
   par.dist[ par.dist < 0] <- 0
-  
-  ConfidenceInterval$name <- name.par
-  
-  colnames(par.dist) <- ConfidenceInterval$name
-  
+
   #now have 500 guesses for each par, all calculated in tandem.
   
   ## get predictions across this span - including variance covariance
@@ -1280,788 +1267,6 @@ wrap.fit.cov <- function(model, num_states, beta, sigma1, recru, epsilon, loss, 
   
   
   
-  
-  
-  par.df$weightPCR <- ConfidenceInterval$value[ConfidenceInterval$name=="wPCR"] 
-  
-  if(model == "MSIRS"){
-    if(mu.sick >1 & mu.rec==1){
-      par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-      par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-      par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-      
-      par.df$sigma1 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma1"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-    }else if(mu.sick ==1 & mu.rec >1){
-      
-      par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-      
-      par.df$sigma1 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma1"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-      
-    }else if (mu.sick >1 & mu.rec >1){
-      
-      par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-      
-      par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-      par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-      par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-      
-      par.df$sigma1 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma1"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-    }else{
-      
-      par.df$sigma1 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma1"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-    }
-  }else if(model == "MSIRI"){
-    if(mu.sick >1 & mu.rec==1){
-      par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-      par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-      par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-      
-      par.df$recru2 = ConfidenceInterval$value[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru2"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-    }else if(mu.sick ==1 & mu.rec >1){
-      
-      par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-      
-      par.df$recru2 = ConfidenceInterval$value[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru2"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-      
-    }else if (mu.sick >1 & mu.rec >1){
-      
-      par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-      
-      par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-      par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-      par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-      
-      par.df$recru2 = ConfidenceInterval$value[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru2"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-    }else{
-      
-      par.df$recru2 = ConfidenceInterval$value[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru2"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-    }
-  }else if(model == "MSIRSI"){
-    if(mu.sick >1 & mu.rec==1){
-      par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-      par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-      par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-      
-      par.df$sigma1 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma1"] 
-      
-      par.df$recru2 = ConfidenceInterval$value[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru2"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-    }else if(mu.sick ==1 & mu.rec >1){
-      
-      par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-      
-      par.df$sigma1 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma1"] 
-      
-      par.df$recru2 = ConfidenceInterval$value[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru2"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-      
-    }else if (mu.sick >1 & mu.rec >1){
-      
-      par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-      
-      par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-      par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-      par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-      
-      par.df$sigma1 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma1"] 
-      
-      par.df$recru2 = ConfidenceInterval$value[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru2"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-    }else{
-      
-      par.df$sigma1 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma1"] 
-      par.df$sigma1_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma1"] 
-      
-      par.df$recru2 = ConfidenceInterval$value[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru2"] 
-      par.df$recru2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru2"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-    }
-  }else if (model == "MSIRNI" ){
-    
-    if(mu.sick >1 & mu.rec==1){
-      par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-      par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-      par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-      
-      par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-      par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-      par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-      
-      par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-      par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-      par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-    }else if(mu.sick ==1 & mu.rec >1){
-      
-      par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-      
-      par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-      par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-      par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-      
-      par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-      par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-      par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-      
-    }else if (mu.sick >1 & mu.rec >1){
-      par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-      par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"]  
-      
-      par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-      par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-      par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-      
-      par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-      par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-      par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-      
-      par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-      par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-      par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-      
-    }else{
-      par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-      par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-      par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-      
-      par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-      par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-      par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-      
-      par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-      par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-      par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-      
-      
-      
-    }}else if (model == "MSIRNS"){
-      
-      if(mu.sick >1 & mu.rec==1){
-        par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-        par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-        par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-        
-        par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-        par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-        par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-        
-        par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-        par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-        par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-        
-        par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-        par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-        par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-        
-      }else if(mu.sick ==1 & mu.rec >1){
-        
-        par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-        par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-        par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-        
-        par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-        par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-        par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-        
-        par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-        par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-        par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-        
-        par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-        par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-        par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-        
-      }else if (mu.sick >1 & mu.rec >1){
-        par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-        par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-        par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-        
-        par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-        par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-        par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-        
-        par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-        par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-        par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-        
-        par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-        par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-        par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-        
-        par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-        par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-        par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-        
-      }else{
-        par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-        par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-        par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-        
-        par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-        par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-        par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-        
-        par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-        par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-        par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-        
-        
-      }}else if (model == "MSIRNSI"){
-        
-        if(mu.sick >1 & mu.rec==1){
-          par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-          par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-          par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-          
-          par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-          par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-          par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-          
-          par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-          par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-          par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-          
-          par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-          par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-          par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-          
-          par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-          par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-          par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-          
-        }else if(mu.sick ==1 & mu.rec >1){
-          
-          par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-          par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-          par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-          
-          par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-          par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-          par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-          
-          par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-          par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-          par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-          
-          par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-          par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-          par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-          
-          par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-          par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-          par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-          
-        }else if (mu.sick >1 & mu.rec >1){
-          par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-          par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-          par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-          
-          par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-          par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-          par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-          
-          par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-          par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-          par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-          
-          par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-          par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-          par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-          
-          par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-          par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-          par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-          
-          par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-          par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-          par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-          
-        }else{
-          par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-          par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-          par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-          
-          par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-          par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-          par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-          
-          par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-          par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-          par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-          
-          par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-          par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-          par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-          
-          
-        }}else if (model == "MSIRN"){
-          
-          if(mu.sick >1 & mu.rec==1){
-            par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-            par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-            par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-            
-            par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-            par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-            par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-            
-            par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-            par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-            par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-            
-          }else if(mu.sick ==1 & mu.rec >1){
-            
-            par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-            par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-            par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-            
-            
-            par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-            par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-            par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-            
-            par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-            par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-            par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-            
-          }else if (mu.sick >1 & mu.rec >1){
-            par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-            par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-            par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-            
-            par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-            par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-            par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-            
-            
-            par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-            par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-            par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-            
-            par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-            par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-            par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-            
-          }else{
-            
-            par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-            par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-            par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-            
-            par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-            par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-            par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-            
-            
-          }}else if ( model == "MSIRNNS"){
-            
-            if(mu.sick >1 & mu.rec==1){
-              par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-              par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-              par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-              
-              par.df$epsilon = ConfidenceInterval$value[ConfidenceInterval$name=="epsilon"] 
-              par.df$epsilon_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="epsilon"] 
-              par.df$epsilon_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="epsilon"] 
-              
-              par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-              par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-              par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-              
-              par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-              par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-              par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-              
-              par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-              par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-              par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-              
-            }else if(mu.sick ==1 & mu.rec >1){
-              
-              par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-              par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-              par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-              
-              par.df$epsilon = ConfidenceInterval$value[ConfidenceInterval$name=="epsilon"] 
-              par.df$epsilon_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="epsilon"] 
-              par.df$epsilon_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="epsilon"] 
-              
-              par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-              par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-              par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-              
-              par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-              par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-              par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-              
-              par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-              par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-              par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-              
-            }else if (mu.sick >1 & mu.rec >1){
-              par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-              par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-              par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-              
-              par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-              par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-              par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-              
-              par.df$epsilon = ConfidenceInterval$value[ConfidenceInterval$name=="epsilon"] 
-              par.df$epsilon_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="epsilon"] 
-              par.df$epsilon_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="epsilon"] 
-              
-              par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-              par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-              par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-              
-              par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-              par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-              par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-              
-              par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-              par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-              par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-              
-            }else{
-              
-              par.df$epsilon = ConfidenceInterval$value[ConfidenceInterval$name=="epsilon"] 
-              par.df$epsilon_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="epsilon"] 
-              par.df$epsilon_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="epsilon"] 
-              
-              par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-              par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-              par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-              
-              par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-              par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-              par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-              
-              par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-              par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-              par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-              
-              
-            }} else if (model == "MSIRNNI"){
-              
-              if(mu.sick >1 & mu.rec==1){
-                par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-                par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-                par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-                
-                par.df$epsilon = ConfidenceInterval$value[ConfidenceInterval$name=="epsilon"] 
-                par.df$epsilon_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="epsilon"] 
-                par.df$epsilon_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="epsilon"] 
-                
-                par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-                par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-                par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-                
-                par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-                par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-                par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-                
-                par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-                par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-                par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-                
-              }else if(mu.sick ==1 & mu.rec >1){
-                
-                par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-                par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-                par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-                
-                par.df$epsilon = ConfidenceInterval$value[ConfidenceInterval$name=="epsilon"] 
-                par.df$epsilon_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="epsilon"] 
-                par.df$epsilon_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="epsilon"] 
-                
-                par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-                par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-                par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-                
-                par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-                par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-                par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-                
-                par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-                par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-                par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-                
-              }else if (mu.sick >1 & mu.rec >1){
-                par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-                par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-                par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-                
-                par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-                par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-                par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-                
-                par.df$epsilon = ConfidenceInterval$value[ConfidenceInterval$name=="epsilon"] 
-                par.df$epsilon_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="epsilon"] 
-                par.df$epsilon_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="epsilon"] 
-                
-                par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-                par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-                par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-                
-                par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-                par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-                par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-                
-                par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-                par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-                par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-                
-              }else{
-                
-                par.df$epsilon = ConfidenceInterval$value[ConfidenceInterval$name=="epsilon"] 
-                par.df$epsilon_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="epsilon"] 
-                par.df$epsilon_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="epsilon"] 
-                
-                par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-                par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-                par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-                
-                par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-                par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-                par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-                
-                par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-                par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-                par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-                
-                
-              }}  else if (model == "MSIRNNSI"){
-                
-                if(mu.sick >1 & mu.rec==1){
-                  par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-                  par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-                  par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-                  
-                  par.df$epsilon = ConfidenceInterval$value[ConfidenceInterval$name=="epsilon"] 
-                  par.df$epsilon_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="epsilon"] 
-                  par.df$epsilon_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="epsilon"] 
-                  
-                  par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-                  par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-                  par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-                  
-                  par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-                  par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-                  par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-                  
-                  par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-                  par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-                  par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-                  
-                  par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-                  par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-                  par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-                  
-                }else if(mu.sick ==1 & mu.rec >1){
-                  
-                  par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-                  par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-                  par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-                  
-                  par.df$epsilon = ConfidenceInterval$value[ConfidenceInterval$name=="epsilon"] 
-                  par.df$epsilon_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="epsilon"] 
-                  par.df$epsilon_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="epsilon"] 
-                  
-                  par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-                  par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-                  par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-                  
-                  par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-                  par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-                  par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-                  
-                  par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-                  par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-                  par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-                  
-                  par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-                  par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-                  par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-                  
-                }else if (mu.sick >1 & mu.rec >1){
-                  par.df$mu_rec = ConfidenceInterval$value[ConfidenceInterval$name=="mu_rec"] 
-                  par.df$mu_rec_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_rec"] 
-                  par.df$mu_rec_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_rec"] 
-                  
-                  par.df$mu_sick = ConfidenceInterval$value[ConfidenceInterval$name=="mu_sick"] 
-                  par.df$mu_sick_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="mu_sick"]
-                  par.df$mu_sick_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="mu_sick"]
-                  
-                  par.df$epsilon = ConfidenceInterval$value[ConfidenceInterval$name=="epsilon"] 
-                  par.df$epsilon_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="epsilon"] 
-                  par.df$epsilon_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="epsilon"] 
-                  
-                  par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-                  par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-                  par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-                  
-                  par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-                  par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-                  par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-                  
-                  par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-                  par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-                  par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-                  
-                  par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-                  par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-                  par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-                  
-                }else{
-                  
-                  par.df$epsilon = ConfidenceInterval$value[ConfidenceInterval$name=="epsilon"] 
-                  par.df$epsilon_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="epsilon"] 
-                  par.df$epsilon_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="epsilon"] 
-                  
-                  par.df$recru = ConfidenceInterval$value[ConfidenceInterval$name=="recru"] 
-                  par.df$recru_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="recru"] 
-                  par.df$recru_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="recru"] 
-                  
-                  par.df$loss = ConfidenceInterval$value[ConfidenceInterval$name=="loss"] 
-                  par.df$loss_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="loss"] 
-                  par.df$loss_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="loss"] 
-                  
-                  par.df$sigma2 = ConfidenceInterval$value[ConfidenceInterval$name=="sigma2"] 
-                  par.df$sigma2_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="sigma2"] 
-                  par.df$sigma2_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="sigma2"] 
-                  
-                  par.df$beta = ConfidenceInterval$value[ConfidenceInterval$name=="beta"] 
-                  par.df$beta_lci = ConfidenceInterval$lower[ConfidenceInterval$name=="beta"] 
-                  par.df$beta_uci = ConfidenceInterval$upper[ConfidenceInterval$name=="beta"] 
-                  
-                  
-                }} 
-  
-  
-  
-  
-  #save you likelihood and convergence history
-  par.df$llik=out.lik$value
-  par.df$convergence = out.lik$convergence
-  
-  
-  
   # now run one sim with the point parameters and a series of sims across 
   # the covariance matrix to produce the confidence intervals on the seroprevalence
   # and prevalence outputs
@@ -2076,7 +1281,8 @@ wrap.fit.cov <- function(model, num_states, beta, sigma1, recru, epsilon, loss, 
                          wane.fix = par.df$wane_fix, slope.wane=1, 
                          mu.sick=par.df$mu_sick, mu.rec=par.df$mu_rec,sigma.fix = par.df$sigma_fix,
                          add.inf.mort=add.inf.mort,add.rec.mort=add.rec.mort, model=par.df$model, N_stat = N_stat)
-  # 
+  
+  # name the parameter guesses with the corresponding names from 
   names(par.dist)  <- name.par
   #and the series across the covariance matrix
   for (j in 1:length(par.dist[,1])){
@@ -2462,33 +1668,34 @@ par.fit <- read.csv(file =  paste0("fit-pars-", slurm_array_id, ".csv"), header 
 
 
 out.fit <- wrap.fit.cov(model=par.fit$model,
-                              dat1=dat,
-                              sero.dat1 = sero.dat,
-                              shed.dat1 = shed.dat,
-                              species1 = "Eidolon dupreanum",
-                              antigen1=par.fit$antigen,
-                              cutoff1 = par.fit$cutoff,
-                              num_states = par.fit$num_states,
-                              sim_pop=10000,
-                              yrs=50,
-                              ntyr=26,
-                              s=20,
-                              beta = par.fit$beta,
-                              par.df = par.fit,
-                              age.brk = 20,
-                              slope.wane=1,
-                              sigma1=par.fit$sigma1, #annual rate of loss of adult Abs in MSIRS context (direct from R to S)
-                              mu.sick = par.fit$mu_sick, #multiplier x probability annual mortality in infected individuals
-                              mu.rec = par.fit$mu_rec, #multiplier x probability annual mortality in recovered individuals
-                              recru = par.fit$recru, #annual rate of return to infectiousness
-                              epsilon = par.fit$epsilon, #annual rate of return to longterm AB- immunity
-                              sigma2 = par.fit$sigma2, #annual rate of loss of adult Abs in all other contexts (from N1 back to S)
-                              loss = par.fit$loss,
-                              weight.PCR = par.fit$weightPCR,
-                              N_stat="matAB",
-                              do.plot=FALSE,
-                              do.save=FALSE,
-                              filename = NA)
+                        dat1=dat,
+                        sero.dat1 = sero.dat,
+                        shed.dat1 = shed.dat,
+                        species1 = "Eidolon dupreanum",
+                        antigen1=par.fit$antigen,
+                        cutoff1 = par.fit$cutoff,
+                        num_states = par.fit$num_states,
+                        sim_pop=10000,
+                        yrs=50,
+                        ntyr=26,
+                        s=20,
+                        beta = par.fit$beta,
+                        par.df = par.fit,
+                        age.brk = 20,
+                        slope.wane=1,
+                        sigma1=par.fit$sigma1, #annual rate of loss of adult Abs in MSIRS context (direct from R to S)
+                        mu.sick = par.fit$mu_sick, #multiplier x probability annual mortality in infected individuals
+                        mu.rec = par.fit$mu_rec, #multiplier x probability annual mortality in recovered individuals
+                        recru = par.fit$recru, #annual rate of return to infectiousness
+                        recru2 = par.fit$recru2, #annual rate of return to infectiousness from R class with no N class (MSIRI context)
+                        epsilon = par.fit$epsilon, #annual rate of return to longterm AB- immunity
+                        sigma2 = par.fit$sigma2, #annual rate of loss of adult Abs in all other contexts (from N1 back to S)
+                        loss = par.fit$loss,
+                        weight.PCR = par.fit$weightPCR,
+                        N_stat="matAB",
+                        do.plot=FALSE,
+                        do.save=FALSE,
+                        filename = NA)
 
 filename = paste0(unique(out.fit$model), "-", unique(par.fit$antigen), "-", unique(par.fit$cutoff), slurm_array_id, ".Rdata")
 save(out.fit, file=filename)

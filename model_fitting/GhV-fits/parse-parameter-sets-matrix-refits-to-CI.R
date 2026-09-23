@@ -7,9 +7,10 @@ library(dplyr)
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 setwd(homewd)
 
-#load all the parameter inits -- these are the top hits from the first round of matrix fitting
+#load all the parameter inits -- these are the top hits for all models from matrix fitting, 
+#most from first round but three (MSIRS, MSIRSI, MSIRSI-mu-rec) from refitting
 
-par.dat <- read.csv(file= paste0(homewd,"/model_fitting/GhV-fits/top_fits_per_model_matrix_round1.csv"), header = T, stringsAsFactors = F)
+par.dat <- read.csv(file= paste0(homewd,"/model_fitting/GhV-fits/final_best_fit_pars_per_model_matrix.csv"), header = T, stringsAsFactors = F)
 
 par.dat <- arrange(par.dat, antigen, cutoff, model, mu_sick, mu_rec)
 
