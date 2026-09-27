@@ -19,9 +19,9 @@ library(ggforce)
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #load the completed models with age-seroprevalence and time series
-all.par <- age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/par_fits_GhV_CI_round1.csv"), header = T, stringsAsFactors = F)
-age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/age_sero_df_CI_round1.csv"), header = T, stringsAsFactors = F)
-biwk.ts.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/biweekly_ts_GhV_CI_round1.csv"), header = T, stringsAsFactors = F)
+all.par <- age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/par_fits_GhV_CI_final.csv"), header = T, stringsAsFactors = F)
+age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/age_sero_df_CI_final.csv"), header = T, stringsAsFactors = F)
+biwk.ts.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/biweekly_ts_GhV_CI_final.csv"), header = T, stringsAsFactors = F)
 
 #and load the data
 dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1a/age-seroprevalence-data.csv"), stringsAsFactors = F, header = T)

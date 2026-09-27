@@ -1190,40 +1190,69 @@ wrap.fit.cov <- function(model, num_states, beta, sigma1, recru, recru2, epsilon
   #are already best fit and then functions to estimate the CIs on
   #seroprevalence and prevalence
   
-  # Vector 'par' contains your saved optimized point estimates on the natural scale
-  log_par_hat <- log(par)
   
-  # Calculate high-precision Hessian at your saved point estimates
-  # using hessian function from numDeriv package
+  # 1. Identify which parameters to fix and which to sample
+  fixed_par_names <- c("wPCR", "mu_sick", "mu_rec") # Add exact matching names here
+
+  fixed_indices <- which(name.par %in% fixed_par_names)
+  free_indices  <- setdiff(seq_along(name.par), fixed_indices)
+
+  # Vectors of optimal parameters
+  log_par_hat_all  <- log(par)
+  log_par_hat_free <- log_par_hat_all[free_indices]
+
+  # 2. Define a wrapper function for the Hessian that holds fixed parameters constant
+  log.lik.free <- function(p_free) {
+  # Reconstruct full parameter vector
+  p_full <- log_par_hat_all
+  p_full[free_indices] <- p_free
   
-  H_accurate <- hessian(
-    func = log.lik.age, 
-    x = log_par_hat, 
-    # Pass all extra arguments required by log.lik.age:
-    name.par = name.par, c = num_states, data = dat.tmp,
-    model = model, par.df1 = par.df, sero.dat = sero.dat2, shed.dat = shed.dat2,
-    cutoff = cutoff1, s = s, sim_pop = sim_pop, ntyr = ntyr, yrs = yrs, age.brk = age.brk, 
-    N_stat = N_stat
+  # Evaluate your original likelihood function
+  log.lik.age(
+    p_full, name.par = name.par, c = num_states, data = dat.tmp,
+    model = model, par.df1 = par.df, sero.dat = sero.dat2, 
+    shed.dat = shed.dat2, cutoff = cutoff1, s = s, 
+    sim_pop = sim_pop, ntyr = ntyr, yrs = yrs, 
+    age.brk = age.brk, N_stat = N_stat
   )
-  
-  # 1. Decompose the symmetrized Hessian using SVD
-  svd_H <- svd((H_accurate + t(H_accurate)) / 2)
-  
-  # 2. Set a minimum variance floor for singular values (eigenvalue equivalent)
-  # Any direction with singular value < 1e-4 gets assigned 1/1e-4 = 100 max variance in log-space
+}
+
+  # 3. Calculate high-precision Hessian ONLY on the free parameters
+  H_free <- hessian(func = log.lik.free, x = log_par_hat_free)
+
+  # 4. SVD on the reduced Hessian
+  svd_H <- svd((H_free + t(H_free)) / 2)
   min_singular <- 1e-4
   inv_d <- 1 / pmax(svd_H$d, min_singular)
-  
-  # 3. Reconstruct covariance matrix safely
-  cov_mat <- svd_H$u %*% diag(inv_d) %*% t(svd_H$v)
-  cov_mat <- (cov_mat + t(cov_mat)) / 2 # Ensure symmetry
-  
-  # 4. Sample parameters
-  par.dist.log <- rmvnorm(n = 500, mean = log_par_hat, sigma = cov_mat)
-  par.dist <- exp(par.dist.log)
-  par.dist[ par.dist < 0] <- 0
 
-  #now have 500 guesses for each par, all calculated in tandem.
+  cov_mat_free <- svd_H$u %*% diag(inv_d) %*% t(svd_H$v)
+  cov_mat_free <- (cov_mat_free + t(cov_mat_free)) / 2
+
+  # 1. Sample 500 candidate sets directly from the reduced covariance matrix
+  sampled_free_log <- rmvnorm(n = 500, mean = log_par_hat_free, sigma = cov_mat_free)
+  
+  # 2. Apply a parameter safety bound (e.g. truncate draws beyond +/- 2 log-SDs of MLE)
+  # This prevents extreme values without running any likelihood evaluations!
+  log_sd_free <- sqrt(diag(cov_mat_free))
+  max_bounds  <- log_par_hat_free + 1 * log_sd_free
+  min_bounds  <- log_par_hat_free - 1 * log_sd_free
+  
+  sampled_free_log_bounded <- t(apply(sampled_free_log, 1, function(row) {
+    pmax(pmin(row, max_bounds), min_bounds)
+  }))
+  
+  # 3. Reconstruct full par.dist matrix immediately
+  par.dist <- matrix(NA, nrow = 500, ncol = length(name.par))
+  colnames(par.dist) <- name.par
+  
+  for (idx in fixed_indices) {
+    par.dist[, idx] <- par[idx]
+  }
+  par.dist[, free_indices] <- exp(sampled_free_log_bounded)
+  
+  # DONE! You have your 500 parameter sets ready for prevalence predictions in under 2 seconds.
+   
+  # # Now pass par.dist into your prevalence/seroprevalence predictions loop!
   
   ## get predictions across this span - including variance covariance
   ## span should account for biwk of year and age across 1 year and the full age range of the model

@@ -48,7 +48,7 @@ head(dat.age.sero)
 head(dat.biweekly.ts)
 
 #and save these 
-write.csv(dat.par, file=paste0(homewd,"/model_fitting/GhV-fits/par_fits_GhV_CI_round1.csv"), row.names = F)
-write.csv(dat.age.sero, file=paste0(homewd,"/model_fitting/GhV-fits/age_sero_df_CI_round1.csv"), row.names = F)
-write.csv(dat.biweekly.ts, file=paste0(homewd,"/model_fitting/GhV-fits/biweekly_ts_GhV_CI_round1.csv"), row.names = F)
+write.csv(dat.par, file=paste0(homewd,"/model_fitting/GhV-fits/par_fits_GhV_CI_final.csv"), row.names = F)
+write.csv(dat.age.sero, file=paste0(homewd,"/model_fitting/GhV-fits/age_sero_df_CI_final.csv"), row.names = F)
+write.csv(dat.biweekly.ts, file=paste0(homewd,"/model_fitting/GhV-fits/biweekly_ts_GhV_CI_final.csv"), row.names = F)
 
