@@ -12,19 +12,18 @@ library(Matrix)
 library(mvtnorm)
 library(tidyr)
 library(scales)
-library(numDeriv)
 
 #this is the version that builds a comparable matrix to fit the top five model structures
 #load data
 #homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/model_fitting/GhV-fits/run-CIs-matrix"
 #setwd(homewd)
 #dat <- read.csv(file =  paste0(homewd,"/data/age-seroprevalence-data.csv"), header = T, stringsAsFactors = F)
-dat <- read.csv(file =  "age-seroprevalence-data.csv", header = T, stringsAsFactors = F)
-sero.dat <- read.csv(file =  "biweekly-serology-data.csv", header = T, stringsAsFactors = F)
-shed.dat <- read.csv(file =  "biweekly-shedding-data.csv", header = T, stringsAsFactors = F)
-head(dat)
-head(sero.dat)
-head(shed.dat)
+# dat <- read.csv(file =  "age-seroprevalence-data.csv", header = T, stringsAsFactors = F)
+# sero.dat <- read.csv(file =  "biweekly-serology-data.csv", header = T, stringsAsFactors = F)
+# shed.dat <- read.csv(file =  "biweekly-shedding-data.csv", header = T, stringsAsFactors = F)
+# head(dat)
+# head(sero.dat)
+# head(shed.dat)
 
 
 transform.vect <- function(vec, s, c){
@@ -500,7 +499,46 @@ buildFMatrix_all <- function(c,  age.classes, adult_fec, surv.biwk, biwk, N_stat
 
 
 #and sim models
-sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,recov, mort, mort_juv, adult_fec, wane,wane.fix,loss,  epsilon, sigma1, sigma2, recru, recru2, slope.wane,mu.sick, mu.rec, sigma.fix, add.inf.mort,add.rec.mort, model, N_stat){
+sim.met.par <- function(par.int,  sim_pop=10000, yrs=50, ntyr=26, age.brk=20, s=20, slope.wane=1, N_stat="matAB"){
+  
+  c=par.int$num_states  
+  beta=par.int$beta 
+  loss=par.int$loss 
+  recru2=par.int$recru2
+  epsilon=par.int$epsilon  
+  recru=par.int$recru
+  sigma1=par.int$sigma1 
+  sigma2=par.int$sigma2 
+  recov=par.int$recov 
+  mort=par.int$mort 
+  mort_juv=par.int$mort_juv 
+  adult_fec=par.int$adult_fec 
+  wane=par.int$wane
+  wane.fix = par.int$wane_fix 
+  mu.sick=par.int$mu_sick 
+  mu.rec=par.int$mu_rec
+  sigma.fix = par.int$sigma_fix
+  model=par.int$model 
+  
+
+  
+  if(mu.sick >1 & mu.rec==1){
+    add.inf.mort <- TRUE
+    add.rec.mort <- FALSE
+  }
+  if(mu.sick ==1 & mu.rec >1){
+    add.inf.mort <- FALSE
+    add.rec.mort <- TRUE
+  }
+  if(mu.sick >1 & mu.rec >1){
+    add.inf.mort <- TRUE
+    add.rec.mort <- TRUE
+  }else{
+    add.inf.mort <- FALSE
+    add.rec.mort <- FALSE
+  }
+  
+  
   mu.sick.juv = mu.sick
   mu.rec.juv = mu.rec
   if(mu.sick.juv>2){
@@ -798,937 +836,194 @@ sim.met.age.all <- function(c,  sim_pop, yrs, ntyr, age.brk, s, beta,recov, mort
   #ggplot(data=out.mat) + geom_line(aes(x=age, y=seroprevalence))
   #ggplot(data=out.mat) + geom_line(aes(x=age, y=seroprevalence)) + facet_wrap(~biwk, scales="free")
   
+  #and attach the model name and the parameter that was modulated here
+  
+  if(mu.sick >1 & mu.rec==1){
+    
+    par.int$model <- paste0(par.int$model, "-mu-sick")
+    
+  }else if (mu.sick ==1 & mu.rec >1){
+    
+    par.int$model <- paste0(par.int$model, "-mu-rec")
+    
+  }else if(mu.sick >1 & mu.rec >1){
+    
+    par.int$model <- paste0(par.int$model, "-mu-sick-mu-rec")
+    
+  }
+  
+  out.mat$model <- par.int$model
+  out.mat$swept_param <- par.int$swept_param
+  out.mat$step_idx <- par.int$step_idx
+  out.mat$param_val <- par.int$param_val
+  out.mat$antigen <- par.int$antigen
+  out.mat$species <- par.int$species
+  out.mat$cutoff <- par.int$cutoff
+  
+  prop.sum$model <- par.int$model
+  prop.sum$swept_param <- par.int$swept_param
+  prop.sum$step_idx <- par.int$step_idx
+  prop.sum$param_val <- par.int$param_val
+  prop.sum$antigen <- par.int$antigen
+  prop.sum$species <- par.int$species
+  prop.sum$cutoff <- par.int$cutoff
+ 
+    
   return(list(out.mat, prop.sum))#, seas.prev))
 }
 
 
+generate_grid_list <- function(name.par, model_row, n_points = 20) {
+  
+  sweep_grid_list <- list()
+  
+  for (p_name in name.par) {
+    lci_col <- paste0(p_name, "_lci")
+    uci_col <- paste0(p_name, "_uci")
+    
+    # Check if upper and lower CI columns exist in par_df
+    if (lci_col %in% colnames(model_row) && uci_col %in% colnames(model_row)) {
+      lci_val <- model_row[[lci_col]]
+      uci_val <- model_row[[uci_col]]
+      
+      # Skip if CIs are missing, NA, or identical (fixed parameter)
+      if (!is.null(lci_val) && !is.null(uci_val) && 
+          !is.na(lci_val) && !is.na(uci_val) && (lci_val != uci_val)) {
+        
+        # 1. Create linear sequence across the 95% CI
+        val_seq <- seq(from = lci_val, to = uci_val, length.out = n_points)
+        
+        # 2. Replicate the full original par.df row n_points times
+        grid_df <- model_row[rep(1, n_points), , drop = FALSE]
+        
+        # 3. Overwrite the swept parameter column with the CI sequence
+        grid_df[[p_name]] <- val_seq
+        
+        # 4. Attach metadata columns
+        grid_df$swept_param <- p_name
+        grid_df$step_idx    <- 1:n_points
+        grid_df$param_val   <- val_seq
+        
+        sweep_grid_list[[p_name]] <- grid_df
+      }
+    }
+  }
+  
+  # # Combine into a single master parameter grid
+  # master_grid <- do.call(rbind, sweep_grid_list)
+  # rownames(master_grid) <- NULL
+  # 
+  # return(master_grid)
+  return(sweep_grid_list)
+}
+run.one <- function(sweep.df){
+  
+  #take in the dataframe of a single parameter being altered
+  #and now apply function as a list
+  sweep.df.list <- dlply(sweep.df,.(step_idx))
+  
+  #apply the function
+  #returns a list the length of the parameter sweep where each
+  #entry is a list with both the age-seroprev and the biweekly prev/seroprev output
+  out.sweep.list <- lapply(sweep.df.list,sim.met.par)
+  
+  #can collapse output into two dataframes that have the corresponding swept par
+  #and par value attached -- this will give output of a list the length of each model tested
+  
+  #get the first element of all the lists
+  seroprev.age.df <- data.table::rbindlist(sapply(out.sweep.list, '[', 1))
+  #and the second
+  seroprev.prev.ts <- data.table::rbindlist(sapply(out.sweep.list, '[', 2))
+  
+  return(list(seroprev.age.df, seroprev.prev.ts))
+         
+}
+profile.pars <- function(par, name.par, par.df){
+  
+  # Parameters you want to evaluate individually across their 95% CIs for this model
+  
+  #each element of the list is a different parameter to sweep. 
+  #n.points asks how many times each parameter should be swept
+  sweep_grid_list <- generate_grid_list(name.par = name.par, model_row= par.df)
+  
+  #now run the model over each parameter to sweep and all of its iterations and save
+  all.par.list <- lapply(sweep_grid_list, run.one)
+  
+  #returns a list the length of the number of profiled parameters for each model
+  return(all.par.list)
+}
 
-#likelihood function
-#this for a biweekly observation process
-log.lik.age <- function(par, name.par, c, data, sero.dat, shed.dat, cutoff, sim_pop, yrs, ntyr, age.brk, s, par.df1, model, N_stat){
-  
-  names(par) <- name.par
-  wPCR = exp(par["wPCR"])
-  
-  
-  if (par.df1$mu_sick>1 & par.df1$mu_rec==1){
-    add.inf.mort <- TRUE
-    add.rec.mort <- FALSE
-    mu.sick = exp(par["mu_sick"])
-    mu.rec = 1
-    
-    #mu sick can't be <1 or much >4 because you'd have 0 survivorship
-    if(mu.sick<1 | mu.sick > 4){
-      ll=-1*10^9#write over with real number that is huge
-      #print(-ll)
-      return(-ll)
-    }
-    
-  }else if (par.df1$mu_sick ==1 & par.df1$mu_rec>1){
-    add.rec.mort <- TRUE
-    add.inf.mort <- FALSE
-    mu.rec = exp(par["mu_rec"])
-    mu.sick = 1
-    
-    #mu rec can't be <1 and can't be >4 because you'd have 0 survivorship
-    if(mu.rec<1 | mu.rec>4){
-      ll=-1*10^9#write over with real number that is huge
-      #print(-ll)
-      return(-ll)
-    }
-    
-  }else if (par.df1$mu_sick > 1 & par.df1$mu_rec>1){
-    add.inf.mort <- TRUE
-    add.rec.mort <- TRUE
-    
-    mu.rec = exp(par["mu_rec"])
-    mu.sick = exp(par["mu_sick"])
-    
-    #mu rec and mu sick can't be <1
-    if(mu.rec<1 | mu.sick <1 | mu.rec>4 | mu.sick>4){
-      ll=-1*10^9#write over with real number that is huge
-      #print(-ll)
-      return(-ll)
-    }
-    
-  }else{
-    
-    add.inf.mort <- FALSE
-    add.rec.mort <- FALSE
-    mu.rec = 1
-    mu.sick = 1
-  }
-  
-  if (wPCR>1){
-    ll=-1*10^9#write over with real number that is huge
-    #print(-ll)
-    return(-ll)
-  }
-  
-  
-  
-  if(model=="MSIRS" ){
-    
-    beta = exp(par["beta"])
-    sigma1 = exp(par["sigma1"])
-    
-    recru = par.df1$recru
-    sigma2 = par.df1$sigma2
-    loss = par.df1$loss
-    epsilon = par.df1$epsilon
-    recru2 = par.df1$recru2
-    
-  }else if (model=="MSIRI"){
-    beta = exp(par["beta"])
-    recru2 = exp(par["recru2"])
-    
-    recru = par.df1$recru
-    sigma1 = par.df1$sigma1
-    loss = par.df1$loss
-    epsilon = par.df1$epsilon
-    sigma2 = par.df1$sigma2
-    
-  }else if (model=="MSIRSI"){
-    beta = exp(par["beta"])
-    recru2 = exp(par["recru2"])
-    sigma1 = exp(par["sigma1"])
-    
-    recru = par.df1$recru
-    loss = par.df1$loss
-    epsilon = par.df1$epsilon
-    sigma2 = par.df1$sigma2
-    
-  }else if (model=="MSIRN"){
-    beta = exp(par["beta"])
-    sigma2 = exp(par["sigma2"])
-    
-    recru = par.df1$recru
-    sigma1 = par.df1$sigma1
-    loss = par.df1$loss
-    epsilon = par.df1$epsilon
-    recru2 = par.df1$recru2
-    
-  }else if (model=="MSIRNI"){
-    beta = exp(par["beta"])
-    sigma2 = exp(par["sigma2"])
-    recru = exp(par["recru"])
-    
-    sigma1 = par.df1$sigma1
-    loss = par.df1$loss
-    epsilon = par.df1$epsilon
-    recru2 = par.df1$recru2
-    
-  }else if (model=="MSIRNS"){
-    
-    beta = exp(par["beta"])
-    sigma2 = exp(par["sigma2"])
-    loss = exp(par["loss"])
-    
-    sigma1 = par.df1$sigma1
-    epsilon = par.df1$epsilon
-    recru = par.df1$recru
-    recru2 = par.df1$recru2
-    
-  }else if (model=="MSIRNSI"){
-    
-    beta = exp(par["beta"])
-    sigma2 = exp(par["sigma2"])
-    loss = exp(par["loss"])
-    recru = exp(par["recru"])
-    
-    sigma1 = par.df1$sigma1
-    epsilon = par.df1$epsilon
-    recru2 = par.df1$recru2
-    
-  }else if(model == "MSIRNNS"){
-    beta = exp(par["beta"])
-    sigma2 = exp(par["sigma2"])
-    loss = exp(par["loss"])
-    epsilon = exp(par["epsilon"])
-    
-    sigma1 = par.df1$sigma1
-    recru = par.df1$recru
-    recru2 = par.df1$recru2
-    
-    
-  }else if(model == "MSIRNNI"){
-    beta = exp(par["beta"])
-    sigma2 = exp(par["sigma2"])
-    recru = exp(par["recru"])
-    epsilon = exp(par["epsilon"])
-    
-    
-    sigma1 = par.df1$sigma1
-    loss = par.df1$loss
-    recru2 = par.df1$recru2
-    
-  }else if(model == "MSIRNNSI"){
-    beta = exp(par["beta"])
-    sigma2 = exp(par["sigma2"])
-    recru = exp(par["recru"])
-    epsilon = exp(par["epsilon"])
-    loss = exp(par["loss"])
-    
-    sigma1 = par.df1$sigma1
-    recru2 = par.df1$recru2
-  }
-  
-  if(sum((1 - exp(-recru/26)), (1 - exp(-epsilon/26)))>1){
-    
-    ll=-1*10^9#write over with real number that is huge
-    #print(-ll)
-    return(-ll)
-    
-  }else if(sum((1 - exp(-loss/26)), (1 - exp(-epsilon/26)))>1){
-    ll=-1*10^9#write over with real number that is huge
-    #print(-ll)
-    return(-ll)
-    
-  }else{
-    
-    
-    out = sim.met.age.all(c=c,  sim_pop=sim_pop, yrs=yrs, ntyr=ntyr, age.brk=age.brk, s=s, 
-                          beta=beta, loss=loss, epsilon=epsilon, recru2=recru2,
-                          recru=recru,sigma1=sigma1, sigma2=sigma2, 
-                          recov=par.df1$recov, mort=par.df1$mort, mort_juv=par.df1$mort_juv, 
-                          adult_fec=par.df1$adult_fec, wane=par.df1$wane,
-                          wane.fix = par.df1$wane_fix, slope.wane=1, 
-                          mu.sick=mu.sick, mu.rec=mu.rec,sigma.fix = par.df1$sigma_fix,
-                          add.inf.mort=add.inf.mort,add.rec.mort=add.rec.mort, model=par.df1$model, N_stat = N_stat)
-    age.seroprev <- out[[1]]
-    prev.ts <- out[[2]]
-    
-    #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=prevalence))
-    #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=seroprevalence))
-    prev.ts$prevalence <- prev.ts$prevalence*wPCR
-    
-    
-    
-    
-    #first, run your model at the desired parameters for estimation (par)
-    #sometimes, they don't produce anything at all - in which case, just return a giant ll here and move on
-    
-    #print the guess par
-    #print(exp(par))
-    
-    if(sum(is.finite(unique(age.seroprev$seroprevalence)))>0 | sum(is.finite(unique(age.seroprev$age)))>0){
-      ll=-1*10^9#write over with real number that is huge
-      #print(-ll)
-      return(-ll)
-    }else{
-      
-      #your data should have ages by biweek
-      #ggplot(age.seroprev) + geom_point(aes(x=age, y=seroprevalence, color=biwk))
-      # 
-      # #fit a line  to these data to get the hazard by age:
-      pred.fit <- with(age.seroprev,smooth.spline(x=age, y=seroprevalence))
-      #separate age data
-      
-      #data = subset(data, !is.na(age)) #already done
-      #these were also done by biweek
-      data = arrange(data, age) #one data source gives you age seroprevalence
-      sero.dat = arrange(sero.dat, biwk)
-      shed.dat = arrange(shed.dat, biwk)
-      
-      #length(unique(sort(out$age)))#520
-      #sort data by age and make a prediction for each age by biweek
-      ages.new = sort(unique(data$age))
-      
-      out.comp <- cbind.data.frame(age=ages.new, seroprev=predict(pred.fit,x=ages.new)$y)
-      #ggplot(age.seroprev) + geom_point(aes(x=age, y=seroprevalence, color=biwk)) + geom_line(data=out.comp, aes(x=age, y=seroprev))
-      out.comp$seroprev[out.comp$seroprev<0] =0
-      out.comp$seroprev[out.comp$seroprev>1] =1
-      
-      
-      #now, compare model and data
-      
-      ll=0 #sets initial log-likelihood to 0
-      ll_age = 0
-      ll_sero = 0
-      ll_shed = 0
-      #then, compare with data by age and biweek
-      for(a in 1:length(data$age)){ 
-        #now run through data and compare with model
-        #for-loops over every individual in the dataset, starting above the lower bound - 
-        
-        
-        pprev <- out.comp$seroprev[out.comp$age==data$age[a]]  
-        
-        
-        #evaluate age-seroprevalence 
-        if(cutoff=="mean"){
-          ll_age=ll_age+dbinom(data$prev[a],1,pprev,log=T)    
-          # print(ll_age)
-        }else if (cutoff=="lci"){
-          ll_age=ll_age+dbinom(data$prev_lci[a],1,pprev,log=T)    
-        }else if(cutoff=="uci"){
-          ll_age=ll_age+dbinom(data$prev_uci[a],1,pprev,log=T)    
-        }
-        
-      }
-      
-      #evaluate seasonal seroprevalence within a year
-      for(a in 1:nrow(sero.dat)){ 
-        #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=seroprevalence))
-        seroprev <-prev.ts$seroprevalence[prev.ts$biwk==sero.dat$biwk[a]]  
-        
-        if(cutoff=="mean"){
-          ll_sero=ll_sero+dbinom(sero.dat$seropos[a],1,seroprev,log=T)    
-          #print(ll_sero)
-        }else if (cutoff=="lci"){
-          ll_sero=ll_sero+dbinom(sero.dat$seropos_lci[a],1,seroprev,log=T)    
-        }else if(cutoff=="uci"){
-          ll_sero=ll_sero+dbinom(sero.dat$seropos_uci[a],1,seroprev,log=T)    
-        }
-      }
-      
-      #evaluate shedding prevalence within a year
-      for(a in 1:nrow(shed.dat)){ 
-        #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=prevalence))
-        #ggplot(shed.dat) + geom_jitter(aes(x=as.numeric(biwk), y=shed_pos), height=0.1, width =0.1)
-        prevseas <-prev.ts$prevalence[prev.ts$biwk==shed.dat$biwk[a]]  
-        
-        
-        #now run through data and compare with model
-        #for-loops over every individual in the dataset, starting above the lower bound - 
-        ll_shed=ll_shed+dbinom(shed.dat$shed_pos[a],1,prevseas,log=T)    
-        #print(ll_shed)
-        
-      }
-      
-      if(-ll_age==Inf){
-        ll_age=-1*10^9#write over with real number that is huge
-        
-      }
-      if (-ll_sero == Inf){
-        ll_sero=-1*10^9#write over with real number that is huge
-      }
-      if(-ll_shed==Inf){
-        ll_shed=-1*10^9#write over with real number that is huge
-      }
-      
-      
-      ll = ll_age + ll_sero + ll_shed
-      
-      #print(-ll)
-      #calculate and return the negative log-likelihood 
-      #force mu.sick to be 1 or more
-      
-      return(-ll)
-    }}}
 
-#will need to restructure below
-wrap.fit.cov <- function(model, num_states, beta, sigma1, recru, recru2, epsilon, loss,  sigma2,  mu.sick, mu.rec, dat1, sero.dat1, shed.dat1, par.df, cutoff1, species1, antigen1, s, sim_pop, yrs, ntyr,  N_stat, weight.PCR,
-                     age.brk, slope.wane, do.plot, do.save, filename){
-  
-  #first pull out your data...
-  dat.tmp <- subset(dat1, species==species1 & antigen==antigen1)
-  sero.dat2 = subset(sero.dat1, bat_species==species1 & antigen==antigen1)
-  shed.dat2 = subset(shed.dat1, bat_species==species1 & antigen==antigen1)
-  dat.tmp <- subset(dat.tmp, !is.na(age))
-  
+wrap.profile.CI <- function(par.df){
   #feed in the right par.dat 
   
   #edit the model name
-  model <- sapply(strsplit(model, "-mu"),'[',1)
   par.df$model <- sapply(strsplit(par.df$model, "-mu"),'[',1)
-  
+  model = par.df$model
   #dat.tmp <- subset(dat.tmp, fit==1). do you use all the data or just the longitudinal resamples?
   
   #identify your parameter(s) for fitting based on your model of choice
   #identify your parameter(s) for fitting based on your model of choice
   if(model== "MSIRN"){
-    par = c(beta, sigma2)
+    par = c(par.df$beta, par.df$sigma2)
     name.par <- c("beta", "sigma2")
   }else if(model== "MSIRS"){
-    par = c(beta, sigma1)  
+    par = c(par.df$beta, par.df$sigma1)  
     name.par <- c("beta", "sigma1")
   }else if(model== "MSIRI"){
-    par = c(beta, recru2)  
+    par = c(par.df$beta, par.df$recru2)  
     name.par <- c("beta", "recru2")
   }else if(model== "MSIRSI"){
-    par = c(beta, sigma1, recru2)  
+    par = c(par.df$beta, par.df$sigma1, par.df$recru2)  
     name.par <- c("beta", "sigma1", "recru2")
   }else if (model=="MSIRNI"){
-    par = c(beta, sigma2, recru)
+    par = c(par.df$beta, par.df$sigma2, par.df$recru)
     name.par <- c("beta", "sigma2", "recru")
   }else if (model=="MSIRNS"){
-    par = c(beta, sigma2, loss)
+    par = c(par.df$beta, par.df$sigma2, par.df$loss)
     name.par <- c("beta", "sigma2", "loss")
   }else if (model=="MSIRNSI"){
-    par = c(beta, sigma2, loss, recru)
+    par = c(par.df$beta, par.df$sigma2, par.df$loss, par.df$recru)
     name.par <- c("beta", "sigma2", "loss", "recru")
   }else if(model == "MSIRNNS"){
-    par = c(beta, sigma2, loss, epsilon)
+    par = c(par.df$beta, par.df$sigma2, par.df$loss, par.df$epsilon)
     name.par <- c("beta", "sigma2", "loss", "epsilon")
   }else if(model == "MSIRNNI"){
-    par = c(beta, sigma2, recru, epsilon)
+    par = c(par.df$beta, par.df$sigma2, par.df$recru, par.df$epsilon)
     name.par <- c("beta", "sigma2", "recru", "epsilon")
   }else if(model == "MSIRNNSI"){
-    par = c(beta, sigma2, recru, loss, epsilon)
+    par = c(par.df$beta, par.df$sigma2, par.df$recru, par.df$loss, par.df$epsilon)
     name.par <- c("beta", "sigma2", "recru", "loss", "epsilon")
   }
   
-  if(mu.sick >1 & mu.rec==1){
-    par <- c(par, mu.sick)
+  if(par.df$mu_sick >1 & par.df$mu_rec==1){
+    par <- c(par, par.df$mu_sick)
     name.par <- c(name.par, "mu_sick")
   }
-  if(mu.sick ==1 & mu.rec >1){
-    par <- c(par, mu.rec)
+  if(par.df$mu_sick ==1 & par.df$mu_rec >1){
+    par <- c(par, par.df$mu_rec)
     name.par <- c(name.par, "mu_rec")
   }
-  if(mu.sick >1 & mu.rec >1){
-    par <- c(par, mu.sick, mu.rec)
+  if(par.df$mu_sick >1 & par.df$mu_rec >1){
+    par <- c(par, par.df$mu_sick, par.df$mu_rec)
     name.par <- c(name.par, "mu_sick", "mu_rec")
   }
   
-  par <- c(par, weight.PCR)
-  name.par <- c(name.par, "wPCR")
+  #no need to profile over wPCR
+  #par <- c(par, weight.PCR). 
+  #name.par <- c(name.par, "wPCR")
   #print(par)
   
   #no need to estimate parameters since code brings in parameters that
   #are already best fit and then functions to estimate the CIs on
   #seroprevalence and prevalence
   
+  #instead, we run the profile script across the parameter range for each model
+  out.model.list <- profile.pars(par=par, name.par=name.par, par.df=par.df)
   
-  # 1. Identify which parameters to fix and which to sample
-  fixed_par_names <- c("wPCR", "mu_sick", "mu_rec") # Add exact matching names here
-
-  fixed_indices <- which(name.par %in% fixed_par_names)
-  free_indices  <- setdiff(seq_along(name.par), fixed_indices)
-
-  # Vectors of optimal parameters
-  log_par_hat_all  <- log(par)
-  log_par_hat_free <- log_par_hat_all[free_indices]
-
-  # 2. Define a wrapper function for the Hessian that holds fixed parameters constant
-  log.lik.free <- function(p_free) {
-  # Reconstruct full parameter vector
-  p_full <- log_par_hat_all
-  p_full[free_indices] <- p_free
+  #return these runs... Then will process the min and max for this range for each model for plotting
+  return(list(par.df, out.model.list))
   
-  # Evaluate your original likelihood function
-  log.lik.age(
-    p_full, name.par = name.par, c = num_states, data = dat.tmp,
-    model = model, par.df1 = par.df, sero.dat = sero.dat2, 
-    shed.dat = shed.dat2, cutoff = cutoff1, s = s, 
-    sim_pop = sim_pop, ntyr = ntyr, yrs = yrs, 
-    age.brk = age.brk, N_stat = N_stat
-  )
-}
-
-  # 3. Calculate high-precision Hessian ONLY on the free parameters
-  H_free <- hessian(func = log.lik.free, x = log_par_hat_free)
-
-  # 4. SVD on the reduced Hessian
-  svd_H <- svd((H_free + t(H_free)) / 2)
-  min_singular <- 1e-4
-  inv_d <- 1 / pmax(svd_H$d, min_singular)
-
-  cov_mat_free <- svd_H$u %*% diag(inv_d) %*% t(svd_H$v)
-  cov_mat_free <- (cov_mat_free + t(cov_mat_free)) / 2
-
-  # 1. Sample 500 candidate sets directly from the reduced covariance matrix
-  sampled_free_log <- rmvnorm(n = 500, mean = log_par_hat_free, sigma = cov_mat_free)
-  
-  # 2. Apply a parameter safety bound (e.g. truncate draws beyond +/- 2 log-SDs of MLE)
-  # This prevents extreme values without running any likelihood evaluations!
-  log_sd_free <- sqrt(diag(cov_mat_free))
-  max_bounds  <- log_par_hat_free + 1 * log_sd_free
-  min_bounds  <- log_par_hat_free - 1 * log_sd_free
-  
-  sampled_free_log_bounded <- t(apply(sampled_free_log, 1, function(row) {
-    pmax(pmin(row, max_bounds), min_bounds)
-  }))
-  
-  # 3. Reconstruct full par.dist matrix immediately
-  par.dist <- matrix(NA, nrow = 500, ncol = length(name.par))
-  colnames(par.dist) <- name.par
-  
-  for (idx in fixed_indices) {
-    par.dist[, idx] <- par[idx]
-  }
-  par.dist[, free_indices] <- exp(sampled_free_log_bounded)
-  
-  # DONE! You have your 500 parameter sets ready for prevalence predictions in under 2 seconds.
-   
-  # # Now pass par.dist into your prevalence/seroprevalence predictions loop!
-  
-  ## get predictions across this span - including variance covariance
-  ## span should account for biwk of year and age across 1 year and the full age range of the model
-  ## now have a matrix to hold output for all ages and biweeks
-  age.span = rep(0:(s-1), each = ntyr)
-  biwk.span = rep(1:ntyr, each = s)
-  
-  #drop the last term in each
-  age.span <- age.span[1:(length(age.span)-1)]
-  #biwk.span <- biwk.span[1:(length(biwk.span))]
-  
-  #predictions for seroprevalence here
-  preds <- matrix(NA,nrow=length(biwk.span),ncol=length(par.dist[,1]))
-  
-  
-  #predictions for biweekly prevalence and seroprevalence will be shorter
-  biwk_preds_prev <- matrix(NA,nrow=26,ncol=length(par.dist[,1]))
-  biwk_preds_seroprev <- biwk_preds_prev 
-  
-  
-  if (par.df$mu_sick>1 & par.df$mu_rec==1){
-    add.inf.mort <- TRUE
-    add.rec.mort <- FALSE
-    
-  }else if (par.df$mu_sick ==1 & par.df$mu_rec>1){
-    
-    add.inf.mort <- FALSE
-    add.rec.mort <- TRUE
-    
-  }else if (par.df$mu_sick > 1 & par.df$mu_rec>1){
-    add.inf.mort <- TRUE
-    add.rec.mort <- TRUE
-    
-  }else{
-    
-    add.inf.mort <- FALSE
-    add.rec.mort <- FALSE
-  }
-  
-  
-  
-  # now run one sim with the point parameters and a series of sims across 
-  # the covariance matrix to produce the confidence intervals on the seroprevalence
-  # and prevalence outputs
-  
-  #first, the point estimate sim, using fitted parameters
-  out1 = sim.met.age.all(c=par.df$num_states,  
-                         sim_pop=sim_pop, 
-                         yrs=yrs, 
-                         ntyr=ntyr, 
-                         age.brk=age.brk,
-                         s=s, 
-                         beta=par.df$beta, 
-                         loss=par.df$loss, 
-                         recru2=par.df$recru2,
-                         epsilon=par.df$epsilon,  
-                         recru=par.df$recru,
-                         sigma1=par.df$sigma1, 
-                         sigma2=par.df$sigma2, 
-                         recov=par.df$recov, 
-                         mort=par.df$mort, 
-                         mort_juv=par.df$mort_juv, 
-                         adult_fec=par.df$adult_fec, 
-                         wane=par.df$wane,
-                         wane.fix = par.df$wane_fix, 
-                         slope.wane=1, 
-                         mu.sick=par.df$mu_sick, 
-                         mu.rec=par.df$mu_rec,
-                         sigma.fix = par.df$sigma_fix,
-                         add.inf.mort=add.inf.mort,
-                         add.rec.mort=add.rec.mort, 
-                         model=par.df$model, 
-                         N_stat = N_stat)
-  
-  # name the parameter guesses with the corresponding names from 
-  colnames(par.dist)  <- name.par
-  #and the series across the covariance matrix
-  for (j in 1:length(par.dist[,1])){
-
-    if(model=="MSIRS" ){
-      
-      beta=par.dist[j,"beta"]
-      sigma1=par.dist[j,"sigma1"]
-      
-      recru = par.df$recru
-      sigma2 = par.df$sigma2
-      loss = par.df$loss
-      epsilon = par.df$epsilon
-      recru2 = par.df$recru2
-      
-      
-    }else if (model=="MSIRI"){
-      beta=par.dist[j,"beta"]
-      recru2 = par.dist[j,"recru2"]
-      
-      recru = par.df$recru
-      sigma2 = par.df$sigma2
-      sigma1 = par.df$sigma1
-      loss = par.df$loss
-      epsilon = par.df$epsilon
-      
-    }else if (model=="MSIRSI"){
-      beta=par.dist[j,"beta"]
-      recru2 = par.dist[j,"recru2"]
-      sigma1=par.dist[j,"sigma1"]
-      
-      recru = par.df$recru
-      sigma2 = par.df$sigma2
-      loss = par.df$loss
-      epsilon = par.df$epsilon
-      
-    }else if (model=="MSIRNI"){
-      beta=par.dist[j,"beta"]
-      sigma2=par.dist[j,"sigma2"]
-      recru = par.dist[j,"recru"]
-      
-      sigma1 = par.df$sigma1
-      recru2 = par.df$recru2
-      loss = par.df$loss
-      epsilon = par.df$epsilon
-      
-    }else if (model=="MSIRNS"){
-      
-      beta=par.dist[j,"beta"]
-      sigma2=par.dist[j,"sigma2"]
-      loss = par.dist[j,"loss"]
-      
-      recru2 = par.df$recru2
-      sigma1 = par.df$sigma1
-      recru = par.df$recru
-      epsilon = par.df$epsilon
-      
-    }else if (model=="MSIRNS"){
-      
-      beta=par.dist[j,"beta"]
-      sigma2=par.dist[j,"sigma2"]
-      loss = par.dist[j,"loss"]
-      recru = par.dist[j,"recru"]
-      
-      recru2 = par.df$recru2
-      sigma1 = par.df$sigma1
-      epsilon = par.df$epsilon
-      
-    }else if(model == "MSIRNNS"){
-      
-      beta=par.dist[j,"beta"]
-      sigma2=par.dist[j,"sigma2"]
-      loss = par.dist[j,"loss"]
-      epsilon = par.dist[j,"epsilon"]
-      
-      recru2 = par.df$recru2
-      recru = par.df$recru
-      sigma1 = par.df$sigma1
-      
-
-    }else if(model == "MSIRNNI"){
-      beta=par.dist[j,"beta"]
-      sigma2=par.dist[j,"sigma2"]
-      recru = par.dist[j,"recru"]
-      epsilon = par.dist[j,"epsilon"]
-      
-      recru2 = par.df$recru2
-      sigma1 = par.df$sigma1
-      loss = par.df$loss
-      
-    }else if(model == "MSIRNNSI"){
-      beta=par.dist[j,"beta"]
-      sigma2=par.dist[j,"sigma2"]
-      recru = par.dist[j,"recru"]
-      loss = par.dist[j,"loss"]
-      epsilon = par.dist[j,"epsilon"]
-      
-      recru2 = par.df$recru2
-      sigma1 = par.df$sigma1
-      
-    }else if(model == "MSIRN"){
-      beta=par.dist[j,"beta"]
-      sigma2=par.dist[j,"sigma2"]
-      
-      
-      recru2 = par.df$recru2
-      recru = par.df$recru
-      sigma1 = par.df$sigma1
-      loss = par.df$loss
-      epsilon = par.df$epsilon
-      
-    }
-    
-    weight.PCR = par.dist[j, "wPCR"]
-    
-    if(mu.sick >1 & mu.rec==1){
-      
-      mu.sick = par.dist[j, "mu_sick"]
-      mu.rec = par.df$mu_rec
-      
-    }else if (mu.sick ==1 & mu.rec >1){
-      
-      mu.sick = par.df$mu_sick
-      mu.rec = par.dist[j, "mu_rec"]
-      
-    }else if(mu.sick >1 & mu.rec >1){
-      
-      mu.sick = par.dist[j, "mu_sick"]
-      mu.rec = par.dist[j, "mu_rec"]
-      
-    }else{
-      mu.sick = par.df$mu_sick
-      mu.rec = par.df$mu_rec
-      
-    }
-    
-    
-    
-    #the parameters here do not pull from the par.df which are the best fits 
-    #but instead from the selections specified in the if/else statements above 
-    #that sample across par.dist, the covariance matrix.
-    
-    out = sim.met.age.all(c=par.df$num_states,
-                          sim_pop=sim_pop, 
-                          yrs=yrs, 
-                          ntyr=ntyr, 
-                          age.brk=age.brk, 
-                          s=s, 
-                          beta=beta, 
-                          loss=loss, 
-                          epsilon=epsilon, 
-                          recru=recru, 
-                          recru2=recru2,
-                          sigma1=sigma1, 
-                          sigma2=sigma2, 
-                          recov=par.df$recov, 
-                          mort=par.df$mort, 
-                          mort_juv=par.df$mort_juv, 
-                          adult_fec=par.df$adult_fec, 
-                          wane=par.df$wane,
-                          wane.fix = par.df$wane_fix,
-                          slope.wane=1, 
-                          mu.sick=mu.sick, 
-                          mu.rec=mu.rec,
-                          sigma.fix = par.df$sigma_fix,
-                          add.inf.mort=add.inf.mort,
-                          add.rec.mort=add.rec.mort, 
-                          model=par.df$model, 
-                          N_stat = N_stat)
-    
-    #each column is a new guess. each row is output by age and biweek
-    seroprev.age.df <- out[[1]]
-    seroprev.prev.ts <- out[[2]]
-    
-    preds[,j] <- seroprev.age.df$seroprevalence
-    biwk_preds_seroprev[,j] <- seroprev.prev.ts$seroprevalence
-    biwk_preds_prev[,j] <- seroprev.prev.ts$prevalence*weight.PCR
-    
-    # #write some script to evaluate fit of model against data at these parameters
-    # 
-    # #and evaluate likelihood against that already estimate
-    # prev.tmp = seroprev.prev.ts$prevalence*weight.PCR
-    # seroprev.tmp = seroprev.prev.ts$seroprevalence
-    # age.sero.tmp = seroprev.age.df$seroprevalence
-    # 
-    # #your data should have ages by biweek
-    # #ggplot(age.seroprev) + geom_point(aes(x=age, y=seroprevalence, color=biwk))
-    # # 
-    # # #fit a line  to these data to get the hazard by age:
-    # pred.fit <- with(seroprev.age.df,smooth.spline(x=age, y=seroprevalence))
-    # 
-    # #arreanf
-    # data = arrange(dat.tmp, age) #one data source gives you age seroprevalence
-    # sero.dat = arrange(sero.dat1, biwk)
-    # shed.dat = arrange(shed.dat1, biwk)
-    # 
-    # #length(unique(sort(out$age)))#520
-    # #sort data by age and make a prediction for each age by biweek
-    # ages.new = sort(unique(data$age))
-    # 
-    # out.comp <- cbind.data.frame(age=ages.new, seroprev=predict(pred.fit,x=ages.new)$y)
-    # #ggplot(seroprev.age.df) + geom_point(aes(x=age, y=seroprevalence, color=biwk)) + geom_line(data=out.comp, aes(x=age, y=seroprev))
-    # out.comp$seroprev[out.comp$seroprev<0] =0
-    # out.comp$seroprev[out.comp$seroprev>1] =1
-    # 
-    # 
-    # #now, compare model and data
-    # 
-    # ll=0 #sets initial log-likelihood to 0
-    # ll_age = 0
-    # ll_sero = 0
-    # ll_shed = 0
-    # #then, compare with data by age and biweek
-    # for(a in 1:length(data$age)){ 
-    #   #now run through data and compare with model
-    #   #for-loops over every individual in the dataset, starting above the lower bound - 
-    #   
-    #   
-    #   pprev <- out.comp$seroprev[out.comp$age==data$age[a]]  
-    #   
-    #   
-    #   #evaluate age-seroprevalence 
-    #   if(cutoff1=="mean"){
-    #     ll_age=ll_age+dbinom(data$prev[a],1,pprev,log=T)    
-    #     # print(ll_age)
-    #   }else if (cutoff1=="lci"){
-    #     ll_age=ll_age+dbinom(data$prev_lci[a],1,pprev,log=T)    
-    #   }else if(cutoff1=="uci"){
-    #     ll_age=ll_age+dbinom(data$prev_uci[a],1,pprev,log=T)    
-    #   }
-    #   
-    # }
-    # 
-    # #evaluate seasonal seroprevalence within a year
-    # for(a in 1:nrow(sero.dat)){ 
-    #   #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=seroprevalence))
-    #   seroprev <-seroprev.prev.ts$seroprevalence[seroprev.prev.ts$biwk==sero.dat$biwk[a]]  
-    #   
-    #   if(cutoff1=="mean"){
-    #     ll_sero=ll_sero+dbinom(sero.dat$seropos[a],1,seroprev,log=T)    
-    #     #print(ll_sero)
-    #   }else if (cutoff1=="lci"){
-    #     ll_sero=ll_sero+dbinom(sero.dat$seropos_lci[a],1,seroprev,log=T)    
-    #   }else if(cutoff1=="uci"){
-    #     ll_sero=ll_sero+dbinom(sero.dat$seropos_uci[a],1,seroprev,log=T)    
-    #   }
-    # }
-    # 
-    # #evaluate shedding prevalence within a year
-    # for(a in 1:nrow(shed.dat)){ 
-    #   #ggplot(prev.ts) + geom_line(aes(x=as.numeric(biwk), y=prevalence))
-    #   #ggplot(shed.dat) + geom_jitter(aes(x=as.numeric(biwk), y=shed_pos), height=0.1, width =0.1)
-    #   prevseas <-seroprev.prev.ts$prevalence[seroprev.prev.ts$biwk==shed.dat$biwk[a]]  
-    #   
-    #   
-    #   #now run through data and compare with model
-    #   #for-loops over every individual in the dataset, starting above the lower bound - 
-    #   ll_shed=ll_shed+dbinom(shed.dat$shed_pos[a],1,prevseas,log=T)    
-    #   #print(ll_shed)
-    #   
-    # }
-    # 
-    # if(-ll_age==Inf){
-    #   ll_age=-1*10^9#write over with real number that is huge
-    #   
-    # }
-    # if (-ll_sero == Inf){
-    #   ll_sero=-1*10^9#write over with real number that is huge
-    # }
-    # if(-ll_shed==Inf){
-    #   ll_shed=-1*10^9#write over with real number that is huge
-    # }
-    # 
-    # 
-    # ll = ll_age + ll_sero + ll_shed
-    # 
-    # #and if this ll is better than the previous fit, replace it here
-    # if(par.df$ll > -ll){
-    #   
-    #   #replace with all of the new values
-    #   par.df$weightPCR = weight.PCR
-    #   
-    #   par.df$beta = beta
-    #   par.df$loss=loss
-    #   par.df$epsilon=epsilon
-    #   par.df$recru=recru
-    #   par.df$recru2=recru2
-    #   par.df$sigma2=sigma2
-    #   par.df$sigma1=sigma1
-    #   par.df$llik = -ll
-    #   
-    #   #replace the point estimate run
-    #   out1 <- out
-    #   
-    # }
-    # 
-    # 
-    # 
-  }
-  
-  
-  
-  #return your model stats, including estimated pars, the lci/uci and the output seroprev with CIs
-  # 
-  # 
-  # #we penalize only for the estimated parameters in AIC
-  # par.df$k = as.numeric(length(par))
-  # par.df$AIC = (2*par.df$k + 2*(as.numeric(par.df$llik)))
-  # 
-  # #check AICc for small sample size -- this should be the combination of the three different dataset sizes
-  # par.df$n = length(dat.tmp$age) + nrow(sero.dat2) + nrow(shed.dat2)
-  # par.df$AICc = par.df$AIC + ((2*(par.df$k)*(par.df$k+1))/(par.df$n-par.df$k-1)) 
-  # 
-  
-  
-  if(mu.sick >1 & mu.rec==1){
-    model <- paste0(model, "-mu-sick")
-  }
-  if(mu.sick ==1 & mu.rec >1){
-    model <- paste0(model, "-mu-rec")
-  }
-  if(mu.sick >1 & mu.rec >1){
-    model <- paste0(model, "-mu-sick-mu-rec")
-  }
-  
-  par.df$model <- model
-  par.df$cutoff <-  cutoff1
-  par.df$antigen <- antigen1
-  par.df$species <- species1
-  
-  
-  
-  #age -seroprev
-  
-  preds[preds<0] <- 0
-  pred.qs  <- apply(X=preds,MARGIN=1,FUN=quantile,probs=c(0.025,0.975), na.rm=TRUE) 
-  pred.qs.iqr  <- apply(X=preds,MARGIN=1,FUN=quantile,probs=c(0.25,0.75), na.rm=TRUE) 
-  pred.qs.narrow  <- apply(X=preds,MARGIN=1,FUN=quantile,probs=c(0.4,0.6), na.rm=TRUE) 
-  
-  #biweekly prev/seroprev
-  biwk_preds_seroprev[biwk_preds_seroprev<0] <- 0
-  biwk_preds_seroprev.qs  <- apply(X=biwk_preds_seroprev,MARGIN=1,FUN=quantile,probs=c(0.025,0.975), na.rm=TRUE) 
-  biwk_preds_seroprev.qs.iqr  <- apply(X=biwk_preds_seroprev,MARGIN=1,FUN=quantile,probs=c(0.25,0.75), na.rm=TRUE) 
-  biwk_preds_seroprev.qs.narrow  <- apply(X=biwk_preds_seroprev,MARGIN=1,FUN=quantile,probs=c(0.4,0.6), na.rm=TRUE) 
-  
-  biwk_preds_prev[biwk_preds_prev<0] <- 0
-  biwk_preds_prev.qs  <- apply(X=biwk_preds_prev,MARGIN=1,FUN=quantile,probs=c(0.025,0.975), na.rm=TRUE) 
-  biwk_preds_prev.qs.iqr  <- apply(X=biwk_preds_prev,MARGIN=1,FUN=quantile,probs=c(0.25,0.75), na.rm=TRUE) 
-  biwk_preds_prev.qs.narrow  <- apply(X=biwk_preds_prev,MARGIN=1,FUN=quantile,probs=c(0.4,0.6), na.rm=TRUE) 
-  
-  
-  #and combine to produce the time series:
-  age.sero.out <- out1[[1]]
-  
-  age.sero.out$seroprev_lci = pred.qs[1,]
-  age.sero.out$seroprev_uci = pred.qs[2,]
-  
-  age.sero.out$seroprev_lci_25 = pred.qs.iqr[1,]
-  age.sero.out$seroprev_uci_75 = pred.qs.iqr[2,]
-  
-  age.sero.out$seroprev_lci_40 = pred.qs.narrow[1,]
-  age.sero.out$seroprev_uci_60 = pred.qs.narrow[2,]
-  
-  
-  age.sero.out$cutoff <-  cutoff1
-  age.sero.out$antigen <- antigen1
-  age.sero.out$species <- species1
-  
-  biwk.ts.out <- out1[[2]]
-  biwk.ts.out$prevalence <- biwk.ts.out$prevalence*par.df$weightPCR
-  
-  biwk.ts.out$seroprev_lci = biwk_preds_seroprev.qs[1,]
-  biwk.ts.out$seroprev_uci = biwk_preds_seroprev.qs[2,]
-  
-  biwk.ts.out$seroprev_lci_25 = biwk_preds_seroprev.qs.iqr[1,]
-  biwk.ts.out$seroprev_uci_75 = biwk_preds_seroprev.qs.iqr[2,]
-  
-  biwk.ts.out$seroprev_lci_40 = biwk_preds_seroprev.qs.narrow[1,]
-  biwk.ts.out$seroprev_uci_60 = biwk_preds_seroprev.qs.narrow[2,]
-  
-  biwk.ts.out$prev_lci = biwk_preds_prev.qs[1,]
-  biwk.ts.out$prev_uci = biwk_preds_prev.qs[2,]
-  
-  biwk.ts.out$prev_lci_25 = biwk_preds_prev.qs.iqr[1,]
-  biwk.ts.out$prev_uci_75 = biwk_preds_prev.qs.iqr[2,]
-  
-  biwk.ts.out$prev_lci_40 = biwk_preds_prev.qs.narrow[1,]
-  biwk.ts.out$prev_uci_60 = biwk_preds_prev.qs.narrow[2,]
-  
-  
-  biwk.ts.out$cutoff <-  cutoff1
-  biwk.ts.out$antigen <- antigen1
-  biwk.ts.out$species <- species1
-  
-  
-  biwk.ts.out$model <-  model
-  age.sero.out$model <- model
-  
-  
-  
-  return(list(par.df, age.sero.out, biwk.ts.out)) 
   
   
   
@@ -1740,35 +1035,7 @@ slurm_array_id <- Sys.getenv("SLURM_ARRAY_TASK_ID")
 par.fit <- read.csv(file =  paste0("fit-pars-", slurm_array_id, ".csv"), header = T, stringsAsFactors = F)
 
 
-out.fit <- wrap.fit.cov(model=par.fit$model,
-                        dat1=dat,
-                        sero.dat1 = sero.dat,
-                        shed.dat1 = shed.dat,
-                        species1 = "Eidolon dupreanum",
-                        antigen1=par.fit$antigen,
-                        cutoff1 = par.fit$cutoff,
-                        num_states = par.fit$num_states,
-                        sim_pop=10000,
-                        yrs=50,
-                        ntyr=26,
-                        s=20,
-                        beta = par.fit$beta,
-                        par.df = par.fit,
-                        age.brk = 20,
-                        slope.wane=1,
-                        sigma1=par.fit$sigma1, #annual rate of loss of adult Abs in MSIRS context (direct from R to S)
-                        mu.sick = par.fit$mu_sick, #multiplier x probability annual mortality in infected individuals
-                        mu.rec = par.fit$mu_rec, #multiplier x probability annual mortality in recovered individuals
-                        recru = par.fit$recru, #annual rate of return to infectiousness
-                        recru2 = par.fit$recru2, #annual rate of return to infectiousness from R class with no N class (MSIRI context)
-                        epsilon = par.fit$epsilon, #annual rate of return to longterm AB- immunity
-                        sigma2 = par.fit$sigma2, #annual rate of loss of adult Abs in all other contexts (from N1 back to S)
-                        loss = par.fit$loss,
-                        weight.PCR = par.fit$weightPCR,
-                        N_stat="matAB",
-                        do.plot=FALSE,
-                        do.save=FALSE,
-                        filename = NA)
+out.fit <- wrap.profile.CI(par.df = par.fit)
 
 filename = paste0(unique(out.fit$model), "-", unique(par.fit$antigen), "-", unique(par.fit$cutoff), slurm_array_id, ".Rdata")
 save(out.fit, file=filename)

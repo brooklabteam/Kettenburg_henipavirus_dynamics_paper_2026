@@ -881,12 +881,12 @@ plot.models.data.CI.squiggle(CI.age.fits = age.sero.df,
                              vis_split = 3, 
                              do.plot=TRUE, 
                              do.save=TRUE, 
-                             filename1a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev_matrix-9-18-A.png"),
-                             filename1b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev_matrix-9-18-B.png"),
-                             filename2a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology_matrix-9-18-A.png"),
-                             filename2b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology_matrix-9-18-B.png"),
-                             filename3a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence_matrix-9-18-A.png"),
-                             filename3b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence_matrix-9-18-B.png"))
+                             filename1a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev_matrix-9-29-A.png"),
+                             filename1b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev_matrix-9-29-B.png"),
+                             filename2a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology_matrix-9-29-A.png"),
+                             filename2b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology_matrix-9-29-B.png"),
+                             filename3a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence_matrix-9-29-A.png"),
+                             filename3b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence_matrix-9-29-B.png"))
 
 
 
@@ -902,12 +902,12 @@ plot.models.data.CI(CI.age.fits = age.sero.df,
                              vis_split = 3, 
                              do.plot=TRUE, 
                              do.save=TRUE, 
-                             filename1a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-no-squiggle_matrix-9-18-A.png"),
-                             filename1b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-no-squiggle_matrix-9-18-B.png"),
-                             filename2a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-no-squiggle_matrix-9-18-A.png"),
-                             filename2b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-no-squiggle_matrix-9-18-B.png"),
-                             filename3a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-no-squiggle_matrix-9-18-A.png"),
-                             filename3b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-no-squiggle_matrix-9-18-B.png"))
+                             filename1a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-no-squiggle_matrix-9-29-A.png"),
+                             filename1b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-no-squiggle_matrix-9-29-B.png"),
+                             filename2a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-no-squiggle_matrix-9-29-A.png"),
+                             filename2b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-no-squiggle_matrix-9-29-B.png"),
+                             filename3a=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-no-squiggle_matrix-9-29-A.png"),
+                             filename3b=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-no-squiggle_matrix-9-29-B.png"))
 
 
 
@@ -926,9 +926,9 @@ plot.models.data.CI.squiggle.one(CI.age.fits = subset(age.sero.df, model=="MSIRS
                              vis_split = 3, 
                              do.plot=TRUE, 
                              do.save=TRUE, 
-                             filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-best-fit-9-18.png"),
-                             filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-best-fit-9-18.png"),
-                             filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-best-fit-9-18.png"))
+                             filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-best-fit-9-29.png"),
+                             filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-best-fit-9-29.png"),
+                             filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-best-fit-9-29.png"))
 
 
 
@@ -944,6 +944,6 @@ plot.models.data.CI.one(CI.age.fits = subset(age.sero.df, model=="MSIRSI-mu-sick
                     vis_split = 3, 
                     do.plot=TRUE, 
                     do.save=TRUE, 
-                    filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-no-squiggle-best-fit-9-18.png"),
-                    filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-no-squiggle-best-fit-9-18.png"),
-                    filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-no-squiggle-best-fit-9-18.png"))
+                    filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev-no-squiggle-best-fit-9-29.png"),
+                    filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology-no-squiggle-best-fit-9-29.png"),
+                    filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence-no-squiggle-best-fit-9-29.png"))
