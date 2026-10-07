@@ -638,6 +638,7 @@ sim.met.par <- function(par.int,  sim_pop=10000, yrs=50, ntyr=26, age.brk=20, s=
     
     #move forward in time
     nt1<-(transMat) %*% N_pop_ts[,i]
+    nt1[nt1<0] <- 0
     N_pop_ts[,i+1] <- nt1
   }
   

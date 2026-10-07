@@ -21,8 +21,11 @@ homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 setwd(homewd)
 
 #load the completed models with age-seroprevalence and time series
-age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/final_age_sero_df_GhV.csv"), header = T, stringsAsFactors = F)
-biwk.ts.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/final_biweekly_ts_GhV.csv"), header = T, stringsAsFactors = F)
+age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/age_sero_df_CI_optim_final_envelope.csv"), header = T, stringsAsFactors = F)
+biwk.ts.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/biweekly_ts_GhV_CI_final_envelope.csv"), header = T, stringsAsFactors = F)
+
+# age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/final_age_sero_df_GhV.csv"), header = T, stringsAsFactors = F)
+# biwk.ts.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/final_biweekly_ts_GhV.csv"), header = T, stringsAsFactors = F)
 
 #and load the data
 dat <- read.csv(file = paste0(homewd,"/master_data_files/age-seroprevalence-data.csv"), stringsAsFactors = F, header = T)
@@ -69,6 +72,12 @@ add.age <- function(df){
   return(df)
   
 }
+pick.age <- function(df){
+  df <- arrange(df, age)
+  df <- df[df$age==max(df$age),]
+  return(df)
+  
+}
 get.seroprev.dat = function(data, vis_split, cutoff){
   
   visbin = seq(3,floor(max(data$age)), vis_split)
@@ -111,40 +120,33 @@ get.seroprev.dat = function(data, vis_split, cutoff){
   return(dat.sum3)
   
 }
-plot.models.data.CI.squiggle.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split,  do.plot, do.save, filename1, filename2, filename3){
+
+return.models.data.CI.squiggle.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split){
   
   mod.all = subset(CI.age.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
   CI.ts.fits1 = subset(CI.ts.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
   
-  mod.all$model <- factor(mod.all$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
+  mod.all$model <- factor(mod.all$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
                                                   "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                  "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                  "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
+                                                  "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
                                                   "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                  "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
                                                   "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                  "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
-                                                  "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
-                                                  "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
-                                                  "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
-                                                  "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
-                                                  "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
-                                                  "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                  "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
   
-  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
+  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
                                                           "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                          "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                          "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
+                                                          "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
                                                           "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                          "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
                                                           "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                          "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
-                                                          "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
-                                                          "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
-                                                          "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
-                                                          "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
-                                                          "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
-                                                          "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                          "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
   
   
   #first pull out your data...
@@ -184,20 +186,21 @@ plot.models.data.CI.squiggle.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.
   #plot with data
   max.a = ceiling(max(dat.sum$age_year))
   p1 <- ggplot() +  theme_bw() +
-    geom_line(data=dat.sum, aes(x=age_year, y=prevalence), color ="black", linetype=2) +
-    geom_linerange(data=dat.sum, aes(x=age_year, ymin = seroprev_lci, ymax=seroprev_uci), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.sum, aes(x=age_year, y=prevalence, size=count), fill="white", color ="black", pch=21) +
+    geom_line(data=dat.sum, aes(x=age_year, y=prevalence), color ="black", linetype=2, show.legend = F) +
+    geom_linerange(data=dat.sum, aes(x=age_year, ymin = seroprev_lci, ymax=seroprev_uci), linetype=3, alpha=.5, show.legend = F)+ 
+    geom_point(data=dat.sum, aes(x=age_year, y=prevalence, size=count), fill="white", color ="black", pch=21, show.legend = F) +
     theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
           panel.grid = element_blank(), strip.background = element_rect(fill="white"),
           legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
     coord_cartesian(ylim=c(0,1), xlim=c(0, max.a)) + ylab("seroprevalence") + xlab("age(yrs)")  + 
     scale_size_continuous(name="N bats") +
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
+    theme(axis.title = element_text(size=18), strip.background = element_blank(), strip.text = element_blank(),
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=mod.all, aes(x=age, y=seroprevalence), color="cornflowerblue") + 
-    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
-    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
+    geom_line(data=mod.all, aes(x=age, y=seroprev_mean_sweep), color="cornflowerblue") + 
+    geom_line(data=mod.all, aes(x=age, y=seroprevalence), color="navy") + 
+    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
+    #geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   
@@ -210,8 +213,8 @@ plot.models.data.CI.squiggle.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.
   
   #sero 
   p2 <- ggplot() +  theme_bw() +
-    geom_linerange(data=dat.sero.sum, aes(x=biwk, ymin=seroprev_lci, ymax=seroprev_uci, color = as.factor(year)), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.sero.sum, aes(x=biwk, y=seroprevalence, size=Ntot, shape = year, color = as.factor(year)), fill="white",  pch=21) +
+    geom_linerange(data=dat.sero.sum, aes(x=biwk, ymin=seroprev_lci, ymax=seroprev_uci, color = as.factor(year)), linetype=3, alpha=.5, show.legend = F)+ 
+    geom_point(data=dat.sero.sum, aes(x=biwk, y=seroprevalence, size=Ntot, shape = year, color = as.factor(year)), fill="white",  pch=21, show.legend = F) +
     theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
           panel.grid = element_blank(), strip.background = element_rect(fill="white"),
           legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
@@ -219,11 +222,12 @@ plot.models.data.CI.squiggle.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.
     scale_size_continuous(name="N bats") +
     scale_color_discrete(name="year") +
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
+    theme(axis.title = element_text(size=18), strip.background = element_blank(), strip.text = element_blank(),
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="cornflowerblue") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprev_mean_sweep), color="cornflowerblue") + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="navy") + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
+    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
   #prev
@@ -237,43 +241,25 @@ plot.models.data.CI.squiggle.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.
     scale_size_continuous(name="N bats") +
     scale_color_discrete(name="year") +
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
+    theme(axis.title = element_text(size=18), legend.direction = "vertical", legend.box = "vertical",strip.text = element_blank(),
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prevalence), color="red") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prev_mean_sweep), color="red") + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prevalence), color="red4") + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci, ymax = seroprev_uci), fill="red", alpha=.3) + 
+    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
     facet_wrap(model~., ncol=4) 
   
-  if(do.save==TRUE){
-    ggsave(file = filename1,
-           plot = p1,
-           units="mm",  
-           width=55, 
-           height=45,
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename2,
-           plot = p2,
-           units="mm",  
-           width=55, 
-           height=45, 
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename3,
-           plot = p3,
-           units="mm",  
-           width=55, 
-           height=45, 
-           scale=3, 
-           dpi=300)
-  }
+  
+  pbottom <- cowplot::plot_grid(p1, p2, p3, ncol=3, nrow=1, rel_widths = c(1,1,1.2), labels = c("D", "E", "F"), label_size = 22, align = "h");pbottom
+  
+  
+  return(pbottom)
   
   
   
   
 }
+
 #this version does not include the squiggles
 return.models.data.CI.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split){
   
@@ -281,57 +267,57 @@ return.models.data.CI.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, 
   
   CI.ts.fits1 = subset(CI.ts.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
   
-  mod.all$model <- factor(mod.all$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
+  mod.all$model <- factor(mod.all$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
                                                   "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                  "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                  "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
+                                                  "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
                                                   "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                  "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
                                                   "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                  "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
-                                                  "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
-                                                  "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
-                                                  "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
-                                                  "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
-                                                  "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
-                                                  "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                  "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
   
-  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIR", "MSIR-mu-sick", "MSIR-mu-rec", "MSIR-mu-sick-mu-rec",
+  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
                                                           "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                          "MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                          "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
+                                                          "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
                                                           "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
+                                                          "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
                                                           "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                          "MSIRNIR", "MSIRNIR-mu-sick", "MSIRNIR-mu-rec", "MSIRNIR-mu-sick-mu-rec",
-                                                          "MSIRNIRN", "MSIRNIRN-mu-sick", "MSIRNIRN-mu-sick-mu-rec","MSIRNIRN-mu-rec", 
-                                                          "MSIRNIRN-LT", "MSIRNIRN-LT-mu-sick", "MSIRNIRN-LT-mu-sick-mu-rec","MSIRNIRN-LT-mu-rec", 
-                                                          "MSIRNSIRN", "MSIRNSIRN-mu-sick", "MSIRNSIRN-mu-rec", "MSIRNSIRN-mu-sick-mu-rec",
-                                                          "MSIRNSIRN-LT", "MSIRNSIRN-LT-mu-sick", "MSIRNSIRN-LT-mu-rec", "MSIRNSIRN-LT-mu-sick-mu-rec",
-                                                          "MSIRSIR", "MSIRSIR-mu-sick", "MSIRSIR-mu-rec", "MSIRSIR-mu-sick-mu-rec",
-                                                          "MSIRNSIRNS", "MSIRNSIRNS-mu-sick", "MSIRNSIRNS-mu-rec", "MSIRNSIRNS-mu-sick-mu-rec"))
+                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
+                                                          "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
   
   
+  mod.all$trunc_age <- trunc(mod.all$age)
   #now summarize across age bins
   # #split model and add ages
-  mod.split <- dlply(mod.all, .(model))
+  mod.split <- dlply(mod.all, .(model, trunc_age))
+  
+  # #now summarize across age bins
+  # # #split model and add ages
+  # mod.split <- dlply(mod.all, .(model))
+  # # 
   # 
   # 
+  mod.all <- data.table::rbindlist(lapply(mod.split, pick.age))
+  mod.all$age_bin <- mod.all$age
   # 
-  mod.all <- data.table::rbindlist(lapply(mod.split, add.age))
-  # 
-  mod.all$seropos_lci <- mod.all$seroprev_lci*mod.all$N
-  mod.all$seropos_uci <- mod.all$seroprev_uci*mod.all$N
-  mod.all$seropos_lci_25 <- mod.all$seroprev_lci_25*mod.all$N
-  mod.all$seropos_uci_75 <- mod.all$seroprev_uci_75*mod.all$N
-  # 
+  # mod.all$seropos_lci <- mod.all$seroprev_lci*mod.all$N
+  # mod.all$seropos_uci <- mod.all$seroprev_uci*mod.all$N
+  # mod.all$seropos_lci_25 <- mod.all$seroprev_lci_25*mod.all$N
+  # mod.all$seropos_uci_75 <- mod.all$seroprev_uci_75*mod.all$N
+  # # 
   #  
-  model.sum = ddply(mod.all,.(model, age_plot), summarise, N_pos = sum(seropos, na.rm = F), N_pos_lci = sum(seropos_lci, na.rm = F), N_pos_uci = sum(seropos_uci, na.rm = F),  N_pos_lci_25 = sum(seropos_lci_25, na.rm = F), N_pos_uci_75 = sum(seropos_uci_75, na.rm = F), Ntot=sum(N, na.rm = F))
-  model.sum$seroprevalence <- model.sum$N_pos/model.sum$Ntot
-  model.sum$seroprev_lci <- model.sum$N_pos_lci/model.sum$Ntot
-  model.sum$seroprev_uci <- model.sum$N_pos_uci/model.sum$Ntot
-  model.sum$seroprev_lci_25 <- model.sum$N_pos_lci_25/model.sum$Ntot
-  model.sum$seroprev_uci_75 <- model.sum$N_pos_uci_75/model.sum$Ntot
+  # model.sum = ddply(mod.all,.(model, age_bin), summarise, N_pos = sum(seropos, na.rm = F), N_pos_lci = sum(seropos_lci, na.rm = F), N_pos_uci = sum(seropos_uci, na.rm = F),  N_pos_lci_25 = sum(seropos_lci_25, na.rm = F), N_pos_uci_75 = sum(seropos_uci_75, na.rm = F), Ntot=sum(N, na.rm = F))
+  # model.sum$seroprevalence <- model.sum$N_pos/model.sum$Ntot
+  # model.sum$seroprev_lci <- model.sum$N_pos_lci/model.sum$Ntot
+  # model.sum$seroprev_uci <- model.sum$N_pos_uci/model.sum$Ntot
+  # model.sum$seroprev_lci_25 <- model.sum$N_pos_lci_25/model.sum$Ntot
+  # model.sum$seroprev_uci_75 <- model.sum$N_pos_uci_75/model.sum$Ntot
+  model.sum = ddply(mod.all,.(model, age_bin), summarise, seroprevalence = mean(seroprevalence, na.rm = F),  seroprev_mean_sweep = mean(seroprev_mean_sweep, na.rm = F), seroprev_lci = mean(seroprev_lci, na.rm = F),  seroprev_uci = mean(seroprev_uci, na.rm = F))
+  
   # 
   #first pull out your data...
   dat.tmp <- subset(dat1, species==species1 & antigen==antigen1)
@@ -377,18 +363,22 @@ return.models.data.CI.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, 
           panel.grid = element_blank(), strip.background = element_rect(fill="white"),
           legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
     coord_cartesian(ylim=c(0,1), xlim=c(0, max.a)) + ylab("seroprevalence") + xlab("age(yrs)")  + 
-    scale_size_continuous(name="N bats", breaks = c(0,10,20,30,40,50)) +
+    scale_size_continuous(name="N bats") +
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), strip.text = element_blank(),
+    theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=model.sum, aes(x=age_plot, y=seroprevalence), color="cornflowerblue") + 
-    geom_ribbon(data=model.sum, aes(x=age_plot, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
-    geom_ribbon(data=model.sum, aes(x=age_plot, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=4) ;p1
+    geom_line(data=model.sum, aes(x=age_bin, y=seroprevalence), color="navy") + 
+    geom_line(data=model.sum, aes(x=age_bin, y=seroprev_mean_sweep), color="cornflowerblue") + 
+    geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
+    #geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
+    facet_wrap(model~., ncol=4) 
   
   
   
-  yearz = c('2013'="#F8766D", '2014' ="#C49A00", '2015'= "#53B400",'2016'= "#00C094", '2018'= "#00B6EB", '2019'= "#A58AFF", '2020'= "#FB61D7")
+  print(p1)
+  
+  
+  
   #and plot the others
   
   #sero 
@@ -399,15 +389,16 @@ return.models.data.CI.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, 
           panel.grid = element_blank(), strip.background = element_rect(fill="white"),
           legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
     coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("seroprevalence") + xlab("biweek of year")  + 
-    scale_size_continuous(name="N bats", breaks = c(0,10,20,30,40,50)) +
-    scale_color_manual(name="year", values =   yearz) +
+    scale_size_continuous(name="N bats") +
+    scale_color_discrete(name="year") +
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), strip.text = element_blank(),
+    theme(axis.title = element_text(size=18), 
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="cornflowerblue") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=4) ;p2
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="navy") + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprev_mean_sweep), color="cornflowerblue") + 
+    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
+    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
+    facet_wrap(model~., ncol=4) 
   
   #prev
   p3 <- ggplot() +  theme_bw() +
@@ -417,22 +408,31 @@ return.models.data.CI.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, 
           panel.grid = element_blank(), strip.background = element_rect(fill="white"),
           legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
     coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("prevalence") + xlab("biweek of year")  + 
-    scale_size_continuous(name="N bats", breaks = c(0,10,20,30,40,50)) +
-    scale_color_manual(name="year", values =   yearz) +
+    scale_size_continuous(name="N bats") +
+    scale_color_discrete(name="year") +
     guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
     theme(axis.title = element_text(size=18), legend.direction = "vertical", legend.box = "vertical",strip.text = element_blank(),
           axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prevalence), color="red") + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prev_mean_sweep), color="red") + 
+    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prevalence), color="red4") + 
     geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
-    facet_wrap(model~., ncol=4) ; p3
+    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
+    facet_wrap(model~., ncol=4) 
+  
+  
+    
   
   
   pbottom <- cowplot::plot_grid(p1, p2, p3, ncol=3, nrow=1, rel_widths = c(1,1,1.2), labels = c("D", "E", "F"), label_size = 22, align = "h");pbottom
- 
+  
   
   return(pbottom)
+  
+  
+  
+  
 }
+
 
 plot.matAb <- function(dat){
   
@@ -497,7 +497,7 @@ plot.matAb <- function(dat){
                        axis.text = element_text(size=14)) +
     ylab(bquote(log[10]~MFI))+
     geom_ribbon(data=df.mean, aes(x=age, ymin=log10MFI_lci, ymax=log10MFI_uci), fill="cornflowerblue", alpha=.2) +
-    geom_line(data=df.mean, aes(x=age, y=log10MFI), color="cornflowerblue", size=1)
+    geom_line(data=df.mean, aes(x=age, y=log10MFI), color="navy", size=1)
   
   return(p1)  
 }
@@ -515,7 +515,7 @@ plot.adultAB <- function(det_df, stan_df){
       x = "Days since exposure",
       y = "MFI") +
     geom_ribbon(data=det_df, aes(x=t, ymin=MFI_lci, ymax=MFI_uci),alpha=.2, fill="cornflowerblue") +
-    geom_line(data=det_df, aes(x=t, y=MFI),size=1, color="cornflowerblue") +
+    geom_line(data=det_df, aes(x=t, y=MFI),size=1, color="navy") +
     theme_bw() + coord_cartesian(ylim=c(0,30000), xlim=c(0,150)) + 
     theme(panel.grid = element_blank(),
           plot.margin = margin(t = 1,r = 70,b = 1,l = 1),
@@ -523,8 +523,8 @@ plot.adultAB <- function(det_df, stan_df){
           plot.title = element_text(size=18),
           axis.text = element_text(size=14)) +
     geom_hline(aes(yintercept =cutoff.df$MFI[cutoff.df$bat_species=="Eidolon dupreanum" ]), linetype=2, color="red") +
-    geom_point(data=stan_df, (aes(x=new_ts, y=MFI, shape=as.factor(bat_id))), size=2, show.legend = F); p4
-  #geom_line(data=stan_df, aes(x=t_obs, y=MFI, color=as.factor(bat_id)), linetype=2); p4
+    geom_point(data=stan_df, (aes(x=new_ts, y=MFI, shape=as.factor(bat_id))), size=2, show.legend = F) +
+    geom_line(data=stan_df, aes(x=new_ts, y=MFI, group=as.factor(bat_id)), linetype=2, size=.1); p4
   
   return(p4)
   
@@ -534,7 +534,7 @@ make.Fig5 <- function(panel1, CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev
   
   img <- image_read_pdf(panel1, density = 300)
   g <- rasterGrob(as.raster(img), interpolate = TRUE)
-  p1 <- ggplot() + annotation_custom(g,xmin = 0,xmax = 1,ymin = 0,ymax = 1) + coord_cartesian(xlim = c(-0.03, 1.03),ylim = c(-0.03, 1.03),clip = "off") +
+  p1 <- ggplot() + annotation_custom(g,xmin = 0,xmax = 1,ymin = 0,ymax = 1) + coord_cartesian(xlim = c(0.05, .7),ylim = c(0.1, 0.9),clip = "off") +
     theme_void() +
     theme(plot.margin = margin(0.01,0.01,0.01,0.01), plot.background = element_rect(fill="white"))
   p2 <- plot.matAb(dat = dat1)
@@ -556,11 +556,37 @@ make.Fig5 <- function(panel1, CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev
          dpi=300)
   
 }
+make.Fig5.squiggle <- function(panel1, CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split,det.df, stan_df, filename){
+  
+  img <- image_read_pdf(panel1, density = 300)
+  g <- rasterGrob(as.raster(img), interpolate = TRUE)
+  p1 <- ggplot() + annotation_custom(g,xmin = 0,xmax = 1,ymin = 0,ymax = 1) + coord_cartesian(xlim = c(0.05, .7),ylim = c(0.1, 0.9),clip = "off") +
+    theme_void() +
+    theme(plot.margin = margin(0.01,0.01,0.01,0.01), plot.background = element_rect(fill="white"))
+  p2 <- plot.matAb(dat = dat1)
+  p3 <- plot.adultAB(det_df = det.df, stan_df = stan_df)
+  p4 <- return.models.data.CI.squiggle.one(CI.age.fits = CI.age.fits,  CI.ts.fits = CI.ts.fits, dat1=dat1,  dat.sero1 = dat.sero1,dat.prev1 =dat.prev1, antigen1 =antigen1, cutoff1=cutoff1,species1=species1, vis_split=vis_split)
+  
+  
+  
+  ptop <- cowplot::plot_grid(p1, p2,p3, ncol=3, nrow=1, rel_widths = c(1.1,1,1.3), labels = c("A", "B", "C"), label_size = 22, label_x = c(0,0,-.02))
+  
+  Fig5 <- cowplot:: plot_grid(ptop, p4, ncol=1, nrow=2)
+  
+  ggsave(file =filename,
+         plot = Fig5,
+         units="mm",  
+         width=125, 
+         height=75, 
+         scale=3, 
+         dpi=300)
+  
+}
 
 
-make.Fig5(panel1 = paste0(homewd, "/final_figures_tables/tmp/MSIRNS.pdf"),
-          CI.age.fits = subset(age.sero.df, model=="MSIRNNS-mu-rec"),
-          CI.ts.fits = subset(biwk.ts.df, model=="MSIRNNS-mu-rec"),
+make.Fig5(panel1 = paste0(homewd, "/final_figures_tables/tmp/MSIRSI.pdf"),
+          CI.age.fits = subset(age.sero.df, model=="MSIRNSI-mu-sick-mu-rec"),
+          CI.ts.fits = subset(biwk.ts.df, model=="MSIRNSI-mu-sick-mu-rec"),
           dat1=dat, 
           dat.sero1 = sero.dat,
           dat.prev1 = shed.dat,
@@ -570,6 +596,23 @@ make.Fig5(panel1 = paste0(homewd, "/final_figures_tables/tmp/MSIRNS.pdf"),
           vis_split = 3,
           det.df=read.csv(file =paste0(homewd, "/serology/data/stan_fit_deterministic_df_adultAB.csv"), header = T, stringsAsFactors = F), 
           stan_df=read.csv(file = paste0(homewd, "/serology/data/stan_fitted_bats.csv"), header = T, stringsAsFactors = F),
-          filename =  paste0(homewd, "/final_figures_tables/tmp/Fig5.png"))
+          filename =  paste0(homewd, "/final_figures_tables/tmp/Fig5-no-squiggle.png"))
+
+
+
+
+make.Fig5.squiggle(panel1 = paste0(homewd, "/final_figures_tables/tmp/MSIRSI.pdf"),
+          CI.age.fits = subset(age.sero.df, model=="MSIRNSI-mu-sick-mu-rec"),
+          CI.ts.fits = subset(biwk.ts.df, model=="MSIRNSI-mu-sick-mu-rec"),
+          dat1=dat, 
+          dat.sero1 = sero.dat,
+          dat.prev1 = shed.dat,
+          antigen1 = "GhV", 
+          cutoff1="mean", 
+          species1 = "Eidolon dupreanum",  
+          vis_split = 3,
+          det.df=read.csv(file =paste0(homewd, "/serology/data/stan_fit_deterministic_df_adultAB.csv"), header = T, stringsAsFactors = F), 
+          stan_df=read.csv(file = paste0(homewd, "/serology/data/stan_fitted_bats.csv"), header = T, stringsAsFactors = F),
+          filename =  paste0(homewd, "/final_figures_tables/main/Fig5.png"))
 
 

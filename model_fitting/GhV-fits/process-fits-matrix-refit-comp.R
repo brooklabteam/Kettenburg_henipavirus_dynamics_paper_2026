@@ -230,6 +230,10 @@ out.list <- mapply(comp.df, top.list, mod1.list, SIMPLIFY = FALSE)
 out.df <- data.table::rbindlist(out.list) 
 subset(out.df, run=="refit") #most were best in round 1 except MSIRS, MSIRSI, MSIRSI-mu-rec
 #these three need CIs to be rerun
+#later discovered that MSIRSI-mu-rec was messy from refit 
+rbind(top.mods1[top.mods1$model=="MSIRSI-mu-rec",],out.df[out.df$model=="MSIRSI-mu-rec",] ) 
+#sigma1 is much more constrained in the refit version
+#try a refit with this version as the starting par
 
 out.df <- dplyr::select(out.df, -(run))
 #and combine with the original dataset
