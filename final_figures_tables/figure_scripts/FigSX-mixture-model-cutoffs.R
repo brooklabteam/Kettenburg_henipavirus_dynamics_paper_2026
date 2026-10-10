@@ -505,6 +505,7 @@ plot.dat.model.clust.cumulative <- function(dat, mod.df, filename){
     geom_line(aes(x= log10MFI, y=density)) + theme_bw()+
     facet_grid(antigen~bat_species, scales = "free")    +       # Breaking up plots by species and antigen
     theme_bw() +
+    coord_cartesian(ylim=c(0,.8))+
     scale_color_discrete(name="cluster id") +
     theme(panel.grid = element_blank(),
           axis.title  = element_text(size=16),
@@ -537,7 +538,7 @@ plot.dat.model.clust.cumulative <- function(dat, mod.df, filename){
          plot=pall,
          units="mm",  
          width=90, 
-         height=60, 
+         height=50, 
          scale=3)#, 
   
   
