@@ -153,3 +153,11 @@ p3 <- ggplot(mom.df) + geom_point(aes(x=log10MFI,
         legend.text=element_text(size=12),legend.title=element_text(size=12),
         strip.text = element_text(size=14), axis.title = element_text(size=14), axis.text = element_text(size=12)) 
 p3
+
+
+ggsave(file = paste0(homewd,"/final_figures_tables/supplemental/FigSX_mom-pup-pairs.png"),
+       plot=p3,
+       units="mm",  
+       width=60, 
+       height=40, 
+       scale=3)#, 
