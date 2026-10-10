@@ -16,6 +16,7 @@ library(mvtnorm)
 library(magick)
 library(grid)
 library(pdftools)
+library(propagate)
 #load data
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 setwd(homewd)
@@ -150,7 +151,7 @@ return.models.data.CI.squiggle.one <- function(CI.age.fits, CI.ts.fits, dat1, da
   
   
   #first pull out your data...
-  dat.tmp <- subset(dat1, species==species1 & antigen==antigen1)
+  dat.tmp <- subset(dat1, bat_species==species1 & antigen==antigen1)
   dat.tmp <- subset(dat.tmp, !is.na(age))
   
   #get data in age-seroprev form
@@ -320,7 +321,7 @@ return.models.data.CI.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, 
   
   # 
   #first pull out your data...
-  dat.tmp <- subset(dat1, species==species1 & antigen==antigen1)
+  dat.tmp <- subset(dat1, bat_species==species1 & antigen==antigen1)
   dat.tmp <- subset(dat.tmp, !is.na(age))
   
   #get data in age-seroprev form
@@ -468,24 +469,40 @@ plot.matAb <- function(dat){
                           lambda = 0.5,
                           eta = min(dat.mat$log10MFI, na.rm=TRUE)))
   
+  # Generate predictions with standard errors and confidence intervals
+  predictions <- predictNLS(fit, newdata = data.frame(age = seq(0, 1, 0.01)))
   
+  # View summary table containing Estimate, Mean, Std.Dev (SE), and CIs
+  #head(predictions$summary)
   
-  # Compute deterministic mean trajectory (black line)
-  x <- seq(0, max(dat.mat$log10MFI), length.out = 100)
-  T <- 365   # number of time steps (days)
-  mu <- coef(fit)[["eta"]] + exp(-coef(fit)[["lambda"]] * ((0:(T-1))/365)) * (max(x) - coef(fit)[["eta"]])
+  # Extract predictions and standard errors into a clean data frame
+  df_preds <- data.frame(
+    fit =   predictions$summary$mean.1,  # Point prediction
+    se.fit =   predictions$summary$u.1   # Standard Error
+  )
   
-  df.mean <- cbind.data.frame(age=(0:(T-1))/365, log10MFI=mu)
-  
-  #and the upper and lower lci
-  CI.dat <- confint(fit)
-  mu_lci <- CI.dat['eta','2.5%'] + exp(-CI.dat['lambda','97.5%']* ((0:(T-1))/365)) * (max(x) - CI.dat['eta','2.5%'])
-  mu_uci <- CI.dat['eta','97.5%'] + exp(-CI.dat['lambda','2.5%'] * ((0:(T-1))/365)) * (max(x) - CI.dat['eta','97.5%'])
-  
-  
-  df.mean$log10MFI_lci <-  mu_lci
-  df.mean$log10MFI_uci <-  mu_uci
-  df.mean$log10MFI_lci[df.mean$log10MFI_lci<0] <- 0
+  #head(df_preds)
+  df_preds$lci <- df_preds$fit -1.96*df_preds$se.fit
+  df_preds$uci <- df_preds$fit +1.96*df_preds$se.fit
+  df_preds$age <- seq(0, 1, 0.01)
+  # 
+  # 
+  # # Compute deterministic mean trajectory (black line)
+  # x <- seq(0, max(dat.mat$log10MFI), length.out = 100)
+  # T <- 365   # number of time steps (days)
+  # mu <- coef(fit)[["eta"]] + exp(-coef(fit)[["lambda"]] * ((0:(T-1))/365)) * (max(x) - coef(fit)[["eta"]])
+  # 
+  # df.mean <- cbind.data.frame(age=(0:(T-1))/365, log10MFI=mu)
+  # 
+  # #and the upper and lower lci
+  # CI.dat <- confint(fit)
+  # mu_lci <- CI.dat['eta','2.5%'] + exp(-CI.dat['lambda','97.5%']* ((0:(T-1))/365)) * (max(x) - CI.dat['eta','2.5%'])
+  # mu_uci <- CI.dat['eta','97.5%'] + exp(-CI.dat['lambda','2.5%'] * ((0:(T-1))/365)) * (max(x) - CI.dat['eta','97.5%'])
+  # 
+  # 
+  # df.mean$log10MFI_lci <-  mu_lci
+  # df.mean$log10MFI_uci <-  mu_uci
+  # df.mean$log10MFI_lci[df.mean$log10MFI_lci<0] <- 0
   
   #replot with just the deterministic model
   p1 <- ggplot(dat.mat) + #ggtitle("Simulated maternal antibody trajectories for 100 bats") +
@@ -496,8 +513,8 @@ plot.matAb <- function(dat){
                        plot.title = element_text(size=18),
                        axis.text = element_text(size=14)) +
     ylab(bquote(log[10]~MFI))+
-    geom_ribbon(data=df.mean, aes(x=age, ymin=log10MFI_lci, ymax=log10MFI_uci), fill="cornflowerblue", alpha=.2) +
-    geom_line(data=df.mean, aes(x=age, y=log10MFI), color="navy", size=1)
+    geom_ribbon(data=df_preds, aes(x=age, ymin=lci, ymax=uci), fill="cornflowerblue", alpha=.2) +
+    geom_line(data=df_preds, aes(x=age, y=fit), color="navy", size=1)
   
   return(p1)  
 }
@@ -613,6 +630,6 @@ make.Fig5.squiggle(panel1 = paste0(homewd, "/final_figures_tables/tmp/MSIRSI.pdf
           vis_split = 3,
           det.df=read.csv(file =paste0(homewd, "/serology/data/stan_fit_deterministic_df_adultAB.csv"), header = T, stringsAsFactors = F), 
           stan_df=read.csv(file = paste0(homewd, "/serology/data/stan_fitted_bats.csv"), header = T, stringsAsFactors = F),
-          filename =  paste0(homewd, "/final_figures_tables/main/Fig5.png"))
+          filename =  paste0(homewd, "/final_figures_tables/main/Fig5.pdf"))
 
 

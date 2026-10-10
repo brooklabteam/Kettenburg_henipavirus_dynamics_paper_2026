@@ -24,8 +24,8 @@ library(ggdendroplot)
 
 #first record your wd for this repo (home) 
 #cara adds hers here too - just comment out whichever you are not using
-homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
-#homewd = "/Users/carabrook/Developer/luminex-serology-madabat"
+#homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 
 #now load in the merged luminex data from the "data" folder
@@ -124,15 +124,15 @@ p3 <- ggplot(subset(bat.high.df, bat_species=="Pteropus rufus")) + coord_cartesi
         axis.text.y = element_text(size=13), strip.background = element_rect(fill="white"),
         strip.text.y = element_text(size=16, face="italic"), strip.text.x = element_text(size=16)) +
   guides(color=guide_legend(ncol=2)); p3 
-#so few bats, these are probably exposures from other bats
-
-ggsave(file = paste0(homewd,"/serology/figures/pteropus-spillover-plot.png"),
-       plot = p3,
-       units="mm",  
-       width=80, 
-       height=40, 
-       scale=3.3, 
-       dpi=300)
+# #so few bats, these are probably exposures from other bats
+# 
+# ggsave(file = paste0(homewd,"/serology/figures/pteropus-spillover-plot.png"),
+#        plot = p3,
+#        units="mm",  
+#        width=80, 
+#        height=40, 
+#        scale=3.3, 
+#        dpi=300)
 
 
 # Now, focusing on the Eidolon and Rousettus let's decide which 
@@ -152,7 +152,7 @@ sum(is.na(lumdat.long$MFI))#0
 
 
 #function to select antigens and evaluate
-choose.antigens <- function(dat, species, genus, manual_cluster, do.save.plot){
+choose.antigens <- function(dat, species, genus, manual_cluster, do.save.plot, filename){
   #shrink dataset to area of focus
   df.shrink = subset(data.frame(dat), bat_species==species & virus_genus==genus)
   
@@ -293,15 +293,15 @@ choose.antigens <- function(dat, species, genus, manual_cluster, do.save.plot){
   
   
   #make plot
-  out.plot.mid <- cowplot::plot_grid(p2,p3,p4, ncol=3,nrow=1, align = "hv", axis="tb")
-  out.plot.top <- cowplot::plot_grid(p1,p5,ncol=2,nrow = 1, align = "hv", axis="tb" )
-  out.plot.top2 <- cowplot::plot_grid(p6a,p6b,ncol=2,nrow = 1, align = "hv", axis="tb" )
-  out<- cowplot::plot_grid(out.plot.top, out.plot.top2, out.plot.mid, p8, ncol=1, nrow = 4) #+ theme(panel.background = element_rect(fill="white"), plot.background = element_rect(fill="white"))
-  print(out) 
+  out.plot.mid <- cowplot::plot_grid(p2,p3,p4, ncol=3,nrow=1, align = "hv", axis="tb", labels = c("C", "D", "E"), label_size = 22)
+  out.plot.top <- cowplot::plot_grid(p1,p5,ncol=2,nrow = 1, align = "hv", axis="tb" , labels = c("A", "B"), label_size = 22)
+  out.plot.top2 <- cowplot::plot_grid(p6a,p6b,ncol=2,nrow = 1, align = "hv", axis="tb", labels = c("F", "G"), label_size = 22)
+  out<- cowplot::plot_grid(out.plot.top, out.plot.mid, out.plot.top2, p8, ncol=1, nrow = 4, labels = c("", "", "", "H"), label_size = 22) #+ theme(panel.background = element_rect(fill="white"), plot.background = element_rect(fill="white"))
+  #print(out) 
   
   if(do.save.plot ==TRUE){
 
-    ggsave(file = paste0(homewd,"/serology/figures/PCA-plots-", gsub(" ", "-", species),"-",genus, ".png"),
+    ggsave(file = filename,
            plot = out,
            bg = "white",
            units="mm",  
@@ -319,9 +319,9 @@ choose.antigens <- function(dat, species, genus, manual_cluster, do.save.plot){
   
 }
 
-PCA.Eid.hen <- choose.antigens(dat = lumdat.long, species = "Eidolon dupreanum", genus = "Henipavirus",  manual_cluster = 3,  do.save.plot = TRUE)
-PCA.Rou.hen <- choose.antigens(dat = lumdat.long, species = "Rousettus madagascariensis", genus = "Henipavirus",  manual_cluster = NA, do.save.plot = TRUE)
-PCA.Pter.hen <- choose.antigens(dat = lumdat.long, species = "Pteropus rufus", genus = "Henipavirus",  manual_cluster = NA, do.save.plot = TRUE)
+PCA.Eid.hen <- choose.antigens(dat = lumdat.long, species = "Eidolon dupreanum", genus = "Henipavirus",  manual_cluster = NA,  do.save.plot = TRUE, filename=paste0(homewd,"/final_figures_tables/supplemental/FigSXX_PCA_plots_Eidolon.png"))
+PCA.Rou.hen <- choose.antigens(dat = lumdat.long, species = "Rousettus madagascariensis", genus = "Henipavirus",  manual_cluster = NA, do.save.plot = TRUE, filename=paste0(homewd,"/final_figures_tables/supplemental/FigSXX_PCA_plots_Rousettus.png"))
+PCA.Pter.hen <- choose.antigens(dat = lumdat.long, species = "Pteropus rufus", genus = "Henipavirus",  manual_cluster = NA, do.save.plot = TRUE,  filename=paste0(homewd,"/final_figures_tables/supplemental/FigSXX_PCA_plots_Pteropus.png"))
 
 ################################################################################
 ################################################################################
@@ -331,7 +331,7 @@ PCA.Pter.hen <- choose.antigens(dat = lumdat.long, species = "Pteropus rufus", g
 
 
 # load aa alignment for henipavirus
-henipa.align <- read.alignment(file = paste0(homewd,"/serology/Henipavirus-Alignment.fasta"), format = "fasta")
+henipa.align <- read.alignment(file = paste0(homewd,"/serology/data/Henipavirus-Alignment.fasta"), format = "fasta")
 # make distance matrix
 dist.henipa <- dist.alignment(henipa.align)
 
@@ -497,13 +497,9 @@ plot.correlation(dat=lumdat.long, ant1 = "GhV", ant2 = "NiV", ant3 = "HeV", ant4
 # the system. NiV, HeV, CedV, and MojV are all correlated with one another,
 # though HeV somewhat less so, and it does dominate PC3 independently. There
 # are likely multiple other henipaviruses in this clade circulating. 
-# Since HeV generates the next-highest MFI value and shows the least correlation,
-# we will select that for seasonal analysis, understanding that it is likely 
-# picking up cross-reactivity to multiple antigens. We could do NiV too,
-# especially to compare with historical patterns.
 
-# Verdict: Seasonal analysis of seroprevalence to GhV, AngV, 
-# HeV (latter is most tenuous), could potentially add NiV
+
+# Verdict: Seasonal analysis of seroprevalence to GhV, AngV
 
 ###############################################################
 ###############################################################
@@ -518,15 +514,22 @@ plot.correlation(dat=lumdat.long, ant1 = "GhV", ant2 = "NiV", ant3 = "HeV", ant4
 # justifiable cause though to act decisively beyond GhV. 2-3 clusters are 
 # supported depending on the method.
 
-# Verdict: Seasonal analysis of seroprevalence to GhV only, though 
-# recognizing that this is likely picking up cross-reactivity as we have
-# no molecular data for henipaviruses in Rousettus in Madagascar.
+# Verdict: Seasonal analysis of seroprevalence to GhV and AngV. 
+# Clustering suggests the presence of a third HNV that is important
+# in this system, though it does not clearly align with any of the antigens
+# test. This could be a signature of AndV serology though we cannot say as this
+# antigen was not successfully tested in this system.
 
-# Verdict: just do seasonal analysis of seroprevalence to GhV in Rousettus.
+# Verdict: just do seasonal analysis of seroprevalence to GhV and AngV in Rousettus.
 
 ###############################################################
 ###############################################################
-# Pteropus rufus: Henipavirueses
+# Pteropus rufus: Henipaviruses
+
+# Not going to analyze as data were supportive only of a single, seronegative cluster
+# and only 5 individuals had MFI values > 1000 for any HNV antigen. It is likely true 
+# that there are circulating henipaviruses in P. rufus bats but we probably have not 
+# identified and characterized these to sequence at this stage.
 
 ###############################################################
 ###############################################################

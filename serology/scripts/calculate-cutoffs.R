@@ -15,14 +15,15 @@ library(corrr)
 library(FactoMineR)
 library(ggpmisc)
 library(reshape2)
+library(tidyr)
 
 #use this script to calculate cutoffs for the luminex
 
 
 #first record your wd for this repo (home) 
 #cara adds hers here too - just comment out whichever you are not using
-#homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
-homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+#homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 setwd(homewd)
 #now load in the merged luminex data from the "data" folder
@@ -86,6 +87,8 @@ lumdat.long$bat_species <- factor(lumdat.long$bat_species, levels=c("Eidolon dup
 
 # Now apply mixture models on these subsets of the data for which we have known molecular
 # evidence of actual viruses in this system: GhV and AngV
+# Selection criteria suggest that we should ignore P. rufus data but 
+# retaining here for compa
 bat.slim = subset(lumdat.long, antigen =="AngV" | antigen  =="GhV" )
 
 # plot the distribution of MFI by each species - antigen pair
@@ -99,24 +102,24 @@ fit.mixtures <- function(df, return.dat,  mclust_thresh, mclust_thresh_lci, mclu
   print(name_bat)
   print(name_antigen)
   
-  # in the case of RavV, we are finding that it selects a 
-  # threshold too low (<500) with "E" assumption, so we force it to the
-  # same number of clusters optimized for BdbV, which is 8
-  if(name_bat=="Rousettus madagascariensis" & name_antigen=="RavV"){
-    # it chooses 4 clusters with 1 empty cluster when allowed all
-    # possibilities and 5 clusters with 1 empty cluster when allowed that too
-    # so we will force it to 6 or more where it does not make any empty clusters
-    out_clust <-  Mclust(df$log10MFI, 6:9, c("E")) 
-    #when given this range, it chooses 8 which is the optimal cluster number for BdBV
- # }else if(name_bat=="Eidolon dupreanum" & name_antigen=="AngV"){
-  #  out_clust <-  Mclust(df$log10MFI, 1:5, c("E"))
-  
-  }else{
+ #  # in the case of RavV, we are finding that it selects a 
+ #  # threshold too low (<500) with "E" assumption, so we force it to the
+ #  # same number of clusters optimized for BdbV, which is 8
+ #  if(name_bat=="Rousettus madagascariensis" & name_antigen=="RavV"){
+ #    # it chooses 4 clusters with 1 empty cluster when allowed all
+ #    # possibilities and 5 clusters with 1 empty cluster when allowed that too
+ #    # so we will force it to 6 or more where it does not make any empty clusters
+ #    out_clust <-  Mclust(df$log10MFI, 6:9, c("E")) 
+ #    #when given this range, it chooses 8 which is the optimal cluster number for BdBV
+ # # }else if(name_bat=="Eidolon dupreanum" & name_antigen=="AngV"){
+ #  #  out_clust <-  Mclust(df$log10MFI, 1:5, c("E"))
+ #  
+ #  }else{
     #otherwise, we allow the data to decide and it always chooses many
     #apply the cluster analysis, querying a possibility of  total clusters
     out_clust <-  Mclust(df$log10MFI, 1:9, c("E")) #changed this to 9  
   
-  }
+  #}
   
   #9 possible clusters, V = uneven variance, E = even variance
   # originally tested both distribution types but best support in all cases
@@ -193,7 +196,7 @@ fit.mixtures <- function(df, return.dat,  mclust_thresh, mclust_thresh_lci, mclu
     
     # here we select the maximum value of the distribution that is 1 below the highest distribution (so if there are 3 clusters, this
     # is the max of cluster 2, or if there are 2 clusters, this is the max of cluster 1)
-    # occassionally, the lower cluster gets split on either side of the upper, so we need to correct for that and make
+    # occasionally, the lower cluster gets split on either side of the upper, so we need to correct for that and make
     # sure the high values get assigned to the highest cluster 
     log10MFI_max_second_to_highest_dist <- max(out_clust$data[out_clust$classification == max(sort(unique(out_clust$classification))[-n_dist]) & out_clust$data < max(out_clust$data[out_clust$classification == max(sort(unique(out_clust$classification)))])])  
     
@@ -484,10 +487,16 @@ plot.dat.model.clust.cumulative <- function(dat, mod.df, filename){
   
   #get cutoff values
   mod.df$cutoff_lMFI_clust <- round(mod.df$cutoff_lMFI_clust, 6)
-  cutoff.df <- ddply(mod.df, .(bat_species, antigen), summarise, cutoff_lMFI_clust, cutoff_MFI_clust)
+  cutoff.df <- ddply(mod.df, .(bat_species, antigen), summarise, cutoff_lMFI_clust=unique(cutoff_lMFI_clust) , cutoff_MFI_clust = unique(cutoff_MFI_clust), cutoff_lMFI_clust_lci=unique(cutoff_lMFI_clust_lci) , cutoff_MFI_clust_lci = unique(cutoff_MFI_clust_lci), cutoff_lMFI_clust_uci=unique(cutoff_lMFI_clust_uci) , cutoff_MFI_clust_uci = unique(cutoff_MFI_clust_uci))
   cutoff.df<- cutoff.df[!duplicated(  cutoff.df),]
   cutoff.df$cutoff_lMFI_clust <- round(  cutoff.df$cutoff_lMFI_clust, 2)
   cutoff.df$cutoff_MFI_clust <- round(  cutoff.df$cutoff_MFI_clust, 0)
+  
+  ribbon.df <- ddply(cutoff.df,.(antigen, bat_species), summarise, x= unique(cutoff_lMFI_clust_lci))
+  ribbon.df2 <- ddply(cutoff.df,.(antigen, bat_species), summarise, x= unique(cutoff_lMFI_clust_uci))
+  ribbon.df <- rbind(ribbon.df, ribbon.df2)
+  ribbon.df$ymin = 0
+  ribbon.df$ymax = 3
   
   cutoff.df$label= paste0("MFI seropositive\nthreshold = ", cutoff.df$cutoff_MFI_clust)
   #and plot all together across the three species
@@ -510,39 +519,44 @@ plot.dat.model.clust.cumulative <- function(dat, mod.df, filename){
                   y=density, color=id_clust)) +  # Using MFI on the X axis...
     #geom_vline(data=subset(mod.df, bat_species=="Eidolon dupreanum"),
     #          aes(xintercept = cutoff_lMFI), color= "red", linetype=2, size=.7) +
+    geom_ribbon(data=ribbon.df, aes(x = x, ymin=ymin, ymax=ymax), fill = "cornflowerblue", alpha=.3) +
     geom_vline(data=mod.df,
-               aes(xintercept = cutoff_lMFI_clust), color= "blue", linewidth = 1, linetype=2, size=.7) +
-    #geom_vline(data=mod.df,
-     #          aes(xintercept = cutoff_lMFI_clust_lci), color= "orange", linetype=2, size=.7) +
-    #geom_vline(data=mod.df,
-     #          aes(xintercept = cutoff_lMFI_clust_uci), color= "darkred", linetype=2, size=.7) +
+               aes(xintercept = cutoff_lMFI_clust), color= "navy", linewidth = 1, linetype=2, size=.7) +
+    # geom_vline(data=mod.df,
+    #           aes(xintercept = cutoff_lMFI_clust_lci), color= "lightblue", linetype=2, size=.7) +
+    # geom_vline(data=mod.df,
+    #           aes(xintercept = cutoff_lMFI_clust_uci), color= "lightblue", linetype=2, size=.7) +
     
     #labs(title = "E. dupreanum") +
-    geom_label(data=cutoff.df, aes(x=0.1, y=rep(c(1.8,2.4),3), label=label), label.size = 0, fontface = "italic", color="blue") +
+    geom_label(data=cutoff.df, aes(x=0.1, y=rep(c(1.8,2.4),3), label=label), label.size = 0, fontface = "italic", color="navy") +
     xlab("log10 MFI") + guides(color= guide_legend(nrow = 1)); pall
   
   
-    
-      ggsave(file = filename,
-             plot=pall,
-             units="mm",  
-             width=90, 
-             height=60, 
-             scale=3)#, 
-   
+  
+  ggsave(file = filename,
+         plot=pall,
+         units="mm",  
+         width=90, 
+         height=60, 
+         scale=3)#, 
+  
   
 }
 
 
-#now plot the data and the fitted mixture models, including the 3 different cutoffs
+# now plot the data and the fitted mixture models, including the 3 different cutoffs
+# only Rousettus and Eidolon to be included as supplementary figures
+# Pteropus data amd plots generated here to be thorough
 plot.dat.model.clust.lci.uci(dat =lumdat.clust, mod.df=mixture.par, plot_save = T,
                          pEidfile= paste0(homewd, "/serology/figures/Eidolon_mixtures_85_90_95.png"),
                          pPterfile= paste0(homewd,"/serology/figures/Pteropus_mixtures_85_90_95.png"),
                          pRoufile= paste0(homewd, "/serology/figures/Rousettus_mixtures_85_90_95.png"))
 
-#now make supplementary figure for the whole paper that highlights the 90% confidence threshold for the upper cluster assignment
+# now make supplementary figure for the whole paper that highlights the 90% confidence
+# threshold for the upper cluster assignment which was used for the serological cutoffs in the paper
+# only reporting on Eidolon and Rousettus data here
 plot.dat.model.clust.cumulative(dat =lumdat.clust, mod.df=mixture.par,
-                             filename= paste0(homewd, "/final_figures_tables/tmp/FigS8-mixture-outputs.png"))
+                             filename= paste0(homewd, "/final_figures_tables/supplemental/FigSX-mixture-outputs.png"))
 
 
 
