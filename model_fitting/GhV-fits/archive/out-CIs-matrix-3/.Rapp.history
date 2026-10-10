@@ -1,0 +1,3 @@
+load("/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/model_fitting/GhV-fits/out-CIs-matrix/-GhV-mean1.Rdata")
+load("/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/model_fitting/GhV-fits/out-CIs-matrix/-GhV-mean24.Rdata")
+load("/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/model_fitting/GhV-fits/out-CIs-matrix/-GhV-mean34.Rdata")
