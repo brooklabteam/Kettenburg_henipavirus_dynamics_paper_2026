@@ -338,7 +338,7 @@ pcomppar <- cowplot::plot_grid(beta.plot, sigma.plot, recru.plot, loss.plot, nco
 
 pall <- cowplot::plot_grid(pR0, pcomppar, nrow=2, ncol=1, rel_heights  = c(1,2))
 
-ggsave(file = paste0(homewd,"/final_figures_tables/supplemental/FigSX-model-comparison.png"),
+ggsave(file = paste0(homewd,"/final_figures_tables/supplemental/FigSX-model-comparison.pdf"),
        plot = pall,
        units="mm",  
        width=100, 
