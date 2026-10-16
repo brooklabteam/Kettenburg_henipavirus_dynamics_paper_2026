@@ -182,6 +182,39 @@ all.par <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/par_fits_GhV_C
 
 all.R0 <- wrap.R0(par.df = all.par, w_1_star = 0.276, age_rate = 1/26)
 
-write.csv(all.R0, file = paste0(homewd,"/model_fitting/GhV-fits/final_par_fits_wR0.csv"), row.names = F)
 
-#ggplot(all.R0) + geom_point(aes(x=llik, y=R0)) + coord_cartesian(xlim=c(625,650))
+#now reorder columns and rearrange rows:
+sort.fitted.pars <- function(df){
+  par.list <- dlply(df,.(model_base))
+  
+  get.avg <- function(df){
+    df$mean_AIC <- mean(df$AIC)
+    df$mean_llik <- mean(df$llik)
+  return(df)
+  }
+
+  
+  df <- data.table::rbindlist(lapply(par.list, get.avg))
+  df <- arrange(df, mean_AIC, llik)
+  
+  #and rearrange columns
+  names(df)
+  df <- dplyr::select(df, model_base, model, mort, mort_juv, adult_fec, recov, sigma_fix, wane_fix, wane,
+                      beta, beta_lci, beta_uci, sigma1, sigma1_lci, sigma1_uci, sigma2, sigma2_lci, sigma2_uci,
+                      recru, recru_lci, recru_uci, recru2, recru2_lci, recru2_uci, loss, loss_lci, loss_uci,
+                      epsilon, epsilon_lci, epsilon_uci, mu_sick, mu_sick_lci, mu_sick_uci, mu_rec, mu_rec_lci, mu_rec_uci,
+                      weightPCR, llik, AIC, R0_method, R0)
+      
+return(df)
+  }
+
+save.R0 <- sort.fitted.pars(all.R0)
+
+write.csv(save.R0, file = paste0(homewd,"/model_fitting/GhV-fits/final_par_fits_wR0.csv"), row.names = F)
+
+#and include the additional
+save.R0$mort_class <- gsub(pattern = "-mu", replacement = "mu", x= sapply(strsplit(save.R0$model, save.R0$model_base),'[',2))
+save.R0$mort_class[is.na(save.R0$mort_class)] <- "base-model"
+save.R0$mort_class <- gsub(pattern = "sickmu", replacement = "sick-mu", x= save.R0$mort_class)
+
+#ggplot(save.R0) + geom_point(aes(x=llik, y=R0, color=model_base, shape=mort_class), size=3) + coord_cartesian(xlim=c(625,650))
