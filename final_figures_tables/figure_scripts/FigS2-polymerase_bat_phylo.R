@@ -1,4 +1,4 @@
-#Script to make african bat phylogeny for supplemental
+#Script to make bat phylogeny for supplemental
 
 rm(list=ls())
 
@@ -67,30 +67,32 @@ dat2$new_label <- NA
 
 #now, select the name based on what components are present for each sample
 #all components with values:
+dat2$new_label[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)] <- paste(dat2$Accession[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+                                                                                                                  dat2$Organism_Name[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+                                                                                                                  dat2$Isolate[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+                                                                                                                  dat2$source[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+                                                                                                                  dat2$Country[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+                                                                                                                  dat2$Collection_Date[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
+# 
+# #and if there is an NA just drop it
+# 
+# #here NA in Isolate only:
+dat2$new_label[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)] <- paste(dat2$Accession[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+                                                                                                                 dat2$Organism_Name[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+                                                                                                                 #dat2$Isolate[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+                                                                                                                 dat2$source[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+                                                                                                                 dat2$Country[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
+                                                                                                                 dat2$Collection_Date[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
+
+
 # dat2$new_label[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)] <- paste(dat2$Accession[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
-#                                                                                                                   dat2$Organism_Name[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
-#                                                                                                                   dat2$Isolate[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|", 
-#                                                                                                                   dat2$source[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
-#                                                                                                                   dat2$Country[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
-#                                                                                                                   dat2$Collection_Date[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
+#                                                                                                                   dat2$Organism_Name[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
 # 
 # #and if there is an NA just drop it
 # 
 # #here NA in Isolate only:
 # dat2$new_label[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)] <- paste(dat2$Accession[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|", 
-#                                                                                                                  dat2$Organism_Name[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|", 
-#                                                                                                                  #dat2$Isolate[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|", 
-#                                                                                                                  dat2$source[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
-#                                                                                                                  dat2$Country[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
-#                                                                                                                  dat2$Collection_Date[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
-dat2$new_label[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)] <- paste(dat2$Accession[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|",
-                                                                                                                  dat2$Organism_Name[!is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
-
-#and if there is an NA just drop it
-
-#here NA in Isolate only:
-dat2$new_label[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)] <- paste(dat2$Accession[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)], "|", 
-                                                                                                                 dat2$Organism_Name[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
+#                                                                                                                  dat2$Organism_Name[is.na(dat2$Isolate) & !is.na(dat2$Accession) &!is.na(dat2$source) &!is.na(dat2$Country)])
 
 
 
@@ -162,7 +164,7 @@ p2 <- ggtree(rooted.tree2) %<+% tree.dat2 + geom_tippoint(aes(color=Genus, shape
   geom_cladelabel(node = 651, label = "Orthoavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   geom_cladelabel(node = 662, label = "Metaavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   geom_cladelabel(node = 672, label = "Paraavulavirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
-  geom_cladelabel(node = 536, label = "Hendra/Nipah henipavirus clade (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  geom_cladelabel(node = 535, label = "Hendra/Nipah henipavirus clade (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   geom_cladelabel(node = 530, label = "Ghanaian bat henipavirus clade | Eidolon helvum | Zambia (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   geom_cladelabel(node = 1013, label = "Unclassified bat paramyxovirus clade | Pteropus sp. | Asia (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
   geom_cladelabel(node = 1031, label = "Unclassified bat paramyxovirus clade | Eidolon helvum | Tanzania (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
@@ -182,7 +184,7 @@ p2.8<-ggtree::collapse(p2.7, 674)+geom_point2(aes(subset=(node==674)), size=4, s
 p2.9<-ggtree::collapse(p2.8, 651)+geom_point2(aes(subset=(node==651)), size=4, shape=25, fill="black")
 p2.10<-ggtree::collapse(p2.9, 662)+geom_point2(aes(subset=(node==662)), size=4, shape=25, fill="black")
 p2.11<-ggtree::collapse(p2.10, 672)+geom_point2(aes(subset=(node==672)), size=4, shape=25, fill="black")
-p2.12<-ggtree::collapse(p2.11, 536)+geom_point2(aes(subset=(node==536)), size=4, shape=25, fill="deepskyblue2")
+p2.12<-ggtree::collapse(p2.11, 535)+geom_point2(aes(subset=(node==535)), size=4, shape=25, fill="deepskyblue2")
 p2.13<-ggtree::collapse(p2.12, 530)+geom_point2(aes(subset=(node==530)), size=4, shape=25, fill="deepskyblue2")
 p2.14<-ggtree::collapse(p2.13, 1013)+geom_point2(aes(subset=(node==1013)), size=4, shape=25, fill="deepskyblue2")
 p2.15<-ggtree::collapse(p2.14, 1031)+geom_point2(aes(subset=(node==1031)), size=4, shape=25, fill="deepskyblue2")
