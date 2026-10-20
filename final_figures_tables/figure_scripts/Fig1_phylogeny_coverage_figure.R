@@ -996,8 +996,8 @@ homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dyn
 ggsave(file = paste0(homewd, "Fig1_phylogeny_coverage_pairwise.png"),
        plot= fig1,
        units="mm",
-       width=290,
-       height=110,
+       width=300,
+       height=130,
        scale=2,
        dpi=500)
 
