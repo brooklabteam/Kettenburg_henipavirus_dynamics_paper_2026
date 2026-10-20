@@ -529,7 +529,7 @@ plot.dat.model.clust.cumulative <- function(dat, mod.df, filename){
     #           aes(xintercept = cutoff_lMFI_clust_uci), color= "lightblue", linetype=2, size=.7) +
     
     #labs(title = "E. dupreanum") +
-    geom_label(data=cutoff.df, aes(x=0.1, y=rep(c(1.8,2.4),3), label=label), label.size = 0, fontface = "italic", color="navy") +
+    geom_label(data=cutoff.df, aes(x=0.1, y=rep(c(0.7,0.7),3), label=label), label.size = 0, fontface = "italic", color="navy") +
     xlab("log10 MFI") + guides(color= guide_legend(nrow = 1)); pall
   
   
@@ -548,16 +548,16 @@ plot.dat.model.clust.cumulative <- function(dat, mod.df, filename){
 # now plot the data and the fitted mixture models, including the 3 different cutoffs
 # only Rousettus and Eidolon to be included as supplementary figures
 # Pteropus data amd plots generated here to be thorough
-plot.dat.model.clust.lci.uci(dat =lumdat.clust, mod.df=mixture.par, plot_save = T,
-                         pEidfile= paste0(homewd, "/serology/figures/Eidolon_mixtures_85_90_95.png"),
-                         pPterfile= paste0(homewd,"/serology/figures/Pteropus_mixtures_85_90_95.png"),
-                         pRoufile= paste0(homewd, "/serology/figures/Rousettus_mixtures_85_90_95.png"))
+# plot.dat.model.clust.lci.uci(dat =lumdat.clust, mod.df=mixture.par, plot_save = T,
+#                          pEidfile= paste0(homewd, "/serology/figures/Eidolon_mixtures_85_90_95.png"),
+#                          pPterfile= paste0(homewd,"/serology/figures/Pteropus_mixtures_85_90_95.png"),
+#                          pRoufile= paste0(homewd, "/serology/figures/Rousettus_mixtures_85_90_95.png"))
 
 # now make supplementary figure for the whole paper that highlights the 90% confidence
 # threshold for the upper cluster assignment which was used for the serological cutoffs in the paper
 # only reporting on Eidolon and Rousettus data here
 plot.dat.model.clust.cumulative(dat =lumdat.clust, mod.df=mixture.par,
-                             filename= paste0(homewd, "/final_figures_tables/supplemental/FigSX-mixture-outputs.png"))
+                             filename= paste0(homewd, "/final_figures_tables/supplemental/FigS4-mixture-outputs.png"))
 
 
 
