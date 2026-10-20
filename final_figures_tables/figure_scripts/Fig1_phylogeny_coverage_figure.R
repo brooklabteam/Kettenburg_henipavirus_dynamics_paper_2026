@@ -450,8 +450,7 @@ coverage_ghvlike<-  ggplot()+
   #scale_y_continuous(expand=c(0,0))+
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
-        #axis.title.y = element_text(margin = margin(0,0,0,1)),
-        axis.title.y = element_blank(),
+        axis.title.y = element_text(margin = margin(0,0,0,1)),
         axis.ticks.x=element_blank(),
         axis.text.x = element_blank(),
         plot.margin = unit(c(0.1,0.5,0.5,0.5), "cm"),
