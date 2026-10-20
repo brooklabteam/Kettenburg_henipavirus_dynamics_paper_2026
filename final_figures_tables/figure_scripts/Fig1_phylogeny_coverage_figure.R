@@ -908,7 +908,7 @@ names(dat)
 
 dat$gene<-factor(dat$gene, levels=c("N", "P","M","F","G","L"))
 dat$var1_alt<-factor(dat$var1_alt, levels=c("GhV", "YuV2"))
-dat$var2<-factor(dat$var2, levels=c("GhV-like identity to GhV", "AndV identity to YuV2"))
+dat$var2<-factor(dat$var2, levels=c("GhV-like identity to GhV", "AndV identity to YuV2", "AngV identity to SGV"))
 
 #plot comparison to known sequences
 compare_plot <- ggplot(dat, aes(x=var1_alt, y=gene, fill=id)) +
