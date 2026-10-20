@@ -993,7 +993,7 @@ fig1<-cowplot::plot_grid(part3, part2,
   theme(plot.background = element_rect(fill = "white", colour = NA)); fig1
 
 #save
-homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/tmp/"
+homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/main/"
 ggsave(file = paste0(homewd, "Fig1_phylogeny_coverage_pairwise.png"),
        plot= fig1,
        units="mm",
