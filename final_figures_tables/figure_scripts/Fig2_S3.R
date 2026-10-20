@@ -572,7 +572,7 @@ pIntrannualShedAll <- ggplot(data=session.long) +
 pIntrannualShedAll #this goes in supplement
 
 
-ggsave(file = paste0(homewd,"/final_figures_tables/tmp/Fig2X-supplement-draft.png"),
+ggsave(file = paste0(homewd,"/final_figures_tables/supplemental/FigS3.png"),
        plot=pIntrannualShedAll,
        units="mm",  
        width=80, 
@@ -927,17 +927,17 @@ pMFR_Ct_AndV <- ggplot(data= subset(tot.merge, AndV_ct>0 & !is.na(cat_plot) & ca
         axis.title.y = element_text(size=16)); pMFR_Ct_AndV
 
 
-#supplementary plot
-fig2_supp_ct <- cowplot::plot_grid(pMFR_Ct_GhV, pMFR_Ct_AngV, pMFR_Ct_AndV, ncol = 3, nrow=1, labels = c("A", "B", "C"), label_size = 22, label_x = -.02)
-
-
-ggsave(file = paste0(homewd,"/final_figures_tables/tmp/Fig2X-Ct-supplement-draft.png"),
-       plot=fig2_supp_ct,
-       units="mm",  
-       width=120, 
-       height=90, 
-       scale=3, 
-       dpi=300)
+#supplementary plot - not including
+# fig2_supp_ct <- cowplot::plot_grid(pMFR_Ct_GhV, pMFR_Ct_AngV, pMFR_Ct_AndV, ncol = 3, nrow=1, labels = c("A", "B", "C"), label_size = 22, label_x = -.02)
+# 
+# 
+# ggsave(file = paste0(homewd,"/final_figures_tables/tmp/Fig2X-Ct-supplement-draft.png"),
+#        plot=fig2_supp_ct,
+#        units="mm",  
+#        width=120, 
+#        height=90, 
+#        scale=3, 
+#        dpi=300)
 
 
 #poor body condition and juvenile status are associated with lower Ct
@@ -991,7 +991,7 @@ model_list<-list(glmCoInf=glmCoInf, glmCoInfCat= glmCoInfCat,
                  glmCoInfP=glmCoInfP, glmCoInfCatP= glmCoInfCatP,
                  glmCoInfR=glmCoInfR, glmCoInfCatR= glmCoInfCatR)
 all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
-write.csv(all_summaries, "coinfection_shed_glm_model_summaries.csv", row.names = FALSE)
+#write.csv(all_summaries, "coinfection_shed_glm_model_summaries.csv", row.names = FALSE)
 
 
 #and the Ct-prevalence plot
@@ -1579,7 +1579,7 @@ Fig2_left <- cowplot::plot_grid(pIntrannualShedEid_noLeg, pMFR_Ct_GhV_Eid, pCtpr
 Fig2 <- cowplot::plot_grid(Fig2_left, Eid_Leg, ncol=2, nrow=1, rel_widths = c(1,.1), label_size = 22); Fig2
 
 
-ggsave(file = paste0(homewd,"/final_figures_tables/tmp/Fig2-draft-new.png"),
+ggsave(file = paste0(homewd,"/final_figures_tables/main/Fig2.png"),
        plot=Fig2,
        units="mm",  
        width=140, 
