@@ -12,6 +12,7 @@ library(Matrix)
 library(mvtnorm)
 library(tidyr)
 library(scales)
+library(ggplot2)
 
 #this is the version that builds a comparable matrix to fit the top five model structures
 #load data
@@ -246,11 +247,12 @@ all.pars$mort_class <- gsub(pattern = "sickmu", replacement = "sick-mu", x= all.
 
 #and rank them by mean AIC
 list.pars <- dlply(all.pars,.(model_base))
-get.mean.AIC <- function(df){
+get.mean.AIC.llik <- function(df){
   df$mean_AIC <- mean(df$AIC)
+  df$mean_llik <- mean(df$llik)
   return(df)
 }
-all.pars <- data.table::rbindlist(lapply(list.pars,get.mean.AIC))
+all.pars <- data.table::rbindlist(lapply(list.pars,get.mean.AIC.llik))
 all.pars <- arrange(all.pars, mean_AIC)
 all.pars$model_base <- factor(all.pars$model_base, levels=unique(all.pars$model_base))
 
