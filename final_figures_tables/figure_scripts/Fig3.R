@@ -640,6 +640,13 @@ seroprev.sum$viralcat <- NA
 seroprev.sum$viralcat[seroprev.sum$antigen == "AngV"] <- "AngV"
 seroprev.sum$viralcat[seroprev.sum$antigen == "GhV"] <- "GhV"
 
+panel_labels <- data.frame(
+  viralcat = c("AngV", "GhV"),
+  x = c(18180, 18180),
+  y = c(0.86, 0.86),
+  label = c(" p = NS Ankarana\n p = 0.03 Moramanga", " p = NS Ankarana\n p = 0.01 Moramanga")
+)
+
 pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & bat_species=="Eidolon dupreanum")) +
   geom_rect(data=subset(cal.dat,bat_species=="Eidolon dupreanum"), aes(xmin=as.Date(start), xmax=as.Date(stop), ymin=0, ymax=1, fill=season), alpha=.3) +
   geom_linerange(aes(x=mid_date, ymin=seroprev_lci, ymax=seroprev_uci, color=antigen, alpha=sig), linetype=2, show.legend = F) +
@@ -648,6 +655,7 @@ pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & b
   scale_size_continuous(name=c("N bats"), breaks = c(10,20,30)) +
   geom_ribbon(data=subset(pred.df, bat_species=="Eidolon dupreanum"), aes(x=mid_date, ymin= predicted_seroprevalence_lci, ymax=predicted_seroprevalence_uci, fill=antigen), alpha=.3, show.legend = F) +
   geom_line(data=subset(pred.df, bat_species=="Eidolon dupreanum"), aes(x=mid_date, y= predicted_seroprevalence, color=antigen, group = group)) +
+  geom_text(data = panel_labels, aes(x = x, y = y, label = label),nudge_x = -1)+
   facet_grid(viralcat~bat_species) + theme_bw() +
   theme(axis.text.x = element_text(size=14), 
         axis.title.x = element_blank(), 
@@ -667,15 +675,13 @@ pInterannual_new <- ggplot(data=subset(seroprev.sum, roost_site=="Moramanga" & b
         ) +
   #ggtitle("Interannual seroprevalence (2018-2020 dataset) in" ~ italic("E. dupreanum"))+
   scale_x_continuous(breaks=c(as.Date("2018-01-01"),as.Date("2019-01-01"), as.Date("2020-01-01")), labels=c("2018", "2019", "2020")) +
-  coord_cartesian(expand = F) + ylab("Seroprevalence") + guides(alpha="none") + scale_fill_manual(values=filz.antigen) 
+  coord_cartesian(expand = F) + ylab("seroprevalence") + guides(alpha="none") + scale_fill_manual(values=filz.antigen) 
 pInterannual_new
 
 #legend<-get_legend(pInterannual_new)
 
-# pInterannual_new2<-pInterannual_new+geom_text(data= dat_text, aes(x = x, y = y, label = label, hjust=1.1, vjust=1.5),
-#                                               fontface="italic");pInterannual_new2
 
- 
+
 #Save csv output of gams
 library(broom)
 model_list<-list(gamEidNoSexGhV=gamEidNoSexGhV, gamEidNoSexAngV= gamEidNoSexAngV,
@@ -990,6 +996,17 @@ pIntra_noLeg <- ggplot(pred.df) +
         panel.grid = element_blank()) +
   coord_cartesian(expand = F) + ylab("seroprevalence") + xlab("month of year") + guides(color="none") ;pIntra_noLeg
 
+dat_text <- data.frame(
+  label = c(" p = NS Ankarana\np = 0.05 Moramanga")
+)
+
+pIntra_noLeg<-pIntra_noLeg + geom_text(
+  data    = dat_text,
+  mapping = aes(x = 180, y = 0.6, label = label),
+  hjust   = -0.1,
+  vjust   = -1
+);pIntra_noLeg
+
 
 #Next, test predictors of MFI in seropositives  and plot that for GhV in Eid
 merge.dat$combo_class <- factor(merge.dat$combo_class, levels=c("female-NL", "female-P", "female-L", "male-A", "juvenile"))
@@ -1054,13 +1071,23 @@ merge.dat$cat_plot[merge.dat$cat_plot=="poor"] <- "adult,\nMFR<0"
 merge.dat$cat_plot[merge.dat$cat_plot=="pregnant"] <- "pregnant\nfemale"
 merge.dat$cat_plot <- factor(merge.dat$cat_plot, levels = c("adult,\nMFR>0", "adult,\nMFR<0", "pregnant\nfemale", "juvenile"))
 
+
+panel_labels <- data.frame(
+  antigen = c("GhV"),
+  x = c(3.4),
+  y = c(32000),
+  label = c("            p = NS adult, MFR<0\np = 0 juvenile")
+)
+
 #and plot MFI by condition/juvenile status - leave out pregnant females since there are so few
 pMFR_MFI_GhV <- ggplot(data= subset(merge.dat, bat_species =="Eidolon dupreanum" & antigen=="GhV" & seropos==1 & cat_plot!="pregnant\nfemale")) +
   geom_violin(aes(x=cat_plot, y=MFI), draw_quantiles = c(0,.25,.5,.75)) + 
+  geom_text(data = panel_labels, aes(x = x, y = y, label = label),nudge_x = -1)+
   geom_jitter(aes(x=cat_plot, y=MFI, color=roost_site, shape=as.factor(year)), width = .2, size=3) +
   theme_bw() + ylab("MFI") + facet_grid(bat_species~antigen)+
   scale_shape_manual(name="year", values=yearz) +
   scale_color_manual(values = sitez, name="roost site") +
+  ylim(0,35000)+
   theme(panel.grid = element_blank(),
         axis.text = element_text(size=14), 
         strip.background.y = element_blank(),
@@ -1092,13 +1119,20 @@ as.ggplot(inter)
 # as.ggplot(inter)
 
 #right column
-pRight <- cowplot::plot_grid(inter, pCD, ncol = 1, nrow = 2, 
+pRight2 <- cowplot::plot_grid(NULL, pCD, ncol = 2, nrow = 1, 
+                             rel_widths = c(0.008,1), rel_heights = c(1,1), labels = c("", ""));pRight2
+pRight2<-as.ggplot(pRight2)
+
+pRight <- cowplot::plot_grid(inter, pRight2, ncol = 1, nrow = 2, 
                              rel_widths = c(1,1), rel_heights = c(1.8,1), labels = c("", ""));pRight
+
+
 
 #add overall legend
 pRightwLeg <- cowplot::plot_grid(pRight, legend, ncol = 2, nrow = 1, 
                              rel_widths = c(1,.2), labels = c("", ""));pRightwLeg
 
+pRightwLeg<-as.ggplot(pRightwLeg)
 
 #and the whole plot
 
