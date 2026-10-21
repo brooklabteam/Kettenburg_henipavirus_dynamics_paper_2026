@@ -296,10 +296,10 @@ seroprev.sum <- ddply(merge.dat, .(bat_species, roost_site, antigen, mid_date), 
 seroprev.sum$seroneg <- seroprev.sum$N - seroprev.sum$seropos
 seroprev.sum$seroprev <- seroprev.sum$seropos/seroprev.sum$N
 seroprev.sum$seroprev_lci <-NA
-seroprev.sum$seroprev_uci <-NA
+seroprev.sum$seroprev_uci <-NA 
 for(i in 1:length(seroprev.sum$bat_species)){
-  seroprev.sum$seroprev_lci[i] <-binom.exact(x=seroprev.sum$seropos[i], n=seroprev.sum$N[i])$conf.int[1]
-  seroprev.sum$seroprev_uci[i] <-binom.exact(x=seroprev.sum$seropos[i], n=seroprev.sum$N[i])$conf.int[2]
+  seroprev.sum$seroprev_lci[i] <-binom.test(x=seroprev.sum$seropos[i], n=seroprev.sum$N[i])$conf.int[1]
+  seroprev.sum$seroprev_uci[i] <-binom.test(x=seroprev.sum$seropos[i], n=seroprev.sum$N[i])$conf.int[2]
   
 }
 head(seroprev.sum)
@@ -1002,7 +1002,7 @@ dat_text <- data.frame(
 
 pIntra_noLeg<-pIntra_noLeg + geom_text(
   data    = dat_text,
-  mapping = aes(x = 180, y = 0.6, label = label),
+  mapping = aes(x = 155, y = 0.75, label = label),
   hjust   = -0.1,
   vjust   = -1
 );pIntra_noLeg
@@ -1074,8 +1074,8 @@ merge.dat$cat_plot <- factor(merge.dat$cat_plot, levels = c("adult,\nMFR>0", "ad
 
 panel_labels <- data.frame(
   antigen = c("GhV"),
-  x = c(3.4),
-  y = c(32000),
+  x = c(3.35),
+  y = c(32500),
   label = c("            p = NS adult, MFR<0\np = 0 juvenile")
 )
 
@@ -1093,6 +1093,7 @@ pMFR_MFI_GhV <- ggplot(data= subset(merge.dat, bat_species =="Eidolon dupreanum"
         strip.background.y = element_blank(),
         legend.position = "inside",
         legend.position.inside = c(.23,.85),
+        legend.background = element_rect(color=NA, fill=NA),
         strip.text.y = element_blank(),
         strip.background.x = element_rect(fill="white"),
         strip.text.x = element_text(size = 16),
@@ -1151,3 +1152,4 @@ ggsave(file = paste0(homewd, "/final_figures_tables/main/Fig3.png"),
        height=140, 
        scale=2, 
        dpi=500)
+

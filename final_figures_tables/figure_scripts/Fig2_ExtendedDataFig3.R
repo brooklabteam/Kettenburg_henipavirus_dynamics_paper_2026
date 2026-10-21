@@ -908,7 +908,7 @@ dat_text <- data.frame(
 
 pMFR_Ct_GhV_Eid<-pMFR_Ct_GhV_Eid + geom_text(
   data    = dat_text,
-    mapping = aes(x = 2, y = 28, label = label),
+    mapping = aes(x = 2.01, y = 27, label = label),
   hjust   = -0.1,
   vjust   = -1
 );pMFR_Ct_GhV_Eid
