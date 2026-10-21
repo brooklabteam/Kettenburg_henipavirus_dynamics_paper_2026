@@ -602,7 +602,7 @@ pIntrannualShedEid <- ggplot(data=subset(session.sum, bat_species=="Eidolon dupr
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
         plot.margin = unit(c(.5,.5,.5,1), "lines")) +
   scale_shape_manual(values=yearz) +
-  coord_cartesian(xlim = c(0, 365), ylim = c(0, 1),expand = FALSE) + ylab("prevalence") + xlab("month of year") +
+  coord_cartesian(xlim = c(0, 365), ylim = c(0, 1),expand = FALSE) + ylab("prevalence (GhV)") + xlab("month of year") +
   #scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
   guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
 pIntrannualShedEid
@@ -611,6 +611,7 @@ pIntrannualShedEid
 
 Eid_Leg <- cowplot::get_legend(pIntrannualShedEid)
 
+#annotate
 pIntrannualShedEid_noLeg <- ggplot(data=subset(session.sum, bat_species=="Eidolon dupreanum")) +
   geom_rect(data=subset(cal.dat, bat_species=="Eidolon dupreanum"), aes(xmin=doy_start, xmax=doy_stop, ymin=0, ymax=1, fill=season), alpha=.3,show.legend = F) +
   geom_point(aes(x=doy, y=prevalence_GhV, size=Ntot, shape=year, color = roost_site),show.legend = F) + 
@@ -629,12 +630,22 @@ pIntrannualShedEid_noLeg <- ggplot(data=subset(session.sum, bat_species=="Eidolo
         panel.grid = element_blank(), panel.spacing = unit(1.5, "lines"),
         plot.margin = unit(c(.5,.5,.5,1), "lines")) +
   scale_shape_manual(values=yearz) +
-  coord_cartesian(xlim = c(0, 365), ylim = c(0, 1),expand = FALSE) + ylab("prevalence") + xlab("month of year") +
+  coord_cartesian(xlim = c(0, 365), ylim = c(0, 1),expand = FALSE) + ylab("prevalence (GhV)") + xlab("month of year") +
   #scale_fill_manual(values=colorz) + scale_color_manual(values=colorz) + 
   guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
 pIntrannualShedEid_noLeg
 
+dat_text <- data.frame(
+  label = c(" p = 0.005 Ankarana\n p = NS Mahabo\n p = NS Moramanga"),
+  cyl   = c("GhV")
+)
 
+pIntrannualShedEid_noLeg<-pIntrannualShedEid_noLeg + geom_text(
+  data    = dat_text,
+  mapping = aes(x = 210, y = 0.75, label = label),
+  hjust   = -0.1,
+  vjust   = -1
+);pIntrannualShedEid_noLeg
 
 
 
@@ -890,6 +901,17 @@ pMFR_Ct_GhV_Eid <- ggplot(data= subset(tot.merge, GhV_ct>0 & !is.na(cat_plot) & 
         axis.title.x = element_blank(), 
         #axis.title.x = element_text(size=16, colour = "transparent"),
         axis.title.y = element_text(size=16)); pMFR_Ct_GhV_Eid
+
+dat_text <- data.frame(
+  label = c(" p = 0.02 adult, MFR<0\n  p = 0.001 juvenile")
+)
+
+pMFR_Ct_GhV_Eid<-pMFR_Ct_GhV_Eid + geom_text(
+  data    = dat_text,
+    mapping = aes(x = 2, y = 28, label = label),
+  hjust   = -0.1,
+  vjust   = -1
+);pMFR_Ct_GhV_Eid
 
 
 
@@ -1567,6 +1589,18 @@ pCtprev_line_Eid <- ggplot(data= subset(shed.prev, !is.na(meanGhVCt) & bat_speci
         legend.position.inside = c(.15,.73),
         legend.title = element_text(size=14));pCtprev_line_Eid
 
+dat_text <- data.frame(
+  label = c(" p = 0.09 Ankarana\n  p = 0.07 Mahabo\n p = 0.04 Moramanga")
+)
+
+pCtprev_line_Eid<-pCtprev_line_Eid + geom_text(
+  data    = dat_text,
+  mapping = aes(x = 32, y = 0.75, label = label),
+  hjust   = -0.1,
+  vjust   = -1
+);pCtprev_line_Eid
+
+
 
 # 
 # #guides(color=guide_legend(ncol=1), shape="none", size="none")
@@ -1578,6 +1612,8 @@ pCtprev_line_Eid <- ggplot(data= subset(shed.prev, !is.na(meanGhVCt) & bat_speci
 Fig2_left <- cowplot::plot_grid(pIntrannualShedEid_noLeg, pMFR_Ct_GhV_Eid, pCtprev_line_Eid,  ncol=3, nrow=1, labels = c("A", "B", "C", ""), rel_widths = c(1,.9,.9), label_size = 22, label_x = -.01); Fig2_left
 Fig2 <- cowplot::plot_grid(Fig2_left, Eid_Leg, ncol=2, nrow=1, rel_widths = c(1,.1), label_size = 22); Fig2
 
+Fig2 <- ggdraw(Fig2) + 
+  theme(plot.background = element_rect(fill = "white", color = NA))
 
 ggsave(file = paste0(homewd,"/final_figures_tables/main/Fig2.png"),
        plot=Fig2,
