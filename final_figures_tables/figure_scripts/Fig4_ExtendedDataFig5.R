@@ -37,10 +37,10 @@ names(shed.dat)
 intersect(unique(recap$sampleid), unique(shed.dat$sampleid)) #164 shedding records for recaps
 
 recap = subset(recap, processing_date < "2021-01-01")
-length(recap$sampleid[recap$bat_species=="Eidolon dupreanum"]) #192
-length(unique(recap$barcode_id[recap$bat_species=="Eidolon dupreanum"])) #88
-length(recap$sampleid[recap$bat_species=="Rousettus madagascariensis"]) #136
-length(unique(recap$barcode_id[recap$bat_species=="Rousettus madagascariensis"])) #56
+length(recap$sampleid[recap$bat_species=="Eidolon dupreanum"]) #175
+length(unique(recap$barcode_id[recap$bat_species=="Eidolon dupreanum"])) #87
+length(recap$sampleid[recap$bat_species=="Rousettus madagascariensis"]) #104
+length(unique(recap$barcode_id[recap$bat_species=="Rousettus madagascariensis"])) #52
 length(recap$sampleid[recap$bat_species=="Pteropus rufus"]) #1
 length(unique(recap$barcode_id[recap$bat_species=="Pteropus rufus"])) #1. only 1 sampling point for this bat, so cannot use it
 
