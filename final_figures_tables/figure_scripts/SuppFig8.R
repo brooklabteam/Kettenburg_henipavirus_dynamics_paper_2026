@@ -1,586 +1,203 @@
 rm(list=ls())
 
-#this script uses recapture data and aged data to put some restraints on
-#the duration of both adult and maternal Ab-mediated immunity.
-#this precedes the fitting of our mechanistic models
 
 library(plyr)
-library(dplyr)   
+library(dplyr)
 library(ggplot2)
-library(stats)
+library(lubridate)
+library(tidyr)
 library(mgcv)
-library(reshape2) 
-library(ggh4x)
-library(minpack.lm)
-library(devtools)
-library(rstan)
-library(ggplot2)
+library(reshape2)
+library(Hmisc)
+library(exactci)
+library(lme4)
+library(sjPlot)
 
-#fit declining maternal immunity function to data
+homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/"
+batwd = "/Users/carabrook/Developer/Madagascar-Bat-Data"
 
-
-################################################################################
-################################################################################
-homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+#homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+#batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
 
 
-################################################################################
-################################################################################
+# load comprehensive catching data 
+catch.dat <- read.csv(file = paste0(batwd, "/Catching-Data/catching_data_clean.csv"), header = T, stringsAsFactors = F)#Historic-Catching-Data-Through2020/catching_data_historic.csv"))
 
 
-dat <- read.csv(paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1a/age-seroprevalence-data.csv"), header = T, stringsAsFactors = F)
-head(dat)
-names(dat)[names(dat)=="species"] <- "bat_species"
-dat$log10MFI <- log10(dat$MFI)
-
-# catch.dat <- read.csv(file = paste0(homewd, "/master_data_files/catching_data.csv"), header = T, stringsAsFactors = F)
-# lum.dat <- read.csv(file = paste0(homewd, "/serology/data/mix_sub_data_75_90_96_long.csv"))
-# 
-# #now  fit adult Ab trajectory to data
-# #this functions does it all and saves the data for plotting
-# 
-#   
-#   #load the recaptures
-#   recap = subset(catch.dat, recap_new=="yes")
-#   # head(recap)
-#   # names(recap)
-#   #slim to columns of interest
-#   recap <- dplyr::select(recap, barcode_id, sampleid, roost_site, processing_date, bat_species, bat_age_class, bat_sex, mass_forearm_residual)
-#   # head(recap)
-#   
-#   
-#   #just take  eidolon
-#   recap=subset(recap, bat_species=="Eidolon dupreanum")
-#   recap$processing_date <- as.Date(recap$processing_date)
-#   # min(recap$processing_date)#"2013-11-24"
-#   # max(recap$processing_date)#"2026-01-24"
-#   
-#   
-#   
-#   #and now load the new luminex data 
-#   
-#   #slim
-#   lum.dat <- dplyr::select(lum.dat, sampleid,bat_species, antigen, MFI, seropos, seropos_lci, seropos_uci)
-#   
-#   #head(lum.dat)
-#   #length(unique(lum.dat$sampleid)) #1055
-#   #head(recap)
-#   
-#   lum.dat = subset(lum.dat, bat_species=="Eidolon dupreanum" & antigen=="GhV")
-#   
-#   
-#   recap <- merge(recap, lum.dat, by=c("bat_species", "sampleid"), all.x = T)
-#   #head(recap)
-#   # min(recap$processing_date)#"2013-11-24"
-#   # max(recap$processing_date)#"2026-01-22"
-#   # 
-#   
-#   recap = subset(recap, antigen=="GhV")
-#   
-#   # split by antigen and barcode and make sure there are multiple timepoints. 
-#   # color as bats that stay neg, seroconvert, serorevert or do both
-#   id.recap <- function(df){
-#     if(nrow(df)>1){
-#       df <- arrange(df, processing_date)
-#       #df.new <- dplyr::select(df, -(keep))
-#       df.new <- df
-#       df.new$class <- NA
-#       if(sum(as.numeric(as.character(df$seropos)))==0){
-#         df.new$class <- "always seronegative" # all seroneg
-#       }else if(sum(as.numeric(as.character(df$seropos)))==length(df$seropos)){
-#         df.new$class <- "always seropositive" #all seropos
-#       }else{
-#         vec.sero <- unique(diff(as.numeric(as.character(df$seropos))))
-#         if(sum(unique(vec.sero))==0){
-#           df.new$class <- "seroconversion-seroreversion" #both
-#         }else if((sum(unique(match(vec.sero,-1)),na.rm=T)==0) & (sum(unique(match(vec.sero,1)),na.rm=T)==1)){
-#           df.new$class <- "seroconversion" #both
-#         }else if((sum(unique(match(vec.sero,1)),na.rm=T)==0) & (sum(unique(match(vec.sero,-1)),na.rm=T)==1)){
-#           df.new$class <- "seroreversion" #both
-#         }
-#       }
-#       df.new$N_cap<- nrow(df.new)
-#       return(df.new)
-#     }
-#     
-#   }
-#   recap.list <- dlply(recap, .(antigen, barcode_id))
-#   
-#   recap.sum <- data.table::rbindlist(lapply(recap.list, id.recap))
-#   
-#   recap.sum$seropos <- as.factor(recap.sum$seropos)
-#   
-#   #and plot
-#   recap.sum$is_seroneg <- 1
-#   recap.sum$is_seroneg[recap.sum$class!="always seronegative"] <- 0
-#   recap.sum$is_seroneg <- as.factor(recap.sum$is_seroneg)
-#   
-#   #unique(recap.sum$class)
-#   recap.sum$seropos <- as.character(recap.sum$seropos)
-#   recap.sum$seropos[recap.sum$seropos==0] <- "seronegative"
-#   recap.sum$seropos[recap.sum$seropos==1] <- "seropositive"
-#   recap.sum$seropos <- factor(recap.sum$seropos, levels=c("seronegative", "seropositive"))
-#   
-#   
-#   #get those with < 1 year bewteen sampling dates
-#   recap.list <- dlply(recap.sum, .(barcode_id))
-#   
-#   count_spacing <- function(df, time_days){
-#     df <- arrange(df, processing_date)
-#     diff= c(diff(df$processing_date))
-#     
-#     df$days_diff <- c(NA, diff)
-#     
-#     df$time_series <- cumsum(c(1,diff))
-#     if(sum(df$days_diff[!is.na(df$days_diff)]<time_days)){
-#       return(df)
-#     }
-#     
-#   }
-#   
-#   recap.short <-  data.table::rbindlist(lapply(recap.list, count_spacing, time_days=6*31))
-#   
-#   #recap.short <- subset(recap.short, N_cap>2)
-#   
-#   
-#   recap.short$simple_class <- recap.short$class
-#   recap.short$simple_class <- as.character(recap.short$simple_class)
-#   recap.short$simple_class[recap.short$simple_class!="always seronegative"] <- "dynamic"
-#   recap.short = subset(recap.short, simple_class=="dynamic")
-#   #alphaz2 = c("always seronegative" = .3, "dynamic" = 1 )
-#   
-#   recap.short$era <- "2014-2016"
-#   recap.short$era[recap.short$processing_date>as.Date("2018-01-01")] <- "2018-2020"
-#   
-#   
-#   
-#   #now try restricting to only triptics that go "low-high-low". center on the peak
-#   #also need the first and second point to be within 6 months of each other
-#   recap.list <- dlply(recap.short, .(barcode_id))
-#   find.tryptic <- function(df){
-#     if(nrow(df)>=3){
-#       
-#       if(df$MFI[1]<df$MFI[2]){
-#         df.out = df[1:3,]
-#         
-#         
-#         df.out$new_ts <- NA
-#         df.out$new_ts[df.out$MFI==max(df.out$MFI)] <- 0
-#         
-#         df.out$new_ts[is.na(df.out$new_ts)] <- df.out$time_series[is.na(df.out$new_ts)] + -df.out$time_series[df.out$MFI==max(df.out$MFI)]
-#         
-#         return(df.out)
-#       }else if(df$MFI[2]<df$MFI[3] & nrow(df)>3){
-#         df.out = df[2:nrow(df),]
-#         
-#         #remove anything separated by >6 months and recompute diff
-#         df.out =subset(df.out, days_diff<(6*31))
-#         df.out$days_diff <- c(NA, diff(df.out$processing_date))
-#         
-#         if(sum(df.out$days_diff[!is.na(df.out$days_diff)]<(6*31))>1){ #otherwise you lose it
-#           
-#           
-#           
-#           df.out$new_ts <- NA
-#           df.out$new_ts[df.out$MFI==max(df.out$MFI)] <- 0
-#           
-#           df.out$new_ts[is.na(df.out$new_ts)] <- df.out$time_series[is.na(df.out$new_ts)] + -df.out$time_series[df.out$MFI==max(df.out$MFI)]
-#           
-#           return(df.out)
-#         }     }
-#       
-#       
-#     }
-#     
-#     
-#   }
-#   
-#   
-#   triptic_df <- data.table::rbindlist(lapply(recap.list, find.tryptic))
-#   
-#   triptic_df$seropos <- as.character(triptic_df$seropos)
-#   
-#   
-#   pre.MFI <- lm(MFI~new_ts, data = subset(triptic_df, barcode_id=="956000006105427" & new_ts<1))
-#   post.MFI <- lm(MFI~new_ts, data = subset(triptic_df, barcode_id=="956000006105427" & new_ts>-1))
-#   # 
-#   #MFI = 1141 is the cutoff for seropositivity
-#   add.pseudo <- triptic_df[triptic_df$barcode_id=="956000006105427",]
-#   add.pseudo <- add.pseudo[1:2,]
-#   add.pseudo$MFI <- c(predict(pre.MFI, newdata = data.frame(new_ts = -90)), predict(post.MFI, newdata = data.frame(new_ts = 100)))
-#   add.pseudo$new_ts <- c(-90, 100)
-#   add.pseudo$seropos <- "seronegative"
-#   
-#   triptic_df <- rbind(triptic_df, add.pseudo)
-#   
-#   
-#   #names(triptic_df)
-#   triptic.list <- dlply(triptic_df,.(barcode_id))
-#   
-#   prep.data.stan <- function(df){
-#     df$t_obs <- df$new_ts + abs(min(df$new_ts))+1
-#     df$last_neg <- max(df$t_obs[df$new_ts<0 & df$seropos=="seronegative"])
-#     df$first_pos <- min(df$t_obs[df$seropos=="seropositive"])
-#     
-#     return(df)
-#   }
-#   
-#   triptic_df <- data.table::rbindlist(lapply(triptic.list, prep.data.stan))
-#   
-#   #now run stan
-#   # Map barcode_id to consecutive integers for Stan
-#   bat_levels <- unique(triptic_df$barcode_id)
-#   triptic_df <- triptic_df %>%
-#     mutate(bat_idx = as.numeric(factor(barcode_id, levels = bat_levels)))
-#   
-#   
-#below is all exploratory and produces some temporary plots, but above is all that is needed
-
-# first, collect all the adults that have a 3-prong peak
-
-
-#load the recaptures
-catch.dat <- read.csv(paste0(homewd,"/master_data_files/catching_data.csv"), header = T, stringsAsFactors = F)
 head(catch.dat)
-recap = subset(catch.dat, recap_new=="yes")
-head(recap)
-names(recap)
-#slim to columns of interest
-recap <- dplyr::select(recap, barcode_id, sampleid, roost_site, processing_date, bat_species, bat_age_class, bat_sex, mass_forearm_residual)
-head(recap)
+names(catch.dat)
+
+# drop most columns and name those you want
+catch.dat <-dplyr::select(catch.dat, sampling_session, roost_site, bat_species, processing_date, sampleid, barcode_id, bat_sex, bat_age_class, young_of_year, pupmom_pair, pup_or_mom, sampleid_pupmom_pair, bat_weight_g, bat_forearm_mm, recap_new)
+
+#remove duplicate bats from dataset (bats mis-identified)
+catch.dat = subset(catch.dat, sampleid!="ANGB110")
+catch.dat = subset(catch.dat, sampleid!="MIZ545")
+catch.dat = subset(catch.dat, sampleid!="MIZ548")
+catch.dat = subset(catch.dat, sampleid!="AND6")
+catch.dat = subset(catch.dat, sampleid!="RAK32")
+catch.dat = subset(catch.dat, sampleid!="MIZ305" &sampleid!="MIZ306" & sampleid!="MIZ307" & sampleid!="MIZ546" & sampleid!="MIZ547")
+
+#sub to timeframe of interest
+catch.dat$processing_date <- as.Date(catch.dat$processing_date)
+catch.dat <- subset(catch.dat, processing_date < "2021-01-01")
+#catch.dat <- subset(catch.dat, processing_date < "2023-08-01")
+unique(catch.dat$young_of_year)
+catch.dat$bat_age_class[catch.dat$young_of_year=="yes" & !is.na(catch.dat$bat_age_class)] <- "J"
+unique(catch.dat$bat_species)
 
 
-#just take rousettus and eidolon
-recap=subset(recap, bat_species!="Pteropus rufus")
-recap$processing_date <- as.Date(recap$processing_date)
-min(recap$processing_date)#"2013-11-24"
-max(recap$processing_date)#"2026-01-24"
+adult.dat = subset(catch.dat, bat_species=="Pteropus rufus" & bat_age_class!="J" & !is.na(bat_age_class) & young_of_year!="yes"  | bat_species=="Eidolon dupreanum" & bat_age_class!="J" & !is.na(bat_age_class) & young_of_year!="yes"| bat_species=="Rousettus madagascariensis" & bat_age_class!="J" & !is.na(bat_age_class) & young_of_year!="yes")
+unique(adult.dat$bat_species)
+unique(adult.dat$bat_age_class)
+unique(adult.dat$young_of_year)
 
-
-
-#and now load the new luminex data 
-lum.dat <- read.csv(file = paste0(homewd, "/serology/data/mix_sub_data_75_90_96_long.csv"))
-head(lum.dat)
-
-#slim
-lum.dat <- dplyr::select(lum.dat, sampleid,bat_species, antigen, MFI, seropos, seropos_lci, seropos_uci)
-
-head(lum.dat)
-length(unique(lum.dat$sampleid)) #1055
-head(recap)
-
-lum.dat = subset(lum.dat, bat_species=="Eidolon dupreanum" & antigen=="GhV")
-recap = subset(recap, bat_species=="Eidolon dupreanum")
-
-recap <- merge(recap, lum.dat, by=c("bat_species", "sampleid"), all.x = T)
-head(recap)
-min(recap$processing_date)#"2013-11-24"
-max(recap$processing_date)#"2026-01-22"
-
-
-recap = subset(recap, antigen=="GhV")
-
-# split by antigen and barcode and make sure there are multiple timepoints. 
-# color as bats that stay neg, seroconvert, serorevert or do both
-id.recap <- function(df){
-  if(nrow(df)>1){
-    df <- arrange(df, processing_date)
-    #df.new <- dplyr::select(df, -(keep))
-    df.new <- df
-    df.new$class <- NA
-    if(sum(as.numeric(as.character(df$seropos)))==0){
-      df.new$class <- "always seronegative" # all seroneg
-    }else if(sum(as.numeric(as.character(df$seropos)))==length(df$seropos)){
-      df.new$class <- "always seropositive" #all seropos
-    }else{
-      vec.sero <- unique(diff(as.numeric(as.character(df$seropos))))
-      if(sum(unique(vec.sero))==0){
-        df.new$class <- "seroconversion-seroreversion" #both
-      }else if((sum(unique(match(vec.sero,-1)),na.rm=T)==0) & (sum(unique(match(vec.sero,1)),na.rm=T)==1)){
-        df.new$class <- "seroconversion" #both
-      }else if((sum(unique(match(vec.sero,1)),na.rm=T)==0) & (sum(unique(match(vec.sero,-1)),na.rm=T)==1)){
-        df.new$class <- "seroreversion" #both
-      }
-    }
-    df.new$N_cap<- nrow(df.new)
-    return(df.new)
-  }
-  
-}
-recap.list <- dlply(recap, .(antigen, barcode_id))
-
-recap.sum <- data.table::rbindlist(lapply(recap.list, id.recap))
-
-recap.sum$seropos <- as.factor(recap.sum$seropos)
+length(adult.dat$bat_weight_g[is.na(adult.dat$bat_weight_g)])
+length(adult.dat$bat_forearm_mm[is.na(adult.dat$bat_forearm_mm)])
 
 
 
-
-head(recap.sum)
-
-#get those with < 1 year bewteen sampling dates
-recap.list <- dlply(recap.sum, .(barcode_id))
-
-count_spacing <- function(df, time_days){
-  df <- arrange(df, processing_date)
-  diff= c(diff(df$processing_date))
-  
-  df$days_diff <- c(NA, diff)
-  
-  df$time_series <- cumsum(c(1,diff))
-  if(sum(df$days_diff[!is.na(df$days_diff)]<time_days)){
-    return(df)
-  }
-  
-}
-
-recap.short <-  data.table::rbindlist(lapply(recap.list, count_spacing, time_days=6*31))
-
-#recap.short <- subset(recap.short, N_cap>2)
+adult.dat$bat_species <- factor(adult.dat$bat_species, levels=c("Rousettus madagascariensis", "Eidolon dupreanum", "Pteropus rufus"))
 
 
-recap.short$simple_class <- recap.short$class
-recap.short$simple_class <- as.character(recap.short$simple_class)
-recap.short$simple_class[recap.short$simple_class!="always seronegative"] <- "dynamic"
-recap.short = subset(recap.short, simple_class=="dynamic")
-alphaz2 = c("always seronegative" = .3, "dynamic" = 1 )
+#and redo the MFR with this
+# To make sure it is important to allow for different slopes and y-intercepts,
+# you can test all possible models.
 
-recap.short$era <- "2014-2016"
-recap.short$era[recap.short$processing_date>as.Date("2018-01-01")] <- "2018-2020"
+# Here, just test a model that is weight by forearm but no species differentiation
+# you ca
 
-# add <- recap.short[1,]
-# add$era <- "2014-2016"
-# add$processing_date <- as.Date("2017-01-01")
-# add$MFI <- NA
-# add$antigen <- "NiV"
-# add2 <- add
-# add2$antigen <- "HeV"
-# add <- rbind(add, add2)
-# add2 <- add
-# add2$era <- "2018-2020"
-# add2$processing_date <- as.Date("2017-01-02")
-# 
-# recap.short <- rbind(recap.short, add, add2)
+modBaseF <- lm(log10(bat_weight_g)~log10(bat_forearm_mm), data=subset(adult.dat, bat_sex=="female"))
+summary(modBaseF)
 
-shapez = c("female" = 21, "male" =24)
+# Now, allow different slope per species:
+# You have to keep optimization to REML=FALSE to be able to compare with lm()
+modSlopeF <- lm(log10(bat_weight_g)~log10(bat_forearm_mm):(bat_species),  data=subset(adult.dat, bat_sex=="female"))
 
-#and include plot of the cutoff line by species/antigen/era
-cutoff.df <- cbind.data.frame(bat_species=c(rep("Eidolon dupreanum", 6), rep("Rousettus madagascariensis",3)), antigen=c("NiV", "HeV", "NiV", "HeV", "GhV", "AngV", "GhV", "BdbV", "RavV"), era=c(rep("2014-2016",2), rep("2018-2020",7)))
-cutoff.df$MFI = c(757,215,936,2851,1141,1763,2642,5647,6617)
-cutoff.df$antigen <- factor(cutoff.df$antigen, levels=c("NiV", "HeV", "GhV", "AngV", "BdbV", "RavV"))
-cutoff.df = subset(cutoff.df, antigen=="GhV")
+# Now, different y-intercept
+modYIntF <- lmer(log10(bat_weight_g)~log10(bat_forearm_mm) +(1|bat_species), REML=FALSE, data=subset(adult.dat, bat_sex=="female"))
 
-EidMFIall <- ggplot(data=subset(recap.short, bat_species=="Eidolon dupreanum")) + 
-  facet_nested(bat_sex~., scales = "free", space = "free") + theme_bw() +
-  scale_shape_manual(name="bat sex", values = shapez) + 
-  scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
-  theme(axis.title.y = element_text(size=16), axis.title.x = element_blank(),
-        legend.box = "horizontal", strip.text.y = element_text(size=16),#, face = "italic"),
-        strip.background.y = element_rect(fill="white"),
-        strip.background.x = element_blank(),
-        axis.text = element_text(size=14), 
-        panel.spacing.y = unit(.1, "lines"),
-        strip.text.x = element_blank(),
-        plot.margin = unit(c(0,.3,.3,.3),"lines"),
-        panel.spacing.x = unit(c(0,1,0,1,1),"lines"),
-        panel.grid = element_blank()) +
-  geom_hline(data = subset(cutoff.df, bat_species=="Eidolon dupreanum"), aes(yintercept = MFI), color="red", linetype=2) + 
-  geom_line(aes(x=processing_date, y=MFI, color=barcode_id, alpha = simple_class), show.legend = F, size=1)+
-  geom_point(aes(x=processing_date, y=MFI, fill=barcode_id, shape = bat_sex, alpha = simple_class), show.legend = F, size=3) +
-  scale_x_continuous(breaks = c(as.Date("2014-07-01"),as.Date("2015-07-01"), as.Date("2016-07-01"), as.Date("2017-07-01"), as.Date("2018-07-01"), as.Date("2019-07-01")),labels = c(2014,2015,2016,2017,2018,2019)) +
-  guides(alpha="none",  shape=guide_legend(order=1));EidMFIall
+# And, finally, both unique y-intercept and slope
+modYIntSlopeF <-  lmer(log10(bat_weight_g)~log10(bat_forearm_mm):bat_species +(1|bat_species), REML=FALSE, data=subset(adult.dat, bat_sex=="female"))
+
+# compare AIC
+AIC.dat.F = AIC(modBaseF, modSlopeF, modYIntF, modYIntSlopeF)
+print(AIC.dat.F)
+AIC.dat.F[which(AIC.dat.F$AIC==min(AIC.dat.F$AIC)),] # Here is your best fit model
+# This allows for unique slopes per species 
+
+# You can visualize these slopes here:
+plot_model(modSlopeF)
+
+# You can also visualize how this differs from the mixed effect model:
+#plot_model(modYIntSlopeF, type="int") #it won't run because it can't handle the logarithms
+# But you can get around it by making a logged variable in a new dataset
+dat.mod = adult.dat
+dat.mod$log10forearm = log10(dat.mod$bat_forearm_mm)
+dat.mod$log10mass = log10(dat.mod$bat_weight_g)
+
+modYIntSlopeFPlot <-  lmer(log10mass~log10forearm:bat_species +(1|bat_species), REML=FALSE, data=subset(dat.mod, bat_sex=="female"))
+plot_model(modYIntSlopeFPlot, type="int")
 
 
-#now try restricting to only triptics that go "low-high-low". center on the peak
-#also need the first and second point to be within 6 months of each other
-recap.list <- dlply(recap.short, .(barcode_id))
-find.tryptic <- function(df){
-  if(nrow(df)>=3){
-    
-    if(df$MFI[1]<df$MFI[2]){
-      df.out = df[1:3,]
-      
-      
-      df.out$new_ts <- NA
-      df.out$new_ts[df.out$MFI==max(df.out$MFI)] <- 0
-      
-      df.out$new_ts[is.na(df.out$new_ts)] <- df.out$time_series[is.na(df.out$new_ts)] + -df.out$time_series[df.out$MFI==max(df.out$MFI)]
-      
-      return(df.out)
-    }else if(df$MFI[2]<df$MFI[3] & nrow(df)>3){
-      df.out = df[2:nrow(df),]
-      
-      #remove anything separated by >6 months and recompute diff
-      df.out =subset(df.out, days_diff<(6*31))
-      df.out$days_diff <- c(NA, diff(df.out$processing_date))
-      
-      if(sum(df.out$days_diff[!is.na(df.out$days_diff)]<(6*31))>1){ #otherwise you lose it
-        
- 
-      
-      df.out$new_ts <- NA
-      df.out$new_ts[df.out$MFI==max(df.out$MFI)] <- 0
-      
-      df.out$new_ts[is.na(df.out$new_ts)] <- df.out$time_series[is.na(df.out$new_ts)] + -df.out$time_series[df.out$MFI==max(df.out$MFI)]
-      
-      return(df.out)
-    }     }
-    
-    
-  }
-  
-  
-}
+#### Now, repeat for the males
+modBaseM <- lm(log10(bat_weight_g)~log10(bat_forearm_mm), data=subset(adult.dat, bat_sex=="male"))
+summary(modBaseM)
+
+# Now, allow different slope per species:
+# You have to keep optimization to REML=FALSE to be able to compare with lm()
+modSlopeM <- lm(log10(bat_weight_g)~log10(bat_forearm_mm):(bat_species),  data=subset(adult.dat, bat_sex=="male"))
+
+# Now, different y-intercept
+modYIntM <- lmer(log10(bat_weight_g)~log10(bat_forearm_mm) +(1|bat_species), REML=FALSE, data=subset(adult.dat, bat_sex=="male"))
+
+# And, finally, both unique y-intercept and slope
+modYIntSlopeM <-  lmer(log10(bat_weight_g)~log10(bat_forearm_mm):bat_species +(1|bat_species), REML=FALSE, data=subset(adult.dat, bat_sex=="male"))
+#singular fit means the random effect is not doing anything--could fit as just a linear model
+
+# compare AIC
+AIC.dat.M = AIC(modBaseM, modSlopeM, modYIntM, modYIntSlopeM)
+print(AIC.dat.M)
+AIC.dat.M[which(AIC.dat.M$AIC==min(AIC.dat.M$AIC)),] 
+# Males do best with just different slope by species, same as females
+
+# plot the best two 
+plot_model(modSlopeM)
+
+# need to remake the male model with logged variables again
+modYIntSlopeMPlot <-  lmer(log10mass~log10forearm:bat_species +(1|bat_species), REML=FALSE, data=subset(dat.mod, bat_sex=="male"))
+plot_model(modYIntSlopeMPlot, type="int") #As in the females, the Pteropus curve is steeper
+
+## Conclusion: Best fit model is just different slopes by species with no random effect for both
+## males and females so go with that.
+
+# Add a place for "predicted mass" in your dataset, and predict from this model:
+adult.dat$predicted_mass_g <- NA
+adult.dat$predicted_mass_g[adult.dat$bat_sex=="female" & !is.na(adult.dat$bat_weight_g) &!is.na(adult.dat$bat_forearm_mm)] <- 10^predict(modSlopeF) #you are predicting log10 mass, so you need to exponent it ere
+adult.dat$predicted_mass_g[adult.dat$bat_sex=="male"& !is.na(adult.dat$bat_weight_g) &!is.na(adult.dat$bat_forearm_mm)] <- 10^predict(modSlopeM)
+
+#and the confidence intervals around that
+adult.dat$predicted_mass_g_lci <- adult.dat$predicted_mass_g_uci <- NA
+
+adult.dat$predicted_mass_g_lci[adult.dat$bat_sex=="female" & !is.na(adult.dat$bat_weight_g) &!is.na(adult.dat$bat_forearm_mm)] <- 10^(predict(modSlopeF) -1.96*predict(modSlopeF,se.fit=T)$se)
+adult.dat$predicted_mass_g_uci[adult.dat$bat_sex=="female" & !is.na(adult.dat$bat_weight_g) &!is.na(adult.dat$bat_forearm_mm)] <- 10^(predict(modSlopeF) +1.96*predict(modSlopeF,se.fit=T)$se)
+adult.dat$predicted_mass_g_lci[adult.dat$bat_sex=="male" & !is.na(adult.dat$bat_weight_g) &!is.na(adult.dat$bat_forearm_mm)] <- 10^(predict(modSlopeM) -1.96*predict(modSlopeM,se.fit=T)$se)
+adult.dat$predicted_mass_g_uci[adult.dat$bat_sex=="male" & !is.na(adult.dat$bat_weight_g) &!is.na(adult.dat$bat_forearm_mm)] <- 10^(predict(modSlopeM) +1.96*predict(modSlopeM,se.fit=T)$se)
 
 
-triptic_df <- data.table::rbindlist(lapply(recap.list, find.tryptic))
+#plot for reality check
 
-triptic_df$seropos <- as.character(triptic_df$seropos)
+#ColM<- c("Pteropus rufus"="blue", "Eidolon dupreanum"="lightgreen","Rousettus madagascariensis"="purple")
 
-tryptic.plot <- ggplot(data=triptic_df) + 
-  facet_nested(bat_sex~., scales = "free", space = "free") + theme_bw() +
-  scale_shape_manual(name="bat sex", values = shapez) + 
-  scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
-  theme(axis.title.y = element_text(size=16), axis.title.x = element_blank(),
-        legend.box = "horizontal", strip.text.y = element_text(size=16),#, face = "italic"),
-        strip.background.y = element_rect(fill="white"),
-        strip.background.x = element_blank(),
-        axis.text = element_text(size=14), 
-        panel.spacing.y = unit(.1, "lines"),
-        strip.text.x = element_blank(),
-        plot.margin = unit(c(0,.3,.3,.3),"lines"),
-        panel.spacing.x = unit(c(0,1,0,1,1),"lines"),
-        panel.grid = element_blank()) +
-  geom_hline(data = subset(cutoff.df, bat_species=="Eidolon dupreanum"), aes(yintercept = MFI), color="red", linetype=2) + 
-  geom_line(aes(x=processing_date, y=MFI, color=barcode_id, alpha = simple_class), show.legend = F, size=1)+
-  geom_point(aes(x=processing_date, y=MFI, fill=barcode_id, shape = bat_sex, alpha = simple_class), show.legend = F, size=3) +
-  scale_x_continuous(breaks = c(as.Date("2014-07-01"),as.Date("2015-07-01"), as.Date("2016-07-01"), as.Date("2017-07-01"), as.Date("2018-07-01"), as.Date("2019-07-01")),labels = c(2014,2015,2016,2017,2018,2019)) +
-  guides(alpha="none",  shape=guide_legend(order=1));tryptic.plot
+# plot: bat mass:forearm residuals
+# blue line is your predicted mass from the model. 
+# black dots are your actual data
 
-#and plot with centered peak
-tryptic.plot <- ggplot(data=triptic_df) + 
-  facet_nested(bat_sex~., scales = "free", space = "free") + theme_bw() +
-  scale_shape_manual(name="bat sex", values = shapez) + 
-  xlab("Time relative to observed peak (t_rel)") +
-  ylab("MFI") +
-  scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
-  theme(axis.title.y = element_text(size=16), 
-        legend.box = "horizontal", strip.text.y = element_text(size=16),#, face = "italic"),
-        strip.background.y = element_rect(fill="white"),
-        strip.background.x = element_blank(),
-        axis.text = element_text(size=14), 
-        panel.spacing.y = unit(.1, "lines"),
-        strip.text.x = element_blank(),
-        plot.margin = unit(c(0,.3,.3,.3),"lines"),
-        panel.spacing.x = unit(c(0,1,0,1,1),"lines"),
-        panel.grid = element_blank()) +
-  geom_hline(data = subset(cutoff.df, bat_species=="Eidolon dupreanum"), aes(yintercept = MFI), color="red", linetype=2) + 
-  geom_line(aes(x=new_ts, y=MFI, color=barcode_id, alpha = simple_class), show.legend = F, size=1)+
-  geom_point(aes(x=new_ts, y=MFI, fill=barcode_id, shape = bat_sex, alpha = simple_class), show.legend = F, size=3) +
-  guides(alpha="none",  shape=guide_legend(order=1));tryptic.plot
+p1 <- ggplot(data=subset(adult.dat, !is.na(predicted_mass_g))) +
+  geom_point(aes(x=bat_forearm_mm, y=bat_weight_g),size=1) +
+  geom_ribbon(aes(x=bat_forearm_mm, ymin=predicted_mass_g_lci, ymax= predicted_mass_g_uci, group=bat_species),  fill="blue", alpha=.3) +
+  geom_line(aes(x=bat_forearm_mm, y=predicted_mass_g, group=bat_species),  color="blue", size=1) +
+  facet_grid(bat_sex~bat_species, scales = "free") +theme_bw() +
+  theme(panel.grid = element_blank(), legend.position = "bottom",
+        strip.text.x  = element_text(face="italic", size=14),
+        strip.text.y  = element_text(size=14),
+        axis.title = element_text(size=14), axis.text = element_text(size=12),
+        strip.background = element_rect(fill="white"), 
+        legend.title = element_blank()) +
+  xlab("bat forearm (mm)") + ylab("bat mass (g)")
+p1
 
-#interpolate that curve for the top peak
-
-plot1 <- ggplot(data=subset(triptic_df, barcode_id=="956000006105427")) + 
-  facet_nested(bat_sex~., scales = "free", space = "free") + theme_bw() +
-  scale_shape_manual(name="bat sex", values = shapez) + 
-  xlab("Time relative to observed peak (t_rel)") +
-  ylab("MFI") +
-  scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
-  theme(axis.title.y = element_text(size=16), 
-        legend.box = "horizontal", strip.text.y = element_text(size=16),#, face = "italic"),
-        strip.background.y = element_rect(fill="white"),
-        strip.background.x = element_blank(),
-        axis.text = element_text(size=14), 
-        panel.spacing.y = unit(.1, "lines"),
-        strip.text.x = element_blank(),
-        plot.margin = unit(c(0,.3,.3,.3),"lines"),
-        panel.spacing.x = unit(c(0,1,0,1,1),"lines"),
-        panel.grid = element_blank()) +
-  geom_hline(data = subset(cutoff.df, bat_species=="Eidolon dupreanum"), aes(yintercept = MFI), color="red", linetype=2) + 
-  geom_line(aes(x=new_ts, y=MFI, color=barcode_id, alpha = simple_class), show.legend = F, size=1)+
-  geom_point(aes(x=new_ts, y=MFI, fill=barcode_id, shape = bat_sex, alpha = simple_class), show.legend = F, size=3) +
-  guides(alpha="none",  shape=guide_legend(order=1));plot1
-
-pre.MFI <- lm(MFI~new_ts, data = subset(triptic_df, barcode_id=="956000006105427" & new_ts<1))
-post.MFI <- lm(MFI~new_ts, data = subset(triptic_df, barcode_id=="956000006105427" & new_ts>-1))
-
-#MFI = 1141 is the cutoff for seropositivity
-add.pseudo <- triptic_df[triptic_df$barcode_id=="956000006105427",]
-add.pseudo <- add.pseudo[1:2,]
-add.pseudo$MFI <- c(predict(pre.MFI, newdata = data.frame(new_ts = -90)), predict(post.MFI, newdata = data.frame(new_ts = 100)))
-add.pseudo$new_ts <- c(-90, 100)
-add.pseudo$seropos <- "seronegative"
-
-triptic_df <- rbind(triptic_df, add.pseudo)
-
-
-# and plot with centered peak again 
-tryptic.plot2 <- ggplot(data=triptic_df) + 
-  facet_nested(bat_sex~., scales = "free", space = "free") + theme_bw() +
-  scale_shape_manual(name="bat sex", values = shapez) + 
-  xlab("Time relative to observed peak (t_rel)") +
-  ylab("MFI") +
-  scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
-  theme(axis.title.y = element_text(size=16), 
-        legend.box = "horizontal", strip.text.y = element_text(size=16),#, face = "italic"),
-        strip.background.y = element_rect(fill="white"),
-        strip.background.x = element_blank(),
-        axis.text = element_text(size=14), 
-        panel.spacing.y = unit(.1, "lines"),
-        strip.text.x = element_blank(),
-        plot.margin = unit(c(0,.3,.3,.3),"lines"),
-        panel.spacing.x = unit(c(0,1,0,1,1),"lines"),
-        panel.grid = element_blank()) +
-  geom_hline(data = subset(cutoff.df, bat_species=="Eidolon dupreanum"), aes(yintercept = MFI), color="red", linetype=2) + 
-  geom_line(aes(x=new_ts, y=MFI, color=barcode_id, alpha = simple_class), show.legend = F, size=1)+
-  geom_point(aes(x=new_ts, y=MFI, fill=barcode_id, shape = bat_sex, alpha = simple_class), show.legend = F, size=3) +
-  guides(alpha="none",  shape=guide_legend(order=1)) 
-  # geom_vline(aes(xintercept = 28))+ #duration 2 seropositive timesteps
-  # geom_vline(aes(xintercept = 42))+ #duration 3 seropositive timesteps
-  # geom_vline(aes(xintercept = 135)) #duration 9 seropositive timesteps - this is the mean
-tryptic.plot2
-
-
-# and plot with centered peak again 
-#and add in a way to distinguish the extrapolated points from the observed
-triptic_df$bat_idx <- as.numeric(as.factor(triptic_df$barcode_id))
-triptic_df$status <- "observed"
-triptic_df$status[triptic_df$bat_idx==2 & triptic_df$new_ts < -80] <- "inferred"
-triptic_df$status[triptic_df$bat_idx==2 & triptic_df$new_ts > 80] <- "inferred"
-
-shapez <- c('1'=16, '2'=17, '3'=15, '4' = 3)
-tryptic.plot3 <- ggplot(data=triptic_df) + 
-  #facet_nested(bat_sex~., scales = "free", space = "free") + 
-  theme_bw() +
-  scale_shape_manual( values = shapez) + 
-  xlab("Time relative to observed peak (days)") +
-  ylab("MFI") +
-  scale_alpha_manual(values = alphaz2) + 
-  ylab("mean fluorescence intensity (MFI)")+
-  theme(axis.title = element_text(size=18), 
-        legend.box = "horizontal", strip.text.y = element_text(size=16),#, face = "italic"),
-        strip.background.y = element_rect(fill="white"),
-        strip.background.x = element_blank(),
-        axis.text = element_text(size=14), 
-        panel.spacing.y = unit(.1, "lines"),
-        strip.text.x = element_blank(),
-        plot.margin = unit(c(0,.3,.3,.3),"lines"),
-        panel.spacing.x = unit(c(0,1,0,1,1),"lines"),
-        panel.grid = element_blank()) +
-  geom_hline(data = subset(cutoff.df, bat_species=="Eidolon dupreanum"), aes(yintercept = MFI), linetype=2) + 
-  geom_line(aes(x=new_ts, y=MFI, color=barcode_id, alpha = simple_class), show.legend = F, size=1)+
-  geom_point(data = subset(triptic_df, status=="inferred"), aes(x=new_ts, y=MFI, shape = as.factor(bat_idx)), show.legend = F, size=4, color="black") +
-  geom_point(aes(x=new_ts, y=MFI, color=barcode_id, shape = as.factor(as.numeric(bat_idx)), alpha = simple_class), show.legend = F, size=3) +
-  guides(alpha="none",  shape=guide_legend(order=1)) #+
-tryptic.plot3
-
-#
-ggsave(file = paste0(homewd, "/final_figures_tables/supplemental/SuppFig8.png"),
-       plot = tryptic.plot3,
+ggsave(file = paste0(homewd,"/final_figures_tables/supplemental/SuppFig8.png"),
+       plot = p1,
        units="mm",  
-       width=65, 
-       height=50, 
-       scale=2.5, 
-       dpi=300)
-
+       width=80, 
+       height=60, 
+       scale=3, 
+       dpi=600)
+# 
+# # Now calculate mass residual and save data
+# adult.dat$mass_forearm_residual <- adult.dat$bat_weight_g - adult.dat$predicted_mass_g
+# hist(adult.dat$mass_forearm_residual) #histogram centers around 0. perfect.
+# 
+# # Now attach these mass:forearm residuals to the original dataset
+# 
+# merge.mass_resid <- dplyr::select(adult.dat, sampleid, mass_forearm_residual)
+# 
+# 
+# catch.dat <- merge(catch.dat, merge.mass_resid, by="sampleid", all.x = T)
+# head(catch.dat)
+# 
+# sort(unique(catch.dat$mass_forearm_residual))
+# unique(catch.dat$mass_forearm_residual[catch.dat$young_of_year=="yes"]) 
+# #these 5 with values are double-labelled
+# subset(catch.dat, young_of_year=="yes" & !is.na(mass_forearm_residual))
+# unique(catch.dat$mass_forearm_residual[catch.dat$bat_age_class=="J"]) #same
+# # remove
+# 
+# catch.dat$mass_forearm_residual[catch.dat$young_of_year=="yes"] <- NA
+# length(catch.dat$mass_forearm_residual[is.na(catch.dat$mass_forearm_residual)]) #427 - juveniles or YOY 
+# 
+# #and save to the master data files 
+# write.csv(catch.dat, file = paste0(homewd, "/master_data_files/catching_data.csv"), row.names = F)
+# 
+# 

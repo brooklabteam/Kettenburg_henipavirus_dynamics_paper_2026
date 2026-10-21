@@ -1,1244 +1,545 @@
 rm(list=ls())
-#set wd
-#.libPaths("~/R/x86_64-pc-linux-gnu-library/3.4")
 
-library(epitools)
 library(plyr)
 library(dplyr)
-library(cowplot)
-library(deSolve)
-library(mgcv)
-library(lubridate)
-library(matrixcalc)
-library(Matrix)
 library(ggplot2)
-library(mvtnorm)
-library(ggforce)
+library(reshape2)
+library(mclust)
+library(ggh4x)
+library(ggcorrplot)
+library(factoextra)
+library(paran)
+library(hopkins)
+library(cluster)
+library(corrr) 
+library(FactoMineR)
+library(ggpmisc)
+library(heatmaply)
+library(seqinr)
+library(scales)
+library(ggdendroplot)
 
-#load data
+#use this script to calculate cutoffs for the luminex
+
+
+#first record your wd for this repo (home) 
+#cara adds hers here too - just comment out whichever you are not using
+#homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
-#load the completed models with age-seroprevalence and time series
-all.par <- age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/par_fits_GhV_CI_final.csv"), header = T, stringsAsFactors = F)
-age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/age_sero_df_CI_optim_final_envelope.csv"), header = T, stringsAsFactors = F)
-biwk.ts.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/biweekly_ts_GhV_CI_final_envelope.csv"), header = T, stringsAsFactors = F)
 
-#and load the data
-dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1a/age-seroprevalence-data.csv"), stringsAsFactors = F, header = T)
+#now load in the merged luminex data from the "data" folder
+
+#make sure this is latest catching file
+dat <- read.csv(paste0(homewd, "/serology/data/lum_catch_merge.csv"), header = T, stringsAsFactors = F)
 head(dat)
-sero.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1a/biweekly-serology-data.csv"), stringsAsFactors = F, header = T)
-shed.dat <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/matrix-fit-1a/biweekly-shedding-data.csv"), stringsAsFactors = F, header = T)
-head(dat)
-head(sero.dat)
-head(shed.dat)
 
-#first, some. model comparisons
-all.par$model_base <- sapply(strsplit(all.par$model,"-"),'[', 1)
 
-get.llik.ranking <- function(df){
-  df <- arrange(df, llik)
-  df.out <- dplyr::select(df, model_base, model, llik, k, AIC)
-  df.out$min_llik <- min(df$llik)
-  return(df.out)
-}
+length(unique(dat$sampleid))
+dat$sampleid[duplicated(dat$sampleid)]
 
-comp.df <- data.table::rbindlist(lapply(dlply(all.par,.(model_base)), get.llik.ranking))
-comp.df <- arrange(comp.df, min_llik)
-comp.df
+test <- ddply(dat, .(bat_species, bat_sex), summarise, Ntot=length(unique(sampleid)))
+test
 
-#plotting scripts
-add.age <- function(df){
-  df <- arrange(df, age)
-  bins = c(c(0,.5,1,2), c(3:20))
+#now for cutoffs, just slim to antigen data only and convert to long format
+lumdat <- dplyr::select(dat, sampleid, bat_species, names(dat)[2:7])
+head(lumdat)
+lumdat.long <- melt(lumdat)
+head(lumdat.long)
+names(lumdat.long)[names(lumdat.long)=="variable"] <- "antigen"
+names(lumdat.long)[names(lumdat.long)=="value"] <- "MFI"
+unique(lumdat.long$antigen)
+sort(unique(lumdat.long$MFI))
+class(lumdat.long$MFI)
+lumdat.long <- subset(lumdat.long, !is.na(MFI))
+
+# # #convert any negative values to 1
+# lumdat.long$MFI[lumdat.long$MFI<0] <- 1
+# lumdat.long$log10MFI <- log10(lumdat.long$MFI)
+
+lum.split <- dlply(lumdat.long,.(bat_species, antigen))
+
+correct.negs <- function(df){
+  abs.min <- abs(min(df$MFI))
+  df$MFI <- df$MFI + abs.min + 1
   
-  df$age_bin <- NA
-  for (i in 1:length(df$age)){
-    df$age_bin[i] <- max(bins[df$age[i]>=bins], na.rm = T)
-  }
-  
-  
-  
-  #you want the midpoint between either end of the age class now
-  vect.age.yr = sort(unique(df$age_bin))
-  vect.age.plot =   rep(NA, (length(vect.age.yr)-1))
-  for (i in 1:length(vect.age.plot)){
-    vect.age.plot[i] <- ((vect.age.yr[i+1] - vect.age.yr[i])/2) + vect.age.yr[i]
-  }
-  
-  for (i in 1:length(df$age_bin)){
-    df$age_bin[i] <- min(vect.age.plot[df$age_bin[i]<= vect.age.plot], na.rm = T)
-  }
-  
-  
-  df$age_bin[df$age_bin == Inf] =  (ceiling(max(df$age)) - vect.age.yr[length(vect.age.yr)])/2  + vect.age.yr[length(vect.age.yr)]
-  
+  #then, also take the log10
+  df$log10MFI <- log10(df$MFI)
   return(df)
-  
 }
-pick.age <- function(df){
-  df <- arrange(df, age)
-  df <- df[df$age==max(df$age),]
-  return(df)
+
+lumdat.long <- data.table::rbindlist(lapply(lum.split, correct.negs))
+
+
+#add family
+lumdat.long$virus_family[lumdat.long$antigen== "NiV"| lumdat.long$antigen=="HeV"| lumdat.long$antigen=="CedV"| lumdat.long$antigen=="GhV"| lumdat.long$antigen=="AngV"| lumdat.long$antigen=="MojV"] <- "Paramyxovirus"
+unique(lumdat.long$virus_family)
+
+#and genus information
+lumdat.long$virus_genus <- "Henipavirus"
+unique(lumdat.long$virus_genus)
+
+#factor antigens by relatedness
+lumdat.long$antigen <- factor(lumdat.long$antigen, levels=c( "NiV", "HeV","CedV", "GhV", "AngV", "MojV"))
+
+lumdat.long$bat_species <- factor(lumdat.long$bat_species, levels=c("Eidolon dupreanum", "Rousettus madagascariensis", "Pteropus rufus"))
+
+
+
+########################################################################################################
+########################################################################################################
+# Now, let's use dimensionality reduction to determine which antigens in the data we should retain:
+
+# First, let's eliminate the Pteropus from consideration
+# First, make a data subset of all bats with any MFI > 1000
+dat.ind.split <- dlply(lumdat.long, .(sampleid, virus_family))
+get.highMFI <- function(dat, cutoff){
+  dat$MFI_high <- 0
   
+  for(i in 1:nrow(dat)){
+    if(dat$MFI[i]>cutoff){
+      dat$MFI_high[i] <- 1
+    }
+  }
+  if(sum(dat$MFI_high)>0){
+    dat$MFI_high <- 1 
+  }
+  return(dat)
 }
-get.seroprev.dat = function(data, vis_split, cutoff){
+
+bat.df <- data.table::rbindlist(lapply(dat.ind.split, get.highMFI, cutoff=1000))
+head(bat.df)
+bat.high.df = subset(bat.df, MFI_high==1) #only 6 individual Pteropus with any MFI values >1000
+
+#and plot just the Pteropus
+p3 <- ggplot(subset(bat.high.df, bat_species=="Pteropus rufus")) + coord_cartesian(ylim = c(0,10000)) +
+  facet_nested(bat_species~virus_family, scales = "free", space = "free") +
+  geom_line(aes(x=antigen, y=MFI, color=sampleid, group=sampleid), size=.8) + theme_bw()+
+  geom_point(aes(x=antigen, y=MFI, color=sampleid), size=2) + 
+  #scale_color_manual(name="Individual Bat\nSample ID", values = c("tomato", "#00BFC4")) +
+  geom_hline(aes(yintercept = 1000), color="red", linetype=2, size=.8) +
+  theme(axis.title.x = element_blank(), panel.grid = element_blank(),
+        legend.position = c(.12,.84),
+        axis.text.x = element_text(size=16), axis.title.y = element_text(size=16), 
+        axis.text.y = element_text(size=13), strip.background = element_rect(fill="white"),
+        strip.text.y = element_text(size=16, face="italic"), strip.text.x = element_text(size=16)) +
+  guides(color=guide_legend(ncol=2)); p3 
+# #so few bats, these are probably exposures from other bats
+# 
+# ggsave(file = paste0(homewd,"/serology/figures/pteropus-spillover-plot.png"),
+#        plot = p3,
+#        units="mm",  
+#        width=80, 
+#        height=40, 
+#        scale=3.3, 
+#        dpi=300)
+
+
+# Now, focusing on the Eidolon and Rousettus let's decide which 
+# antigens to focus on
+
+# now try pca - using the untransformed data
+
+# # # multiply MFI by 5 if 1:500 dilution is used
+# lumdat.long$MFI = lumdat.long$MFI*5
+
+# first, make subsets of the types of data you want to include in the PCA - 
+# separate by virus genus and bat species
+unique(lumdat.long$virus_genus) #"Henipavirus"  "Ebolavirus"   "Marburgvirus" "Dianlovirus"  "Cuevavirus"  
+unique(lumdat.long$antigen[lumdat.long$virus_genus=="Henipavirus"]) # many!
+unique(lumdat.long$MFI)
+sum(is.na(lumdat.long$MFI))#0
+
+
+#function to select antigens and evaluate
+choose.antigens <- function(dat, species, genus, manual_cluster, do.save.plot, filename){
+  #shrink dataset to area of focus
+  df.shrink = subset(data.frame(dat), bat_species==species & virus_genus==genus)
   
-  visbin = seq(3,floor(max(data$age)), vis_split)
-  #but breakdown the early years into more
-  visbin = c(c(0,.5, 1, 2),   visbin)
-  data$age_year <- NA
+  #select columns of relevance 
+  df.slim <- dplyr::select(df.shrink, sampleid, antigen, MFI)
   
-  for (i in 1:length(data$age_year)){
-    tmp = visbin[data$age[i] > visbin]
-    data$age_year[i] <- tmp[length(tmp)] 
+  #make wide
+  df.wide = reshape(df.slim, direction="wide", idvar="sampleid",timevar = "antigen")
+  
+  #check for NAs in case some were missing a single antigen - replace with 1
+  df.wide[is.na(df.wide)] <- 1
+  
+  #make a scaled and centered version 
+  df.scaled <- scale(df.wide[,2:ncol(df.wide)], center = T, scale = T)
+  
+  #perform PCA - could do on scaled version but better to use original so you can plot by parts of it in the future
+  pca.out <- prcomp(scale(df.wide[,2:ncol(df.wide)], center = T, scale = T), center = FALSE, scale. = FALSE) 
+  pca.dat <-   pca.out$x
+  #now, no scaling or centering needed in the actual PCA term
+  sum.dat <- summary(pca.out) # how much cumulative variance per component
+  #pca.out$rotation # loadings on each PCA
+  p1 <- fviz_eig(pca.out, addlabels = TRUE) #scree plot
+  #can see there is a strong pull from BdBV and a bit of overlap with EboV and the rest are just a grouping
+  p2 <- fviz_cos2(pca.out, choice = "var", axes = 1) # contributions to Dim1
+  p3 <- fviz_cos2(pca.out, choice = "var", axes = 2) # contributions to Dim2
+  p4 <- fviz_cos2(pca.out, choice = "var", axes = 3) # contributions to Dim3
+  #p5 <- fviz_cos2(pca.out, choice = "var", axes = 4) # contributions to Dim4
+   
+  eig.val<-get_eigenvalue(pca.out)
+  #eig.val #retain number of dimensions in  where eigenvalue > 1
+  
+  
+  dat.parallel <- paran(df.scaled, iterations=10000, quietly=FALSE,
+        status=FALSE, all=TRUE, cfa=FALSE, graph=FALSE, seed=0, mat=NA, n=NA)
+        #color=TRUE, col=c("black","red","blue"),
+        #lty=c(1,2,3), lwd=1, legend=TRUE, file="",
+        #width=640, height=640, grdevice="png", seed=0, mat=NA, n=NA)
+  
+
+  par.plot <- cbind.data.frame(components = rep(seq(1, length(c(dat.parallel$AdjEv)),1),3), eigenvalues = c(c(dat.parallel$AdjEv), c(dat.parallel$Ev), c(dat.parallel$RndEv)), status =rep(c("Adjusted Ev", "Unadjusted Ev", "Random Ev"), each = length(c(dat.parallel$AdjEv))))
+  par.plot$status[par.plot$status=="Adjusted Ev"][(dat.parallel$Retained+1):length(c(dat.parallel$AdjEv))] <- "Adjusted Ev (unretained)"
+  par.plot$status[par.plot$status=="Adjusted Ev"] <- "Adjusted Ev (retained)"
+  
+  #occasionally, if optimal of 1 component is selected, then you will have only 1 value
+  #for the Adjusted Ev (retained). If that is the case, add one here
+  
+  if (length(par.plot$eigenvalues[par.plot$status=="Adjusted Ev (retained)"])==1){
+    add <- subset(par.plot, status=="Adjusted Ev (retained)")
+    add$components = add$components +1
+    add$eigenvalues = par.plot$eigenvalues[par.plot$status=="Adjusted Ev (unretained)" & par.plot$components==unique(add$components)]
+    par.plot <- rbind(par.plot, add)
   }
   
-  if(cutoff=="mean"){
-    dat.sum2 <- ddply(data, .(age_year), summarise,  prevalence=sum(prev)/length(prev), count=length(prev))  
-  }else if (cutoff=="uci"){
-    dat.sum2 <- ddply(data, .(age_year), summarise,  prevalence=sum(prev_uci)/length(prev_uci), count=length(prev_uci)) 
-  }else if (cutoff=="lci"){
-    dat.sum2 <- ddply(data, .(age_year), summarise,  prevalence=sum(prev_lci)/length(prev_lci), count=length(prev_lci)) 
+  colorz = c('Adjusted Ev (retained)' = "black", 'Adjusted Ev (unretained)' = "black", 'Unadjusted Ev' = "red", 'Random Ev' = "blue")
+  fillz = c('Adjusted Ev (retained)' = "black", 'Adjusted Ev (unretained)' = "white", 'Unadjusted Ev' = "red", 'Random Ev' = "blue")
+  
+  p5 <- ggplot(data=par.plot) + theme_bw() + coord_cartesian(ylim=c(0,(max(par.plot$eigenvalues)+.1))) +
+        geom_hline(aes(yintercept = 1), linetype=2, size=.8) +
+        scale_color_manual(values=colorz) + scale_fill_manual(values=fillz) +
+        geom_line(aes(x=components, y = eigenvalues, color=status), size=1) +
+        geom_point(aes(x=components, y = eigenvalues, color=status, fill=status),   size=3, shape=21) +    
+        geom_point(data = subset(par.plot, status=="Adjusted Ev (unretained)"), aes(x=components, y = eigenvalues, color=status, fill=status),   size=3, shape=21) +    
+        theme(panel.grid = element_blank(), legend.title = element_blank(),
+              legend.position = "inside", legend.position.inside = c(.78,.82))
+  
+  
+  #hopkins stat for clusterability
+  
+  # Calculated values 0-0.3 indicate regularly-spaced data.
+  # Values around 0.5 indicate random data.
+  # Values 0.7-1 indicate clustered data.
+  h.stat = hopkins(pca.dat, m=ceiling(nrow(pca.dat)/10))
+  
+  
+  
+  # Optimal cluster count by avg Silhouette width
+  # kmeans
+  p6a <- fviz_nbclust(pca.dat, FUNcluster=kmeans, k.max = (length(unique(df.shrink$antigen))+1)) + ggtitle("Optimal number of clusters by k-means")
+
+  # Elbow method for kmeans - abandon
+  # fviz_nbclust(pca.dat, kmeans, method = "wss") # not quantitative
+  
+  # clustering around medioids
+  # report this as a more robust method for real data
+  p6b <- fviz_nbclust(pca.dat, FUNcluster=cluster::pam, k.max = (length(unique(df.shrink$antigen))+1)) + ggtitle("Optimal number of clusters by k-medoids")
+  
+  
+  if (is.na(manual_cluster)){
+    pam1 <-eclust(pca.dat, "pam", k=as.numeric(as.character(p6b$data$clusters[p6b$data$y==max(p6b$data$y)])))   
+  }else{
+    pam1 <-eclust(pca.dat, "pam", k=as.numeric(manual_cluster))   
   }
   
-  #you want the midpoint between either end of the age class now
-  vect.age.yr = sort(unique(data$age_year))
-  dat.sum2$age_plot = NA
-  
-  for (i in 1:(length(dat.sum2$age_year)-1)){
-    dat.sum2$age_plot [i] = ((dat.sum2$age_year[i + 1] - dat.sum2$age_year[i])/2) + dat.sum2$age_year[i]
-  }
-  dat.sum2$age_plot[length(dat.sum2$age_plot)] =  (ceiling(max(data$age)) - dat.sum2$age_year[length(dat.sum2$age_year)])/2  + dat.sum2$age_year[length(dat.sum2$age_year)]
-  
-  names(dat.sum2)  <- c("real_age", "prevalence", "count", "age_year") #<- names(dat.sum2.tmp)
-  
-  # dat.sum2 <-  rbind(dat.sum2.tmp, dat.sum2)
-  
-  dat.sum3 = dat.sum2
-  dat.sum3$class = "seropositive"
-  rownames(dat.sum3) <- c()
-  
-  return(dat.sum3)
-  
-}
-plot.models.data.CI.squiggle <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split,  do.plot, do.save, filename1a, filename1b, filename2a, filename2b, filename3a, filename3b){
-  
-  mod.all = subset(CI.age.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
-  CI.ts.fits1 = subset(CI.ts.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
-  
-  mod.all$model <- factor(mod.all$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                  "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                  "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
-                                                  "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
-                                                  "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
-                                                  "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
-                                                  "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
-                                                  "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
-  
-  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                          "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                          "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
-                                                          "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
-                                                          "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
-                                                          "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
-                                                          "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
-                                                          "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
   
   
-  #first pull out your data...
-  dat.tmp <- subset(dat1, species==species1 & antigen==antigen1)
-  dat.tmp <- subset(dat.tmp, !is.na(age))
+  cluster <- pam1$cluster
+  #and link to bat ID
+  df.wide$cluster <- cluster
   
-  #get data in age-seroprev form
-  dat.sum = get.seroprev.dat(data=dat.tmp[!is.na(dat.tmp$age),], vis_split = vis_split, cutoff = cutoff1)
-  dat.sum$seropos = dat.sum$prevalence*dat.sum$count
-  
-  dat.sum$seroprev_lci <-dat.sum$seroprev_uci <-NA
-  for(i in 1:length(dat.sum$real_age)){
-    dat.sum$seroprev_lci[i] <- binom.test(x=dat.sum$seropos[i], n=dat.sum$count[i])$conf.int[1]  
-    dat.sum$seroprev_uci[i] <-  binom.test(x=dat.sum$seropos[i], n=dat.sum$count[i])$conf.int[2]
-  }
-  
-  dat.sero = subset(dat.sero1, bat_species==species1 & antigen==antigen1)
-  dat.sero$year<- year(dat.sero$processing_date)
-  dat.sero.sum <- ddply(dat.sero,.(year, biwk), summarize, Nseropos = sum(seropos), Ntot=length(seropos))
-  dat.sero.sum$seroprevalence <- dat.sero.sum$Nseropos/dat.sero.sum$Ntot
-  dat.sero.sum$seroprev_lci <-dat.sero.sum$seroprev_uci <-NA
-  for(i in 1:length(dat.sero.sum$year)){
-    dat.sero.sum$seroprev_lci[i] <- binom.test(x=dat.sero.sum$Nseropos[i], n=dat.sero.sum$Ntot[i])$conf.int[1]  
-    dat.sero.sum$seroprev_uci[i] <-  binom.test(x=dat.sero.sum$Nseropos[i], n=dat.sero.sum$Ntot[i])$conf.int[2]
-  }
-  
-  dat.prev = subset(dat.prev1, bat_species==species1 & antigen==antigen1)
-  dat.prev$year<- year(dat.prev$processing_date)
-  dat.prev.sum <- ddply(dat.prev,.(year, biwk), summarize, Npos = sum(shed_pos), Ntot=length(shed_pos))
-  dat.prev.sum$prevalence <- dat.prev.sum$Npos/dat.prev.sum$Ntot
-  dat.prev.sum$prev_lci <-dat.prev.sum$prev_uci <-NA
-  for(i in 1:length(dat.prev.sum$year)){
-    dat.prev.sum$prev_lci[i] <- binom.test(x=dat.prev.sum$Npos[i], n=dat.prev.sum$Ntot[i])$conf.int[1]  
-    dat.prev.sum$prev_uci[i] <-  binom.test(x=dat.prev.sum$Npos[i], n=dat.prev.sum$Ntot[i])$conf.int[2]
-  }
-  
-  #plot with data
-  max.a = ceiling(max(dat.sum$age_year))
-  p1 <- ggplot() +  theme_bw() +
-    geom_line(data=dat.sum, aes(x=age_year, y=prevalence), color ="black", linetype=2) +
-    geom_linerange(data=dat.sum, aes(x=age_year, ymin = seroprev_lci, ymax=seroprev_uci), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.sum, aes(x=age_year, y=prevalence, size=count), fill="white", color ="black", pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, max.a)) + ylab("seroprevalence") + xlab("age(yrs)")  + 
-    scale_size_continuous(name="N bats") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=mod.all, aes(x=age, y=seroprev_mean_sweep), color="cornflowerblue") + 
-    geom_line(data=mod.all, aes(x=age, y=seroprevalence), color="navy") + 
-    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
-    #geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=4) 
+  # df.name.clust <- dplyr::select(df.wide, sampleid, cluster)
+  # 
+  # df.tmp <-  subset(dat, bat_species==species)
+  # 
+  # df.tmp <- merge(df.tmp, df.name.clust, by="sampleid")
+  # df.tmp$cluster <- as.character(df.tmp$cluster)
   
   
   
-  print(p1)
+  pca.out.new <- prcomp(scale(df.wide[,2:(ncol(df.wide)-1)], center = T, scale = T), center = FALSE, scale. = FALSE) 
   
-  # Calculate page parameters (adjust rows/cols as needed)
-  models <- unique(CI.ts.fits1$model)
-  total_models <- length(models)
-  
-  
-  # Save Page 1
-  p1a <- p1 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
-  
-  # Save Page 2
-  p1b <- p1 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 2)
+  pca.out.new.dat <-  pca.out.new$x
+  pca.out.new.plot <- cbind.data.frame(PC1=pca.out.new.dat[,1], PC2=pca.out.new.dat[,2])
+  pca.out.new.plot$cluster <- cluster  
+  pca.out.new.plot$cluster <- as.factor(pca.out.new.plot$cluster)
+  df.wide$cluster <- as.factor(df.wide$cluster)
   
   
-  #and plot the others
+  p7 <- fviz_pca_biplot(pca.out.new, geom=c("point"), 
+                  #habillage = df.wide$cluster,
+                  fill.ind = df.wide$cluster, #select.ind = list(cos2=0.3),
+                  col.var = c("cos2"),
+                  #select.var = NULL, #c("MFI.AngV", "MFI.GhV", "MFI.NiV", "MFI.HeV", "MFI.MojV", "MFI.CedV"),
+                  #col.var = c("cornflowerblue","mediumseagreen","cornflowerblue","cornflowerblue","mediumseagreen","tomato"),, 
+                  gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+                  #gradient.cols = c("black", "orange", "green"),
+                  alpha.ind =0,
+                  addEllipses=TRUE, ellipse.level=0.5,
+                  repel = TRUE)
   
-  #sero 
-  p2 <- ggplot() +  theme_bw() +
-    geom_linerange(data=dat.sero.sum, aes(x=biwk, ymin=seroprev_lci, ymax=seroprev_uci, color = as.factor(year)), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.sero.sum, aes(x=biwk, y=seroprevalence, size=Ntot, shape = year, color = as.factor(year)), fill="white",  pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("seroprevalence") + xlab("biweek of year")  + 
-    scale_size_continuous(name="N bats") +
-    scale_color_discrete(name="year") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprev_mean_sweep), color="cornflowerblue") + 
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="navy") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
-    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=4) 
   
-  # Save Page 1
-  p2a <- p2 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
+  p8 <- p7 + ggnewscale::new_scale_color() +  
+        geom_point(data=  pca.out.new.plot, aes(x=PC1, y=PC2, color=cluster), size=2)
   
-  # Save Page 2
-  p2b <- p2 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 2)
+  
+  #add to output
+  pca.out$eigen <- eig.val
+  pca.out$hopkins <-   h.stat
   
   
   
-  #prev
-  p3 <- ggplot() +  theme_bw() +
-    geom_linerange(data=dat.prev.sum, aes(x=biwk, ymin=prev_lci, ymax=prev_uci, color = as.factor(year)), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.prev.sum, aes(x=biwk, y=prevalence, size=Ntot, shape = year, color = as.factor(year)), fill="white",  pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("prevalence") + xlab("biweek of year")  + 
-    scale_size_continuous(name="N bats") +
-    scale_color_discrete(name="year") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prev_mean_sweep), color="red") + 
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prevalence), color="red4") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci, ymax = seroprev_uci), fill="red", alpha=.3) + 
-    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
-    facet_wrap(model~., ncol=4) 
+  #make plot
+  out.plot.mid <- cowplot::plot_grid(p2,p3,p4, ncol=3,nrow=1, align = "hv", axis="tb", labels = c("C", "D", "E"), label_size = 22)
+  out.plot.top <- cowplot::plot_grid(p1,p5,ncol=2,nrow = 1, align = "hv", axis="tb" , labels = c("A", "B"), label_size = 22)
+  out.plot.bottom <- cowplot::plot_grid(p6b, p8, ncol=2,nrow = 1, align = "hv", axis="tb", labels = c("F", "G"), label_size = 22, rel_widths = c(.8,1))
+  out<- cowplot::plot_grid(out.plot.top, out.plot.mid, out.plot.bottom, ncol=1, nrow = 3, rel_heights = c(1,.7,1)) #+ theme(panel.background = element_rect(fill="white"), plot.background = element_rect(fill="white"))
+  #print(out) 
   
-  # Save Page 1
-  p3a <- p3 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
-  
-  # Save Page 2
-  p3b <- p3 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 2)
-  
-  
-  
-  
-  if(do.save==TRUE){
-    ggsave(file = filename1a,
-           plot = p1a,
+  if(do.save.plot ==TRUE){
+
+    ggsave(file = filename,
+           plot = out,
+           bg = "white",
            units="mm",  
-           width=100, 
-           height=150, 
+           width=130, 
+           height=140, 
            scale=3, 
            dpi=300)
     
-    ggsave(file = filename1b,
-           plot = p1b,
-           units="mm",  
-           width=100, 
-           height=150, 
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename2a,
-           plot = p2a,
-           units="mm",  
-           width=100, 
-           height=150, 
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename2b,
-           plot = p2b,
-           units="mm",  
-           width=100, 
-           height=150, 
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename3a,
-           plot = p3a,
-           units="mm",  
-           width=100, 
-           height=150, 
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename3b,
-           plot = p3b,
-           units="mm",  
-           width=100, 
-           height=150, 
-           scale=3, 
-           dpi=300)
-  }
   
+  }
+  #and return all the info
+  return(pca.out)
   
   
   
 }
-plot.models.data.CI.squiggle.horizontal <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split,  do.plot, do.save, filename1, filename2, filename3){
+
+PCA.Eid.hen <- choose.antigens(dat = lumdat.long, species = "Eidolon dupreanum", genus = "Henipavirus",  manual_cluster = NA,  do.save.plot = TRUE, filename=paste0(homewd,"/final_figures_tables/supplemental/SuppFig2.png"))
+PCA.Rou.hen <- choose.antigens(dat = lumdat.long, species = "Rousettus madagascariensis", genus = "Henipavirus",  manual_cluster = NA, do.save.plot = TRUE, filename=paste0(homewd,"/final_figures_tables/supplemental/SuppFig3.png"))
+PCA.Pter.hen <- choose.antigens(dat = lumdat.long, species = "Pteropus rufus", genus = "Henipavirus",  manual_cluster = NA, do.save.plot = TRUE,  filename=paste0(homewd,"/final_figures_tables/supplemental/SuppFig1.png"))
+
+################################################################################
+################################################################################
+
+# Retaining this script for GitHub but not reporting these additional plots in 
+# the final paper. See the very bottom for a summary of results from these analyses.
+
+# Now, within each cluster, demonstrate that all MFIs correlate with the 
+# most dominant antigen in the cluster
+
+
+
+# load aa alignment for henipavirus
+henipa.align <- read.alignment(file = paste0(homewd,"/serology/data/Henipavirus-Alignment.fasta"), format = "fasta")
+# make distance matrix
+dist.henipa <- dist.alignment(henipa.align)
+
+hclust(dist.henipa)
+
+plot.correlation <- function(dat, ant1, ant2, ant3, ant4, ant5, species, genus, dist.mat){
   
-  mod.all = subset(CI.age.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
-  CI.ts.fits1 = subset(CI.ts.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
   
-  mod.all$model <- factor(mod.all$model, levels=c("MSIRN","MSIRS","MSIRI", "MSIRSI", "MSIRNS","MSIRNI", "MSIRNSI", "MSIRNNS","MSIRNNI","MSIRNNSI", 
-                                                  "MSIRN-mu-sick","MSIRS-mu-sick", "MSIRI-mu-sick", "MSIRSI-mu-sick", "MSIRNS-mu-sick","MSIRNI-mu-sick", "MSIRNSI-mu-sick", "MSIRNNS-mu-sick","MSIRNNI-mu-sick", "MSIRNNSI-mu-sick",
-                                                  "MSIRN-mu-rec", "MSIRS-mu-rec", "MSIRI-mu-rec", "MSIRSI-mu-rec","MSIRNS-mu-rec", "MSIRNI-mu-rec", "MSIRNSI-mu-rec", "MSIRNNS-mu-rec", "MSIRNNI-mu-rec","MSIRNNSI-mu-rec", 
-                                                  "MSIRN-mu-sick-mu-rec","MSIRS-mu-sick-mu-rec","MSIRI-mu-sick-mu-rec","MSIRSI-mu-sick-mu-rec","MSIRNS-mu-sick-mu-rec","MSIRNI-mu-sick-mu-rec","MSIRNSI-mu-sick-mu-rec","MSIRNNS-mu-sick-mu-rec","MSIRNNI-mu-sick-mu-rec","MSIRNNSI-mu-sick-mu-rec"))
-  
-  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIRN","MSIRS","MSIRI", "MSIRSI", "MSIRNS","MSIRNI", "MSIRNSI", "MSIRNNS","MSIRNNI","MSIRNNSI", 
-                                                          "MSIRN-mu-sick","MSIRS-mu-sick", "MSIRI-mu-sick", "MSIRSI-mu-sick", "MSIRNS-mu-sick","MSIRNI-mu-sick", "MSIRNSI-mu-sick", "MSIRNNS-mu-sick","MSIRNNI-mu-sick", "MSIRNNSI-mu-sick",
-                                                          "MSIRN-mu-rec", "MSIRS-mu-rec", "MSIRI-mu-rec", "MSIRSI-mu-rec","MSIRNS-mu-rec", "MSIRNI-mu-rec", "MSIRNSI-mu-rec", "MSIRNNS-mu-rec", "MSIRNNI-mu-rec","MSIRNNSI-mu-rec", 
-                                                          "MSIRN-mu-sick-mu-rec","MSIRS-mu-sick-mu-rec","MSIRI-mu-sick-mu-rec","MSIRSI-mu-sick-mu-rec","MSIRNS-mu-sick-mu-rec","MSIRNI-mu-sick-mu-rec","MSIRNSI-mu-sick-mu-rec","MSIRNNS-mu-sick-mu-rec","MSIRNNI-mu-sick-mu-rec","MSIRNNSI-mu-sick-mu-rec"))
+  #shrink dataset to area of focus
+  df.shrink = subset(data.frame(dat), bat_species==species & virus_genus == genus)
   
   
-  #first pull out your data...
-  dat.tmp <- subset(dat1, species==species1 & antigen==antigen1)
-  dat.tmp <- subset(dat.tmp, !is.na(age))
+  #select columns of relevance 
+  df.slim <- dplyr::select(df.shrink, sampleid, antigen, MFI)
   
-  #get data in age-seroprev form
-  dat.sum = get.seroprev.dat(data=dat.tmp[!is.na(dat.tmp$age),], vis_split = vis_split, cutoff = cutoff1)
-  dat.sum$seropos = dat.sum$prevalence*dat.sum$count
+  #make wide
+  df.wide = reshape(df.slim, direction="wide", idvar="sampleid",timevar = "antigen")
+
   
-  dat.sum$seroprev_lci <-dat.sum$seroprev_uci <-NA
-  for(i in 1:length(dat.sum$real_age)){
-    dat.sum$seroprev_lci[i] <- binom.test(x=dat.sum$seropos[i], n=dat.sum$count[i])$conf.int[1]  
-    dat.sum$seroprev_uci[i] <-  binom.test(x=dat.sum$seropos[i], n=dat.sum$count[i])$conf.int[2]
+  #check for NAs in case some were missing a single antigen - replace with 1
+  df.wide[is.na(df.wide)] <- 1
+  names(df.wide)[2:ncol(df.wide)] <- gsub(pattern = "MFI.", replacement = "", x=names(df.wide)[2:ncol(df.wide)])
+  
+  if(genus=="Henipavirus"){
+    df.wide <- dplyr::select(df.wide, "sampleid", "NiV", "HeV", "CedV", "GhV", "AngV", "MojV")  
+  } else if(genus=="Orthoebolavirus"){
+    df.wide <- dplyr::select(df.wide, "sampleid", "EboV", "BdbV", "BomV", "SudV", "RestV")  
   }
   
-  dat.sero = subset(dat.sero1, bat_species==species1 & antigen==antigen1)
-  dat.sero$year<- year(dat.sero$processing_date)
-  dat.sero.sum <- ddply(dat.sero,.(year, biwk), summarize, Nseropos = sum(seropos), Ntot=length(seropos))
-  dat.sero.sum$seroprevalence <- dat.sero.sum$Nseropos/dat.sero.sum$Ntot
-  dat.sero.sum$seroprev_lci <-dat.sero.sum$seroprev_uci <-NA
-  for(i in 1:length(dat.sero.sum$year)){
-    dat.sero.sum$seroprev_lci[i] <- binom.test(x=dat.sero.sum$Nseropos[i], n=dat.sero.sum$Ntot[i])$conf.int[1]  
-    dat.sero.sum$seroprev_uci[i] <-  binom.test(x=dat.sero.sum$Nseropos[i], n=dat.sero.sum$Ntot[i])$conf.int[2]
-  }
-  
-  dat.prev = subset(dat.prev1, bat_species==species1 & antigen==antigen1)
-  dat.prev$year<- year(dat.prev$processing_date)
-  dat.prev.sum <- ddply(dat.prev,.(year, biwk), summarize, Npos = sum(shed_pos), Ntot=length(shed_pos))
-  dat.prev.sum$prevalence <- dat.prev.sum$Npos/dat.prev.sum$Ntot
-  dat.prev.sum$prev_lci <-dat.prev.sum$prev_uci <-NA
-  for(i in 1:length(dat.prev.sum$year)){
-    dat.prev.sum$prev_lci[i] <- binom.test(x=dat.prev.sum$Npos[i], n=dat.prev.sum$Ntot[i])$conf.int[1]  
-    dat.prev.sum$prev_uci[i] <-  binom.test(x=dat.prev.sum$Npos[i], n=dat.prev.sum$Ntot[i])$conf.int[2]
-  }
-  
-  #plot with data
-  max.a = ceiling(max(dat.sum$age_year))
-  p1 <- ggplot() +  theme_bw() +
-    geom_line(data=dat.sum, aes(x=age_year, y=prevalence), color ="black", linetype=2) +
-    geom_linerange(data=dat.sum, aes(x=age_year, ymin = seroprev_lci, ymax=seroprev_uci), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.sum, aes(x=age_year, y=prevalence, size=count), fill="white", color ="black", pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, max.a)) + ylab("seroprevalence") + xlab("age(yrs)")  + 
-    scale_size_continuous(name="N bats") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=mod.all, aes(x=age, y=seroprev_mean_sweep), color="cornflowerblue") + 
-    geom_line(data=mod.all, aes(x=age, y=seroprevalence), color="navy") + 
-    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
-    #geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=10) 
   
   
-  # 
-  # print(p1)
-  # 
-  # # Calculate page parameters (adjust rows/cols as needed)
-  # models <- unique(CI.ts.fits1$model)
-  # total_models <- length(models)
-  # 
-  # 
-  # # Save Page 1
-  # p1a <- p1 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
-  # 
-  # # Save Page 2
-  # p1b <- p1 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 2)
-  # 
-  # 
-  #and plot the others
+  p1 <-  ggcorrplot(cor(df.wide[,2:ncol(df.wide)], method = "spearman"), lab=T, lab_size = 3) #+ theme(plot.margin = unit(c(5.5,5.5,.1,.1), "points")) 
   
-  #sero 
-  p2 <- ggplot() +  theme_bw() +
-    geom_linerange(data=dat.sero.sum, aes(x=biwk, ymin=seroprev_lci, ymax=seroprev_uci, color = as.factor(year)), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.sero.sum, aes(x=biwk, y=seroprevalence, size=Ntot, shape = year, color = as.factor(year)), fill="white",  pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("seroprevalence") + xlab("biweek of year")  + 
-    scale_size_continuous(name="N bats") +
-    scale_color_discrete(name="year") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18),  legend.box  = "vertical",
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprev_mean_sweep), color="cornflowerblue") + 
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="navy") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
-    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=10) 
-  # 
-  # # Save Page 1
-  # p2a <- p2 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
-  # 
-  # # Save Page 2
-  # p2b <- p2 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 2)
-  # 
-  # 
-  # 
-  #prev
-  p3 <- ggplot() +  theme_bw() +
-    geom_linerange(data=dat.prev.sum, aes(x=biwk, ymin=prev_lci, ymax=prev_uci, color = as.factor(year)), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.prev.sum, aes(x=biwk, y=prevalence, size=Ntot, shape = year, color = as.factor(year)), fill="white",  pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("prevalence") + xlab("biweek of year")  + 
-    scale_size_continuous(name="N bats") +
-    scale_color_discrete(name="year") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), legend.box  = "vertical",
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prev_mean_sweep), color="red") + 
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prevalence), color="red4") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci, ymax = seroprev_uci), fill="red", alpha=.3) + 
-    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
-    facet_wrap(model~., ncol=10) 
-  # 
-  # # Save Page 1
-  # p3a <- p3 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
-  # 
-  # # Save Page 2
-  # p3b <- p3 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 2)
-  # 
-  # 
-  # 
   
-  if(do.save==TRUE){
-    ggsave(file = filename1,
-           plot = p1,
-           units="mm",  
-           width=150, 
-           height=90, 
-           scale=3, 
-           dpi=300)
+  hc.mat <- hclust(dist.mat)
+  
+  if(genus=="Orthoebolavirus"){
+    hc.mat$order <- c(4,5,3,1,2)
+    hc.mat$height = hc.mat$height-.5
+    
+    # p1add <- ggplot() + geom_dendro(hc.mat, size=1) + theme_bw() +
+    #   scale_y_reverse() + scale_x_reverse()+ 
+    #   theme(panel.grid = element_blank(), panel.border = element_blank(),
+    #         axis.title = element_blank(), axis.text = element_blank(),
+    #         plot.background = element_rect(fill="transparent"),
+    #         panel.background = element_rect(fill="transparent"),
+    #         axis.ticks = element_blank(), plot.margin = unit(c(0,3.3,0,1), "cm")) 
+    
+    p1add.left <- ggplot() + geom_dendro(hc.mat, size=1) + theme_bw() + coord_flip() +
+      scale_y_reverse() + scale_x_reverse()+ 
+      theme(panel.grid = element_blank(), panel.border = element_blank(),
+            axis.title = element_blank(), axis.text = element_blank(),
+            plot.background = element_rect(fill="transparent"),
+            panel.background = element_rect(fill="transparent"),
+            axis.ticks = element_blank(), plot.margin = unit(c(1.7,0, 2.8,.1), "cm")) 
+    
+    #p1.2 <- cowplot::plot_grid(p1,p1add, ncol = 1, nrow=2,  rel_heights = c(1,.2));  p1.2 
+    p1.3 <- cowplot::plot_grid(p1add.left,p1, ncol = 2, nrow=1,  rel_widths = c(.2,1));  p1.3
+  }else{
+    
+    #edit these a bit for ease of viewing
+    hc.mat$height[2]<-hc.mat$height[2]-.3
+    hc.mat$height[3]<-hc.mat$height[3]-.2
+    hc.mat$height[4]<-hc.mat$height[4]-.1
+    
+    hc.mat$height =     hc.mat$height-.3
+    
+    # p1add <- ggplot() + geom_dendro(hc.mat, size=1) + theme_bw() +
+    #   scale_y_reverse() + scale_x_reverse()+ 
+    #   theme(panel.grid = element_blank(), panel.border = element_blank(),
+    #         axis.title = element_blank(), axis.text = element_blank(),
+    #         plot.background = element_rect(fill="transparent"),
+    #         panel.background = element_rect(fill="transparent"),
+    #         axis.ticks = element_blank(), plot.margin = unit(c(0,3.3,0,1), "cm")) 
     # 
-    # ggsave(file = filename1b,
-    #        plot = p1b,
-    #        units="mm",  
-    #        width=100, 
-    #        height=150, 
-    #        scale=3, 
-    #        dpi=300)
+    p1add.left <- ggplot() + geom_dendro(hc.mat, size=1) + theme_bw() + coord_flip() +
+      scale_y_reverse() + scale_x_reverse()+ 
+      theme(panel.grid = element_blank(), panel.border = element_blank(),
+            axis.title = element_blank(), axis.text = element_blank(),
+            plot.background = element_rect(fill="transparent"),
+            panel.background = element_rect(fill="transparent"),
+            axis.ticks = element_blank(), plot.margin = unit(c(1.7,0,2.7,.1), "cm")) 
     
-    ggsave(file = filename2,
-           plot = p2,
-           units="mm",  
-           width=150, 
-           height=90, 
-           scale=3, 
-           dpi=300)
-    # 
-    # ggsave(file = filename2b,
-    #        plot = p2b,
-    #        units="mm",  
-    #        width=100, 
-    #        height=150, 
-    #        scale=3, 
-    #        dpi=300)
+    #p1.2 <- cowplot::plot_grid(p1,p1add, ncol = 1, nrow=2,  rel_heights = c(1,.2));  p1.2 
+    p1.3 <- cowplot::plot_grid(p1add.left,p1, ncol = 2, nrow=1,  rel_widths = c(.2,1));  p1.3
     
-    ggsave(file = filename3,
-           plot = p3,
-           units="mm",  
-           width=150, 
-           height=90, 
-           scale=3, 
-           dpi=300)
-    # 
-    # ggsave(file = filename3b,
-    #        plot = p3b,
-    #        units="mm",  
-    #        width=100, 
-    #        height=150, 
-    #        scale=3, 
-    #        dpi=300)
   }
   
   
-  
-  
-}
-#this version does not include the squiggles
-plot.models.data.CI <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split,  do.plot, do.save, filename1a, filename1b, filename2a, filename2b, filename3a, filename3b){
-  
-  mod.all = subset(CI.age.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
-  
-  CI.ts.fits1 = subset(CI.ts.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
-  
-  mod.all$model <- factor(mod.all$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                  "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                  "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
-                                                  "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
-                                                  "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
-                                                  "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
-                                                  "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
-                                                  "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
-  
-  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                          "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                          "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
-                                                          "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
-                                                          "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
-                                                          "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
-                                                          "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
-                                                          "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
-  
-  mod.all$trunc_age <- trunc(mod.all$age)
-  
-  
-  #now summarize across age bins
-  # #split model and add ages
-  mod.split <- dlply(mod.all, .(model, trunc_age))
-  # 
-  # 
-  # 
-  #mod.all <- data.table::rbindlist(lapply(mod.split, add.age))
-  mod.all <- data.table::rbindlist(lapply(mod.split, pick.age))
-  mod.all$age_bin <- mod.all$age
-  # 
-  # mod.all$seropos_lci <- mod.all$seroprev_lci*mod.all$N
-  # mod.all$seropos_uci <- mod.all$seroprev_uci*mod.all$N
-  # mod.all$seropos_lci_25 <- mod.all$seroprev_lci_25*mod.all$N
-  # mod.all$seropos_uci_75 <- mod.all$seroprev_uci_75*mod.all$N
-  # # 
-  #  
-  # model.sum = ddply(mod.all,.(model, age_bin), summarise, N_pos = sum(seropos, na.rm = F), N_pos_lci = sum(seropos_lci, na.rm = F), N_pos_uci = sum(seropos_uci, na.rm = F),  N_pos_lci_25 = sum(seropos_lci_25, na.rm = F), N_pos_uci_75 = sum(seropos_uci_75, na.rm = F), Ntot=sum(N, na.rm = F))
-  # model.sum$seroprevalence <- model.sum$N_pos/model.sum$Ntot
-  # model.sum$seroprev_lci <- model.sum$N_pos_lci/model.sum$Ntot
-  # model.sum$seroprev_uci <- model.sum$N_pos_uci/model.sum$Ntot
-  # model.sum$seroprev_lci_25 <- model.sum$N_pos_lci_25/model.sum$Ntot
-  # model.sum$seroprev_uci_75 <- model.sum$N_pos_uci_75/model.sum$Ntot
-  # # 
-  
-  model.sum = ddply(mod.all,.(model, age_bin), summarise, seroprevalence = mean(seroprevalence, na.rm = F),  seroprev_mean_sweep = mean(seroprev_mean_sweep, na.rm = F), seroprev_lci = mean(seroprev_lci, na.rm = F),  seroprev_uci = mean(seroprev_uci, na.rm = F))
-  
-  #first pull out your data...
-  dat.tmp <- subset(dat1, species==species1 & antigen==antigen1)
-  dat.tmp <- subset(dat.tmp, !is.na(age))
-  
-  #get data in age-seroprev form
-  dat.sum = get.seroprev.dat(data=dat.tmp[!is.na(dat.tmp$age),], vis_split = vis_split, cutoff = cutoff1)
-  dat.sum$seropos = dat.sum$prevalence*dat.sum$count
-  
-  dat.sum$seroprev_lci <-dat.sum$seroprev_uci <-NA
-  for(i in 1:length(dat.sum$real_age)){
-    dat.sum$seroprev_lci[i] <- binom.test(x=dat.sum$seropos[i], n=dat.sum$count[i])$conf.int[1]  
-    dat.sum$seroprev_uci[i] <-  binom.test(x=dat.sum$seropos[i], n=dat.sum$count[i])$conf.int[2]
-  }
-  
-  dat.sero = subset(dat.sero1, bat_species==species1 & antigen==antigen1)
-  dat.sero$year<- year(dat.sero$processing_date)
-  dat.sero.sum <- ddply(dat.sero,.(year, biwk), summarise, Nseropos = sum(seropos), Ntot=length(seropos))
-  dat.sero.sum$seroprevalence <- dat.sero.sum$Nseropos/dat.sero.sum$Ntot
-  dat.sero.sum$seroprev_lci <-dat.sero.sum$seroprev_uci <-NA
-  for(i in 1:length(dat.sero.sum$year)){
-    dat.sero.sum$seroprev_lci[i] <- binom.test(x=dat.sero.sum$Nseropos[i], n=dat.sero.sum$Ntot[i])$conf.int[1]  
-    dat.sero.sum$seroprev_uci[i] <-  binom.test(x=dat.sero.sum$Nseropos[i], n=dat.sero.sum$Ntot[i])$conf.int[2]
-  }
-  
-  dat.prev = subset(dat.prev1, bat_species==species1 & antigen==antigen1)
-  dat.prev$year<- year(dat.prev$processing_date)
-  dat.prev.sum <- ddply(dat.prev,.(year, biwk), summarise, Npos = sum(shed_pos), Ntot=length(shed_pos))
-  dat.prev.sum$prevalence <- dat.prev.sum$Npos/dat.prev.sum$Ntot
-  dat.prev.sum$prev_lci <-dat.prev.sum$prev_uci <-NA
-  for(i in 1:length(dat.prev.sum$year)){
-    dat.prev.sum$prev_lci[i] <- binom.test(x=dat.prev.sum$Npos[i], n=dat.prev.sum$Ntot[i])$conf.int[1]  
-    dat.prev.sum$prev_uci[i] <-  binom.test(x=dat.prev.sum$Npos[i], n=dat.prev.sum$Ntot[i])$conf.int[2]
-  }
-  
-  #plot with data
-  max.a = ceiling(max(dat.sum$age_year))
-  p1 <- ggplot() +  theme_bw() +
-    geom_line(data=dat.sum, aes(x=age_year, y=prevalence), color ="black", linetype=2) +
-    geom_linerange(data=dat.sum, aes(x=age_year, ymin = seroprev_lci, ymax=seroprev_uci), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.sum, aes(x=age_year, y=prevalence, size=count), fill="white", color ="black", pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, max.a)) + ylab("seroprevalence") + xlab("age(yrs)")  + 
-    scale_size_continuous(name="N bats") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=model.sum, aes(x=age_bin, y=seroprev_mean_sweep), color="cornflowerblue") + 
-    geom_line(data=model.sum, aes(x=age_bin, y=seroprevalence), color="navy") + 
-    geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
-    #geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=4) 
-  
-  
-  
-  print(p1)
-  
-  # Calculate page parameters (adjust rows/cols as needed)
-  models <- unique(CI.ts.fits1$model)
-  total_models <- length(models)
-  
-  
-  # Save Page 1
-  p1a <- p1 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
-  
-  # Save Page 2
-  p1b <- p1 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 2)
-  
-  
-  
-  #and plot the others
-  
-  #sero 
-  p2 <- ggplot() +  theme_bw() +
-    geom_linerange(data=dat.sero.sum, aes(x=biwk, ymin=seroprev_lci, ymax=seroprev_uci, color = as.factor(year)), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.sero.sum, aes(x=biwk, y=seroprevalence, size=Ntot, color = as.factor(year)), fill="white", pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("seroprevalence") + xlab("biweek of year")  + 
-    scale_size_continuous(name="N bats") +
-    scale_color_discrete(name="year") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprev_mean_sweep), color="cornflowerblue") + 
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="navy") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.1) + 
-    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=4) 
-  
-  # Save Page 1
-  p2a <- p2 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
-  
-  # Save Page 2
-  p2b <- p2 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 2)
-  
-  
-  #prev
-  p3 <- ggplot() +  theme_bw() +
-    geom_linerange(data=dat.prev.sum, aes(x=biwk, ymin=prev_lci, ymax=prev_uci, color = as.factor(year)), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.prev.sum, aes(x=biwk, y=prevalence, size=Ntot, color = as.factor(year)), fill="white", pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("prevalence") + xlab("biweek of year")  + 
-    scale_size_continuous(name="N bats") +
-    scale_color_discrete(name="year") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prev_mean_sweep), color="red") + 
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prevalence), color="red4") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
-    facet_wrap(model~., ncol=4) 
-  
-  # Save Page 1
-  p3a <- p3 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
-  
-  # Save Page 2
-  p3b <- p3 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 2)
-  
-  
-  if(do.save==TRUE){
-    ggsave(file = filename1a,
-           plot = p1a,
-           units="mm",  
-           width=100, 
-           height=150, 
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename1b,
-           plot = p1b,
-           units="mm",  
-           width=100, 
-           height=150, 
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename2a,
-           plot = p2a,
-           units="mm",  
-           width=100, 
-           height=150, 
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename2b,
-           plot = p2b,
-           units="mm",  
-           width=100, 
-           height=150, 
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename3a,
-           plot = p3a,
-           units="mm",  
-           width=100, 
-           height=150, 
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename3b,
-           plot = p3b,
-           units="mm",  
-           width=100, 
-           height=150, 
-           scale=3, 
-           dpi=300)
-  }
-  
-  
-  
-  
-  
-}
-plot.models.data.CI.squiggle.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split,  do.plot, do.save, filename1, filename2, filename3){
-  
-  mod.all = subset(CI.age.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
-  CI.ts.fits1 = subset(CI.ts.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
-  
-  mod.all$model <- factor(mod.all$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                  "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                  "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
-                                                  "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
-                                                  "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
-                                                  "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
-                                                  "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
-                                                  "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
-  
-  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                          "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                          "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
-                                                          "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
-                                                          "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
-                                                          "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
-                                                          "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
-                                                          "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
-  
-  
-  #first pull out your data...
-  dat.tmp <- subset(dat1, species==species1 & antigen==antigen1)
-  dat.tmp <- subset(dat.tmp, !is.na(age))
-  
-  #get data in age-seroprev form
-  dat.sum = get.seroprev.dat(data=dat.tmp[!is.na(dat.tmp$age),], vis_split = vis_split, cutoff = cutoff1)
-  dat.sum$seropos = dat.sum$prevalence*dat.sum$count
-  
-  dat.sum$seroprev_lci <-dat.sum$seroprev_uci <-NA
-  for(i in 1:length(dat.sum$real_age)){
-    dat.sum$seroprev_lci[i] <- binom.test(x=dat.sum$seropos[i], n=dat.sum$count[i])$conf.int[1]  
-    dat.sum$seroprev_uci[i] <-  binom.test(x=dat.sum$seropos[i], n=dat.sum$count[i])$conf.int[2]
-  }
-  
-  dat.sero = subset(dat.sero1, bat_species==species1 & antigen==antigen1)
-  dat.sero$year<- year(dat.sero$processing_date)
-  dat.sero.sum <- ddply(dat.sero,.(year, biwk), summarize, Nseropos = sum(seropos), Ntot=length(seropos))
-  dat.sero.sum$seroprevalence <- dat.sero.sum$Nseropos/dat.sero.sum$Ntot
-  dat.sero.sum$seroprev_lci <-dat.sero.sum$seroprev_uci <-NA
-  for(i in 1:length(dat.sero.sum$year)){
-    dat.sero.sum$seroprev_lci[i] <- binom.test(x=dat.sero.sum$Nseropos[i], n=dat.sero.sum$Ntot[i])$conf.int[1]  
-    dat.sero.sum$seroprev_uci[i] <-  binom.test(x=dat.sero.sum$Nseropos[i], n=dat.sero.sum$Ntot[i])$conf.int[2]
-  }
-  
-  dat.prev = subset(dat.prev1, bat_species==species1 & antigen==antigen1)
-  dat.prev$year<- year(dat.prev$processing_date)
-  dat.prev.sum <- ddply(dat.prev,.(year, biwk), summarize, Npos = sum(shed_pos), Ntot=length(shed_pos))
-  dat.prev.sum$prevalence <- dat.prev.sum$Npos/dat.prev.sum$Ntot
-  dat.prev.sum$prev_lci <-dat.prev.sum$prev_uci <-NA
-  for(i in 1:length(dat.prev.sum$year)){
-    dat.prev.sum$prev_lci[i] <- binom.test(x=dat.prev.sum$Npos[i], n=dat.prev.sum$Ntot[i])$conf.int[1]  
-    dat.prev.sum$prev_uci[i] <-  binom.test(x=dat.prev.sum$Npos[i], n=dat.prev.sum$Ntot[i])$conf.int[2]
-  }
-  
-  #plot with data
-  max.a = ceiling(max(dat.sum$age_year))
-  p1 <- ggplot() +  theme_bw() +
-    geom_line(data=dat.sum, aes(x=age_year, y=prevalence), color ="black", linetype=2) +
-    geom_linerange(data=dat.sum, aes(x=age_year, ymin = seroprev_lci, ymax=seroprev_uci), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.sum, aes(x=age_year, y=prevalence, size=count), fill="white", color ="black", pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, max.a)) + ylab("seroprevalence") + xlab("age(yrs)")  + 
-    scale_size_continuous(name="N bats") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=mod.all, aes(x=age, y=seroprev_mean_sweep), color="cornflowerblue") + 
-    geom_line(data=mod.all, aes(x=age, y=seroprevalence), color="navy") + 
-    geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
-    #geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=4) 
-  
-  
-  
-  print(p1)
-  
-  
-  
-  #and plot the others
-  
-  #sero 
-  p2 <- ggplot() +  theme_bw() +
-    geom_linerange(data=dat.sero.sum, aes(x=biwk, ymin=seroprev_lci, ymax=seroprev_uci, color = as.factor(year)), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.sero.sum, aes(x=biwk, y=seroprevalence, size=Ntot, shape = year, color = as.factor(year)), fill="white",  pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("seroprevalence") + xlab("biweek of year")  + 
-    scale_size_continuous(name="N bats") +
-    scale_color_discrete(name="year") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprev_mean_sweep), color="cornflowerblue") + 
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="navy") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
-    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=4) 
-  
-  #prev
-  p3 <- ggplot() +  theme_bw() +
-    geom_linerange(data=dat.prev.sum, aes(x=biwk, ymin=prev_lci, ymax=prev_uci, color = as.factor(year)), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.prev.sum, aes(x=biwk, y=prevalence, size=Ntot, shape = year, color = as.factor(year)), fill="white",  pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("prevalence") + xlab("biweek of year")  + 
-    scale_size_continuous(name="N bats") +
-    scale_color_discrete(name="year") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prev_mean_sweep), color="red") + 
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prevalence), color="red4") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci, ymax = seroprev_uci), fill="red", alpha=.3) + 
-    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
-    facet_wrap(model~., ncol=4) 
-  
-  if(do.save==TRUE){
-    ggsave(file = filename1,
-           plot = p1,
-           units="mm",  
-           width=55, 
-           height=45,
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename2,
-           plot = p2,
-           units="mm",  
-           width=55, 
-           height=45, 
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename3,
-           plot = p3,
-           units="mm",  
-           width=55, 
-           height=45, 
-           scale=3, 
-           dpi=300)
-  }
-  
-  
-  
-  
-}
-#this version does not include the squiggles
-plot.models.data.CI.one <- function(CI.age.fits, CI.ts.fits, dat1, dat.sero1, dat.prev1, species1, antigen1, cutoff1, vis_split,  do.plot, do.save, filename1, filename2, filename3){
-  
-  mod.all = subset(CI.age.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
-  
-  CI.ts.fits1 = subset(CI.ts.fits, antigen==antigen1 & cutoff==cutoff1 & species==species1)
-  
-  mod.all$model <- factor(mod.all$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                  "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                  "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
-                                                  "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
-                                                  "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                  "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
-                                                  "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
-                                                  "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                  "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
-                                                  "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
-  
-  CI.ts.fits1$model <- factor(CI.ts.fits1$model, levels=c("MSIRN", "MSIRN-mu-sick", "MSIRN-mu-rec", "MSIRN-mu-sick-mu-rec",
-                                                          "MSIRS", "MSIRS-mu-sick", "MSIRS-mu-rec", "MSIRS-mu-sick-mu-rec",
-                                                          "MSIRI", "MSIRI-mu-sick", "MSIRI-mu-rec", "MSIRI-mu-sick-mu-rec",
-                                                          "MSIRSI", "MSIRSI-mu-sick", "MSIRSI-mu-rec", "MSIRSI-mu-sick-mu-rec",
-                                                          "MSIRNS", "MSIRNS-mu-sick", "MSIRNS-mu-rec", "MSIRNS-mu-sick-mu-rec",
-                                                          "MSIRNI", "MSIRNI-mu-sick", "MSIRNI-mu-rec", "MSIRNI-mu-sick-mu-rec",
-                                                          "MSIRNSI", "MSIRNSI-mu-sick", "MSIRNSI-mu-rec", "MSIRNSI-mu-sick-mu-rec",
-                                                          "MSIRNNS", "MSIRNNS-mu-sick", "MSIRNNS-mu-rec", "MSIRNNS-mu-sick-mu-rec",
-                                                          "MSIRNNI", "MSIRNNI-mu-sick", "MSIRNNI-mu-rec", "MSIRNNI-mu-sick-mu-rec",
-                                                          "MSIRNNSI", "MSIRNNSI-mu-sick", "MSIRNNSI-mu-rec", "MSIRNNSI-mu-sick-mu-rec"))
-  
-  
-  mod.all$trunc_age <- trunc(mod.all$age)
-  #now summarize across age bins
-  # #split model and add ages
-  mod.split <- dlply(mod.all, .(model, trunc_age))
-  
-  # #now summarize across age bins
-  # # #split model and add ages
-  # mod.split <- dlply(mod.all, .(model))
-  # # 
-  # 
-  # 
-  mod.all <- data.table::rbindlist(lapply(mod.split, pick.age))
-  mod.all$age_bin <- mod.all$age
-  # 
-  # mod.all$seropos_lci <- mod.all$seroprev_lci*mod.all$N
-  # mod.all$seropos_uci <- mod.all$seroprev_uci*mod.all$N
-  # mod.all$seropos_lci_25 <- mod.all$seroprev_lci_25*mod.all$N
-  # mod.all$seropos_uci_75 <- mod.all$seroprev_uci_75*mod.all$N
-  # # 
-  #  
-  # model.sum = ddply(mod.all,.(model, age_bin), summarise, N_pos = sum(seropos, na.rm = F), N_pos_lci = sum(seropos_lci, na.rm = F), N_pos_uci = sum(seropos_uci, na.rm = F),  N_pos_lci_25 = sum(seropos_lci_25, na.rm = F), N_pos_uci_75 = sum(seropos_uci_75, na.rm = F), Ntot=sum(N, na.rm = F))
-  # model.sum$seroprevalence <- model.sum$N_pos/model.sum$Ntot
-  # model.sum$seroprev_lci <- model.sum$N_pos_lci/model.sum$Ntot
-  # model.sum$seroprev_uci <- model.sum$N_pos_uci/model.sum$Ntot
-  # model.sum$seroprev_lci_25 <- model.sum$N_pos_lci_25/model.sum$Ntot
-  # model.sum$seroprev_uci_75 <- model.sum$N_pos_uci_75/model.sum$Ntot
-  model.sum = ddply(mod.all,.(model, age_bin), summarise, seroprevalence = mean(seroprevalence, na.rm = F),  seroprev_mean_sweep = mean(seroprev_mean_sweep, na.rm = F), seroprev_lci = mean(seroprev_lci, na.rm = F),  seroprev_uci = mean(seroprev_uci, na.rm = F))
-  
-  # 
-  #first pull out your data...
-  dat.tmp <- subset(dat1, species==species1 & antigen==antigen1)
-  dat.tmp <- subset(dat.tmp, !is.na(age))
-  
-  #get data in age-seroprev form
-  dat.sum = get.seroprev.dat(data=dat.tmp[!is.na(dat.tmp$age),], vis_split = vis_split, cutoff = cutoff1)
-  dat.sum$seropos = dat.sum$prevalence*dat.sum$count
-  
-  dat.sum$seroprev_lci <-dat.sum$seroprev_uci <-NA
-  for(i in 1:length(dat.sum$real_age)){
-    dat.sum$seroprev_lci[i] <- binom.test(x=dat.sum$seropos[i], n=dat.sum$count[i])$conf.int[1]  
-    dat.sum$seroprev_uci[i] <-  binom.test(x=dat.sum$seropos[i], n=dat.sum$count[i])$conf.int[2]
-  }
-  
-  dat.sero = subset(dat.sero1, bat_species==species1 & antigen==antigen1)
-  dat.sero$year<- year(dat.sero$processing_date)
-  dat.sero.sum <- ddply(dat.sero,.(year, biwk), summarize, Nseropos = sum(seropos), Ntot=length(seropos))
-  dat.sero.sum$seroprevalence <- dat.sero.sum$Nseropos/dat.sero.sum$Ntot
-  dat.sero.sum$seroprev_lci <-dat.sero.sum$seroprev_uci <-NA
-  for(i in 1:length(dat.sero.sum$year)){
-    dat.sero.sum$seroprev_lci[i] <- binom.test(x=dat.sero.sum$Nseropos[i], n=dat.sero.sum$Ntot[i])$conf.int[1]  
-    dat.sero.sum$seroprev_uci[i] <-  binom.test(x=dat.sero.sum$Nseropos[i], n=dat.sero.sum$Ntot[i])$conf.int[2]
-  }
-  
-  dat.prev = subset(dat.prev1, bat_species==species1 & antigen==antigen1)
-  dat.prev$year<- year(dat.prev$processing_date)
-  dat.prev.sum <- ddply(dat.prev,.(year, biwk), summarize, Npos = sum(shed_pos), Ntot=length(shed_pos))
-  dat.prev.sum$prevalence <- dat.prev.sum$Npos/dat.prev.sum$Ntot
-  dat.prev.sum$prev_lci <-dat.prev.sum$prev_uci <-NA
-  for(i in 1:length(dat.prev.sum$year)){
-    dat.prev.sum$prev_lci[i] <- binom.test(x=dat.prev.sum$Npos[i], n=dat.prev.sum$Ntot[i])$conf.int[1]  
-    dat.prev.sum$prev_uci[i] <-  binom.test(x=dat.prev.sum$Npos[i], n=dat.prev.sum$Ntot[i])$conf.int[2]
-  }
-  
-  #plot with data
-  max.a = ceiling(max(dat.sum$age_year))
-  p1 <- ggplot() +  theme_bw() +
-    geom_line(data=dat.sum, aes(x=age_year, y=prevalence), color ="black", linetype=2) +
-    geom_linerange(data=dat.sum, aes(x=age_year, ymin = seroprev_lci, ymax=seroprev_uci), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.sum, aes(x=age_year, y=prevalence, size=count), fill="white", color ="black", pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, max.a)) + ylab("seroprevalence") + xlab("age(yrs)")  + 
-    scale_size_continuous(name="N bats") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=model.sum, aes(x=age_bin, y=seroprevalence), color="navy") + 
-    geom_line(data=model.sum, aes(x=age_bin, y=seroprev_mean_sweep), color="cornflowerblue") + 
-    geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
-    #geom_ribbon(data=model.sum, aes(x=age_bin, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=4) 
-  
-  
-  
-  print(p1)
-  
-  
-  
-  #and plot the others
-  
-  #sero 
-  p2 <- ggplot() +  theme_bw() +
-    geom_linerange(data=dat.sero.sum, aes(x=biwk, ymin=seroprev_lci, ymax=seroprev_uci, color = as.factor(year)), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.sero.sum, aes(x=biwk, y=seroprevalence, size=Ntot, color = as.factor(year)), fill="white", pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("seroprevalence") + xlab("biweek of year")  + 
-    scale_size_continuous(name="N bats") +
-    scale_color_discrete(name="year") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="navy") + 
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprev_mean_sweep), color="cornflowerblue") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
-    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=4) 
-  
-  #prev
-  p3 <- ggplot() +  theme_bw() +
-    geom_linerange(data=dat.prev.sum, aes(x=biwk, ymin=prev_lci, ymax=prev_uci, color = as.factor(year)), linetype=3, alpha=.5)+ 
-    geom_point(data=dat.prev.sum, aes(x=biwk, y=prevalence, size=Ntot, color = as.factor(year)), fill="white", pch=21) +
-    theme(legend.position = "right",  legend.spacing = unit(.03,"cm"), 
-          panel.grid = element_blank(), strip.background = element_rect(fill="white"),
-          legend.text=element_text(size=12), legend.key.size = unit(.4, "cm"), legend.box = "horizontal") +
-    coord_cartesian(ylim=c(0,1), xlim=c(0, 26)) + ylab("prevalence") + xlab("biweek of year")  + 
-    scale_size_continuous(name="N bats") +
-    scale_color_discrete(name="year") +
-    guides(colour = guide_legend(order = 2), size = guide_legend(order = 1)) +
-    theme(axis.title = element_text(size=18), 
-          axis.text = element_text(size=14), panel.grid = element_blank()) +
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prev_mean_sweep), color="red") + 
-    geom_line(data=CI.ts.fits1, aes(x=biwk, y=prevalence), color="red4") + 
-    geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci, ymax = seroprev_uci), fill="red", alpha=.1) + 
-    #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
-    facet_wrap(model~., ncol=4) 
-  
-  if(do.save==TRUE){
-    ggsave(file = filename1,
-           plot = p1,
-           units="mm",  
-           width=55, 
-           height=45, 
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename2,
-           plot = p2,
-           units="mm",  
-           width=55, 
-           height=45, 
-           scale=3, 
-           dpi=300)
-    
-    ggsave(file = filename3,
-           plot = p3,
-           units="mm",  
-           width=55, 
-           height=45, 
-           scale=3, 
-           dpi=300)
-  }
-  
-  
-  
-  
+ 
+  
+#   #plot
+  p2 <- ggplot(df.wide,aes(get(ant1), get(ant2))) + theme_bw()  + theme(panel.grid = element_blank()) +
+     stat_poly_line() + xlab(ant1) + ylab(ant2) +
+     stat_poly_eq() + scale_y_log10() + scale_x_log10() +
+     geom_point() +
+     geom_smooth(method='lm')
+#   
+   p3 <- ggplot(df.wide,aes(get(ant1), get(ant3))) + theme_bw()  + theme(panel.grid = element_blank()) +
+     stat_poly_line() + xlab(ant1) + ylab(ant3) +
+     stat_poly_eq() + scale_y_log10() + scale_x_log10() +
+     geom_point() +
+     geom_smooth(method='lm')
+#   
+   p4 <- ggplot(df.wide,aes(get(ant1), get(ant4))) + theme_bw()  + theme(panel.grid = element_blank()) +
+     stat_poly_line() + xlab(ant1) + ylab(ant4) +
+     stat_poly_eq() + scale_y_log10() + scale_x_log10() +
+     geom_point() +
+     geom_smooth(method='lm')
+   
+   
+   p5 <- ggplot(df.wide,aes(get(ant1), get(ant5))) + theme_bw()  + theme(panel.grid = element_blank()) +
+     stat_poly_line() + xlab(ant1) + ylab(ant5) +
+     stat_poly_eq() + scale_y_log10() + scale_x_log10() +
+     geom_point() +
+     geom_smooth(method='lm')
+   #   
+   
+   p6 <- ggplot(df.wide,aes(get(ant2), get(ant3))) + theme_bw()  + theme(panel.grid = element_blank()) +
+     stat_poly_line() + xlab(ant2) + ylab(ant3) +
+     stat_poly_eq() + scale_y_log10() + scale_x_log10() +
+     geom_point() +
+     geom_smooth(method='lm')
+   
+   
+   
+   p.out <- cowplot::plot_grid(p1.3,p2,p3,p4,p5,p6, ncol = 3, nrow = 2, labels = c("A", "B", "C", "D", "E", "F"), label_size = 16)#, align = "hv", axis="tblr")
+
+  family = unique(dat$virus_family[dat$antigen==ant1]) 
+  ggsave(file = paste0(homewd,"/serology/figures/corr-plots-", gsub(" ", "-", species),"-",family, ".png"),
+         plot = p.out,
+         bg = "white",
+         units="mm",  
+         width=95, 
+         height=55, 
+         scale=3, 
+         dpi=300)
+  
+  
+  
+
 }
 
-#unique(age.sero.df$swept_param) # "beta"    "mu_rec"  "mu_sick" "recru2"  "sigma2"  "recru"   "epsilon" "loss"    "sigma1" 
+plot.correlation(dat=lumdat.long, ant1 = "GhV", ant2 = "NiV", ant3 = "HeV", ant4 = "AngV", ant5 = "MojV", species = "Rousettus madagascariensis", genus = "Henipavirus", dist.mat = dist.henipa)
+plot.correlation(dat=lumdat.long, ant1 = "GhV", ant2 = "NiV", ant3 = "HeV", ant4 = "AngV", ant5 = "MojV", species = "Eidolon dupreanum", genus = "Henipavirus", dist.mat = dist.henipa)
+plot.correlation(dat=lumdat.long, ant1 = "GhV", ant2 = "NiV", ant3 = "HeV", ant4 = "AngV", ant5 = "MojV", species = "Pteropus rufus", genus = "Henipavirus", dist.mat = dist.henipa)
 
 
-#envelope fits -squiggle - two across
-plot.models.data.CI.squiggle.horizontal(CI.age.fits = age.sero.df,
-                             CI.ts.fits = biwk.ts.df,
-                             dat1=dat, 
-                             dat.sero1 = sero.dat,
-                             dat.prev1 = shed.dat,
-                             antigen1 = "GhV", 
-                             cutoff1="mean", 
-                             species1 = "Eidolon dupreanum",  
-                             vis_split = 3, 
-                             do.plot=TRUE, 
-                             do.save=TRUE, 
-                             filename1=paste0(homewd,"/final_figures_tables/supplemental/SuppFig1.png"),
-                             filename2=paste0(homewd,"/final_figures_tables/supplemental/SuppFig2.png"),
-                             filename3=paste0(homewd,"/final_figures_tables/supplemental/SuppFig3.png"))
+################################################################################
+################################################################################
+# Selection criteria suggests:
+
+# Eidolon dupreanum : Henipavirus.
+# Parallel analysis suggests maintaining 1 component, and PC1 has high loading 
+# of both NiV and GhV. Eigenvalues are nonetheless close to 1 for PC2, PC3, even 
+# PC4. PC2 is loaded almost entirely by AngV, while PC3 is dominated by HeV
+
+# All 6 antigens have any MFI values > 1000 in at least one individual, 
+# suggesting significant antigenic diversity for henipaviruses in this species.
+# By Spearman, GhV is not highly correlated with any other antigen (r<.3), nor
+# is AngV. As these two are important contributors to PC1 and PC2 (respectively),
+# we will retain them in the dataset, especially since AngV is a known virus in 
+# the system. NiV, HeV, CedV, and MojV are all correlated with one another,
+# though HeV somewhat less so, and it does dominate PC3 independently. There
+# are likely multiple other henipaviruses in this clade circulating. 
 
 
-# #envelope fits -squiggle
-# plot.models.data.CI.squiggle(CI.age.fits = age.sero.df,
-#                              CI.ts.fits = biwk.ts.df,
-#                              dat1=dat, 
-#                              dat.sero1 = sero.dat,
-#                              dat.prev1 = shed.dat,
-#                              antigen1 = "GhV", 
-#                              cutoff1="mean", 
-#                              species1 = "Eidolon dupreanum",  
-#                              vis_split = 3, 
-#                              do.plot=TRUE, 
-#                              do.save=TRUE, 
-#                              filename1a=paste0(homewd,"/final_figures_tables/supplemental/FigSX-GhV-fits-age-seroprev_matrix-10-6-env-A.png"),
-#                              filename1b=paste0(homewd,"/final_figures_tables/supplemental/FigSX-GhV-fits-age-seroprev_matrix-10-6-env-B.png"),
-#                              filename2a=paste0(homewd,"/final_figures_tables/supplemental/FigSX-GhV-fits-biweekly-serology_matrix-10-6-env-A.png"),
-#                              filename2b=paste0(homewd,"/final_figures_tables/supplemental/FigSX-GhV-fits-biweekly-serology_matrix-10-6-env-B.png"),
-#                              filename3a=paste0(homewd,"/final_figures_tables/supplemental/FigSX-GhV-fits-biweekly-prevalence_matrix-10-6-env-A.png"),
-#                              filename3b=paste0(homewd,"/final_figures_tables/supplemental/FigSX-GhV-fits-biweekly-prevalence_matrix-10-6-env-B.png"))
-# 
-# #envelope fits - no squiggle
-# plot.models.data.CI(CI.age.fits = age.sero.df,
-#                              CI.ts.fits = biwk.ts.df,
-#                              dat1=dat, 
-#                              dat.sero1 = sero.dat,
-#                              dat.prev1 = shed.dat,
-#                              antigen1 = "GhV", 
-#                              cutoff1="mean", 
-#                              species1 = "Eidolon dupreanum",  
-#                              vis_split = 3, 
-#                              do.plot=TRUE, 
-#                              do.save=TRUE, 
-#                              filename1a=paste0(homewd,"/final_figures_tables/supplemental/FigSX-GhV-fits-age-seroprev_matrix-10-6-env-A-no-squiggle.png"),
-#                              filename1b=paste0(homewd,"/final_figures_tables/supplemental/FigSX-GhV-fits-age-seroprev_matrix-10-6-env-B-no-squiggle.png"),
-#                              filename2a=paste0(homewd,"/final_figures_tables/supplemental/FigSX-GhV-fits-biweekly-serology_matrix-10-6-env-A-no-squiggle.png"),
-#                              filename2b=paste0(homewd,"/final_figures_tables/supplemental/FigSX-GhV-fits-biweekly-serology_matrix-10-6-env-B-no-squiggle.png"),
-#                              filename3a=paste0(homewd,"/final_figures_tables/supplemental/FigSX-GhV-fits-biweekly-prevalence_matrix-10-6-env-A-no-squiggle.png"),
-#                              filename3b=paste0(homewd,"/final_figures_tables/supplemental/FigSX-GhV-fits-biweekly-prevalence_matrix-10-6-env-B-no-squiggle.png"))
-# 
-# 
-# 
-# #and the singletons
-# plot.models.data.CI.squiggle.one(CI.age.fits = subset(age.sero.df, model=="MSIRSI-mu-rec"),
-#                              CI.ts.fits = subset(biwk.ts.df, model=="MSIRSI-mu-rec"),
-#                              dat1=dat, 
-#                              dat.sero1 = sero.dat,
-#                              dat.prev1 = shed.dat,
-#                              antigen1 = "GhV", 
-#                              cutoff1="mean", 
-#                              species1 = "Eidolon dupreanum",  
-#                              vis_split = 3, 
-#                              do.plot=TRUE, 
-#                              do.save=TRUE, 
-#                              filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev_matrix-MSIRSI-mu-rec.png"),
-#                              filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology_matrix-MSIRSI-mu-rec.png"),
-#                              filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence_matrix-MSIRSI-mu-rec.png"))
-# 
-# #singleton- no squiggle
-# 
-# #and the singletons
-# plot.models.data.CI.one(CI.age.fits = subset(age.sero.df, model=="MSIRSI-mu-rec"),
-#                                  CI.ts.fits = subset(biwk.ts.df, model=="MSIRSI-mu-rec"),
-#                                  dat1=dat, 
-#                                  dat.sero1 = sero.dat,
-#                                  dat.prev1 = shed.dat,
-#                                  antigen1 = "GhV", 
-#                                  cutoff1="mean", 
-#                                  species1 = "Eidolon dupreanum",  
-#                                  vis_split = 3, 
-#                                  do.plot=TRUE, 
-#                                  do.save=TRUE, 
-#                                  filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev_matrix-MSIRSI-mu-rec-no-squiggle.png"),
-#                                  filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology_matrix-MSIRSI-mu-rec-no-squiggle.png"),
-#                                  filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence_matrix-MSIRSI-mu-rec-no-squiggle.png"))
-# 
-# 
-# #best fits
-# plot.models.data.CI.squiggle.one(CI.age.fits = subset(age.sero.df, model=="MSIRSI-mu-sick-mu-rec"),
-#                                  CI.ts.fits = subset(biwk.ts.df, model=="MSIRSI-mu-sick-mu-rec"),
-#                                  dat1=dat, 
-#                                  dat.sero1 = sero.dat,
-#                                  dat.prev1 = shed.dat,
-#                                  antigen1 = "GhV", 
-#                                  cutoff1="mean", 
-#                                  species1 = "Eidolon dupreanum",  
-#                                  vis_split = 3, 
-#                                  do.plot=TRUE, 
-#                                  do.save=TRUE, 
-#                                  filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev_matrix-MSIRSI-mu-sick-mu-rec.png"),
-#                                  filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology_matrix-MSIRSI-mu-sick-mu-rec.png"),
-#                                  filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence_matrix-MSIRSI-mu-sick-mu-rec.png"))
-# 
-# #singleton- no squiggle
-# 
-# #and the singletons
-# plot.models.data.CI.one(CI.age.fits = subset(age.sero.df, model=="MSIRSI-mu-sick-mu-rec"),
-#                         CI.ts.fits = subset(biwk.ts.df, model=="MSIRSI-mu-sick-mu-rec"),
-#                         dat1=dat, 
-#                         dat.sero1 = sero.dat,
-#                         dat.prev1 = shed.dat,
-#                         antigen1 = "GhV", 
-#                         cutoff1="mean", 
-#                         species1 = "Eidolon dupreanum",  
-#                         vis_split = 3, 
-#                         do.plot=TRUE, 
-#                         do.save=TRUE, 
-#                         filename1=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-age-seroprev_matrix-MSIRSI-mu-sick-mu-rec-no-squiggle.png"),
-#                         filename2=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-serology_matrix-MSIRSI-mu-sick-mu-rec-no-squiggle.png"),
-#                         filename3=paste0(homewd,"/final_figures_tables/tmp/GhV-fits-biweekly-prevalence_matrix-MSIRSI-mu-sick-mu-rec-no-squiggle.png"))
-# 
+# Verdict: Seasonal analysis of seroprevalence to GhV, AngV
+
+###############################################################
+###############################################################
+# Rousettus madagascariensis : Henipavirus.
+# Parallel analysis suggests maintaining 1 component, and PC1 has high loading 
+# of HeV and CedV and GhV. Eigenvalues are nonetheless close to 1 for PC2, which is 
+# loaded almost entirely by AngV.  PC3 is dominated by NiV/MojV
+
+# All 6 antigens have any MFI values > 1000 in multiple individuals, and all 
+# are highly correlated (r> .4 and >.6 in most places). AngV and NiV are 
+# somewhat less correlated with GhV but not hugely different -- we lack 
+# justifiable cause though to act decisively beyond GhV. 2-3 clusters are 
+# supported depending on the method.
+
+# Verdict: Seasonal analysis of seroprevalence to GhV and AngV. 
+# Clustering suggests the presence of a third HNV that is important
+# in this system, though it does not clearly align with any of the antigens
+# test. This could be a signature of AndV serology though we cannot say as this
+# antigen was not successfully tested in this system.
+
+# Verdict: just do seasonal analysis of seroprevalence to GhV and AngV in Rousettus.
+
+###############################################################
+###############################################################
+# Pteropus rufus: Henipaviruses
+
+# Not going to analyze as data were supportive only of a single, seronegative cluster
+# and only 5 individuals had MFI values > 1000 for any HNV antigen. It is likely true 
+# that there are circulating henipaviruses in P. rufus bats but we probably have not 
+# identified and characterized these to sequence at this stage.
+
+###############################################################
+###############################################################
+# Final decision:
+# Eidolon: GhV, AngV, HeV, NiV (last two are most tenuous)
+# Rousettus: GhV, RavV, BdbV 
+
+# not going to explore Pteropus further.
