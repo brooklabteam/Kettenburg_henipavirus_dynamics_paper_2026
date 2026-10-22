@@ -343,7 +343,7 @@ pall <- cowplot::plot_grid(pR0, pcomppar, nrow=2, ncol=1, rel_heights  = c(1,2))
 ggsave(file = paste0(homewd,"/final_figures_tables/extended-data/ExtendedDataFig7.png"),
        plot = pall,
        units="mm",  
-       width=100, 
-       height=140, 
+       width=140, 
+       height=130, 
        scale=3, 
        dpi=300)

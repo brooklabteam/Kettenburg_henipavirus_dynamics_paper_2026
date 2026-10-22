@@ -151,7 +151,7 @@ return.models.data.CI.squiggle.one <- function(CI.age.fits, CI.ts.fits, dat1, da
   
   
   #first pull out your data...
-  dat.tmp <- subset(dat1, bat_species==species1 & antigen==antigen1)
+  dat.tmp <- subset(dat1, species==species1 & antigen==antigen1)
   dat.tmp <- subset(dat.tmp, !is.na(age))
   
   #get data in age-seroprev form
@@ -577,7 +577,7 @@ make.Fig5.squiggle <- function(panel1, CI.age.fits, CI.ts.fits, dat1, dat.sero1,
   
   img <- image_read_pdf(panel1, density = 300)
   g <- rasterGrob(as.raster(img), interpolate = TRUE)
-  p1 <- ggplot() + annotation_custom(g,xmin = 0,xmax = 1,ymin = 0,ymax = 1) + coord_cartesian(xlim = c(0.05, .7),ylim = c(0.1, 0.9),clip = "off") +
+  p1 <- ggplot() + annotation_custom(g,xmin = 0,xmax = 1,ymin = 0,ymax = 1) + coord_cartesian(xlim = c(0, 1),ylim = c(0, 1),expand = FALSE,,clip = "off") +
     theme_void() +
     theme(plot.margin = margin(0.01,0.01,0.01,0.01), plot.background = element_rect(fill="white"))
   p2 <- plot.matAb(dat = dat1)
@@ -600,25 +600,25 @@ make.Fig5.squiggle <- function(panel1, CI.age.fits, CI.ts.fits, dat1, dat.sero1,
   
 }
 
-
-make.Fig5(panel1 = paste0(homewd, "/final_figures_tables/tmp/MSIRSI.pdf"),
-          CI.age.fits = subset(age.sero.df, model=="MSIRNSI-mu-sick-mu-rec"),
-          CI.ts.fits = subset(biwk.ts.df, model=="MSIRNSI-mu-sick-mu-rec"),
-          dat1=dat, 
-          dat.sero1 = sero.dat,
-          dat.prev1 = shed.dat,
-          antigen1 = "GhV", 
-          cutoff1="mean", 
-          species1 = "Eidolon dupreanum",  
-          vis_split = 3,
-          det.df=read.csv(file =paste0(homewd, "/serology/data/stan_fit_deterministic_df_adultAB.csv"), header = T, stringsAsFactors = F), 
-          stan_df=read.csv(file = paste0(homewd, "/serology/data/stan_fitted_bats.csv"), header = T, stringsAsFactors = F),
-          filename =  paste0(homewd, "/final_figures_tables/tmp/Fig5-no-squiggle.png"))
-
-
+# 
+# make.Fig5(panel1 = paste0(homewd, "/model-fitting/GhV-fits/MSIRSI.pdf"),
+#           CI.age.fits = subset(age.sero.df, model=="MSIRNSI-mu-sick-mu-rec"),
+#           CI.ts.fits = subset(biwk.ts.df, model=="MSIRNSI-mu-sick-mu-rec"),
+#           dat1=dat, 
+#           dat.sero1 = sero.dat,
+#           dat.prev1 = shed.dat,
+#           antigen1 = "GhV", 
+#           cutoff1="mean", 
+#           species1 = "Eidolon dupreanum",  
+#           vis_split = 3,
+#           det.df=read.csv(file =paste0(homewd, "/serology/data/stan_fit_deterministic_df_adultAB.csv"), header = T, stringsAsFactors = F), 
+#           stan_df=read.csv(file = paste0(homewd, "/serology/data/stan_fitted_bats.csv"), header = T, stringsAsFactors = F),
+#           filename =  paste0(homewd, "/final_figures_tables/tmp/Fig5-no-squiggle.png"))
 
 
-make.Fig5.squiggle(panel1 = paste0(homewd, "/final_figures_tables/tmp/MSIRSI.pdf"),
+
+
+make.Fig5.squiggle(panel1 = paste0(homewd, "/model_fitting/GhV-fits/MSIRSI.pdf"),
           CI.age.fits = subset(age.sero.df, model=="MSIRNSI-mu-sick-mu-rec"),
           CI.ts.fits = subset(biwk.ts.df, model=="MSIRNSI-mu-sick-mu-rec"),
           dat1=dat, 
