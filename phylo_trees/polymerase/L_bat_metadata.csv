@@ -848,3 +848,492 @@ PX127463,Unclassified henipavirus,Unclassified henipavirus,Henipavirus,Paramyxov
 PX127483,Unclassified pararubulavirus,Unclassified pararubulavirus,Pararubulavirus,Paramyxoviridae,ANGB141,Madagascar,Eidolon dupreanum,2018,1,1,1
 PX127491,Unclassified pararubulavirus,Unclassified pararubulavirus,Pararubulavirus,Paramyxoviridae,ROU13,Madagascar,Rousettus madagascariensis,2014,1,1,2
 PX127494,Unclassified pararubulavirus,Unclassified pararubulavirus,Pararubulavirus,Paramyxoviridae,ROU15,Madagascar,Rousettus madagascariensis,2014,1,1,2
+AEQ38027.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/Australia/Bat/2009/Yeppoon Y47a,Australia,Chiroptera,2009,1,0,3
+AEQ38036.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/Australia/Bat/2009/Yeppoon Y4a,Australia,Chiroptera,2009,1,0,3
+AEQ38044.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/Australia/Bat/2009/TolgaScrub 30g,Australia,Chiroptera,2009,1,0,3
+AEQ38053.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/Australia/Bat/2009/CedarGrove 11c,Australia,Chiroptera,2009,1,0,3
+AEY68836.1,polymerase,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68837.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68838.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68839.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68840.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68841.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68842.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68843.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68844.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68845.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68846.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68847.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68848.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68849.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68850.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68851.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68852.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68853.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68854.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68855.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68856.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68857.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68858.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68859.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68860.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68861.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68862.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68863.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68864.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68865.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68866.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68867.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68868.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68869.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68870.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AEY68871.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,,Ghana,Eidolon helvum,2010,1,0,3
+AGR33433.1,large protein,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,TZ13,Tanzania,Eidolon helvum,2010,1,0,3
+AGW27565.1,large protein,Paramyxovirus PgPMV-1,Paramyxovirus PgPMV-1,,PgPMV-1,Bangladesh,Pteropus medius,2013,1,0,3
+AGW27566.1,large protein,Paramyxovirus PgPMV-2,Paramyxovirus PgPMV-2,,PgPMV-2,Bangladesh,Pteropus medius,2013,1,0,3
+AGW27567.1,large protein,Paramyxovirus PgPMV-3,Paramyxovirus PgPMV-3,,PgPMV-3,Bangladesh,Pteropus medius,2013,1,0,3
+AGW27568.1,large protein,Paramyxovirus PgPMV-4,Paramyxovirus PgPMV-4,,PgPMV-4,Bangladesh,Pteropus medius,2013,1,0,3
+AGW27569.1,large protein,Paramyxovirus PgPMV-5,Paramyxovirus PgPMV-5,,PgPMV-5,Bangladesh,Pteropus medius,2013,1,0,3
+AGW27570.1,large protein,Paramyxovirus PgPMV-6,Paramyxovirus PgPMV-6,,PgPMV-6,Bangladesh,Pteropus medius,2013,1,0,3
+AGW27571.1,large protein,Paramyxovirus PgPMV-7,Paramyxovirus PgPMV-7,,PgPMV-7,Bangladesh,Pteropus medius,2013,1,0,3
+AHB87273.1,RNA-dependent RNA polymerase,Bat orthoparamyxovirinae sp.,Bat orthoparamyxovirinae sp.,,BatPV/Hip_caf/RSA-1486a/2012,South Africa,Hipposideros caffer,2012,1,0,3
+AHB87275.1,RNA-dependent RNA polymerase,Bat orthoparamyxovirinae sp.,Bat orthoparamyxovirinae sp.,,BatPV/Hip_caf/RSA-1493/2012,South Africa,Hipposideros caffer,2012,1,0,3
+ALS55377.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-32,Paramyxovirus PREDICT_PMV-32,,PREDICT_PMV-32/EHA06811B00180,Bolivia,Myotis oxyotus,2011,1,0,3
+ALS55378.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-32,Paramyxovirus PREDICT_PMV-32,,PREDICT_PMV-32/EHA06811B00151,Bolivia,Myotis keaysi,2011,1,0,3
+ALS55379.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-32,Paramyxovirus PREDICT_PMV-32,,PREDICT_PMV-32/EHA06811B00205,Bolivia,Myotis keaysi,2011,1,0,3
+ALS55380.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-32,Paramyxovirus PREDICT_PMV-32,,PREDICT_PMV-32/EHA06811B00157,Bolivia,Myotis keaysi,2011,1,0,3
+ALS55383.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/KHP13-OTP1-0012,Cambodia,Scotophilus sp.,2013,1,0,3
+ALS55384.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/KHP13-OTP1-0016,Cambodia,Scotophilus sp.,2013,1,0,3
+ALS55385.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/KHP13-OTP1-0018,Cambodia,Scotophilus sp.,2013,1,0,3
+ALS55386.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/KHP13-OTP1-0021,Cambodia,Scotophilus sp.,2013,1,0,3
+ALS55387.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/KHP13-VRM1-0094,Cambodia,Scotophilus sp.,2013,1,0,3
+ALS55388.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/KHP13-VRM1-0005,Cambodia,Scotophilus sp.,2013,1,0,3
+ALS55389.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/KHP13-VRM1-0006,Cambodia,Scotophilus sp.,2013,1,0,3
+ALS55390.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/KHP13-OTP1-0023,Cambodia,Scotophilus sp.,2013,1,0,3
+ALS55391.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/KHP13-OTP1-0004,Cambodia,Scotophilus sp.,2013,1,0,3
+ALS55392.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/KH11KCh1-0008,Cambodia,Myotis horsfieldii,2011,1,0,3
+ALS55399.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-22,Paramyxovirus PREDICT_PMV-22,,PREDICT_PMV-22/KHPPT-0002,Cambodia,Taphozous longimanus,2011,1,0,3
+ALS55402.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,PREDICT_PMV-15/GVF-CM-ECO05231,Cameroon,Mops condylurus,2009,1,0,3
+ALS55404.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-29,Paramyxovirus PREDICT_PMV-29,,PREDICT_PMV-29/EHA-156-12-NL13929,China,Myotis pilosus,2013,1,0,3
+ALS55409.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-39,Paramyxovirus PREDICT_PMV-39,,PREDICT_PMV-39/EHA-156-12-LD13763,China,Plecotus auritus,2013,1,0,3
+ALS55410.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-40,Paramyxovirus PREDICT_PMV-40,,PREDICT_PMV-40/EHA-156-12-ZG13665,China,Vespertilio sinensis,2013,1,0,3
+ALS55416.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-44,Paramyxovirus PREDICT_PMV-44,,PREDICT_PMV-44/EHA-156-12-HB-FX037,China,Rhinolophus sinicus,2013,1,0,3
+ALS55419.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-47,Paramyxovirus PREDICT_PMV-47,,PREDICT_PMV-47/EHA-156-12-NL13838,China,Ia io,2013,1,0,3
+ALS55425.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-16,Paramyxovirus PREDICT_PMV-16,,PREDICT_PMV-16/ZB12053,Republic of the Congo,Triaenops persicus,2012,1,0,3
+ALS55426.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-16,Paramyxovirus PREDICT_PMV-16,,PREDICT_PMV-16/ZB12025,Republic of the Congo,Triaenops persicus,2012,1,0,3
+ALS55430.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-26,Paramyxovirus PREDICT_PMV-26,,PREDICT_PMV-26/ZB12050,Republic of the Congo,Triaenops persicus,2012,1,0,3
+ALS55433.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-62,Paramyxovirus PREDICT_PMV-62,,PREDICT_PMV-62/INDSWBT-105,Indonesia,Dobsonia exoleta,2013,1,0,3
+ALS55441.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-72,Paramyxovirus PREDICT_PMV-72,,PREDICT_PMV-72/PSW 00158,Malaysia,Rhinolophus creaghi,2012,1,0,3
+ALS55444.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-74,Paramyxovirus PREDICT_PMV-74,,PREDICT_PMV-74/PSW 00526,Malaysia,Hipposideros galeritus,2013,1,0,3
+ALS55445.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-74,Paramyxovirus PREDICT_PMV-74,,PREDICT_PMV-74/PSW 00435,Malaysia,Hipposideros galeritus,2013,1,0,3
+ALS55446.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-74,Paramyxovirus PREDICT_PMV-74,,PREDICT_PMV-74/PSW 00367,Malaysia,Hipposideros galeritus,2013,1,0,3
+ALS55447.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-75,Paramyxovirus PREDICT_PMV-75,,PREDICT_PMV-75/PSW 00526,Malaysia,Hipposideros galeritus,2013,1,0,3
+ALS55458.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,PREDICT_PMV-15/AAOSG,Tanzania,Mops pumilus,2012,1,0,3
+ALS55459.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,PREDICT_PMV-15/AAOSJ,Tanzania,Mops pumilus,2012,1,0,3
+ALS55461.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,PREDICT_PMV-15/AATKF,Tanzania,Tadarida,2013,1,0,3
+ALS55462.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,PREDICT_PMV-15/AATKE,Tanzania,Tadarida,2013,1,0,3
+ALS55464.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-18,Paramyxovirus PREDICT_PMV-18,,PREDICT_PMV-18/AASBL,Tanzania,Mops pumilus,2012,1,0,3
+ALS55466.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-56,Paramyxovirus PREDICT_PMV-56,,PREDICT_PMV-56/AATFC,Tanzania,Eidolon helvum,2013,1,0,3
+ALS55467.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-56,Paramyxovirus PREDICT_PMV-56,,PREDICT_PMV-56/AATGB,Tanzania,Eidolon helvum,2013,1,0,3
+ALS55468.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-56,Paramyxovirus PREDICT_PMV-56,,PREDICT_PMV-56/AATFJ,Tanzania,Eidolon helvum,2013,1,0,3
+ALS55478.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-14,Paramyxovirus PREDICT_PMV-14,,PREDICT_PMV-14/B55640,Thailand,Hipposideros lekaguli,2012,1,0,3
+ALS55488.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-53,Paramyxovirus PREDICT_PMV-53,,PREDICT_PMV-53/B56391,Thailand,Miniopterus magnater,2013,1,0,3
+ALS55489.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-53,Paramyxovirus PREDICT_PMV-53,,PREDICT_PMV-53/B56408,Thailand,Miniopterus magnater,2013,1,0,3
+ALS55490.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-53,Paramyxovirus PREDICT_PMV-53,,PREDICT_PMV-53/B56428,Thailand,Miniopterus magnater,2013,1,0,3
+ALS55491.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-53,Paramyxovirus PREDICT_PMV-53,,PREDICT_PMV-53/B56367,Thailand,Miniopterus magnater,2013,1,0,3
+ALS55493.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-53,Paramyxovirus PREDICT_PMV-53,,PREDICT_PMV-53/B56324,Thailand,Miniopterus magnater,2013,1,0,3
+ALS55494.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-53,Paramyxovirus PREDICT_PMV-53,,PREDICT_PMV-53/B56362,Thailand,Miniopterus magnater,2013,1,0,3
+ALS55495.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-53,Paramyxovirus PREDICT_PMV-53,,PREDICT_PMV-53/B56347,Thailand,Miniopterus magnater,2013,1,0,3
+ALS55497.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-53,Paramyxovirus PREDICT_PMV-53,,PREDICT_PMV-53/B56340,Thailand,Rhinolophus coelophyllus,2013,1,0,3
+ALS55498.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-53,Paramyxovirus PREDICT_PMV-53,,PREDICT_PMV-53/B56334,Thailand,Miniopterus magnater,2013,1,0,3
+ALS55509.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/VN13F0011 F5R,Viet Nam,Yangochiroptera,2013,1,0,3
+ALS55510.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/VN13F0011 F2R,Viet Nam,Yangochiroptera,2013,1,0,3
+ALS55511.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/VN13F0012 F2R,Viet Nam,Yangochiroptera,2013,1,0,3
+ALS55512.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/VN13F0028,Viet Nam,Yangochiroptera,2013,1,0,3
+ALS55513.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,PREDICT_PMV-13/VN13F0284,Viet Nam,Yangochiroptera,2013,1,0,3
+ALS55515.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-63,Paramyxovirus PREDICT_PMV-63,,PREDICT_PMV-63/VN13F0009 F2R,Viet Nam,Yangochiroptera,2013,1,0,3
+ALS55516.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-63,Paramyxovirus PREDICT_PMV-63,,PREDICT_PMV-63/VN13F0023,Viet Nam,Yangochiroptera,2013,1,0,3
+ALS55517.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-63,Paramyxovirus PREDICT_PMV-63,,PREDICT_PMV-63/VN13F0040,Viet Nam,Yangochiroptera,2013,1,0,3
+ALS55518.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,PREDICT_PMV-66/VN13F0036,Viet Nam,Yangochiroptera,2013,1,0,3
+ALS55520.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,PREDICT_PMV-66/VN13F0249,Viet Nam,Yangochiroptera,2013,1,0,3
+ALS55521.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,PREDICT_PMV-66/VN13F0257,Viet Nam,Yangochiroptera,2013,1,0,3
+ALS55522.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,PREDICT_PMV-66/VN13F0278,Viet Nam,Yangochiroptera,2013,1,0,3
+ALS55523.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,PREDICT_PMV-67/VN13F0170,Viet Nam,Yangochiroptera,2013,1,0,3
+ARQ18774.1,RdRp,Paramyxoviridae sp.,Paramyxoviridae sp.,,7598L05R2PARABATVN,Viet Nam,Chiroptera,2012,1,0,3
+ARQ18775.1,RdRp,Paramyxoviridae sp.,Paramyxoviridae sp.,,7598L06R2PaRABATVN,Viet Nam,Chiroptera,2012,1,0,3
+ARQ18776.1,RdRp,Paramyxoviridae sp.,Paramyxoviridae sp.,,7555L09R3PARABATVN,Viet Nam,Chiroptera,2012,1,0,3
+ARQ18777.1,RdRp,Paramyxoviridae sp.,Paramyxoviridae sp.,,7598L02R3PARABATVN,Viet Nam,Chiroptera,2012,1,0,3
+ARQ18780.1,RdRp,Paramyxoviridae sp.,Paramyxoviridae sp.,,05VZ7598L05R6,Viet Nam,Chiroptera,2012,1,0,3
+ARQ18781.1,RdRp,Paramyxoviridae sp.,Paramyxoviridae sp.,,05VZ7598L08R6,Viet Nam,Chiroptera,2012,1,0,3
+ARQ18782.1,RdRp,Paramyxoviridae sp.,Paramyxoviridae sp.,,05VZ7598L10R6,Viet Nam,Chiroptera,2012,1,0,3
+ARQ18785.1,RdRp,Paramyxoviridae sp.,Paramyxoviridae sp.,,05VZ7599L02R6,Viet Nam,Chiroptera,2012,1,0,3
+BAO51219.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB09-05/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-05/Zambia/2009,,Eid_hel/ZFB09-05/Zambia/2009,Zambia,Eidolon helvum,2009,1,0,3
+BAO51220.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB09-07/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-07/Zambia/2009,,Eid_hel/ZFB09-07/Zambia/2009,Zambia,Eidolon helvum,2009,1,0,3
+BAO51222.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB09-32/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-32/Zambia/2009,,Eid_hel/ZFB09-32/Zambia/2009,Zambia,Eidolon helvum,2009,1,0,3
+BAO51223.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB09-39/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-39/Zambia/2009,,Eid_hel/ZFB09-39/Zambia/2009,Zambia,Eidolon helvum,2009,1,0,3
+BAO51224.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB09-43/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-43/Zambia/2009,,Eid_hel/ZFB09-43/Zambia/2009,Zambia,Eidolon helvum,2009,1,0,3
+BAO51225.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB09-51/Zambia/2009,Bat Paramyxovirus Eid_hel/ZFB09-51/Zambia/2009,,Eid_hel/ZFB09-51/Zambia/2009,Zambia,Eidolon helvum,2009,1,0,3
+BAO51227.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB10-07/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-07/Zambia/2010,,Eid_hel/ZFB10-07/Zambia/2010,Zambia,Eidolon helvum,2010,1,0,3
+BAO51228.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB10-14/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-14/Zambia/2010,,Eid_hel/ZFB10-14/Zambia/2010,Zambia,Eidolon helvum,2010,1,0,3
+BAO51229.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB10-22/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-22/Zambia/2010,,Eid_hel/ZFB10-22/Zambia/2010,Zambia,Eidolon helvum,2010,1,0,3
+BAO51230.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB10-23/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-23/Zambia/2010,,Eid_hel/ZFB10-23/Zambia/2010,Zambia,Eidolon helvum,2010,1,0,3
+BAO51231.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB10-24/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-24/Zambia/2010,,Eid_hel/ZFB10-24/Zambia/2010,Zambia,Eidolon helvum,2010,1,0,3
+BAO51232.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB10-26/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-26/Zambia/2010,,Eid_hel/ZFB10-26/Zambia/2010,Zambia,Eidolon helvum,2010,1,0,3
+BAO51233.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB10-27/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-27/Zambia/2010,,Eid_hel/ZFB10-27/Zambia/2010,Zambia,Eidolon helvum,2010,1,0,3
+BAO51234.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB10-39/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-39/Zambia/2010,,Eid_hel/ZFB10-39/Zambia/2010,Zambia,Eidolon helvum,2010,1,0,3
+BAO51235.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB10-42/Zambia/2010,Bat Paramyxovirus Eid_hel/ZFB10-42/Zambia/2010,,Eid_hel/ZFB10-42/Zambia/2010,Zambia,Eidolon helvum,2010,1,0,3
+BAO51236.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB11-30/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-30/Zambia/2011,,Eid_hel/ZFB11-30/Zambia/2011,Zambia,Eidolon helvum,2011,1,0,3
+BAO51238.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB11-60/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-60/Zambia/2011,,Eid_hel/ZFB11-60/Zambia/2011,Zambia,Eidolon helvum,2011,1,0,3
+BAO51239.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB11-66/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-66/Zambia/2011,,Eid_hel/ZFB11-66/Zambia/2011,Zambia,Eidolon helvum,2011,1,0,3
+BAO51240.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB11-76/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-76/Zambia/2011,,Eid_hel/ZFB11-76/Zambia/2011,Zambia,Eidolon helvum,2011,1,0,3
+BAO51241.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB11-88/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-88/Zambia/2011,,Eid_hel/ZFB11-88/Zambia/2011,Zambia,Eidolon helvum,2011,1,0,3
+BAO51242.1,RNA polymerase,Bat Paramyxovirus Eid_hel/ZFB11-91/Zambia/2011,Bat Paramyxovirus Eid_hel/ZFB11-91/Zambia/2011,,Eid_hel/ZFB11-91/Zambia/2011,Zambia,Eidolon helvum,2011,1,0,3
+CCF23096.1,RNA dependent RNA polymerase,Eidolon paramyxovirus RC09,Eidolon paramyxovirus RC09,,EPMV_RC09_PP236u2,Republic of the Congo,Eidolon helvum,2009,1,0,3
+CCF23097.1,RNA dependent RNA polymerase,Eidolon paramyxovirus RC09,Eidolon paramyxovirus RC09,,EPMV_RC09_PP239l,Republic of the Congo,Eidolon helvum,2009,1,0,3
+CCF23098.1,RNA dependent RNA polymerase,Eidolon paramyxovirus RC09,Eidolon paramyxovirus RC09,,EPMV_RC09_PP239s,Republic of the Congo,Eidolon helvum,2009,1,0,3
+CCF23099.1,RNA dependent RNA polymerase,Eidolon paramyxovirus RC09,Eidolon paramyxovirus RC09,,EPMV_RC09_PP241s,Republic of the Congo,Eidolon helvum,2009,1,0,3
+QAR17936.1,RNA-dependent RNA polymerase,Bat orthoparamyxovirinae sp.,Bat orthoparamyxovirinae sp.,,BatPV_R_aeg_UPE092(P)_RSA_2017,South Africa,Rousettus aegyptiacus,2017,1,0,3
+QAR17937.1,RNA-dependent RNA polymerase,Bat orthoparamyxovirinae sp.,Bat orthoparamyxovirinae sp.,,BatPV_R_aeg_UPE122(P)_RSA_2017,South Africa,Rousettus aegyptiacus,2017,1,0,3
+QAR17938.1,RNA-dependent RNA polymerase,Bat orthoparamyxovirinae sp.,Bat orthoparamyxovirinae sp.,,BatPV_R_aeg_UPE125(P)_RSA_2017,South Africa,Rousettus aegyptiacus,2017,1,0,3
+QAR17939.1,RNA-dependent RNA polymerase,Bat orthoparamyxovirinae sp.,Bat orthoparamyxovirinae sp.,,BatPV_R_aeg_UPE318(P)_RSA_2017,South Africa,Rousettus aegyptiacus,2017,1,0,3
+QAR17940.1,RNA-dependent RNA polymerase,Bat orthoparamyxovirinae sp.,Bat orthoparamyxovirinae sp.,,BatPV_R_aeg_UPE525(P)_RSA_2018,South Africa,Rousettus aegyptiacus,2018,1,0,3
+QAR17941.1,RNA-dependent RNA polymerase,Bat orthoparamyxovirinae sp.,Bat orthoparamyxovirinae sp.,,BatPV_R_aeg_UPE766(P)_RSA_2018,South Africa,Rousettus aegyptiacus,2018,1,0,3
+QBQ34708.1,polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,DNUS-Bat-L-9.2-Esp,Singapore,Eonycteris spelaea,2013,1,0,3
+QCY59040.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,NiV/BD/P.medius/EHA/2013/Raypur1402,Bangladesh,Pteropus medius,2013,1,0,3
+QCY59046.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,NiV/BD/P.medius/EHA/2013/Raypur1403,Bangladesh,Pteropus medius,2013,1,0,3
+QCY59051.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,NiV/BD/P.medius/EHA/2013/Raypur1404,Bangladesh,Pteropus medius,2013,1,0,3
+QCY59057.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,NiV/BD/P.medius/EHA/2013/Raypur1405,Bangladesh,Pteropus medius,2013,1,0,3
+QCY59063.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,NiV/BD/P.medius/EHA/2013/Raypur1406,Bangladesh,Pteropus medius,2013,1,0,3
+QCY59069.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,NiV/BD/P.medius/EHA/2013/Raypur1408,Bangladesh,Pteropus medius,2013,1,0,3
+QCY59075.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,NiV/BD/P.medius/EHA/2013/Raypur1409,Bangladesh,Pteropus medius,2013,1,0,3
+QCY59081.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,NiV/BD/P.medius/EHA/2013/Raypur1410,Bangladesh,Pteropus medius,2013,1,0,3
+QCY59087.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,NiV/BD/P.medius/EHA/2013/Raypur1411,Bangladesh,Pteropus medius,2013,1,0,3
+QID58414.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-79,Paramyxovirus PREDICT_PMV-79,,CMAB71536,Cameroon,Hipposideros,2016,1,0,3
+QID58415.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-80,Paramyxovirus PREDICT_PMV-80,,CMAB71413,Cameroon,Macronycteris gigas,2016,1,0,3
+QID58417.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-2,Paramyxovirus PREDICT_PMV-2,,THAB16P01,Thailand,Pteropus lylei,2016,1,0,3
+QID58418.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-2,Paramyxovirus PREDICT_PMV-2,,THAB16P01,Thailand,Pteropus lylei,2016,1,0,3
+QID58419.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-2,Paramyxovirus PREDICT_PMV-2,,THAB16P01,Thailand,Pteropus lylei,2016,1,0,3
+QID58436.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,U.KH.B.0266,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58437.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,U.KH.B.0270,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58438.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,U.KH.B.0402,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58439.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,U.KH.B.0406,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58440.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,U.KH.B.0411,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58441.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,U.KH.B.0413,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58442.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,U.KH.B.0415,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58443.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,U.KH.B.0417,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58444.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,U.KH.B.0418,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58445.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,U.KH.B.0422,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58446.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,U.KH.B.0430,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58448.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,U.KH.B.0438,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58449.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,U.KH.B.0601,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58450.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,U.KH.B.0607,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58451.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,U.KH.B.0613,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58452.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,U.KH.B.0620,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58453.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,U.KH.B.0623,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58454.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,U.KH.B.0627,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58462.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-93,Paramyxovirus PREDICT_PMV-93,,IDAB0052,Indonesia,Acerodon celebensis,2016,1,0,3
+QID58476.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-5,Paramyxovirus PREDICT_PMV-5,,THAB17242,Thailand,Pteropus lylei,2017,1,0,3
+QID58477.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-3,Paramyxovirus PREDICT_PMV-3,,THAB17299,Thailand,Pteropus lylei,2017,1,0,3
+QID58511.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-118,Paramyxovirus PREDICT_PMV-118,,EGAB0284,Egypt,Pipistrellus kuhlii,2016,1,0,3
+QID58512.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-118,Paramyxovirus PREDICT_PMV-118,,EGAB0283,Egypt,Pipistrellus kuhlii,2016,1,0,3
+QID58513.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-118,Paramyxovirus PREDICT_PMV-118,,EGAB0277,Egypt,Pipistrellus kuhlii,2016,1,0,3
+QID58514.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-118,Paramyxovirus PREDICT_PMV-118,,EGAB0271,Egypt,Pipistrellus kuhlii,2016,1,0,3
+QID58515.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-118,Paramyxovirus PREDICT_PMV-118,,EGAB0268,Egypt,Pipistrellus kuhlii,2016,1,0,3
+QID58516.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-118,Paramyxovirus PREDICT_PMV-118,,EGAB0266,Egypt,Pipistrellus kuhlii,2016,1,0,3
+QID58518.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-118,Paramyxovirus PREDICT_PMV-118,,EGAB0162,Egypt,Pipistrellus kuhlii,2016,1,0,3
+QID58519.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-118,Paramyxovirus PREDICT_PMV-118,,EGAB0156,Egypt,Pipistrellus kuhlii,2016,1,0,3
+QID58520.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-118,Paramyxovirus PREDICT_PMV-118,,EGAB0153,Egypt,Pipistrellus kuhlii,2016,1,0,3
+QID58521.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-118,Paramyxovirus PREDICT_PMV-118,,EGAB0128,Egypt,Pipistrellus kuhlii,2016,1,0,3
+QID58523.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-118,Paramyxovirus PREDICT_PMV-118,,EGAB0007,Egypt,Pipistrellus kuhlii,2016,1,0,3
+QID58533.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB1595,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58534.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB3288,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58535.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB3282,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58536.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB3276,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58537.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB3269,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58538.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB3030,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58539.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB2990,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58540.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB2962,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58541.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB1596,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58542.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB2911,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58543.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB2910,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58544.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB2870,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58545.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB2864,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58546.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB1707,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58547.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB1969,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58548.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB1922,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58549.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB2863,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58550.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB2784,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58551.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB2739,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58552.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB2731,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58553.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB2730,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58554.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB2726,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58555.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB2551,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58556.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,KHAB2005,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58557.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB2001,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58594.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-48,Paramyxovirus PREDICT_PMV-48,,MMAB0268,Myanmar,Hipposideros grandis,2017,1,0,3
+QID58595.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-48,Paramyxovirus PREDICT_PMV-48,,MMAB0292,Myanmar,Hipposideros grandis,2017,1,0,3
+QID58596.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-48,Paramyxovirus PREDICT_PMV-48,,MMAB0311,Myanmar,Hipposideros grandis,2017,1,0,3
+QID58601.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-128,Paramyxovirus PREDICT_PMV-128,,THAB17880,Thailand,Pteropus lylei,2017,1,0,3
+QID58603.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-5,Paramyxovirus PREDICT_PMV-5,,THAB17861,Thailand,Pteropus lylei,2017,1,0,3
+QID58605.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-6,Paramyxovirus PREDICT_PMV-6,,THAB17914,Thailand,Pteropus lylei,2017,1,0,3
+QID58606.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-5,Paramyxovirus PREDICT_PMV-5,,THAB17933,Thailand,Pteropus lylei,2017,1,0,3
+QID58609.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-6,Paramyxovirus PREDICT_PMV-6,,THAB18191,Thailand,Pteropus lylei,2018,1,0,3
+QID58610.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-5,Paramyxovirus PREDICT_PMV-5,,THAB18194,Thailand,Pteropus lylei,2018,1,0,3
+QID58617.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-139,Paramyxovirus PREDICT_PMV-139,,CMAB75010,Cameroon,Hipposideros curtus,2018,1,0,3
+QID58634.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,CDAB0480,Democratic Republic of the Congo,Mops condylurus,2018,1,0,3
+QID58639.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,CDAB0492,Democratic Republic of the Congo,Mops condylurus,2018,1,0,3
+QID58660.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-138,Paramyxovirus PREDICT_PMV-138,,CMAB75034,Cameroon,Hipposideros ruber,2018,1,0,3
+QID58662.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-5,Paramyxovirus PREDICT_PMV-5,,THAB18194,Thailand,Pteropus lylei,2018,1,0,3
+QID58665.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-6,Paramyxovirus PREDICT_PMV-6,,THAB18365,Thailand,Pteropus lylei,2018,1,0,3
+QID58673.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4242,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58681.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB7247,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58682.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB7422,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58683.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB7429,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58684.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB7543,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58685.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB7545,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58686.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB7549,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58687.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-63,Paramyxovirus PREDICT_PMV-63,,KHAB7605,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58688.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-63,Paramyxovirus PREDICT_PMV-63,,KHAB7606,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58689.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB7667,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58698.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-118,Paramyxovirus PREDICT_PMV-118,,EGAB0052,Egypt,Rousettus aegyptiacus,2016,1,0,3
+QID58699.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8074,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58700.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8076,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58701.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8078,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58702.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8192,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58703.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8194,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58704.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8197,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58705.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8252,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58706.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8253,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58707.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8254,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58708.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-63,Paramyxovirus PREDICT_PMV-63,,KHAB8312,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58709.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8313,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58710.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8314,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58711.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8317,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58712.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8377,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58713.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8379,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58714.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8436,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58715.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8556,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58716.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB8557,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58717.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8558,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58718.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8559,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58719.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8675,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58720.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8792,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58721.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,KHAB8800,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58722.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,KHAB8825,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58723.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,KHAB8843,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58724.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB8845,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58725.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB8851,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58726.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8858,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58729.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8079,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58732.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8193,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58733.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8198,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58734.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,KHAB8256,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58735.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8259,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58736.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8315,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58737.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8316,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58738.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8318,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58739.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8374,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58740.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB8551,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58741.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8553,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58742.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8555,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58743.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8673,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58744.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-63,Paramyxovirus PREDICT_PMV-63,,KHAB8821,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58745.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,KHAB8823,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58746.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,KHAB8829,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58747.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB8866,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58748.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB7307,Cambodia,Scotophilus kuhlii,2018,1,0,3
+QID58749.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-118,Paramyxovirus PREDICT_PMV-118,,EGAB0083,Egypt,Pipistrellus kuhlii,2016,1,0,3
+QID58750.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4243,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58751.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4423,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58752.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4547,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58753.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4550,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58754.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4602,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58755.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4603,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58756.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4604,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58757.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4606,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58758.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB6355,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58759.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB6367,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58761.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,U.KH.B.0262,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58762.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,U.KH.B.0393,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58763.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,U.KH.B.0399,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58764.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,U.KH.B.0411,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58765.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,U.KH.B.0413,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58766.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,U.KH.B.0416,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58767.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,U.KH.B.0417,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58768.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,U.KH.B.0418,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58769.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,U.KH.B.0624,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58770.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,U.KH.B.0627,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58771.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB4244,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58772.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4241,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58773.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4246,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58774.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4305,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58775.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4361,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58777.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-67,Paramyxovirus PREDICT_PMV-67,,KHAB4367,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58778.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB4787,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58779.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB5682,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58780.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB5734,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58781.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB5794,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58782.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB5800,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58783.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB5857,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58784.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB6038,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58785.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB6093,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58786.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB6099,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58787.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB6100,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58788.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB6101,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58789.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB6102,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58790.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB6154,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58791.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-63,Paramyxovirus PREDICT_PMV-63,,KHAB6156,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58792.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB6162,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58794.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB2980,Cambodia,Scotophilus kuhlii,2016,1,0,3
+QID58799.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB4430,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58800.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-13,Paramyxovirus PREDICT_PMV-13,,KHAB4601,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58801.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB4610,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58805.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-155,Paramyxovirus PREDICT_PMV-155,,THAB18448,Thailand,Mops plicatus,2018,1,0,3
+QID58806.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-155,Paramyxovirus PREDICT_PMV-155,,THAB18499,Thailand,Mops plicatus,2018,1,0,3
+QID58807.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-155,Paramyxovirus PREDICT_PMV-155,,THAB18527,Thailand,Mops plicatus,2018,1,0,3
+QID58808.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-155,Paramyxovirus PREDICT_PMV-155,,THAB18536,Thailand,Mops plicatus,2018,1,0,3
+QID58809.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-155,Paramyxovirus PREDICT_PMV-155,,THAB18547,Thailand,Mops plicatus,2018,1,0,3
+QID58818.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,U.KH.B.0409,Cambodia,Scotophilus kuhlii,2015,1,0,3
+QID58820.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB0388,Tanzania,Mops condylurus,2017,1,0,3
+QID58822.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-155,Paramyxovirus PREDICT_PMV-155,,THAB18657,Thailand,Mops plicatus,2018,1,0,3
+QID58823.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-155,Paramyxovirus PREDICT_PMV-155,,THAB18659,Thailand,Mops plicatus,2018,1,0,3
+QID58824.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-155,Paramyxovirus PREDICT_PMV-155,,THAB18694,Thailand,Mops plicatus,2018,1,0,3
+QID58827.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-66,Paramyxovirus PREDICT_PMV-66,,KHAB5742,Cambodia,Scotophilus kuhlii,2017,1,0,3
+QID58864.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-174,Paramyxovirus PREDICT_PMV-174,,SNAB0175,Senegal,Pipistrellus inexspectatus,2018,1,0,3
+QID58865.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-174,Paramyxovirus PREDICT_PMV-174,,SNAB0122,Senegal,Pipistrellus inexspectatus,2018,1,0,3
+QID58866.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-174,Paramyxovirus PREDICT_PMV-174,,SNAB0174,Senegal,Pipistrellus inexspectatus,2018,1,0,3
+QID58867.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-174,Paramyxovirus PREDICT_PMV-174,,SNAB0174,Senegal,Pipistrellus inexspectatus,2018,1,0,3
+QID58868.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-174,Paramyxovirus PREDICT_PMV-174,,SNAB0189,Senegal,Pipistrellus inexspectatus,2018,1,0,3
+QID58883.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-24,Paramyxovirus PREDICT_PMV-24,,ETAB0212,Ethiopia,Mops pumilus,2018,1,0,3
+QID58884.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-24,Paramyxovirus PREDICT_PMV-24,,ETAB0225,Ethiopia,Mops pumilus,2018,1,0,3
+QID58885.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-24,Paramyxovirus PREDICT_PMV-24,,ETAB0225,Ethiopia,Mops pumilus,2018,1,0,3
+QID58887.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-175,Paramyxovirus PREDICT_PMV-175,,ETAB0443,Ethiopia,Mops midas,2018,1,0,3
+QID58888.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-175,Paramyxovirus PREDICT_PMV-175,,ETAB0466,Ethiopia,Mops midas,2018,1,0,3
+QID58889.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-175,Paramyxovirus PREDICT_PMV-175,,ETAB0475,Ethiopia,Mops midas,2018,1,0,3
+QID58890.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-175,Paramyxovirus PREDICT_PMV-175,,ETAB0477,Ethiopia,Mops midas,2018,1,0,3
+QID58891.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-175,Paramyxovirus PREDICT_PMV-175,,ETAB0578,Ethiopia,Mops midas,2018,1,0,3
+QID58892.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-175,Paramyxovirus PREDICT_PMV-175,,ETAB0584,Ethiopia,Mops midas,2018,1,0,3
+QID58926.1,RNA-dependent RNA polymerase,Paramyxovirus IFBPV32/2012,Paramyxovirus IFBPV32/2012,,PREDICT_INDSWBT-107,Indonesia,Acerodon celebensis,2013,1,0,3
+QID58927.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-92,Paramyxovirus PREDICT_PMV-92,,INDSWBT-190,Indonesia,Pteropus alecto,2013,1,0,3
+QID58931.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-81,Paramyxovirus PREDICT_PMV-81,,PSW01493,Malaysia,Hipposideros cervinus,2015,1,0,3
+QID58932.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-81,Paramyxovirus PREDICT_PMV-81,,PSW01503,Malaysia,Hipposideros cervinus,2015,1,0,3
+QID58933.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-81,Paramyxovirus PREDICT_PMV-81,,PSW01512,Malaysia,Hipposideros cervinus,2015,1,0,3
+QID58939.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-74,Paramyxovirus PREDICT_PMV-74,,PSW01752,Malaysia,Hipposideros cervinus,2016,1,0,3
+QID58942.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-99,Paramyxovirus PREDICT_PMV-99,,PSW01940,Malaysia,Hipposideros cervinus,2016,1,0,3
+QID58944.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-74,Paramyxovirus PREDICT_PMV-74,,PSW01967,Malaysia,Hipposideros cervinus,2016,1,0,3
+QKV44006.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-19-BAT-574-8,India,Pteropus medius,2019,1,0,3
+QKV44015.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-19-BAT-574-4,India,Pteropus medius,2019,1,0,3
+QKV44024.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-19-BAT-574-6,India,Pteropus medius,2019,1,0,3
+QKV44033.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-19-BAT-572-10,India,Pteropus medius,2019,1,0,3
+QKV44042.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-19-BAT-572-9,India,Pteropus medius,2019,1,0,3
+QKV44051.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-19-BAT-572-6,India,Pteropus medius,2019,1,0,3
+QKV44060.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-19-BAT-574-5,India,Pteropus medius,2019,1,0,3
+QKV44069.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-19-BAT-572-7,India,Pteropus medius,2019,1,0,3
+QKV44078.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-19-BAT-574-7,India,Pteropus medius,2019,1,0,3
+QKV44087.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-19-BAT-572-5,India,Pteropus medius,2019,1,0,3
+QLK02846.1,polymerase,Paramyxovirus sp.,Paramyxovirus sp.,,53,Brazil,Phyllostomus hastatus,2012,1,0,3
+UAA40914.1,RNA-dependent RNA polymerase,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,BatPV_GH_2015_U17P,Ghana,Eidolon helvum,2015,1,0,3
+UAA40915.1,RNA-dependent RNA polymerase,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,BatPV_GH_2015_U27P,Ghana,Eidolon helvum,2015,1,0,3
+UAA40916.1,RNA-dependent RNA polymerase,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,BatPV_GH_2015_U111P,Ghana,Eidolon helvum,2015,1,0,3
+UAA40917.1,RNA-dependent RNA polymerase,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,BatPV_GH_2019_U317P,Ghana,Eidolon helvum,2019,1,0,3
+UAA40918.1,RNA-dependent RNA polymerase,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,BatPV_GH_2019_U198P,Ghana,Eidolon helvum,2019,1,0,3
+UAA40919.1,RNA-dependent RNA polymerase,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,BatPV_GH_2019_U162P,Ghana,Eidolon helvum,2019,1,0,3
+UAA40920.1,RNA-dependent RNA polymerase,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,BatPV_GH_2019_U117P,Ghana,Eidolon helvum,2019,1,0,3
+UAA40921.1,RNA-dependent RNA polymerase,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,BatPV_GH_2019_U3P,Ghana,Eidolon helvum,2019,1,0,3
+UAA40922.1,RNA-dependent RNA polymerase,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,BatPV_GH_2019_U292P,Ghana,Eidolon helvum,2019,1,0,3
+UAA40923.1,RNA-dependent RNA polymerase,Eidolon helvum paramyxovirus,Eidolon helvum paramyxovirus,,BatPV_GH_2019_U44P,Ghana,Eidolon helvum,2019,1,0,3
+UCY33671.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV-G2/Australia/Pteropus poliocephalus/2020-01,Australia,Pteropus poliocephalus,2020,1,0,3
+UCY33680.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV-G2/Australia/Pteropus poliocephalus/2020-02,Australia,Pteropus poliocephalus,2020,1,0,3
+UED37137.1,RNA-dependent RNA polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,BA8_PAR,USA,Myotis velifer,2017,1,0,3
+UED37150.1,RNA-dependent RNA polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,CE13_PAR,USA,Tadarida brasiliensis,2018,1,0,3
+UED37153.1,RNA-dependent RNA polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,CL5_PAR,USA,Tadarida brasiliensis,2018,1,0,3
+UED37154.1,RNA-dependent RNA polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,CM1_PAR,USA,Tadarida brasiliensis,2018,1,0,3
+UED37156.1,RNA-dependent RNA polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,CM10_PAR,USA,Antrozous pallidus,2018,1,0,3
+URC21326.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1074,Tanzania,Mops condylurus,2018,1,0,3
+URC21327.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1078,Tanzania,Mops condylurus,2018,1,0,3
+URC21328.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1382,Tanzania,Mops condylurus,2018,1,0,3
+URC21329.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1407,Tanzania,Mops condylurus,2018,1,0,3
+URC21330.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1408,Tanzania,Mops condylurus,2018,1,0,3
+URC21331.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1409,Tanzania,Mops condylurus,2018,1,0,3
+URC21332.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1438,Tanzania,Mops condylurus,2018,1,0,3
+URC21333.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1458,Tanzania,Mops condylurus,2018,1,0,3
+URC21334.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1467,Tanzania,Mops condylurus,2018,1,0,3
+URC21335.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1469,Tanzania,Mops condylurus,2018,1,0,3
+URC21337.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-178,Paramyxovirus PREDICT_PMV-178,,TZAB1593,Tanzania,Rousettus aegyptiacus,2018,1,0,3
+URC21339.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1877,Tanzania,Tadarida aegyptiaca,2018,1,0,3
+URC21340.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1879,Tanzania,Mops condylurus,2018,1,0,3
+URC21342.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1886,Tanzania,Mops condylurus,2018,1,0,3
+URC21343.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1895,Tanzania,Tadarida aegyptiaca,2018,1,0,3
+URC21344.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1905,Tanzania,Mops condylurus,2018,1,0,3
+URC21345.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1917,Tanzania,Mops condylurus,2018,1,0,3
+URC21346.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1918,Tanzania,Mops condylurus,2018,1,0,3
+URC21347.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1931,Tanzania,Mops condylurus,2018,1,0,3
+URC21348.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-15,Paramyxovirus PREDICT_PMV-15,,TZAB1949,Tanzania,Mops condylurus,2018,1,0,3
+URC21360.1,RNA-dependent RNA polymerase,Paramyxovirus PREDICT_PMV-56,Paramyxovirus PREDICT_PMV-56,,GHAB1882,Ghana,Eidolon helvum,2018,1,0,3
+URC21843.1,polymerase,Paramyxovirus PREDICT_PMV-191,Paramyxovirus PREDICT_PMV-191,,LRAB0008,Liberia,Hipposideros ruber,2016,1,0,3
+URC21845.1,polymerase,Paramyxovirus PREDICT_PMV-191,Paramyxovirus PREDICT_PMV-191,,LRAB0017,Liberia,Hipposideros ruber,2016,1,0,3
+URC21847.1,polymerase,Paramyxovirus PREDICT_PMV-190,Paramyxovirus PREDICT_PMV-190,,LRAB0033,Liberia,Hipposideros ruber,2016,1,0,3
+URC21848.1,polymerase,Paramyxovirus PREDICT_PMV-189,Paramyxovirus PREDICT_PMV-189,,LRAB0038.OST,Liberia,Hipposideros ruber,2016,1,0,3
+URC21850.1,polymerase,Paramyxovirus PREDICT_PMV-189,Paramyxovirus PREDICT_PMV-189,,LRAB0043,Liberia,Hipposideros ruber,2016,1,0,3
+URC21851.1,polymerase,Paramyxovirus PREDICT_PMV-191,Paramyxovirus PREDICT_PMV-191,,LRAB0047,Liberia,Hipposideros ruber,2016,1,0,3
+WWU04057.1,RNA-dependent RNA polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,HAGXC131516/13,China,Hipposideros armiger,2013,1,0,3
+WWU04081.1,polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,HAZYS22/1274,China,Hipposideros armiger,2022,1,0,3
+WWU04137.1,RNA-dependent RNA polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,HPGXS1517/7880,China,Hipposideros pomona,2015,1,0,3
+WWU04139.1,RNA-dependent RNA polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,HPHCS15/14755,China,Hipposideros pomona,2015,1,0,3
+WWU04171.1,RNA-dependent RNA polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,MSGXC17/4,China,Miniopterus schreibersii,2017,1,0,3
+WWU04286.1,RNA-dependent RNA polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,TMGXS17/3915,China,Taphozous melanopogon,2017,1,0,3
+WWU04296.1,RNA-dependent RNA polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,TMGXS17/54,China,Taphozous melanopogon,2017,1,0,3
+WWU04353.1,RNA-dependent RNA polymerase,Paramyxoviridae sp.,Paramyxoviridae sp.,,VSYSS20/8460,China,Vespertilio sinensis,2020,1,0,3
+XAI72413.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-23-Bat-247/5_RNA_11996,India,Pteropus medius,2023,1,0,3
+XWJ59155.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ACCLU001_AVL_U_16_1/Bat/NSW/Clunes/2017-08-16,Australia,Chiroptera,2017,1,0,3
+XWJ59161.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ACTOW001_AVL_U_13_1/Bat/QLD/Toowoomba/2018-06-03,Australia,Chiroptera,2018,1,0,3
+XWJ59167.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ACTOW001_AVL_U_26_1/Bat/QLD/Toowoomba/2018-06-04,Australia,Chiroptera,2018,1,0,3
+XWJ59173.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ACTOW013_VTM_U_34_2/Bat/QLD/Toowoomba/2020-05-06,Australia,Chiroptera,2020,1,0,3
+XWJ59179.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARCAN002_AVL_U_33_1/Bat/QLD/Canugra/2017-08-28,Australia,Chiroptera,2017,1,0,3
+XWJ59185.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARCLU001_AVL_U_023_A_1/Bat/NSW/Clunes/2017-07-17,Australia,Chiroptera,2017,1,0,3
+XWJ59191.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARCLU002_AVL_U_7_1/Bat/NSW/Clunes/2017-08-08,Australia,Chiroptera,2017,1,0,3
+XWJ59197.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARCLU003_AVL_U_1_1/Bat/NSW/Clunes/2017-09-04,Australia,Chiroptera,2017,1,0,3
+XWJ59203.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARCLU003_AVL_U_16_1/Bat/NSW/Clunes/2017-09-04,Australia,Chiroptera,2017,1,0,3
+XWJ59209.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARCLU007_AVL_U_11_1/Bat/NSW/Clunes/2018-08-01,Australia,Chiroptera,2018,1,0,3
+XWJ59215.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARCLU007_AVL_U_43_1/Bat/NSW/Clunes/2018-08-01,Australia,Chiroptera,2018,1,0,3
+XWJ59221.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARCLU008_AVL_U_17_1/Bat/NSW/Clunes/2018-08-30,Australia,Chiroptera,2018,1,0,3
+XWJ59227.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARCLU015_VTM_U_41_1/Bat/NSW/Clunes/2019-03-22,Australia,Chiroptera,2019,1,0,3
+XWJ59233.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARCLU023_VTM_U_56_1/Bat/NSW/Clunes/2019-11-27,Australia,Chiroptera,2019,1,0,3
+XWJ59239.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARCLU025_VTM_U_32_1/Bat/NSW/Clunes/2020-01-23,Australia,Chiroptera,2020,1,0,3
+XWJ59245.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARCLU029_VTM_U_41_1/Bat/NSW/Clunes/2020-05-28,Australia,Chiroptera,2020,1,0,3
+XWJ59251.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARCUR001_AVL_U_3_1/Bat/QLD/Currumbin/2018-10-04,Australia,Chiroptera,2018,1,0,3
+XWJ59257.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARHVB001_AVL_U_11_1/Bat/QLD/Hervey_Bay/2018-07-23,Australia,Chiroptera,2018,1,0,3
+XWJ59263.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARLIS002_AVL_U_36_1/Bat/NSW/Lismore/2017-08-27,Australia,Chiroptera,2017,1,0,3
+XWJ59269.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARLIS002_AVL_U_50_1/Bat/NSW/Lismore/2017-08-27,Australia,Chiroptera,2017,1,0,3
+XWJ59275.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARMOM001_AVL_U_21_1/Bat/QLD/Mount_Ommaney/2019-01-15,Australia,Chiroptera,2019,1,0,3
+XWJ59281.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARNAM001_AVL_U_21_1/Bat/NSW/Nambuca_Heads/2017-07-26,Australia,Chiroptera,2017,1,0,3
+XWJ59287.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARNAM002_AVL_U_46_1/Bat/NSW/Nambuca_Heads/2017-09-02,Australia,Chiroptera,2017,1,0,3
+XWJ59293.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARNAM006_AVL_U_14_1/Bat/NSW/Nambuca_Heads/2018-07-22,Australia,Chiroptera,2018,1,0,3
+XWJ59299.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARRED004_AVL_U_23_1/Bat/QLD/Redcliffe/2018-07-26,Australia,Chiroptera,2018,1,0,3
+XWJ59305.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARRED005_AVL_U_14_1/Bat/QLD/Redcliffe/2018-08-28,Australia,Chiroptera,2018,1,0,3
+XWJ59311.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARRED007_AVL_U_49_1/Bat/QLD/Redcliffe/2018-10-31,Australia,Chiroptera,2018,1,0,3
+XWJ59323.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARRED030_VTM_U_8_1/Bat/QLD/Redcliffe/2020-09-23,Australia,Chiroptera,2020,1,0,3
+XWJ59329.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARSIM001_AVL_U_25_1/Bat/NSW/Simpsons_Creek/2017-08-23,Australia,Chiroptera,2017,1,0,3
+XWJ59335.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARSUN014_AVL_U_4_1/Bat/QLD/Sunnybank/2018-10-27,Australia,Chiroptera,2018,1,0,3
+XWJ59341.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARSUN036_VTM_U_20_1/Bat/QLD/Sunnybank/2020-07-20,Australia,Chiroptera,2020,1,0,3
+XWJ59347.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARSUN038_VTM_U_48_1/Bat/QLD/Sunnybank/2020-09-25,Australia,Chiroptera,2020,1,0,3
+XWJ59353.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW002_AVL_U_54_1/Bat/QLD/Toowoomba/2018-06-01,Australia,Chiroptera,2018,1,0,3
+XWJ59359.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW003_VTM_U_52_1/Bat/QLD/Toowoomba/2018-06-28,Australia,Chiroptera,2018,1,0,3
+XWJ59365.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW004_AVL_U_3_1/Bat/QLD/Toowoomba/2018-07-20,Australia,Chiroptera,2018,1,0,3
+XWJ59371.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW004_AVL_U_4_1/Bat/QLD/Toowoomba/2018-07-20,Australia,Chiroptera,2018,1,0,3
+XWJ59377.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW004_AVL_U_38_1/Bat/QLD/Toowoomba/2018-07-20,Australia,Chiroptera,2018,1,0,3
+XWJ59383.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW004_AVL_U_39_1/Bat/QLD/Toowoomba/2018-07-20,Australia,Chiroptera,2018,1,0,3
+XWJ59389.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW005_AVL_U_16_1/Bat/QLD/Toowoomba/2018-08-29,Australia,Chiroptera,2018,1,0,3
+XWJ59395.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW006_AVL_U_6_1/Bat/QLD/Toowoomba/2018-09-28,Australia,Chiroptera,2018,1,0,3
+XWJ59401.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW006_AVL_U_10_1/Bat/QLD/Toowoomba/2018-09-28,Australia,Chiroptera,2018,1,0,3
+XWJ59407.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW006_AVL_U_14_1/Bat/QLD/Toowoomba/2018-09-28,Australia,Chiroptera,2018,1,0,3
+XWJ59413.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW006_VTM_U_14_1/Bat/QLD/Toowoomba/2018-09-28,Australia,Chiroptera,2018,1,0,3
+XWJ59419.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW007_AVL_U_11_1/Bat/QLD/Toowoomba/2018-10-26,Australia,Chiroptera,2018,1,0,3
+XWJ59425.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW022_VTM_U_51_1/Bat/QLD/Toowoomba/2020-01-28,Australia,Chiroptera,2020,1,0,3
+XWJ59431.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,HeV/ARTOW023_VTM_U_21_1/Bat/QLD/Toowoomba/2020-02-28,Australia,Chiroptera,2020,1,0,3
+XWJ59491.1,polymerase,Henipavirus hendraense,Henipavirus hendraense,Henipavirus,RSIM001_NB_U_25/Bat/NSW/Simpsons_Creek/2017-08-23,Australia,Chiroptera,2017,1,0,3
+YBG61286.1,polymerase,Henipavirus sp.,Henipavirus sp.,Henipavirus,MIZ546,Madagascar,Rousettus madagascariensis,2019,1,0,3
+YBG61287.1,polymerase,Henipavirus sp.,Henipavirus sp.,Henipavirus,Pool_4_ED_UR_2,Madagascar,Chiroptera sp.,2019,1,0,3
+YBG61289.1,polymerase,Henipavirus sp.,Henipavirus sp.,Henipavirus,Pool_5_ED_UR_2,Madagascar,Chiroptera sp.,2019,1,0,3
+YBG61290.1,polymerase,Henipavirus sp.,Henipavirus sp.,Henipavirus,Pool_6_ED_UR_1,Madagascar,Chiroptera sp.,2019,1,0,3
+YCA87201.1,polymerase,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-24-B-107/12,India,Chiroptera,2024,1,0,3
