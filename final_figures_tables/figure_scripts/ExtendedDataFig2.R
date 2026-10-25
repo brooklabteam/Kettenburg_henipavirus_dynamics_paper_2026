@@ -28,7 +28,7 @@ rooted.tree2<-drop.tip(rooted.tree2, "WWU04057.1")
 rooted.tree2<-drop.tip(rooted.tree2, "WWU04171.1")
 rooted.tree2<-drop.tip(rooted.tree2, "WWU04296.1")
 rooted.tree2<-drop.tip(rooted.tree2, "YBG61290.1")
-# rooted.tree2<-drop.tip(rooted.tree2, "NP_056924.1")
+rooted.tree2<-drop.tip(rooted.tree2, "YBG61286.1")
 # rooted.tree2<-drop.tip(rooted.tree2, "NP_054697.1")
 # rooted.tree2<-drop.tip(rooted.tree2, "YP_138518.1")
 # rooted.tree2<-drop.tip(rooted.tree2, "YP_010790514.1")
@@ -133,15 +133,15 @@ p2 <- ggtree(rooted.tree2) %<+% tree.dat2 + geom_tippoint(aes(color=Genus, shape
         legend.direction = "vertical",
         legend.text = element_text(size=7), 
         legend.key.size = unit(0.2, "cm")) +
-  geom_cladelabel(node= 534, label='HeV/NiV sister clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=520, label='AndV clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=1028, label='AndV-2 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=1032, label='AndV-3.1 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=511, label='AndV-3.2 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=528, label='GhV clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=549, label='AngV clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=30, label='AngV-2.1 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=552, label='AngV-2.2 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node= 28, label='HeV/NiV sister clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=, label='AndV clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=, label='AndV-2 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=, label='AndV-3.1 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=, label='AndV-3.2 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=1062, label='GhV clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=, label='AngV clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=, label='AngV-2.1 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=, label='AngV-2.2 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
   #geom_cladelabel(node=553, label='AngV-2.3 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
 
   geom_cladelabel(node = 693, label = "Jeilongvirus (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
@@ -182,15 +182,15 @@ p2.1<-ggtree::collapse(p2.15, 568)+geom_point2(aes(subset=(node==568)), size=4, 
 p2.1
 
 p2.1<- p2.1 +  
-  geom_hilight(node=534, fill="#A58AFF", alpha=0.3, extendto=12)+ #HeV/NiV sister
-  geom_hilight(node=520, fill="darkslategray1", alpha=0.3, extendto=12)+ #AndV
-  geom_hilight(node=1028, fill="dodgerblue1", alpha=0.3, extendto=12)+ #AndV2
-  geom_hilight(node=1032, fill="dodgerblue4", alpha=0.3, extendto=12)+ #AndV3.1
-  geom_hilight(node=511, fill="dodgerblue4", alpha=0.3, extendto=12)+ #AndV3.2
-  geom_hilight(node=528, fill="#00C094", alpha=0.3, extendto=12)+ #GhVlike
-  geom_hilight(node=549, fill="tomato1", alpha=0.3, extendto=12)+ #AngV
-  geom_hilight(node=30, fill="darkorange1", alpha=0.3, extendto=12) + #AngV2.1
-  geom_hilight(node=552, fill="darkorange1", alpha=0.3, extendto=12) #AngV2.2
+  geom_hilight(node=28, fill="#A58AFF", alpha=0.3, extendto=12)+ #HeV/NiV sister
+  geom_hilight(node=, fill="darkslategray1", alpha=0.3, extendto=12)+ #AndV
+  geom_hilight(node=, fill="dodgerblue1", alpha=0.3, extendto=12)+ #AndV2
+  geom_hilight(node=, fill="dodgerblue4", alpha=0.3, extendto=12)+ #AndV3.1
+  geom_hilight(node=, fill="dodgerblue4", alpha=0.3, extendto=12)+ #AndV3.2
+  geom_hilight(node=1062, fill="#00C094", alpha=0.3, extendto=12)+ #GhVlike
+  geom_hilight(node=, fill="tomato1", alpha=0.3, extendto=12)+ #AngV
+  geom_hilight(node=, fill="darkorange1", alpha=0.3, extendto=12) + #AngV2.1
+  geom_hilight(node=, fill="darkorange1", alpha=0.3, extendto=12) #AngV2.2
   #geom_hilight(node=553, fill="darkorange1", alpha=0.3, extendto=12) #AngV2.3
 p2.1
 
