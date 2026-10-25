@@ -133,11 +133,11 @@ p2 <- ggtree(rooted.tree2) %<+% tree.dat2 + geom_tippoint(aes(color=Genus, shape
         legend.direction = "vertical",
         legend.text = element_text(size=7), 
         legend.key.size = unit(0.2, "cm")) +
-  geom_cladelabel(node= 28, label='HeV/NiV sister clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node= 1076, label='HeV/NiV sister clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
   geom_cladelabel(node=1018, label='AndV clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
   geom_cladelabel(node=1021, label='AndV-2 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=103, label='AndV-3.1 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
-  geom_cladelabel(node=981, label='AndV-3.2 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=1031, label='AndV-3.1 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
+  geom_cladelabel(node=1025, label='AndV-3.2 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
   geom_cladelabel(node=1060, label='GhV clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
   geom_cladelabel(node=1173, label='AngV clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
   geom_cladelabel(node=1192, label='AngV-2.1 clade', offset=8.2, fontsize=4, color="black", align=TRUE)+
@@ -157,11 +157,11 @@ p2 <- ggtree(rooted.tree2) %<+% tree.dat2 + geom_tippoint(aes(color=Genus, shape
   geom_cladelabel(node = 1061, label = "Ghanaian bat henipavirus clade | Eidolon helvum | Zambia (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   geom_cladelabel(node = 1036, label = "Unclassified bat paramyxovirus clade | Eidolon helvum | Ghana/DRC (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   geom_cladelabel(node = 1043, label = "Unclassified bat paramyxovirus clade | Southeast Asia (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
-  geom_cladelabel(node = 1921, label = "Bat-hosted orthorubulavirus clade (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
+  #geom_cladelabel(node = 1921, label = "Bat-hosted orthorubulavirus clade (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black") +
   geom_cladelabel(node = 1832, label = "Rubulavirus clade (collapsed)",offset=0.1, fontsize = 4,fontface=3, color="black")+
   xlim(c(0,14))
 p2
-#p2<-flip(p2, 1213, 1644)
+p2<-flip(p2, 1209, 1008)
 # p2<-flip(p2, , )
 
 p2.2<-ggtree::collapse(p2, 1210)+geom_point2(aes(subset=(node==1210)), size=4, shape=25, fill="black")
@@ -177,20 +177,20 @@ p2.11<-ggtree::collapse(p2.10, 1085)+geom_point2(aes(subset=(node==1085)), size=
 p2.12<-ggtree::collapse(p2.11, 1061)+geom_point2(aes(subset=(node==1061)), size=4, shape=25, fill="deepskyblue2")
 p2.13<-ggtree::collapse(p2.12, 1036)+geom_point2(aes(subset=(node==1036)), size=4, shape=25, fill="deepskyblue2")
 p2.14<-ggtree::collapse(p2.13, 1043)+geom_point2(aes(subset=(node==1043)), size=4, shape=25, fill="deepskyblue2")
-p2.15<-ggtree::collapse(p2.14, 1921)+geom_point2(aes(subset=(node==1921)), size=4, shape=25, fill="black")
-p2.1<-ggtree::collapse(p2.15, 1832)+geom_point2(aes(subset=(node==1832)), size=4, shape=25, fill="black")
+#p2.15<-ggtree::collapse(p2.14, 1921)+geom_point2(aes(subset=(node==1921)), size=4, shape=25, fill="black")
+p2.1<-ggtree::collapse(p2.14, 1832)+geom_point2(aes(subset=(node==1832)), size=4, shape=25, fill="black")
 p2.1
 
 p2.1<- p2.1 +  
-  geom_hilight(node=28, fill="#A58AFF", alpha=0.3, extendto=12)+ #HeV/NiV sister
+  geom_hilight(node=1076, fill="#A58AFF", alpha=0.3, extendto=12)+ #HeV/NiV sister
   geom_hilight(node=1018, fill="darkslategray1", alpha=0.3, extendto=12)+ #AndV
   geom_hilight(node=1021, fill="dodgerblue1", alpha=0.3, extendto=12)+ #AndV2
-  geom_hilight(node=103, fill="dodgerblue4", alpha=0.3, extendto=12)+ #AndV3.1
-  geom_hilight(node=981, fill="dodgerblue4", alpha=0.3, extendto=12)+ #AndV3.2
+  geom_hilight(node=1031, fill="dodgerblue4", alpha=0.3, extendto=12)+ #AndV3.1
+  geom_hilight(node=1025, fill="dodgerblue4", alpha=0.3, extendto=12)+ #AndV3.2
   geom_hilight(node=1060, fill="#00C094", alpha=0.3, extendto=12)+ #GhVlike
   geom_hilight(node=1173, fill="tomato1", alpha=0.3, extendto=12)+ #AngV
   geom_hilight(node=1192, fill="darkorange1", alpha=0.3, extendto=12) + #AngV2.1
-  geom_hilight(node=1188, fill="darkorange1", alpha=0.3, extendto=12) #AngV2.2
+  geom_hilight(node=1188, fill="darkorange1", alpha=0.3, extendto=12)+ #AngV2.2
   geom_hilight(node=1179, fill="darkorange1", alpha=0.3, extendto=12) #AngV2.3
 p2.1
 
