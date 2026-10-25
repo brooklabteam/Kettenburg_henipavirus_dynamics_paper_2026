@@ -219,7 +219,7 @@ ggsave(file = paste0(homewd, "ExtendedDataFig2.png"),
        plot= tree2,
        units="mm",
        width=230,
-       height=110,
+       height=140,
        scale=2,
        dpi=500)
 
