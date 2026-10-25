@@ -475,7 +475,7 @@ run.adultAB.deterministic <- function(catch.dat, lum.dat, homewd,
   #B = rate modifier (time_to_peak = 1/B) but also plays a role in the decay on the other end...
   
   posterior <- as.data.frame(fit)
-  
+  #write.csv(posterior, file = paste0(homewd, "/model_fitting/GhV-fits/adult-Ab-stan-fit-posterior.csv"), row.names = F)
   #now get the deterministic trajectory
   
   #and the deterministic

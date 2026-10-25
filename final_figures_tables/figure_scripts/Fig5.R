@@ -473,6 +473,7 @@ plot.matAb <- function(dat){
   predictions <- predictNLS(fit, newdata = data.frame(age = seq(0, 1, 0.01)))
   
   # View summary table containing Estimate, Mean, Std.Dev (SE), and CIs
+  #write.csv(predictions$summary, file = paste0(homewd, "/model_fitting/GhV-fits/maternal-Ab-nls-fit-CIs.csv"), row.names = F)
   #head(predictions$summary)
   
   # Extract predictions and standard errors into a clean data frame
