@@ -24,9 +24,9 @@ tree2 <-  read.tree("batLmid.treefile")
 rooted.tree2 <- root(tree2, which(tree2$tip.label == "YP_009094051.1"))
 #drop root and other reference sequences for aesthetics
 rooted.tree2<-drop.tip(rooted.tree2, "YP_009094051.1")
-# rooted.tree2<-drop.tip(rooted.tree2, "YP_010797981.1")
-# rooted.tree2<-drop.tip(rooted.tree2, "YP_010790495.1")
-# rooted.tree2<-drop.tip(rooted.tree2, "YP_010799241.1")
+rooted.tree2<-drop.tip(rooted.tree2, "WWU04057.1")
+rooted.tree2<-drop.tip(rooted.tree2, "WWU04171.1")
+rooted.tree2<-drop.tip(rooted.tree2, "WWU04296.1")
 # rooted.tree2<-drop.tip(rooted.tree2, "YP_010798268.1")
 # rooted.tree2<-drop.tip(rooted.tree2, "NP_056924.1")
 # rooted.tree2<-drop.tip(rooted.tree2, "NP_054697.1")
@@ -39,7 +39,7 @@ rooted.tree2<-drop.tip(rooted.tree2, "YP_009094051.1")
 # rooted.tree2<-drop.tip(rooted.tree2, "YP_010790504.1")
 # rooted.tree2<-drop.tip(rooted.tree2, "AET43339.1")
 #load tree data prepared from elsewhere
-dat2 <- read.csv(("L_bat_metadata.csv"), header = T, stringsAsFactors = F)
+dat2 <- read.csv(("L_bat_metadata_new.csv"), header = T, stringsAsFactors = F)
 
 #check subgroup names
 unique(dat2$Genus)
