@@ -204,10 +204,10 @@ QKV44078.1,Unclassified henipavirus,Henipavirus nipahense,Henipavirus nipahense,
 QKV44087.1,Unclassified henipavirus,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-19-BAT-572-5,India,Pteropus medius,2019,1,0,3
 XAI72413.1,Unclassified henipavirus,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-23-Bat-247/5_RNA_11996,India,Pteropus medius,2023,1,0,3
 YCA87201.1,Unclassified henipavirus,Henipavirus nipahense,Henipavirus nipahense,Henipavirus,MCL-24-B-107/12,India,Chiroptera,2024,1,0,3
-YBG61286.1,Unclassified henipavirus,Henipavirus sp.,Henipavirus sp.,Henipavirus,MIZ546,Madagascar,Rousettus madagascariensis,2019,1,0,3
-YBG61287.1,Unclassified henipavirus,Henipavirus sp.,Henipavirus sp.,Henipavirus,Pool_4_ED_UR_2,Madagascar,Chiroptera sp.,2019,1,0,3
-YBG61289.1,Unclassified henipavirus,Henipavirus sp.,Henipavirus sp.,Henipavirus,Pool_5_ED_UR_2,Madagascar,Chiroptera sp.,2019,1,0,3
-YBG61290.1,Unclassified henipavirus,Henipavirus sp.,Henipavirus sp.,Henipavirus,Pool_6_ED_UR_1,Madagascar,Chiroptera sp.,2019,1,0,3
+YBG61286.1,Unclassified henipavirus,Unclassified henipavirus,Henipavirus sp.,Henipavirus,MIZ546,Madagascar,Rousettus madagascariensis,2019,1,0,3
+YBG61287.1,Unclassified henipavirus,Unclassified henipavirus,Henipavirus sp.,Henipavirus,Pool_4_ED_UR_2,Madagascar,Chiroptera sp.,2019,1,0,3
+YBG61289.1,Unclassified henipavirus,Unclassified henipavirus,Henipavirus sp.,Henipavirus,Pool_5_ED_UR_2,Madagascar,Chiroptera sp.,2019,1,0,3
+YBG61290.1,Unclassified henipavirus,Unclassified henipavirus,Henipavirus sp.,Henipavirus,Pool_6_ED_UR_1,Madagascar,Chiroptera sp.,2019,1,0,3
 YP_013613142.1,Hippocampus erectus paramyxovirus 1,Hippocavirus hippocampi,Hippocavirus,Paramyxoviridae,SD/19,China,Hippocampus erectus,2022,0,0,0
 YP_010790504.1,Wenling hoplichthys paramyxovirus,Hoplichthysvirus hoplichthysis,Hoplichthysvirus,Paramyxoviridae,,China,Hoplichthys,2018,0,0,0
 YP_512254.1,Beilong virus,Jeilongvirus beilongi,Jeilongvirus,Paramyxoviridae,,Lab strain,Lab strain,2005,0,0,0
