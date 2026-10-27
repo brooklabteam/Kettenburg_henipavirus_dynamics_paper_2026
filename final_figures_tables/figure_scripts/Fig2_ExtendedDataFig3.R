@@ -571,6 +571,26 @@ pIntrannualShedAll <- ggplot(data=session.long) +
   guides(size=guide_legend(override.aes = list(color="black")), shape=guide_legend(override.aes = list(color="black")))
 pIntrannualShedAll #this goes in supplement
 
+dat_text <- data.frame(
+  antigen = c("AngV","AngV", "AngV", "GhV", "GhV", "GhV"),
+  bat_species = c("Pteropus rufus", "Eidolon dupreanum", "Rousettus madagascariensis",
+         "Pteropus rufus", "Eidolon dupreanum", "Rousettus madagascariensis"),
+ 
+  label = c(" p = NS Mahabo\n p = NS Makira\n p = NS Moramanga", 
+            " p = 0.070 Ankarana\n p = NS Mahabo\n p = NS Moramanga", 
+            " p = NS Ankarana\n p = NS Makira\n p = 0.088 Moramanga", 
+            " p = NS Mahabo\n p = NS Makira\n p = 0.014 Moramanga", 
+            " p = 0.008 Ankarana\n p = NS Mahabo\n p = NS Moramanga", 
+            " p = NS Ankarana\n p = NS Makira\n p = NS Moramanga")
+)
+
+pIntrannualShedAll<-pIntrannualShedAll + geom_text(
+  data    = dat_text,
+  mapping = aes(x = 130, y = 0.5, label = label),
+  hjust   = -0.1,
+  vjust   = -1
+);pIntrannualShedAll
+
 
 ggsave(file = paste0(homewd,"/final_figures_tables/extended-data/ExtendedDataFig3.png"),
        plot=pIntrannualShedAll,
