@@ -348,7 +348,7 @@ pcomppar <- cowplot::plot_grid(p1, p2, beta.plot, sigma.plot, recru.plot, loss.p
 #pall <- cowplot::plot_grid(pR0, pcomppar, nrow=2, ncol=1, rel_heights  = c(1,2)) + theme(plot.background = element_rect(fill="white"))
 
 pall <- cowplot::plot_grid(pcomppar, leg, nrow=1, ncol=2, rel_heights  = c(1,1), rel_widths = c(1,0.2)) +
-  theme(plot.background = element_rect(fill="white"));pall
+  theme(plot.background = element_rect(fill="white", color=NA));pall
 
 
 
