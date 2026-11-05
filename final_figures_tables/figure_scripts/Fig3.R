@@ -1149,7 +1149,7 @@ ggsave(file = paste0(homewd, "/final_figures_tables/main/Fig3.png"),
        plot= fig3,
        units="mm",  
        width=180, 
-       height=140, 
+       height=150, 
        scale=2, 
        dpi=500)
 
