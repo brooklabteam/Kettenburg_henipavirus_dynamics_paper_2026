@@ -322,7 +322,7 @@ Eid.recap <- ggplot(subset(recap.sum, bat_species=="Eidolon dupreanum")) + theme
   scale_shape_manual(name="Serostatus", values = shapez) + 
   scale_fill_manual(name = "PCR status", values = filz) +
   scale_color_manual(name= "Serological\ntrajectory", values = colorz1) + ylab("Individual bat\n\n") +
-  facet_nested(bat_sex~antigen, scales = "free", space = "free") + scale_alpha_manual(values = alphaz) +
+  facet_nested(.~antigen, scales = "free", space = "free") + scale_alpha_manual(values = alphaz) +
   theme(axis.text.y = element_blank(), 
         axis.ticks.y=element_blank(), 
         axis.title.x = element_blank(),
@@ -395,7 +395,7 @@ cutoff.df <- rbind(cutoff.df, c("Rousettus madagascariensis", "GhV", "2018-2020"
 cutoff.df$MFI <- as.numeric(cutoff.df$MFI)
 
 EidMFIall <- ggplot(data=subset(recap.sum, bat_species=="Eidolon dupreanum" )) + 
-  facet_nested(bat_sex~antigen, scales = "free") + theme_bw() +
+  facet_nested(.~antigen, scales = "free") + theme_bw() +
   scale_shape_manual(name="Serostatus", values = shapez) + 
   scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
   theme(axis.text.y = element_text(size=14),   
@@ -438,7 +438,7 @@ ggsave(file = paste0(homewd,"/final_figures_tables/main/Fig4.png"),
        plot = Fig4,
        bg="white",
        units="mm",  
-       width=120, 
+       width=140, 
        height=140, 
        scale=2, 
        dpi=500)
@@ -453,7 +453,7 @@ Rou.recap <- ggplot(subset(recap.sum, bat_species=="Rousettus madagascariensis" 
   scale_shape_manual(name="Serostatus", values = shapez) + 
   scale_fill_manual(name = "PCR status", values = filz) +
   scale_color_manual(name= "Serological\ntrajectory", values = colorz1) + ylab("Individual bat\n\n") +
-  facet_nested(bat_sex~antigen, scales = "free", space = "free") + scale_alpha_manual(values = alphaz) +
+  facet_nested(.~antigen, scales = "free", space = "free") + scale_alpha_manual(values = alphaz) +
   theme(axis.text.y = element_blank(), 
         axis.ticks.y=element_blank(), 
         axis.title.x = element_blank(),
@@ -475,7 +475,7 @@ Rou.recap <- ggplot(subset(recap.sum, bat_species=="Rousettus madagascariensis" 
 
 
 RouMFIall <- ggplot(data=subset(recap.sum, bat_species=="Rousettus madagascariensis" & antigen=="GhV")) + 
-  facet_nested(bat_sex~antigen, scales = "free") + theme_bw() +
+  facet_nested(.~antigen, scales = "free") + theme_bw() +
   scale_shape_manual(name="Serostatus", values = shapez) + 
   scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
   theme(axis.text.y = element_text(size=14),   
