@@ -278,12 +278,23 @@ summary(gamRAndV) #nothing
 ###
 
 #make a csv file of all the model outputs
+library(purrr)
 library(broom)
+library(dplyr)
+library(readr)
 model_list<-list(gamGhV=gamGhV, gamAngV= gamAngV, gamAndV= gamAndV, 
                  gamPGhV=gamPGhV, gamPAngV= gamPAngV, gamPAndV= gamPAndV,
                  gamRGhV=gamRGhV, gamRAngV= gamRAngV, gamRAndV= gamRAndV)
-all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
-write.csv(all_summaries, "intraannual_shed_gam_model_summaries.csv", row.names = FALSE)
+combined_gams <- map_df(model_list, function(mod) {
+  param_df <- tidy(mod, parametric = TRUE) %>% 
+    mutate(term_type = "Parametric")
+    smooth_df <- tidy(mod, parametric = FALSE) %>% 
+    mutate(term_type = "Smooth")
+    bind_rows(param_df, smooth_df)
+}, .id = "model_name")
+
+write.csv(combined_gams, "intraannual_shed_gam_model_summaries.csv", row.names = FALSE)
+
 
 # based on above, the only consistently significant results were the
 # seasonal smoothers by site - so let's look at those. to make more 
@@ -410,8 +421,14 @@ library(broom)
 model_list<-list(gamSessionGhV=gamSessionGhV, gamSessionAngV= gamSessionAngV, gamSessionAndV= gamSessionAndV, 
                  gamSessionPGhV=gamSessionPGhV, gamSessionPAngV= gamSessionPAngV, gamSessionPAndV= gamSessionPAndV,
                  gamSessionRGhV=gamSessionRGhV, gamSessionRAngV= gamSessionRAngV, gamSessionRAndV= gamSessionRAndV)
-all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
-write.csv(all_summaries, "intraannual_session_shed_gam_model_summaries.csv", row.names = FALSE)
+combined_gams <- map_df(model_list, function(mod) {
+  param_df <- tidy(mod, parametric = TRUE) %>% 
+    mutate(term_type = "Parametric")
+  smooth_df <- tidy(mod, parametric = FALSE) %>% 
+    mutate(term_type = "Smooth")
+  bind_rows(param_df, smooth_df)
+}, .id = "model_name")
+write.csv(combined_gams, "intraannual_session_shed_gam_model_summaries.csv", row.names = FALSE)
 
 
 #####
@@ -880,8 +897,16 @@ library(broom.mixed)
 model_list<-list(lmGhV=lmGhV, lmAngV= lmAngV, lmAndV= lmAndV,
                  lmPGhV=lmPGhV,  lmPAndV= lmPAndV,
                  lmRGhV=lmRGhV, lmRAngV= lmRAngV, lmRAndV= lmRAndV)
-all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
-write.csv(all_summaries, "bodycondition_ct_lmer_model_summaries.csv", row.names = FALSE)
+
+combined_gams <- map_df(model_list, function(mod) {
+  param_df <- tidy(mod, parametric = TRUE) %>% 
+    mutate(term_type = "Parametric")
+  smooth_df <- tidy(mod, parametric = FALSE) %>% 
+    mutate(term_type = "Smooth")
+  bind_rows(param_df, smooth_df)
+}, .id = "model_name")
+
+write.csv(combined_gams, "bodycondition_ct_lmer_model_summaries.csv", row.names = FALSE)
 
 
 tot.merge$cat_plot <- as.character(tot.merge$mass_cat)
@@ -1032,8 +1057,14 @@ summary(glmCoInfCatR) #poor body condition marginally associated with more HNVs
 model_list<-list(glmCoInf=glmCoInf, glmCoInfCat= glmCoInfCat,
                  glmCoInfP=glmCoInfP, glmCoInfCatP= glmCoInfCatP,
                  glmCoInfR=glmCoInfR, glmCoInfCatR= glmCoInfCatR)
-all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
-#write.csv(all_summaries, "coinfection_shed_glm_model_summaries.csv", row.names = FALSE)
+combined_gams <- map_df(model_list, function(mod) {
+  param_df <- tidy(mod, parametric = TRUE) %>% 
+    mutate(term_type = "Parametric")
+  smooth_df <- tidy(mod, parametric = FALSE) %>% 
+    mutate(term_type = "Smooth")
+  bind_rows(param_df, smooth_df)
+}, .id = "model_name")
+write.csv(combined_gams, "coinfection_shed_glm_model_summaries.csv", row.names = FALSE)
 
 
 #and the Ct-prevalence plot
@@ -1288,8 +1319,14 @@ summary(Rou.shed.prev.a.AndV) ##nothing
 model_list<-list(Eid.shed.prev=Eid.shed.prev, Eid.shed.prev.a= Eid.shed.prev.a, Rou.shed.prev=Rou.shed.prev, Rou.shed.prev.a= Rou.shed.prev.a, Pter.shed.prev=Pter.shed.prev, Pter.shed.prev.a= Pter.shed.prev.a,
                  Eid.shed.prev.AngV=Eid.shed.prev.AngV, Eid.shed.prev.a.AngV= Eid.shed.prev.a.AngV, Rou.shed.prev.AngV=Rou.shed.prev.AngV, Rou.shed.prev.a.AngV= Rou.shed.prev.a.AngV, Pter.shed.prev.AngV=Pter.shed.prev.AngV, Pter.shed.prev.a.AngV= Pter.shed.prev.a.AngV,
                  Eid.shed.prev.AndV=Eid.shed.prev.AndV, Eid.shed.prev.a.AndV= Eid.shed.prev.a.AndV, Rou.shed.prev.AndV=Rou.shed.prev.AndV, Rou.shed.prev.a.AndV= Rou.shed.prev.a.AndV, Pter.shed.prev.AndV=Pter.shed.prev.AndV, Pter.shed.prev.a.AndV= Pter.shed.prev.a.AndV)
-all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
-write.csv(all_summaries, "weighted_unweighted_shed_session_glm_model_summaries.csv", row.names = FALSE)
+combined_gams <- map_df(model_list, function(mod) {
+  param_df <- tidy(mod, parametric = TRUE) %>% 
+    mutate(term_type = "Parametric")
+  smooth_df <- tidy(mod, parametric = FALSE) %>% 
+    mutate(term_type = "Smooth")
+  bind_rows(param_df, smooth_df)
+}, .id = "model_name")
+write.csv(combined_gams, "weighted_unweighted_shed_session_glm_model_summaries.csv", row.names = FALSE)
 
 
 #now try a permutation test - shuffle Cts across sampling sessions within a site
