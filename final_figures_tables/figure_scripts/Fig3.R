@@ -686,8 +686,15 @@ pInterannual_new
 library(broom)
 model_list<-list(gamEidNoSexGhV=gamEidNoSexGhV, gamEidNoSexAngV= gamEidNoSexAngV,
                  gamRouNoSexGhV=gamRouNoSexGhV)
-all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
-#write.csv(all_summaries, "interannual_sero_gam_model_summaries.csv", row.names = FALSE)
+combined_gams <- map_df(model_list, function(mod) {
+  param_df <- tidy(mod, parametric = TRUE) %>% 
+    mutate(term_type = "Parametric")
+  smooth_df <- tidy(mod, parametric = FALSE) %>% 
+    mutate(term_type = "Smooth")
+  bind_rows(param_df, smooth_df)
+}, .id = "model_name")
+
+write.csv(combined_gams, "interannual_sero_gam_model_summaries.csv", row.names = FALSE)
 
 
 # now test the predictors of seropositivity from the raw data
@@ -861,8 +868,14 @@ summary(gamRGhV) # nothing
 
 #again save gam output to csv file
 model_list<-list(gamGhV=gamGhV, gamAngV= gamAngV, gamRGhV= gamRGhV)
-all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
-#write.csv(all_summaries, "intraannual_sero_gam_model_summaries.csv", row.names = FALSE)
+combined_gams <- map_df(model_list, function(mod) {
+  param_df <- tidy(mod, parametric = TRUE) %>% 
+    mutate(term_type = "Parametric")
+  smooth_df <- tidy(mod, parametric = FALSE) %>% 
+    mutate(term_type = "Smooth")
+  bind_rows(param_df, smooth_df)
+}, .id = "model_name")
+write.csv(combined_gams, "intraannual_sero_gam_model_summaries.csv", row.names = FALSE)
 
 
 #only significant seasonality for GhV in Eidolon in Moramanga
@@ -1060,8 +1073,14 @@ summary(lmRGhV) #not sig
 
 #save lmer model output to csv
 model_list<-list(lmGhV=lmGhV, lmAngV= lmAngV, lmRGhV= lmRGhV)
-all_summaries <- bind_rows(lapply(model_list, tidy), .id = "Model_Name")
-#write.csv(all_summaries, "bodycondition_mfi_lmer_model_summaries.csv", row.names = FALSE)
+combined_gams <- map_df(model_list, function(mod) {
+  param_df <- tidy(mod, parametric = TRUE) %>% 
+    mutate(term_type = "Parametric")
+  smooth_df <- tidy(mod, parametric = FALSE) %>% 
+    mutate(term_type = "Smooth")
+  bind_rows(param_df, smooth_df)
+}, .id = "model_name")
+write.csv(combined_gams, "bodycondition_mfi_lmer_model_summaries.csv", row.names = FALSE)
 
 
 #and plot
