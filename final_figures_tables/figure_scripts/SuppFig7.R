@@ -373,7 +373,7 @@ cutoff.df = subset(cutoff.df, antigen=="GhV")
 EidMFIall <- ggplot(data=subset(recap.short, bat_species=="Eidolon dupreanum")) + 
   facet_nested(bat_sex~., scales = "free", space = "free") + theme_bw() +
   scale_shape_manual(name="bat sex", values = shapez) + 
-  scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
+  scale_alpha_manual(values = alphaz2) + ylab("median fluorescence intensity (MFI)")+
   theme(axis.title.y = element_text(size=16), axis.title.x = element_blank(),
         legend.box = "horizontal", strip.text.y = element_text(size=16),#, face = "italic"),
         strip.background.y = element_rect(fill="white"),
@@ -409,7 +409,7 @@ find.tryptic <- function(df){
       return(df.out)
     }else if(df$MFI[2]<df$MFI[3] & nrow(df)>3){
       df.out = df[2:nrow(df),]
-      
+       
       #remove anything separated by >6 months and recompute diff
       df.out =subset(df.out, days_diff<(6*31))
       df.out$days_diff <- c(NA, diff(df.out$processing_date))
@@ -440,7 +440,7 @@ triptic_df$seropos <- as.character(triptic_df$seropos)
 tryptic.plot <- ggplot(data=triptic_df) + 
   facet_nested(bat_sex~., scales = "free", space = "free") + theme_bw() +
   scale_shape_manual(name="bat sex", values = shapez) + 
-  scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
+  scale_alpha_manual(values = alphaz2) + ylab("median fluorescence intensity (MFI)")+
   theme(axis.title.y = element_text(size=16), axis.title.x = element_blank(),
         legend.box = "horizontal", strip.text.y = element_text(size=16),#, face = "italic"),
         strip.background.y = element_rect(fill="white"),
@@ -463,7 +463,7 @@ tryptic.plot <- ggplot(data=triptic_df) +
   scale_shape_manual(name="bat sex", values = shapez) + 
   xlab("Time relative to observed peak (t_rel)") +
   ylab("MFI") +
-  scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
+  scale_alpha_manual(values = alphaz2) + ylab("median fluorescence intensity (MFI)")+
   theme(axis.title.y = element_text(size=16), 
         legend.box = "horizontal", strip.text.y = element_text(size=16),#, face = "italic"),
         strip.background.y = element_rect(fill="white"),
@@ -486,7 +486,7 @@ plot1 <- ggplot(data=subset(triptic_df, barcode_id=="956000006105427")) +
   scale_shape_manual(name="bat sex", values = shapez) + 
   xlab("Time relative to observed peak (t_rel)") +
   ylab("MFI") +
-  scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
+  scale_alpha_manual(values = alphaz2) + ylab("median fluorescence intensity (MFI)")+
   theme(axis.title.y = element_text(size=16), 
         legend.box = "horizontal", strip.text.y = element_text(size=16),#, face = "italic"),
         strip.background.y = element_rect(fill="white"),
@@ -521,7 +521,7 @@ tryptic.plot2 <- ggplot(data=triptic_df) +
   scale_shape_manual(name="bat sex", values = shapez) + 
   xlab("Time relative to observed peak (t_rel)") +
   ylab("MFI") +
-  scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
+  scale_alpha_manual(values = alphaz2) + ylab("median fluorescence intensity (MFI)")+
   theme(axis.title.y = element_text(size=16), 
         legend.box = "horizontal", strip.text.y = element_text(size=16),#, face = "italic"),
         strip.background.y = element_rect(fill="white"),
@@ -557,7 +557,7 @@ tryptic.plot3 <- ggplot(data=triptic_df) +
   xlab("Time relative to observed peak (days)") +
   ylab("MFI") +
   scale_alpha_manual(values = alphaz2) + 
-  ylab("mean fluorescence intensity (MFI)")+
+  ylab("median fluorescence intensity (MFI)")+
   theme(axis.title = element_text(size=18), 
         legend.box = "horizontal", strip.text.y = element_text(size=16),#, face = "italic"),
         strip.background.y = element_rect(fill="white"),
