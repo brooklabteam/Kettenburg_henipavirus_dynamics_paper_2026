@@ -397,7 +397,7 @@ cutoff.df$MFI <- as.numeric(cutoff.df$MFI)
 EidMFIall <- ggplot(data=subset(recap.sum, bat_species=="Eidolon dupreanum" )) + 
   facet_nested(.~antigen, scales = "free") + theme_bw() +
   scale_shape_manual(name="Serostatus", values = shapez) + 
-  scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
+  scale_alpha_manual(values = alphaz2) + ylab("median fluorescence intensity (MFI)")+
   theme(axis.text.y = element_text(size=14),   
         #axis.ticks.y=element_blank(), 
         axis.title.x = element_blank(),
@@ -477,7 +477,7 @@ Rou.recap <- ggplot(subset(recap.sum, bat_species=="Rousettus madagascariensis" 
 RouMFIall <- ggplot(data=subset(recap.sum, bat_species=="Rousettus madagascariensis" & antigen=="GhV")) + 
   facet_nested(.~antigen, scales = "free") + theme_bw() +
   scale_shape_manual(name="Serostatus", values = shapez) + 
-  scale_alpha_manual(values = alphaz2) + ylab("mean fluorescence intensity (MFI)")+
+  scale_alpha_manual(values = alphaz2) + ylab("median fluorescence intensity (MFI)")+
   theme(axis.text.y = element_text(size=14),   
         #axis.ticks.y=element_blank(), 
         axis.title.x = element_blank(),
