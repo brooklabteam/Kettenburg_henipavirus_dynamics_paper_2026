@@ -13,6 +13,8 @@ library(mvtnorm)
 library(tidyr)
 library(scales)
 library(ggplot2)
+library(ggplotify)
+library(ggpubr)
 
 #this is the version that builds a comparable matrix to fit the top five model structures
 #load data
@@ -222,20 +224,43 @@ save.R0 <- arrange(save.R0, mean_AIC, llik)
 save.R0$model_base <- factor(save.R0$model_base, levels = unique(save.R0$model_base))
 
 #and plot
+custom_labels <- c(
+  "MSIRSI"   = "MSIRSI",
+  "MSIRS"    = "MSIRS",
+  "MSIRNSI"  = expression(MSIRN[1]*SI),
+  "MSIRNS"   = expression(MSIRN[1]*S),
+  "MSIRNNSI" = expression(MSIRN[1]*N[2]*SI),
+  "MSIRNI"   = expression(MSIRN[1]*I),
+  "MSIRNNI"  = expression(MSIRN[1]*N[2]*I),
+  "MSIRI"    = "MSIRI",
+  "MSIRNNS"  = expression(MSIRN[1]*N[2]*S),
+  "MSIRN"    = expression(MSIRN[1])
+)
+
 p1 <- ggplot(save.R0) + geom_point(aes(x=llik, y=R0, color=model_base, shape=mort_class), size=3, show.legend = F) + scale_x_log10() +theme_bw() +
       xlab("negative log-likelihood") + ylab(bquote(R[0]))+ scale_color_discrete(name = "base model") + scale_shape_discrete("mortality class") +
       theme(panel.grid = element_blank(), axis.title = element_text(size=14), axis.text = element_text(size=12));p1
 
 p2 <- ggplot(save.R0) + geom_point(aes(x=llik, y=R0, color=model_base, shape=mort_class), size=3) + scale_x_log10() +theme_bw() +
-  xlab("negative log-likelihood") + ylab(bquote(R[0]))+ scale_color_discrete(name = "base model") + scale_shape_discrete("mortality class") +
+  xlab("negative log-likelihood") + ylab(bquote(R[0]))+ scale_color_discrete(name = "base model", labels = custom_labels) + 
+  scale_shape_discrete("mortality class") +
+  theme(panel.grid = element_blank(), 
+        #legend.position = "none",
+        axis.title = element_text(size=14), 
+        axis.text = element_text(size=12)) + 
+  coord_cartesian(xlim=c(628,646))
+
+p2.noleg <- ggplot(save.R0) + geom_point(aes(x=llik, y=R0, color=model_base, shape=mort_class), size=3) + scale_x_log10() +theme_bw() +
+  xlab("negative log-likelihood") + ylab(bquote(R[0]))+ scale_color_discrete(name = "base model") + 
+  scale_shape_discrete("mortality class") +
   theme(panel.grid = element_blank(), 
         legend.position = "none",
         axis.title = element_text(size=14), 
         axis.text = element_text(size=12)) + 
   coord_cartesian(xlim=c(628,646))
 
-leg<- cowplot::get_legend(p2)
-leg<-as.ggplot(leg)
+leg<- ggpubr::get_legend(p2)
+leg <- ggplotify:: as.ggplot(leg)
 
 
 pR0 <- cowplot::plot_grid(p1,p2, labels = c("A", "B"), label_size = 22, rel_widths = c(1,1))
@@ -262,8 +287,10 @@ all.pars <- data.table::rbindlist(lapply(list.pars,get.mean.AIC.llik))
 all.pars <- arrange(all.pars, mean_AIC)
 all.pars$model_base <- factor(all.pars$model_base, levels=unique(all.pars$model_base))
 
-ggplot(all.pars) + geom_point(aes(x=llik, y=beta, color=model_base, shape=mort_class)) + coord_cartesian(xlim=c(628,700), ylim=c(0,100))
+p <- ggplot(all.pars) + geom_point(aes(x=llik, y=beta, color=model_base, shape=mort_class)) + coord_cartesian(xlim=c(628,700), ylim=c(0,100)) 
 
+
+p + scale_color_discrete(labels = custom_labels)
 
 all.pars$log10beta <- log10(all.pars$beta)
 
@@ -271,7 +298,7 @@ all.pars$log10beta <- log10(all.pars$beta)
 beta.plot <- ggplot(all.pars) + #coord_cartesian(ylim=c(-1,10)) +# scale_x_log10() +
                   geom_boxplot(aes(x=model_base, y=log10beta), show.legend = F) +
                   geom_jitter(aes(x=model_base, y=log10beta, color=model_base, shape=mort_class), width = .15, show.legend = F) +
-                  theme_bw() +coord_cartesian(ylim=c(-1,6)) +
+                  theme_bw() +coord_cartesian(ylim=c(-1,6)) + scale_x_discrete(labels = custom_labels) +
                   ylab(bquote(log[10]~beta~', top 10 model fits'))+ scale_color_discrete(name = "base model") + 
                   scale_shape_discrete("mortality class") +
                   theme(panel.grid = element_blank(), 
@@ -291,7 +318,7 @@ sigma.plot <- ggplot(all.pars) + #coord_cartesian(ylim=c(-1,10)) +# scale_x_log1
   geom_jitter(aes(x=model_base, y=any_sigma_log10, color=model_base, shape=mort_class), width = .15, show.legend = F) +
   theme_bw() + coord_cartesian(ylim=c(-1,23)) + coord_cartesian(ylim=c(-1,25)) +
   ylab(bquote(log[10]~sigma~', top 10 model fits'))+ scale_color_discrete(name = "base model") + 
-  scale_shape_discrete("mortality class") +
+  scale_shape_discrete("mortality class") + scale_x_discrete(labels = custom_labels) +
   theme(panel.grid = element_blank(), 
         axis.title.y = element_text(size=14),
         axis.title.x = element_blank(),
@@ -308,7 +335,7 @@ all.pars$any_recru_log10[all.pars$any_recru_log10==-Inf] <- NA
 recru.plot <- ggplot(all.pars) + #coord_cartesian(ylim=c(-1,10)) +# scale_x_log10() +
   geom_boxplot(aes(x=model_base, y=any_recru_log10), show.legend = F) +
   geom_jitter(aes(x=model_base, y=any_recru_log10, color=model_base, shape=mort_class), width = .15, show.legend = F) +
-  theme_bw() + coord_cartesian(ylim=c(-1,6)) +
+  theme_bw() + coord_cartesian(ylim=c(-1,6)) + scale_x_discrete(labels = custom_labels) +
   ylab(bquote(log[10]~gamma~', top 10 model fits'))+ scale_color_discrete(name = "base model") + 
   scale_shape_discrete("mortality class") +
   theme(panel.grid = element_blank(), 
@@ -328,7 +355,7 @@ loss.plot <- ggplot(all.pars) + #coord_cartesian(ylim=c(-1,10)) +# scale_x_log10
   geom_jitter(aes(x=model_base, y=any_loss_log10, color=model_base, shape=mort_class), width = .15, show.legend = F) +
   theme_bw() + coord_cartesian(ylim=c(-1,6)) +
   ylab(bquote(log[10]~rho~', top 10 model fits'))+ scale_color_discrete(name = "base model") + 
-  scale_shape_discrete("mortality class") +
+  scale_shape_discrete("mortality class") + scale_x_discrete(labels = custom_labels) +
   theme(panel.grid = element_blank(), 
         axis.title.y = element_text(size=14),
         axis.title.x = element_blank(),
@@ -342,7 +369,7 @@ loss.plot <- ggplot(all.pars) + #coord_cartesian(ylim=c(-1,10)) +# scale_x_log10
 # pcomppar <- cowplot::plot_grid(beta.plot, sigma.plot, recru.plot, loss.plot, ncol = 2, nrow = 2, labels = c("C", "D", "E", "F"), label_size = 22, scale = .97) +
 #   theme(plot.margin = margin(t=.1,r=8,b=2,l=.1, unit= "lines"))
   
-pcomppar <- cowplot::plot_grid(p1, p2, beta.plot, sigma.plot, recru.plot, loss.plot, ncol = 2, nrow = 3, labels = c("A","B","C", "D", "E", "F"), label_size = 22, scale = .97) +
+pcomppar <- cowplot::plot_grid(p1, p2.noleg, beta.plot, sigma.plot, recru.plot, loss.plot, ncol = 2, nrow = 3, labels = c("A","B","C", "D", "E", "F"), label_size = 22, scale = .97) +
   theme(plot.margin = margin(t=.1,r=.1,b=2,l=.1, unit= "lines"));pcomppar
 
 #pall <- cowplot::plot_grid(pR0, pcomppar, nrow=2, ncol=1, rel_heights  = c(1,2)) + theme(plot.background = element_rect(fill="white"))

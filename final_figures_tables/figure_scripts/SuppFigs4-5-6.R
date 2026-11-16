@@ -382,6 +382,36 @@ plot.models.data.CI.squiggle.horizontal <- function(CI.age.fits, CI.ts.fits, dat
   
   #plot with data
   max.a = ceiling(max(dat.sum$age_year))
+  
+  base_models <- c(
+    "MSIRSI"   = "MSIRSI",
+    "MSIRS"    = "MSIRS",
+    "MSIRNSI"  = "MSIRN[1]*SI",
+    "MSIRNS"   = "MSIRN[1]*S",
+    "MSIRNNSI" = "MSIRN[1]*N[2]*SI",
+    "MSIRNI"   = "MSIRN[1]*I",
+    "MSIRNNI"  = "MSIRN[1]*N[2]*I",
+    "MSIRI"    = "MSIRI",
+    "MSIRNNS"  = "MSIRN[1]*N[2]*S",
+    "MSIRN"    = "MSIRN[1]"
+  )
+  # 2. Mortality suffixes (both orderings of mu-rec / mu-sick included just in case)
+  suffixes <- c("", "-mu-rec", "-mu-sick", "-mu-sick-mu-rec", "-mu-rec-mu-sick")
+  
+  # 3. Generate all combinations
+  facet_labels <- unlist(lapply(suffixes, function(suf) {
+    raw_names <- paste0(names(base_models), suf)
+    
+    # Wrap suffix in single quotes so plotmath doesn't treat '-' as subtraction
+    parsed_vals <- if (suf == "") {
+      unname(base_models)
+    } else {
+      paste0(unname(base_models), "*'", suf, "'")
+    }
+    
+    setNames(parsed_vals, raw_names)
+  }))
+  
   p1 <- ggplot() +  theme_bw() +
     geom_line(data=dat.sum, aes(x=age_year, y=prevalence), color ="black", linetype=2) +
     geom_linerange(data=dat.sum, aes(x=age_year, ymin = seroprev_lci, ymax=seroprev_uci), linetype=3, alpha=.5)+ 
@@ -398,7 +428,7 @@ plot.models.data.CI.squiggle.horizontal <- function(CI.age.fits, CI.ts.fits, dat
     geom_line(data=mod.all, aes(x=age, y=seroprevalence), color="navy") + 
     geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
     #geom_ribbon(data=mod.all, aes(x=age, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=10) 
+    facet_wrap(model~., ncol=10, labeller = as_labeller(facet_labels, default = label_parsed)) 
   
   
   # 
@@ -435,7 +465,7 @@ plot.models.data.CI.squiggle.horizontal <- function(CI.age.fits, CI.ts.fits, dat
     geom_line(data=CI.ts.fits1, aes(x=biwk, y=seroprevalence), color="navy") + 
     geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci, ymax = seroprev_uci), fill="cornflowerblue", alpha=.3) + 
     #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=seroprev_lci_25, ymax = seroprev_uci_75), fill="cornflowerblue", alpha=.3) + 
-    facet_wrap(model~., ncol=10) 
+    facet_wrap(model~., ncol=10, labeller = as_labeller(facet_labels, default = label_parsed))
   # 
   # # Save Page 1
   # p2a <- p2 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
@@ -462,7 +492,7 @@ plot.models.data.CI.squiggle.horizontal <- function(CI.age.fits, CI.ts.fits, dat
     geom_line(data=CI.ts.fits1, aes(x=biwk, y=prevalence), color="red4") + 
     geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci, ymax = seroprev_uci), fill="red", alpha=.3) + 
     #geom_ribbon(data=CI.ts.fits1, aes(x=biwk, ymin=prev_lci_25, ymax = seroprev_uci_75), fill="red", alpha=.3) + 
-    facet_wrap(model~., ncol=10) 
+    facet_wrap(model~., ncol=10, labeller = as_labeller(facet_labels, default = label_parsed))
   # 
   # # Save Page 1
   # p3a <- p3 + facet_wrap_paginate(model ~ ., ncol = 4, nrow = ceiling(total_models / 4/ 2), page = 1)
