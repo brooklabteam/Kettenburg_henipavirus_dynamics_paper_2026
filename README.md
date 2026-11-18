@@ -18,9 +18,7 @@ The exploratory scripts for the analyses presented in the figures are housed wit
 
 -Read mapping - folder for this analysis is [here](https://github.com/brooklabteam/Kettenburg_henipavirus_dynamics_paper_2026/tree/main/genome_characterization)
 
-
 -mRNA editing site - folder for this analysis is [here](https://github.com/brooklabteam/Kettenburg_henipavirus_dynamics_paper_2026/tree/main/genome_characterization/residue_alignments)
-
 
 -Ephrin binding sites - folder for this analysis is [here](https://github.com/brooklabteam/Kettenburg_henipavirus_dynamics_paper_2026/tree/main/genome_characterization/residue_alignments)
 
