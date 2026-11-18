@@ -16,7 +16,7 @@ library(mvtnorm)
 library(ggforce)
 
 #load data
-homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #load the completed models with age-seroprevalence and time series
 all.par <- age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/par_fits_GhV_CI_final.csv"), header = T, stringsAsFactors = F)
