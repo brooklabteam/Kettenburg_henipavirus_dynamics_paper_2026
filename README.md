@@ -69,7 +69,7 @@ of duration of maternally-inhereted immunity and adult immunity, figures made wi
 
 Fit MSIR models using joint inference from three datasets: age-seroprevalence data, shedding data by biweek, and seropositive data by biweek
 
-Specific anlyses (figures made with ggplot in R)
+Specific anlyses (see supplemental methods for full description of analyses, figures made with ggplot in R)
 
 -MSIR model fitting - folder for this analysis is [here](https://github.com/brooklabteam/Kettenburg_henipavirus_dynamics_paper_2026/tree/main/model_fitting)
 
