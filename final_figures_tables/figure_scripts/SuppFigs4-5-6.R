@@ -16,7 +16,7 @@ library(mvtnorm)
 library(ggforce)
 
 #load data
-homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 #load the completed models with age-seroprevalence and time series
 all.par <- age.sero.df <- read.csv(file = paste0(homewd,"/model_fitting/GhV-fits/par_fits_GhV_CI_final.csv"), header = T, stringsAsFactors = F)
@@ -1158,9 +1158,9 @@ plot.models.data.CI.squiggle.horizontal(CI.age.fits = age.sero.df,
                              vis_split = 3, 
                              do.plot=TRUE, 
                              do.save=TRUE, 
-                             filename1=paste0(homewd,"/final_figures_tables/supplemental/SuppFig4.png"),
-                             filename2=paste0(homewd,"/final_figures_tables/supplemental/SuppFig5.png"),
-                             filename3=paste0(homewd,"/final_figures_tables/supplemental/SuppFig6.png"))
+                             filename1=paste0(homewd,"/final_figures_tables/supplemental/SuppFig4.pdf"),
+                             filename2=paste0(homewd,"/final_figures_tables/supplemental/SuppFig5.pdf"),
+                             filename3=paste0(homewd,"/final_figures_tables/supplemental/SuppFig6.pdf"))
 
 
 # #envelope fits -squiggle

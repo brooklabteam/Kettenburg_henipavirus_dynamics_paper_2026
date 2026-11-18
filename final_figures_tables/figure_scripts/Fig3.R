@@ -1164,7 +1164,7 @@ fig3<-cowplot::plot_grid(mountain, pRightwLeg,
         plot.background = element_rect(fill = "white", colour = NA)); fig3
 
 
-ggsave(file = paste0(homewd, "/final_figures_tables/main/Fig3.png"),
+ggsave(file = paste0(homewd, "/final_figures_tables/main/Fig3.pdf"),
        plot= fig3,
        units="mm",  
        width=180, 

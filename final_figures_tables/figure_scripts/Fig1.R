@@ -993,7 +993,7 @@ fig1<-cowplot::plot_grid(part3, part2,
 
 #save
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/main/"
-ggsave(file = paste0(homewd, "Fig1.png"),
+ggsave(file = paste0(homewd, "Fig1.pdf"),
        plot= fig1,
        units="mm",
        width=300,

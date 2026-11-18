@@ -21,7 +21,7 @@ library(ggplot2)
 
 ################################################################################
 ################################################################################
-homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 
 ################################################################################
 ################################################################################
@@ -155,7 +155,7 @@ p3 <- ggplot(mom.df) + geom_point(aes(x=log10MFI,
 p3
 
 
-ggsave(file = paste0(homewd,"/final_figures_tables/supplemental/extended-data/ExtendedDataFig6.png"),
+ggsave(file = paste0(homewd,"/final_figures_tables/extended-data/ExtendedDataFig6.pdf"),
        plot=p3,
        units="mm",  
        width=60, 

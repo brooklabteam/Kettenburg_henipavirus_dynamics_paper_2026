@@ -284,7 +284,7 @@ fig<-cowplot::plot_grid(part1, pair,
 
 #save trees
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/extended-data/"
-ggsave(file = paste0(homewd, "ExtendedDataFig1.png"),
+ggsave(file = paste0(homewd, "ExtendedDataFig1.pdf"),
        plot= fig,
        units="mm",
        width=200,

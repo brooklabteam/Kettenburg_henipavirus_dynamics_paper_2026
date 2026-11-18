@@ -557,7 +557,7 @@ plot.dat.model.clust.cumulative <- function(dat, mod.df, filename){
 # threshold for the upper cluster assignment which was used for the serological cutoffs in the paper
 # only reporting on Eidolon and Rousettus data here
 plot.dat.model.clust.cumulative(dat =lumdat.clust, mod.df=mixture.par,
-                             filename= paste0(homewd, "/final_figures_tables/extended-data/ExtendedDataFig4.png"))
+                             filename= paste0(homewd, "/final_figures_tables/extended-data/ExtendedDataFig4.pdf"))
 
 
 # 

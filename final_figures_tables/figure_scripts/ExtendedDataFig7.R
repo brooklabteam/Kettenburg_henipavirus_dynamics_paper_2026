@@ -18,7 +18,7 @@ library(ggpubr)
 
 #this is the version that builds a comparable matrix to fit the top five model structures
 #load data
-homewd = "/Users/carabrook/Developer/Kettenburg_henipavirus_dynamics_paper_2026/"
+homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026/"
 setwd(homewd)
 #dat <- read.csv(file =  paste0(homewd,"/data/age-seroprevalence-data.csv"), header = T, stringsAsFactors = F)
 # dat <- read.csv(file =  "age-seroprevalence-data.csv", header = T, stringsAsFactors = F)
@@ -379,10 +379,10 @@ pall <- cowplot::plot_grid(pcomppar, leg, nrow=1, ncol=2, rel_heights  = c(1,1),
 
 
 
-ggsave(file = paste0(homewd,"/final_figures_tables/extended-data/ExtendedDataFig7.png"),
+ggsave(file = paste0(homewd,"/final_figures_tables/extended-data/ExtendedDataFig7.pdf"),
        plot = pall,
        units="mm",  
        width=120, 
-       height=120, 
+       height=130, 
        scale=3, 
        dpi=300)

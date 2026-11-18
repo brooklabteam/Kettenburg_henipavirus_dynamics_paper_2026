@@ -434,7 +434,7 @@ Fig4 <- cowplot::plot_grid(Eid.recap, EidMFIall,
 
 
 
-ggsave(file = paste0(homewd,"/final_figures_tables/main/Fig4.png"),
+ggsave(file = paste0(homewd,"/final_figures_tables/main/Fig4.pdf"),
        plot = Fig4,
        bg="white",
        units="mm",  
@@ -511,7 +511,7 @@ Fig4supp <- cowplot::plot_grid(Rou.recap, RouMFIall,
 #   theme(plot.background = element_rect(fill = "white", colour = NA),
 #         plot.margin = unit(c(0,2,0,0),"lines")); Fig4.1supp
 
-ggsave(file = paste0(homewd,"/final_figures_tables/extended-data/ExtendedDataFig5.png"),
+ggsave(file = paste0(homewd,"/final_figures_tables/extended-data/ExtendedDataFig5.pdf"),
        plot = Fig4supp,
        bg="white",
        units="mm",  
@@ -519,3 +519,4 @@ ggsave(file = paste0(homewd,"/final_figures_tables/extended-data/ExtendedDataFig
        height=140, 
        scale=2, 
        dpi=500)
+

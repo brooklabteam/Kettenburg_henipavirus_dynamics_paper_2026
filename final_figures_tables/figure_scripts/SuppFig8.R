@@ -167,7 +167,7 @@ p1 <- ggplot(data=subset(adult.dat, !is.na(predicted_mass_g))) +
   xlab("bat forearm (mm)") + ylab("bat mass (g)")
 p1
 
-ggsave(file = paste0(homewd,"/final_figures_tables/supplemental/SuppFig8.png"),
+ggsave(file = paste0(homewd,"/final_figures_tables/supplemental/SuppFig8.pdf"),
        plot = p1,
        units="mm",  
        width=80, 

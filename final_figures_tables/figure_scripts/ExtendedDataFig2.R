@@ -215,7 +215,7 @@ tree2 <- p2.1  %<+% p0.dat1 +
 tree2
 
 homewd="/Users/gwenddolenkettenburg/Desktop/developer/Kettenburg_henipavirus_dynamics_paper_2026/final_figures_tables/extended-data/"
-ggsave(file = paste0(homewd, "ExtendedDataFig2.png"),
+ggsave(file = paste0(homewd, "ExtendedDataFig2.pdf"),
        plot= tree2,
        units="mm",
        width=220,

@@ -576,7 +576,7 @@ tryptic.plot3 <- ggplot(data=triptic_df) +
 tryptic.plot3
 
 #
-ggsave(file = paste0(homewd, "/final_figures_tables/supplemental/SuppFig7.png"),
+ggsave(file = paste0(homewd, "/final_figures_tables/supplemental/SuppFig7.pdf"),
        plot = tryptic.plot3,
        units="mm",  
        width=65, 

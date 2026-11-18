@@ -21,7 +21,7 @@ library(lmerTest)
  
 
 # 
-#homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
+#\homewd = "/Users/gwenddolenkettenburg/Desktop/Developer/Kettenburg_henipavirus_dynamics_paper_2026"
 #batwd = "/Users/gwenddolenkettenburg/Desktop/Developer/Madagascar-Bat-Data"
 
 # plot of seasonality of antigens for analysis
@@ -609,7 +609,7 @@ pIntrannualShedAll<-pIntrannualShedAll + geom_text(
 );pIntrannualShedAll
 
 
-ggsave(file = paste0(homewd,"/final_figures_tables/extended-data/ExtendedDataFig3.png"),
+ggsave(file = paste0(homewd,"/final_figures_tables/extended-data/ExtendedDataFig3.pdf"),
        plot=pIntrannualShedAll,
        units="mm",  
        width=80, 
@@ -1672,7 +1672,7 @@ Fig2 <- cowplot::plot_grid(Fig2_left, Eid_Leg, ncol=2, nrow=1, rel_widths = c(1,
 Fig2 <- ggdraw(Fig2) + 
   theme(plot.background = element_rect(fill = "white", color = NA))
 
-ggsave(file = paste0(homewd,"/final_figures_tables/main/Fig2.png"),
+ggsave(file = paste0(homewd,"/final_figures_tables/main/Fig2.pdf"),
        plot=Fig2,
        units="mm",  
        width=140, 

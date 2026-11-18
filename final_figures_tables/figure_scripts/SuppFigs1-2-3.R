@@ -320,9 +320,9 @@ choose.antigens <- function(dat, species, genus, manual_cluster, do.save.plot, f
   
 }
 
-PCA.Eid.hen <- choose.antigens(dat = lumdat.long, species = "Eidolon dupreanum", genus = "Henipavirus",  manual_cluster = NA,  do.save.plot = TRUE, filename=paste0(homewd,"/final_figures_tables/supplemental/SuppFig2.png"))
-PCA.Rou.hen <- choose.antigens(dat = lumdat.long, species = "Rousettus madagascariensis", genus = "Henipavirus",  manual_cluster = NA, do.save.plot = TRUE, filename=paste0(homewd,"/final_figures_tables/supplemental/SuppFig3.png"))
-PCA.Pter.hen <- choose.antigens(dat = lumdat.long, species = "Pteropus rufus", genus = "Henipavirus",  manual_cluster = NA, do.save.plot = TRUE,  filename=paste0(homewd,"/final_figures_tables/supplemental/SuppFig1.png"))
+PCA.Eid.hen <- choose.antigens(dat = lumdat.long, species = "Eidolon dupreanum", genus = "Henipavirus",  manual_cluster = NA,  do.save.plot = TRUE, filename=paste0(homewd,"/final_figures_tables/supplemental/SuppFig2.pdf"))
+PCA.Rou.hen <- choose.antigens(dat = lumdat.long, species = "Rousettus madagascariensis", genus = "Henipavirus",  manual_cluster = NA, do.save.plot = TRUE, filename=paste0(homewd,"/final_figures_tables/supplemental/SuppFig3.pdf"))
+PCA.Pter.hen <- choose.antigens(dat = lumdat.long, species = "Pteropus rufus", genus = "Henipavirus",  manual_cluster = NA, do.save.plot = TRUE,  filename=paste0(homewd,"/final_figures_tables/supplemental/SuppFig1.pdf"))
 
 ################################################################################
 ################################################################################
@@ -543,3 +543,4 @@ plot.correlation(dat=lumdat.long, ant1 = "GhV", ant2 = "NiV", ant3 = "HeV", ant4
 # Rousettus: GhV, RavV, BdbV 
 
 # not going to explore Pteropus further.
+
