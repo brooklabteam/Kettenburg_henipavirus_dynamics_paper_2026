@@ -10,6 +10,7 @@ hosted within each analysis folder linked below:
 ## Final figures and tables
 
 The exploratory scripts for the analyses presented in the figures are housed within scripts in the respective analysis folders listed below. 
+
 -All scripts to make final figures for main text, extended data, and supplemental figures is here [here](https://github.com/brooklabteam/Kettenburg_henipavirus_dynamics_paper_2026/tree/main/final_figures_tables)
 
 
@@ -23,8 +24,11 @@ All genome sequences were submitted to NCBI and assigned accession numbers PX095
 PX127345-PX127510 (all other partial sequences). 
 
 Specific analyses (alignments with MAFFT within Geneious, figures made with ggplot in R): 
+
 -Read mapping - folder for this analysis is [here](https://github.com/brooklabteam/Kettenburg_henipavirus_dynamics_paper_2026/tree/main/genome_characterization)
+
 -mRNA editing site - folder for this analysis is [here](https://github.com/brooklabteam/Kettenburg_henipavirus_dynamics_paper_2026/tree/main/genome_characterization/residue_alignments)
+
 -Ephrin binding sites - folder for this analysis is [here](https://github.com/brooklabteam/Kettenburg_henipavirus_dynamics_paper_2026/tree/main/genome_characterization/residue_alignments)
 
 
@@ -34,6 +38,7 @@ Specific analyses (alignments with MAFFT within Geneious, figures made with ggpl
 Using either full genome or partial/full polymerase sequences, we phylogenetically classified novel henipaviruses and pararubulaviruses. 
 
 Specific analyses (alignment with MAFFT within Geneious, substitution model selection and tree building done in IQ-TREE, figures made with ggtree/ggplot in R): 
+
 -Paramyxovirus trees - folder for this analysis is [here](https://github.com/brooklabteam/Kettenburg_henipavirus_dynamics_paper_2026/tree/main/phylo_trees)
 
 
@@ -45,6 +50,7 @@ positivity.
 
 Specific analyses (statistical analysis of seasonality, body condition correlation with viral shedding, coinfection, and sampling session prevalence correlation 
 with virus shedding using GAMs/GLMs/LMs run in R, figures made with ggplot in R):
+
 -qPCR data and scripts - folder for this analysis is [here](https://github.com/brooklabteam/Kettenburg_henipavirus_dynamics_paper_2026/tree/main/virus_shedding)
 
 
@@ -55,6 +61,7 @@ Using a previously designed multi-plex panel of henipavirus glycoproteins, we ad
 
 Specific analyses (statistical analysis of seasonality, body condition correlation with MFI, using GAMs/GLMs/LMs run in R, age-seroprevalence curves, estimation 
 of duration of maternally-inhereted immunity and adult immunity, figures made with ggplot in R)
+
 -Seropositive data and scripts - folder for this analysis is [here](https://github.com/brooklabteam/Kettenburg_henipavirus_dynamics_paper_2026/tree/main/serology)
 
 ---
@@ -63,6 +70,7 @@ of duration of maternally-inhereted immunity and adult immunity, figures made wi
 Fit MSIR models using joint inference from three datasets: age-seroprevalence data, shedding data by biweek, and seropositive data by biweek
 
 Specific anlyses (figures made with ggplot in R)
+
 -MSIR model fitting - folder for this analysis is [here](https://github.com/brooklabteam/Kettenburg_henipavirus_dynamics_paper_2026/tree/main/model_fitting)
 
 
